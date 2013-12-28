@@ -9,4 +9,5 @@ public abstract class CharacterEventScript : MonoBehaviour {
 	public abstract void OnPain(float damage);
 	public abstract void OnDeath(GameObject killer);
 	public abstract void OnSpotEnemy(GameObject enemy);
+	public abstract void OnCollision(Collider collider);
 }

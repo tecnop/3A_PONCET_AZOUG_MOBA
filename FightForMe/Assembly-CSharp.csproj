@@ -59,6 +59,7 @@
      <Compile Include="Assets\Scripts\Behaviour\Character\Input\CharacterInputScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Input\NPCAIScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Input\PlayerInputScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\WayPoint\WayPointScript.cs" />
      <Compile Include="Assets\Scripts\Data\Armor.cs" />
      <Compile Include="Assets\Scripts\Data\DataTables.cs" />
      <Compile Include="Assets\Scripts\Data\Item.cs" />

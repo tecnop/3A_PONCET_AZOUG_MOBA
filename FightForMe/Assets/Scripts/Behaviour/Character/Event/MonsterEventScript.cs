@@ -17,4 +17,8 @@ public class MonsterEventScript : CharacterEventScript {
 	{
 
 	}
+
+	public override void OnCollision(Collider collider)
+	{ // TODO: Pathfinding stuff
+	}
 }

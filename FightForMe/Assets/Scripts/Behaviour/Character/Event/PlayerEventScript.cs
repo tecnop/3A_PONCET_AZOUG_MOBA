@@ -17,4 +17,8 @@ public class PlayerEventScript : CharacterEventScript {
 	{
 		
 	}
+
+	public override void OnCollision(Collider collider)
+	{ // Nothing?
+	}
 }

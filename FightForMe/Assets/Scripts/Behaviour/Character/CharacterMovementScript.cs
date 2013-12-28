@@ -15,11 +15,21 @@ public class CharacterMovementScript : MonoBehaviour {
 	private Transform myTransform;
 
 	private CameraMovementScript _camera;
+	private CharacterEventScript _event;
 
 	void Start()
 	{
 		myTransform = this.transform;
 		_camera = _manager.GetCameraScript();
+		_event = _manager.GetEventScript();
+	}
+
+	void OnTriggerEnter(Collider collider)
+	{ // Redirect it
+		if (_event)
+		{
+			_event.OnCollision(collider);
+		}
 	}
 
 	public void ApplyMove(Vector3 dir)
