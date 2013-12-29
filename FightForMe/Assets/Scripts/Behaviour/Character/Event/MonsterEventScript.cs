@@ -31,7 +31,10 @@ public class MonsterEventScript : CharacterEventScript {
 
 	public override void OnCollision(Collider collider)
 	{ // TODO: Pathfinding stuff
-		//WayPointScript wp = collider.GetComponent<WayPointScript>();
-		//Debug.Log(wp);
+		if (collider.tag == "WayPoint")
+		{
+			WayPointScript wp = collider.GetComponent<WayPointScript>();
+			_ai.OnWayPointCollision(wp.GetID());
+		}
 	}
 }

@@ -53,6 +53,8 @@ public class CharacterManager : MonoBehaviour {
 	public CharacterEventScript GetEventScript() { return _event; }
 	public CharacterCombatScript GetCombatScript() { return _combat; }
 	public CharacterStatsScript GetStatsScript() { return _stats; }
+	public CharacterVisionScript GetVisionScript() { return _vision; }
+	public CharacterMovementScript GetMovementScript() { return _movement; }
 	public CharacterInventoryScript GetInventoryScript() { return _inventory; }
 	public CharacterMiscDataScript GetMiscDataScript() { return _misc; }
 	public CameraMovementScript GetCameraScript() { return _camera; }

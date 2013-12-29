@@ -8,6 +8,9 @@ public class CharacterVisionScript : MonoBehaviour {
 
 	private CharacterEventScript _event;
 
+	private Transform _transform;
+	private Collider _collider;
+
 	private GameObject[] entitiesInSight;
 	private float lastUpdate;
 
@@ -15,8 +18,20 @@ public class CharacterVisionScript : MonoBehaviour {
 	{
 		lastUpdate = Time.time;
 		_event = _manager.GetEventScript();
+		_collider = _manager.GetMovementScript().collider;
+		_transform = this.transform;
+
 		entitiesInSight = new GameObject[1];
 		entitiesInSight[0] = _manager.gameObject;	// This should not change! It makes sure we don't spot ourselves
+	}
+
+	public bool IsPosVisible(Vector3 pos)
+	{ // Always true for now
+		Vector3 diff = (_transform.position - pos).normalized;
+		RaycastHit rayInfo;
+		Physics.Raycast(pos, diff, out rayInfo);
+
+		return (rayInfo.collider== _collider);
 	}
 
 	public void UpdateVision()

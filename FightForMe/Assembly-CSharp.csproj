@@ -70,6 +70,7 @@
      <Compile Include="Assets\Scripts\Data\UnitTest.cs" />
      <Compile Include="Assets\Scripts\Data\Weapon.cs" />
      <Compile Include="Assets\Scripts\Data\WeaponType.cs" />
+     <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,7 +3,8 @@ using System.Collections;
 
 enum AIType { defensive, aggressive, roaming };
 
-public class NPCAIScript : CharacterInputScript {
+public class NPCAIScript : CharacterInputScript
+{
 
 	[SerializeField]
 	CharacterManager _manager;
@@ -21,18 +22,22 @@ public class NPCAIScript : CharacterInputScript {
 	private Transform myTransform;
 
 	private MonsterMiscDataScript _misc;
+	private CharacterVisionScript _vision;
 
 	// AI-Helping variables
 	private bool goalReached;
 	private GameObject target;
 	private Transform targetTransform;
 	private Vector3 startPos;
+	private ArrayList currentPath;
 
 	void Start()
 	{
 		myTransform = this.transform;
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
+		_vision = _manager.GetVisionScript();
 		startPos = _misc.GetSpawnPos();
+		this.currentPath = new ArrayList();
 	}
 
 	public bool IsSearchingEnemy()
@@ -46,9 +51,15 @@ public class NPCAIScript : CharacterInputScript {
 		{
 			SetGoal(targetTransform.position);
 		}
-		else if (startPos != null)
+		else
 		{
-			SetGoal(startPos);
+			if (this.behaviour == AIType.roaming)
+			{ // TODO: Get to a random node
+			}
+			else
+			{
+				SetGoal(startPos);
+			}
 		}
 	}
 
@@ -61,12 +72,49 @@ public class NPCAIScript : CharacterInputScript {
 	public void SetGoal(Vector3 pos)
 	{
 		goalReached = false;
-		goalPosition = pos;
+
+		if (_vision.IsPosVisible(pos))
+		{
+			goalPosition = pos;
+			this.currentPath.Clear();
+		}
+		else
+		{
+			//if (Vector3.Distance(goalPosition, pos) < 1.0f)
+			if (this.currentPath.Count > 0)
+			{ // Let's avoid unnecessary calls for now...
+				return;
+			}
+
+			this.currentPath = new ArrayList(Pathfinding.GetPath(myTransform.position, pos));
+
+			goalPosition = Pathfinding.GetNodePos((uint)this.currentPath[0]);
+		}
+	}
+
+	public void OnWayPointCollision(uint wpIndex)
+	{
+		if (this.currentPath.Count > 0)
+		{
+			int i = 0;
+			while (i < this.currentPath.Count)
+			{
+				if ((uint)this.currentPath[i] == wpIndex)
+				{
+					this.currentPath.RemoveRange(0, i + 1);
+					if (this.currentPath.Count > 0)
+					{
+						goalPosition = Pathfinding.GetNodePos((uint)this.currentPath[0]);
+					}
+				}
+				i++;
+			}
+		}
 	}
 
 	public override Vector3 GetDirectionalInput()
 	{
-		RunAI ();
+		RunAI();
 
 		if (goalReached)
 		{
@@ -76,9 +124,9 @@ public class NPCAIScript : CharacterInputScript {
 		Vector3 move = goalPosition - myTransform.position;
 		move.y = 0;
 
-		if (move.magnitude < approachRange)
+		if (move.magnitude < approachRange && this.currentPath.Count == 0)
 		{
-			goalReached = true;	
+			goalReached = true;
 			return Vector3.zero;
 		}
 
@@ -88,7 +136,7 @@ public class NPCAIScript : CharacterInputScript {
 	public override float GetIdealOrientation()
 	{
 		Vector3 diff = goalPosition - myTransform.position;
-		
+
 		if (diff.z == 0)
 		{
 			if (diff.x > 0)
@@ -100,14 +148,14 @@ public class NPCAIScript : CharacterInputScript {
 				return -90;
 			}
 		}
-		
+
 		if (diff.z > 0)
 		{
-			return Mathf.Atan(diff.x/diff.z) * 180 / Mathf.PI;
+			return Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
 		}
 		else
 		{
-			return 180 + Mathf.Atan(diff.x/diff.z) * 180 / Mathf.PI;
+			return 180 + Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
 		}
 	}
 
