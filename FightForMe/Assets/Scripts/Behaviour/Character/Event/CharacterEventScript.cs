@@ -4,10 +4,10 @@ using System.Collections;
 public abstract class CharacterEventScript : MonoBehaviour {
 
 	[SerializeField]
-	CharacterManager _manager;
+	protected CharacterManager _manager;
 
 	public abstract void OnPain(float damage);
 	public abstract void OnDeath(GameObject killer);
-	public abstract void OnSpotEnemy(GameObject enemy);
+	public abstract void OnSpotEntity(GameObject entity);
 	public abstract void OnCollision(Collider collider);
 }

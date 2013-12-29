@@ -13,7 +13,7 @@ public class PlayerEventScript : CharacterEventScript {
 		
 	}
 	
-	public override void OnSpotEnemy(GameObject enemy)
+	public override void OnSpotEntity(GameObject entity)
 	{
 		
 	}

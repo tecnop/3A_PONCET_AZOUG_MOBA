@@ -25,7 +25,7 @@ public class PlayerInputScript : CharacterInputScript {
 			diff = rayInfo.point - _playerTransform.position;
 		}
 		else
-		{ // FIXME: Take the camera position into account
+		{ // FIXME: Take the camera position into account (fire a raycast to the middle of the screen and get the diff from that or something)
 			diff = new Vector3(Input.mousePosition.x - Screen.width/2, 0, Input.mousePosition.y - Screen.height/2);
 		}
 

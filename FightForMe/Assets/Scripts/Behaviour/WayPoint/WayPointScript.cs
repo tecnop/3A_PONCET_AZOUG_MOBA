@@ -63,4 +63,9 @@ public class WayPointScript : MonoBehaviour {
 
 		return Pathfinding(startNode, endNode);
 	}
+
+	public override string ToString ()
+	{
+		return "Node "+this._id+" has "+this._neighbours.Length+" neighbour(s)";
+	}
 }

@@ -23,6 +23,9 @@ public class CharacterManager : MonoBehaviour {
 
 	[SerializeField]
 	private CharacterCombatScript _combat;
+	
+	[SerializeField]
+	private CharacterMiscDataScript _misc;
 
 	[SerializeField]
 	private CameraMovementScript _camera;
@@ -34,6 +37,8 @@ public class CharacterManager : MonoBehaviour {
 
 	void Update ()
 	{
+		_vision.UpdateVision();
+
 		_movement.ApplyMove(_input.GetDirectionalInput());
 
 		_movement.SetAngle(_input.GetIdealOrientation());
@@ -44,9 +49,11 @@ public class CharacterManager : MonoBehaviour {
 		}
 	}
 
+	public CharacterInputScript GetInputScript() { return _input; }
 	public CharacterEventScript GetEventScript() { return _event; }
 	public CharacterCombatScript GetCombatScript() { return _combat; }
 	public CharacterStatsScript GetStatsScript() { return _stats; }
 	public CharacterInventoryScript GetInventoryScript() { return _inventory; }
+	public CharacterMiscDataScript GetMiscDataScript() { return _misc; }
 	public CameraMovementScript GetCameraScript() { return _camera; }
 }
