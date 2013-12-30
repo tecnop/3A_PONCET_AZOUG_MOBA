@@ -29,6 +29,18 @@ public class WayPointScript : MonoBehaviour
 		return this._pos;
 	}
 
+	public uint[] GetNeighbours()
+	{
+		uint[] ids = new uint[this._neighbours.Length];
+
+		for (int i = 0; i < this._neighbours.Length; i++)
+		{
+			ids[i] = this._neighbours[i]._id;
+		}
+
+		return ids;
+	}
+
 	public override string ToString()
 	{
 		return "Node " + this._id + " has " + this._neighbours.Length + " neighbour(s)";

@@ -26,7 +26,7 @@ public class CharacterVisionScript : MonoBehaviour {
 	}
 
 	public bool IsPosVisible(Vector3 pos)
-	{ // Always true for now
+	{ // TODO: Use capsule casts instead?
 		Vector3 diff = (_transform.position - pos).normalized;
 		RaycastHit rayInfo;
 		Physics.Raycast(pos, diff, out rayInfo);

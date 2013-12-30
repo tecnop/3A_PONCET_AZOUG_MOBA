@@ -30,6 +30,7 @@ public class NPCAIScript : CharacterInputScript
 	private Transform targetTransform;
 	private Vector3 startPos;
 	private ArrayList currentPath;
+	private Vector3 finalPathDest;
 
 	void Start()
 	{
@@ -80,13 +81,33 @@ public class NPCAIScript : CharacterInputScript
 		}
 		else
 		{
-			//if (Vector3.Distance(goalPosition, pos) < 1.0f)
-			if (this.currentPath.Count > 0)
-			{ // Let's avoid unnecessary calls for now...
+			if (this.currentPath.Count > 0 && Vector3.Distance(finalPathDest, pos) < 1.0f)
+			{ // Let's avoid unnecessary calls for now... we only recalculate the path if the new goal is somewhat far away from the previous one
 				return;
 			}
 
-			this.currentPath = new ArrayList(Pathfinding.GetPath(myTransform.position, pos));
+			this.currentPath = Pathfinding.GetPath(myTransform.position, pos);
+			this.finalPathDest = pos;
+
+			if (this.currentPath.Count > 1)
+			{
+				int i = 1;
+				int lastId = 0;
+				while (i < this.currentPath.Count)
+				{
+					if (_vision.IsPosVisible(Pathfinding.GetNodePos((uint)this.currentPath[i])))
+					{
+						lastId = i;
+					}
+					i++;
+				}
+
+				if (lastId != 0)
+				{
+					//Debug.Log("Taking a shortcut; removing " + lastId + " nodes from my path");
+					this.currentPath.RemoveRange(0, lastId);
+				}
+			}
 
 			goalPosition = Pathfinding.GetNodePos((uint)this.currentPath[0]);
 		}
