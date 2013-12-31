@@ -3,10 +3,10 @@ using System.Collections;
 
 public class PlayerInputScript : CharacterInputScript
 {
-	PlayerCameraScript _cameraScript;
+	private PlayerCameraScript _cameraScript;
 
-	Transform _playerTransform;
-	Camera _camera;
+	private Transform _playerTransform;
+	private Camera _camera;
 
 	private bool hasLockedCamera = false;
 
@@ -64,7 +64,7 @@ public class PlayerInputScript : CharacterInputScript
 
 	public override void ReadGenericInput()
 	{
-		if (Input.GetKey(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			this.hasLockedCamera = !this.hasLockedCamera;
 		}
