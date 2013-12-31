@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterCombatScript : MonoBehaviour {
-
+public class CharacterCombatScript : MonoBehaviour
+{
 	[SerializeField]
 	CharacterManager _manager;
 

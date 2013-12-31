@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterStatsScript : MonoBehaviour {
-
+public class CharacterStatsScript : MonoBehaviour
+{
 	[SerializeField]
 	CharacterManager _manager;
 
@@ -58,7 +58,7 @@ public class CharacterStatsScript : MonoBehaviour {
 			_manager.GetEventScript().OnPain(amount);
 		}
 	}
-	
+
 	public void loseMana(float amount)
 	{
 		mana -= amount;

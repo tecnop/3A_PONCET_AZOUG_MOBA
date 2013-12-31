@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterManager : MonoBehaviour {
-
+public class CharacterManager : MonoBehaviour
+{
 	[SerializeField]
 	private CharacterInputScript _input;
 
@@ -23,19 +23,19 @@ public class CharacterManager : MonoBehaviour {
 
 	[SerializeField]
 	private CharacterCombatScript _combat;
-	
+
 	[SerializeField]
 	private CharacterMiscDataScript _misc;
 
 	[SerializeField]
 	private CameraMovementScript _camera;
 
-	void Start ()
+	void Start()
 	{
 
 	}
 
-	void Update ()
+	void Update()
 	{
 		_vision.UpdateVision();
 

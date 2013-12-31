@@ -1,25 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-enum AIType { defensive, aggressive, roaming };
+public enum AIType { defensive, aggressive, roaming };
 
 public class NPCAIScript : CharacterInputScript
 {
-
 	[SerializeField]
 	CharacterManager _manager;
 
-	[SerializeField]
+	[SerializeField] // Serialized for debugging
 	private Vector3 goalPosition;
 
-	[SerializeField]
+	[SerializeField] // Serialized for debugging
 	[Range(0.0f, 32.0f)]
 	private float approachRange;
 
-	[SerializeField]
+	[SerializeField] // Serialized for debugging
 	private AIType behaviour;
 
-	private Transform myTransform;
+	private Transform _myTransform;
 
 	private MonsterMiscDataScript _misc;
 	private CharacterVisionScript _vision;
@@ -34,7 +33,7 @@ public class NPCAIScript : CharacterInputScript
 
 	void Start()
 	{
-		myTransform = this.transform;
+		_myTransform = this.transform;
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 		_vision = _manager.GetVisionScript();
 		startPos = _misc.GetSpawnPos();
@@ -86,7 +85,7 @@ public class NPCAIScript : CharacterInputScript
 				return;
 			}
 
-			this.currentPath = Pathfinding.GetPath(myTransform.position, pos);
+			this.currentPath = Pathfinding.GetPath(_myTransform.position, pos);
 			this.finalPathDest = pos;
 
 			if (this.currentPath.Count > 1)
@@ -142,7 +141,7 @@ public class NPCAIScript : CharacterInputScript
 			return Vector3.zero;
 		}
 
-		Vector3 move = goalPosition - myTransform.position;
+		Vector3 move = goalPosition - _myTransform.position;
 		move.y = 0;
 
 		if (move.magnitude < approachRange && this.currentPath.Count == 0)
@@ -156,7 +155,7 @@ public class NPCAIScript : CharacterInputScript
 
 	public override float GetIdealOrientation()
 	{
-		Vector3 diff = goalPosition - myTransform.position;
+		Vector3 diff = goalPosition - _myTransform.position;
 
 		if (diff.z == 0)
 		{

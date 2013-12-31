@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 public class WayPointScript : MonoBehaviour
 {
-
 	[SerializeField]
 	private WayPointScript[] _neighbours;
 
 	private uint _id;
 	private Vector3 _pos;
-	private uint _flags;
+	private uint _flags;	// TODO
 
 	void Start()
 	{

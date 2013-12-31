@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MonsterMiscDataScript : CharacterMiscDataScript {
-
+public class MonsterMiscDataScript : CharacterMiscDataScript
+{
 	private GameObject spawner;			// Entity that spawned us
 	private Vector3 spawnerPos;
 

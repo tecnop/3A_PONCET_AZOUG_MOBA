@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class CharacterEventScript : MonoBehaviour {
-
+public abstract class CharacterEventScript : MonoBehaviour
+{
 	[SerializeField]
 	protected CharacterManager _manager;
 

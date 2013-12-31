@@ -1,22 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraMovementScript : MonoBehaviour {
-
+public class CameraMovementScript : MonoBehaviour
+{
 	[SerializeField]
-	Transform characterTransform;
+	private Transform _characterTransform;
 
-	Transform myTransform;
+	private Transform _myTransform;
 
-	Vector3	bufferedMove;
-	float bufferedYaw;
-	
-	void Start () {
-		myTransform = this.transform;
+	private Vector3 bufferedMove;
+	private float bufferedYaw;
+
+	void Start()
+	{
+		_myTransform = this.transform;
 		bufferedMove = Vector3.zero;
 		bufferedYaw = 0;
 	}
-	
+
 	public void SaveCameraMove(Vector3 move)
 	{
 		bufferedMove += move;
@@ -29,11 +30,11 @@ public class CameraMovementScript : MonoBehaviour {
 
 	public void UpdateCamera()
 	{
-		myTransform.position += bufferedMove;
+		_myTransform.position += bufferedMove;
 
 		if (bufferedYaw != 0)
 		{
-			myTransform.RotateAround(characterTransform.position, Vector3.up, bufferedYaw);
+			_myTransform.RotateAround(_characterTransform.position, Vector3.up, bufferedYaw);
 		}
 
 		bufferedMove = Vector3.zero;

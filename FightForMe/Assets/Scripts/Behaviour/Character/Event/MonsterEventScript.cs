@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MonsterEventScript : CharacterEventScript {
-
+public class MonsterEventScript : CharacterEventScript
+{
 	private NPCAIScript _ai;
 
 	void Start()
@@ -22,7 +22,7 @@ public class MonsterEventScript : CharacterEventScript {
 
 	public override void OnSpotEntity(GameObject entity)
 	{
-		Debug.Log ("Monster spotted an entity: "+entity.name);
+		Debug.Log("Monster spotted an entity: " + entity.name);
 		if (entity.tag == "Player" && _ai.IsSearchingEnemy())
 		{
 			_ai.SetTarget(entity);

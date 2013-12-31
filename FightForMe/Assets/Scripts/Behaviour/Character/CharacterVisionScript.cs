@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterVisionScript : MonoBehaviour {
-
+public class CharacterVisionScript : MonoBehaviour
+{
 	[SerializeField]
 	CharacterManager _manager;
 
@@ -31,7 +31,7 @@ public class CharacterVisionScript : MonoBehaviour {
 		RaycastHit rayInfo;
 		Physics.Raycast(pos, diff, out rayInfo);
 
-		return (rayInfo.collider== _collider);
+		return (rayInfo.collider == _collider);
 	}
 
 	public void UpdateVision()

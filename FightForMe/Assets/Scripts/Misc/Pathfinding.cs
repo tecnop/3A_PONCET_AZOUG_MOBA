@@ -94,7 +94,7 @@ public static class Pathfinding
 		Dictionary<uint, uint> previousNodeMap = new Dictionary<uint, uint>();
 
 		openSet.Add(startNode);
-		
+
 		Dictionary<uint, float> goalScore = new Dictionary<uint, float>();
 		Dictionary<uint, float> tempScore = new Dictionary<uint, float>();
 

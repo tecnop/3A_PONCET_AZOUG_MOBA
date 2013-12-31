@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerMiscDataScript : CharacterMiscDataScript {
+public class PlayerMiscDataScript : CharacterMiscDataScript
+{
 
 }
