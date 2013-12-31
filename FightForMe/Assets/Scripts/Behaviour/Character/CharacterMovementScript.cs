@@ -6,30 +6,30 @@ public class CharacterMovementScript : MonoBehaviour
 	[SerializeField]
 	private CharacterManager _manager;
 
-	[SerializeField]
+	//[SerializeField] // Don't need to serialize this anymore, we can get it from the manager
 	private Transform _characterTransform;
 
-	[SerializeField]
+	//[SerializeField]
 	private CharacterController _controller;
 
 	private Transform _myTransform;
 
-	private CameraMovementScript _camera;
+	private PlayerCameraScript _camera;
 	private CharacterEventScript _event;
 
 	void Start()
 	{
 		_myTransform = this.transform;
+		_characterTransform = _manager.GetCharacterTransform();
+		_controller = this.GetComponent<CharacterController>();
+
 		_camera = _manager.GetCameraScript();
 		_event = _manager.GetEventScript();
 	}
 
 	void OnTriggerEnter(Collider collider)
 	{ // Redirect it
-		if (_event)
-		{
-			_event.OnCollision(collider);
-		}
+		_event.OnCollision(collider);
 	}
 
 	public void ApplyMove(Vector3 dir)
@@ -42,21 +42,11 @@ public class CharacterMovementScript : MonoBehaviour
 		_myTransform.position = _characterTransform.position;
 
 		_characterTransform.position += actualMove;
-
-		if (_camera)
-		{
-			_camera.SaveCameraMove(-actualMove);
-		}
 	}
 
 	public void SetAngle(float yaw)
 	{
 		float save = _characterTransform.eulerAngles.y;
 		_characterTransform.rotation = Quaternion.Euler(0, yaw, 0);
-
-		if (_camera)
-		{
-			_camera.SaveCameraRotation(save - yaw);
-		}
 	}
 }

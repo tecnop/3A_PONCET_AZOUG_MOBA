@@ -5,9 +5,6 @@ public enum AIType { defensive, aggressive, roaming };
 
 public class NPCAIScript : CharacterInputScript
 {
-	[SerializeField]
-	CharacterManager _manager;
-
 	[SerializeField] // Serialized for debugging
 	private Vector3 goalPosition;
 
@@ -18,7 +15,7 @@ public class NPCAIScript : CharacterInputScript
 	[SerializeField] // Serialized for debugging
 	private AIType behaviour;
 
-	private Transform _myTransform;
+	private Transform _characterTransform;
 
 	private MonsterMiscDataScript _misc;
 	private CharacterVisionScript _vision;
@@ -33,10 +30,10 @@ public class NPCAIScript : CharacterInputScript
 
 	void Start()
 	{
-		_myTransform = this.transform;
+		_characterTransform = _manager.GetCharacterTransform();
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 		_vision = _manager.GetVisionScript();
-		startPos = _misc.GetSpawnPos();
+		this.startPos = _misc.GetSpawnPos();
 		this.currentPath = new ArrayList();
 	}
 
@@ -58,7 +55,7 @@ public class NPCAIScript : CharacterInputScript
 			}
 			else
 			{
-				SetGoal(startPos);
+				SetGoal(this.startPos);
 			}
 		}
 	}
@@ -85,7 +82,7 @@ public class NPCAIScript : CharacterInputScript
 				return;
 			}
 
-			this.currentPath = Pathfinding.GetPath(_myTransform.position, pos);
+			this.currentPath = Pathfinding.GetPath(_characterTransform.position, pos);
 			this.finalPathDest = pos;
 
 			if (this.currentPath.Count > 1)
@@ -136,16 +133,16 @@ public class NPCAIScript : CharacterInputScript
 	{
 		RunAI();
 
-		if (goalReached)
+		if (this.goalReached)
 		{
 			return Vector3.zero;
 		}
 
-		Vector3 move = goalPosition - _myTransform.position;
+		Vector3 move = this.goalPosition - _characterTransform.position;
 		move.y = 0;
 
 		if (move.magnitude < approachRange && this.currentPath.Count == 0)
-		{
+		{ // If our current goal is our actual target, stay at some distance
 			goalReached = true;
 			return Vector3.zero;
 		}
@@ -155,7 +152,7 @@ public class NPCAIScript : CharacterInputScript
 
 	public override float GetIdealOrientation()
 	{
-		Vector3 diff = goalPosition - _myTransform.position;
+		Vector3 diff = goalPosition - _characterTransform.position;
 
 		if (diff.z == 0)
 		{
@@ -179,4 +176,8 @@ public class NPCAIScript : CharacterInputScript
 		}
 	}
 
+	public override void ReadGenericInput()
+	{ // Here: more AI (attacking, etc.)
+
+	}
 }

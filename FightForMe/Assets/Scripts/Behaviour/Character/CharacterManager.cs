@@ -28,11 +28,13 @@ public class CharacterManager : MonoBehaviour
 	private CharacterMiscDataScript _misc;
 
 	[SerializeField]
-	private CameraMovementScript _camera;
+	private PlayerCameraScript _camera;
+
+	private Transform _transform;
 
 	void Start()
 	{
-
+		_transform = this.transform;
 	}
 
 	void Update()
@@ -42,6 +44,8 @@ public class CharacterManager : MonoBehaviour
 		_movement.ApplyMove(_input.GetDirectionalInput());
 
 		_movement.SetAngle(_input.GetIdealOrientation());
+
+		_input.ReadGenericInput();
 
 		if (_camera)
 		{
@@ -57,5 +61,7 @@ public class CharacterManager : MonoBehaviour
 	public CharacterMovementScript GetMovementScript() { return _movement; }
 	public CharacterInventoryScript GetInventoryScript() { return _inventory; }
 	public CharacterMiscDataScript GetMiscDataScript() { return _misc; }
-	public CameraMovementScript GetCameraScript() { return _camera; }
+	public PlayerCameraScript GetCameraScript() { return _camera; }
+
+	public Transform GetCharacterTransform() { return _transform; }
 }

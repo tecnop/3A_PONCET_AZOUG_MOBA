@@ -3,11 +3,20 @@ using System.Collections;
 
 public class PlayerInputScript : CharacterInputScript
 {
-	[SerializeField]
+	PlayerCameraScript _cameraScript;
+
+	Transform _playerTransform;
 	Camera _camera;
 
-	[SerializeField]
-	Transform _playerTransform;
+	private bool hasLockedCamera = false;
+
+	void Start()
+	{
+		_cameraScript = _manager.GetCameraScript();
+		_camera = _cameraScript.GetCamera();
+
+		_playerTransform = _manager.GetCharacterTransform();
+	}
 
 	public override Vector3 GetDirectionalInput()
 	{
@@ -25,8 +34,10 @@ public class PlayerInputScript : CharacterInputScript
 			diff = rayInfo.point - _playerTransform.position;
 		}
 		else
-		{ // FIXME: Take the camera position into account (fire a raycast to the middle of the screen and get the diff from that or something)
-			diff = new Vector3(Input.mousePosition.x - Screen.width / 2, 0, Input.mousePosition.y - Screen.height / 2);
+		{
+			Vector3 cameraDiff = _camera.WorldToScreenPoint(_cameraScript.GetCameraPos()) - _camera.WorldToScreenPoint(_playerTransform.position);
+
+			diff = new Vector3(Input.mousePosition.x - Screen.width / 2 + cameraDiff.x, 0, Input.mousePosition.y - Screen.height / 2 + cameraDiff.y);
 		}
 
 		if (diff.z == 0)
@@ -49,5 +60,23 @@ public class PlayerInputScript : CharacterInputScript
 		{
 			return 180 + Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
 		}
+	}
+
+	public override void ReadGenericInput()
+	{
+		if (Input.GetKey(KeyCode.Space))
+		{
+			this.hasLockedCamera = !this.hasLockedCamera;
+		}
+	}
+
+	public Vector3 GetMousePos()
+	{
+		return Input.mousePosition;
+	}
+
+	public bool HasLockedCamera()
+	{
+		return this.hasLockedCamera;
 	}
 }
