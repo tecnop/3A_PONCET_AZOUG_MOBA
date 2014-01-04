@@ -9,6 +9,7 @@ public abstract class Item
 	protected string iconPath;		// Path to the item's icon
 	protected uint recyclingXP;		// Experience reward for recycling this item
 	protected uint level;			// Quality level of this item
+	protected uint skillID;					// ID of the entry in the skill table this weapon gives access to
 
 	protected Item()
 	{

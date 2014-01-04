@@ -62,14 +62,19 @@
      <Compile Include="Assets\Scripts\Behaviour\Character\Misc\MonsterMiscDataScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Misc\PlayerMiscDataScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerCameraScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Projectile\ProjectileScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\WayPoint\WayPointScript.cs" />
-     <Compile Include="Assets\Scripts\Data\Armor.cs" />
      <Compile Include="Assets\Scripts\Data\DataTables.cs" />
-     <Compile Include="Assets\Scripts\Data\Item.cs" />
-     <Compile Include="Assets\Scripts\Data\Monster.cs" />
+     <Compile Include="Assets\Scripts\Data\Entities\Monster.cs" />
+     <Compile Include="Assets\Scripts\Data\Entities\Projectile.cs" />
+     <Compile Include="Assets\Scripts\Data\Items\Armor.cs" />
+     <Compile Include="Assets\Scripts\Data\Items\ArmorSet.cs" />
+     <Compile Include="Assets\Scripts\Data\Items\Item.cs" />
+     <Compile Include="Assets\Scripts\Data\Items\Weapon.cs" />
+     <Compile Include="Assets\Scripts\Data\Items\WeaponType.cs" />
+     <Compile Include="Assets\Scripts\Data\SkillTree\Skill.cs" />
+     <Compile Include="Assets\Scripts\Data\Stats.cs" />
      <Compile Include="Assets\Scripts\Data\UnitTest.cs" />
-     <Compile Include="Assets\Scripts\Data\Weapon.cs" />
-     <Compile Include="Assets\Scripts\Data\WeaponType.cs" />
      <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

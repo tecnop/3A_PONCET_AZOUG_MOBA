@@ -15,7 +15,7 @@ public class MonsterEventScript : CharacterEventScript
 
 	}
 
-	public override void OnDeath(GameObject killer)
+	public override void OnDeath(CharacterManager killer)
 	{ // Drop our items
 
 	}

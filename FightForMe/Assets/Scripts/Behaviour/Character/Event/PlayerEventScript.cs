@@ -8,7 +8,7 @@ public class PlayerEventScript : CharacterEventScript
 
 	}
 
-	public override void OnDeath(GameObject killer)
+	public override void OnDeath(CharacterManager killer)
 	{
 
 	}

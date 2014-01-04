@@ -4,24 +4,42 @@ using System.Collections.Generic;
 
 public static class DataTables
 { // NOTE: All table IDs start at 1, 0 is used as a null value
-	static Dictionary<uint, Item> ItemTable = new Dictionary<uint, Item>();
 
-	static Dictionary<uint, WeaponType> WeaponTypeTable = new Dictionary<uint, WeaponType>();
-
+	// Entities
 	static Dictionary<uint, Monster> MonsterTable = new Dictionary<uint, Monster>();
-	//static Dictionary <uint, Projectile> ProjectileTable = new Dictionary<uint, Projectile>();
-	//static Dictionary <uint, Skill> SkillTable = new Dictionary<uint, Skill>();
+	static Dictionary<uint, Projectile> ProjectileTable = new Dictionary<uint, Projectile>();
+
+	// Items
+	static Dictionary<uint, Item> ItemTable = new Dictionary<uint, Item>();
+	static Dictionary<uint, WeaponType> WeaponTypeTable = new Dictionary<uint, WeaponType>();
+	static Dictionary<uint, ArmorSet> ArmorSetTable = new Dictionary<uint, ArmorSet>();
+
+	// Skill Tree
+	static Dictionary<uint, Skill> SkillTable = new Dictionary<uint, Skill>();
 
 	private static void clearTables()
 	{
+		MonsterTable.Clear();
+		ProjectileTable.Clear();
+
 		ItemTable.Clear();
 		WeaponTypeTable.Clear();
-		MonsterTable.Clear();
+		ArmorSetTable.Clear();
+
+		SkillTable.Clear();
 	}
 
 	public static void updateTables()
 	{
 		clearTables();
+
+		// NOTE: To account for dependencies, the tables should be initialized in the following order:
+		// 1 - Skill tree
+		// 2 - Projectiles
+		// 3 - Weapon types, armor sets
+		// 4 - Items
+		// 5 - Monsters
+		// Technically it doesn't matter because we only use IDs (for now), but for the sake of consistency this order should be used
 
 		// Items
 		ItemTable.Add(1, new Weapon("Epee des mile phote d'ortograff", 10, 1.0f, 1));

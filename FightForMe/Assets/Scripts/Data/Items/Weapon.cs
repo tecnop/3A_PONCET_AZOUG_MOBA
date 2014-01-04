@@ -3,17 +3,16 @@ using System.Collections;
 
 public class Weapon : Item
 {
-	float damage;				// Damage inflicted per hit
-	float attackRate;			// Amount of attacks per second
+	private float damage;				// Damage inflicted per hit
+	private float attackRate;			// Amount of attacks per second
 
-	string effectPath;			// Particle effect to be played on the weapon
-	string attackSoundPath;		// Sound to be played on weapon swing
+	private string effectPath;			// Particle effect to be played on the weapon
+	private string attackSoundPath;		// Sound to be played on weapon swing
 
-	uint weaponTypeID;			// ID of the entry in the weapon type table this weapon matches
-	uint projectileID;			// ID of the entry in the projectile table this weapon should shoot when swung
-	uint skillID;				// ID of the entry in the skill table this weapon gives access to
+	private uint weaponTypeID;			// ID of the entry in the weapon type table this weapon matches
+	private uint projectileID;			// ID of the entry in the projectile table this weapon should shoot when swung
 
-	float scale;				// Model and hitbox scale
+	private float scale;				// Model and hitbox scale
 
 	private Weapon() : base()
 	{

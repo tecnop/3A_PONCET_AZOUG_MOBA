@@ -14,7 +14,6 @@ public class CharacterMovementScript : MonoBehaviour
 
 	private Transform _myTransform;
 
-	private PlayerCameraScript _camera;
 	private CharacterEventScript _event;
 
 	void Start()
@@ -23,7 +22,6 @@ public class CharacterMovementScript : MonoBehaviour
 		_characterTransform = _manager.GetCharacterTransform();
 		_controller = this.GetComponent<CharacterController>();
 
-		_camera = _manager.GetCameraScript();
 		_event = _manager.GetEventScript();
 	}
 
@@ -46,7 +44,7 @@ public class CharacterMovementScript : MonoBehaviour
 
 	public void SetAngle(float yaw)
 	{
-		float save = _characterTransform.eulerAngles.y;
+		//float save = _characterTransform.eulerAngles.y;
 		_characterTransform.rotation = Quaternion.Euler(0, yaw, 0);
 	}
 }

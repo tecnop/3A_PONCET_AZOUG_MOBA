@@ -4,7 +4,7 @@ using System.Collections;
 public class CharacterStatsScript : MonoBehaviour
 {
 	[SerializeField]
-	CharacterManager _manager;
+	private CharacterManager _manager;
 
 	// Ressources
 	float health;
@@ -21,9 +21,18 @@ public class CharacterStatsScript : MonoBehaviour
 	float attackRate;		// Swings per second of the equipped weapon
 	float movementSpeed;	// Distance crossed by the player each second, in game units
 
+	// Total stats obtained from items and skills; they are used to recalculate every other stat
+	Stats stats;
+
 	public void UpdateStats()
 	{
+		this.stats = Stats.Base;
 
+		// TODO: Get stats from items, skills and buffs
+
+		// TODO: Define stat conversion ratios
+
+		// TODO: Properly handle max health and max mana changes
 	}
 
 	public void gainHealth(float amount)
@@ -44,14 +53,14 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 	}
 
-	public void loseHealth(float amount)
+	public void loseHealth(CharacterManager inflictor, float amount)
 	{
 		health -= amount;
 
 		if (health <= 0)
 		{
 			health = 0;
-			_manager.GetEventScript().OnDeath(null);
+			_manager.GetEventScript().OnDeath(inflictor);
 		}
 		else
 		{

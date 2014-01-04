@@ -3,5 +3,5 @@ using System.Collections;
 
 public class CharacterInventoryScript : MonoBehaviour
 {
-	public int[] items;
+	public ArrayList items;
 }
