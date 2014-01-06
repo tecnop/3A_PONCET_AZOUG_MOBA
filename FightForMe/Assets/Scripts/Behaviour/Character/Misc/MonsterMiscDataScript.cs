@@ -3,13 +3,18 @@ using System.Collections;
 
 public class MonsterMiscDataScript : CharacterMiscDataScript
 {
-	private GameObject spawner;			// Entity that spawned us
+	private MonsterSpawnerScript spawner;			// Entity that spawned us
 	private Vector3 spawnerPos;
 
-	public void SetSpawner(GameObject spawner)
+	public void SetSpawner(MonsterSpawnerScript spawner)
 	{
 		this.spawner = spawner;
 		this.spawnerPos = spawner.transform.position;
+	}
+
+	public MonsterSpawnerScript GetSpawner()
+	{
+		return this.spawner;
 	}
 
 	public Vector3 GetSpawnPos()

@@ -6,7 +6,13 @@ public class MonsterSpawnerScript : MonoBehaviour
 	[SerializeField] // WHY CAN'T UNSIGNED INTEGERS BE SERIALIZED
 	private int[] _monsterList;		// List of monsters we should spawn (index is the level of the camp)
 
+	[SerializeField]
+	private GameObject _monsterPrefab;
+
 	private MonsterCampScript camp;	// Camp we're a part of
+
+	private Vector3 _pos;
+	private Quaternion _ang;
 
 	public void LinkToCamp(MonsterCampScript camp)
 	{
@@ -15,24 +21,27 @@ public class MonsterSpawnerScript : MonoBehaviour
 
 	void Start()
 	{
-		if (!camp)
-		{ // We're not linked to a trigger, we're probably just a one-time spawner then
-			Spawn();
-			Destroy(this.gameObject);
-			return;
-		}
-
 		if (_monsterList.Length == 0)
 		{ // We don't have any bound monsters, no reason for us to be here
 			Destroy(this.gameObject);
 			return;
+		}
+
+		Transform transform = this.transform;
+
+		_pos = transform.position;
+		_ang = transform.rotation;
+
+		if (!camp)
+		{ // We're not linked to a trigger, we're probably just a one-time spawner then
+			Spawn();
 		}
 	}
 
 	public void Spawn()
 	{
 		if (_monsterList.Length == 0)
-		{ // We don't have any bound monsters, no reason for us to be here
+		{ // We don't have any bound monsters, no reason for us to be here (checking again in case dynamic stuff happens)
 			Destroy(this.gameObject);
 			return;
 		}
@@ -57,6 +66,21 @@ public class MonsterSpawnerScript : MonoBehaviour
 
 		Monster monster = DataTables.getMonster(monsterID);
 
-		// TODO: Spawn him
+		GameObject monsterObject = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
+		CharacterManager manager = monsterObject.GetComponent<CharacterManager>();
+		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
+		// TODO: Set the data we got from the table
+	}
+
+	public void OnBoundMonsterDeath()
+	{
+		if (camp)
+		{
+			camp.OnBoundMonsterDeath();
+		}
+		else
+		{ // Kill us or respawn him? I'll go with respawn him for now for debugging
+			Spawn();
+		}
 	}
 }

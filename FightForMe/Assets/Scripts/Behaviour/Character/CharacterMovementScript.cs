@@ -32,7 +32,8 @@ public class CharacterMovementScript : MonoBehaviour
 
 	public void ApplyMove(Vector3 dir)
 	{
-		_controller.SimpleMove(dir);
+		//_controller.SimpleMove(dir);
+		_controller.Move(dir.normalized * 0.05f);
 
 		Vector3 actualMove = _myTransform.position - _characterTransform.position;
 

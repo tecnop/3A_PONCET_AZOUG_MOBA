@@ -4,10 +4,12 @@ using System.Collections;
 public class MonsterEventScript : CharacterEventScript
 {
 	private NPCAIScript _ai;
+	private MonsterMiscDataScript _misc;
 
 	void Start()
 	{
 		_ai = (NPCAIScript)_manager.GetInputScript();
+		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 	}
 
 	public override void OnPain(float damage)
@@ -16,21 +18,28 @@ public class MonsterEventScript : CharacterEventScript
 	}
 
 	public override void OnDeath(CharacterManager killer)
-	{ // Drop our items
+	{ // TODO: Drop our items
+		MonsterSpawnerScript spawner = _misc.GetSpawner();
 
+		if (spawner)
+		{
+			spawner.OnBoundMonsterDeath();
+		}
 	}
 
 	public override void OnSpotEntity(GameObject entity)
 	{
-		Debug.Log("Monster spotted an entity: " + entity.name);
-		if (entity.tag == "Player" && _ai.IsSearchingEnemy())
+		if (_ai.IsSearchingEnemy() &&
+			entity.tag == "Player" &&
+			LayerMask.LayerToName(entity.layer) == "Team1Entity") // Temporary
 		{
+			Debug.Log("Monster acquired an enemy: " + entity.name);
 			_ai.SetTarget(entity);
 		}
 	}
 
 	public override void OnCollision(Collider collider)
-	{ // TODO: Pathfinding stuff
+	{
 		if (collider.tag == "WayPoint")
 		{
 			WayPointScript wp = collider.GetComponent<WayPointScript>();

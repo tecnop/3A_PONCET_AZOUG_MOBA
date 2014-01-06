@@ -125,7 +125,11 @@ public static class Pathfinding
 
 				if (!openSet.Contains(neighbour) || testGoalScore < goalScore[neighbour])
 				{
-					previousNodeMap.Add(neighbour, curNode); // TODO: Make sure this edits it too
+					if (previousNodeMap.ContainsKey(neighbour))
+					{
+						previousNodeMap.Remove(neighbour);
+					}
+					previousNodeMap.Add(neighbour, curNode);
 
 					goalScore[neighbour] = testGoalScore;
 					tempScore[neighbour] = goalScore[neighbour] + HeuristicCost(neighbour, endNode);
