@@ -69,7 +69,12 @@ public class MonsterSpawnerScript : MonoBehaviour
 		GameObject monsterObject = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
 		CharacterManager manager = monsterObject.GetComponent<CharacterManager>();
 		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
-		// TODO: Set the data we got from the table
+
+		if (monster != null)
+		{
+			monsterObject.name = monster.getName();
+			((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.getBehaviour());
+		}
 	}
 
 	public void OnBoundMonsterDeath()

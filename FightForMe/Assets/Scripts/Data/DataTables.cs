@@ -49,7 +49,7 @@ public static class DataTables
 		WeaponTypeTable.Add(1, new WeaponType("Lame courte"));
 
 		// Monsters
-		MonsterTable.Add(1, new Monster("Zombie"));
+		MonsterTable.Add(1, new Monster("Zombie", behaviour: AIType.aggressive));
 	}
 
 	public static Item getItem(uint key)

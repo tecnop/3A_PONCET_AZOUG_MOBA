@@ -180,4 +180,9 @@ public class NPCAIScript : CharacterInputScript
 	{ // Here: more AI (attacking, etc.)
 
 	}
+
+	public void SetBehaviour(AIType behaviour)
+	{
+		this.behaviour = behaviour;
+	}
 }
