@@ -10,13 +10,25 @@ public class Armor : Item
 
 	Stats stats;				// Stats granted by this piece of armor
 
-	// Test constructor
-	public Armor(string name) : base()
+	public Armor(string name = "Armure",
+		string description = null,
+		string modelPath = null,
+		string iconPath = null,
+		uint recyclingXP = 0,
+		uint level = 0,
+		uint skillID = 0,
+		ArmorSlot slot = ArmorSlot.TORSO,
+		uint setID = 0,
+		Stats stats = null)
+		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID)
 	{
-		this.name = name;
-		this.slot = ArmorSlot.HEAD;
-		this.setID = 0;
-		this.stats = new Stats(5, 5, 5);
+		this.slot = slot;
+		this.setID = setID;
+
+		if (stats != null)
+			this.stats = stats;
+		else
+			this.stats = new Stats(5, 5, 5);
 	}
 
 	public ArmorSlot GetSlot() { return this.slot; }

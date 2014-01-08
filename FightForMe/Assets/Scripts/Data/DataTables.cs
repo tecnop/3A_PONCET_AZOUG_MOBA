@@ -42,14 +42,14 @@ public static class DataTables
 		// Technically it doesn't matter because we only use IDs (for now), but for the sake of consistency this order should be used
 
 		// Items
-		ItemTable.Add(1, new Weapon("Epee des mile phote d'ortograff", 10, 1.0f, 1));
-		ItemTable.Add(2, new Armor("Armure du test ultime"));
+		ItemTable.Add(1, new Weapon(name: "Epee des mile phote d'ortograff", damage: 10.0f, attackRate: 1.0f));
+		ItemTable.Add(2, new Armor(name: "Armure du test ultime"));
 
 		// Weapon types
-		WeaponTypeTable.Add(1, new WeaponType("Lame courte"));
+		WeaponTypeTable.Add(1, new WeaponType(name: "Lame courte"));
 
 		// Monsters
-		MonsterTable.Add(1, new Monster("Zombie", behaviour: AIType.aggressive));
+		MonsterTable.Add(1, new Monster(name: "Zombie", behaviour: AIType.aggressive));
 	}
 
 	public static Item getItem(uint key)

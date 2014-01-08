@@ -9,16 +9,23 @@ public abstract class Item
 	protected string iconPath;		// Path to the item's icon
 	protected uint recyclingXP;		// Experience reward for recycling this item
 	protected uint level;			// Quality level of this item
-	protected uint skillID;					// ID of the entry in the skill table this weapon gives access to
+	protected uint skillID;			// ID of the entry in the skill table this weapon gives access to
 
-	protected Item()
+	protected Item(string name,
+		string description,
+		string modelPath,
+		string iconPath,
+		uint recyclingXP,
+		uint level,
+		uint skillID)
 	{
-		this.name = null;
-		this.description = null;
-		this.modelPath = null;
-		this.iconPath = null;
-		this.recyclingXP = 0;
-		this.level = 0;
+		this.name = name;
+		this.description = description;
+		this.modelPath = modelPath;
+		this.iconPath = iconPath;
+		this.recyclingXP = recyclingXP;
+		this.level = level;
+		this.skillID = skillID;
 	}
 
 	public string getName()

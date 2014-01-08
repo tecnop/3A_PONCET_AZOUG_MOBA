@@ -8,23 +8,19 @@ public class WeaponType
 	private string idleAnimPath;	// Path to the humanoid idle animation used by this weapon type
 	private string attackAnimPath;	// Path to the humanoid attack animation used by this weapon type
 
-	private WeaponType()
-	{
-		this.name = null;
-		this.hitBoxPath = null;
-		this.idleAnimPath = null;
-		this.attackAnimPath = null;
-	}
-
-	// Test constructor
-	public WeaponType(string name) : this()
+	public WeaponType(string name,
+		string hitBoxPath = null,
+		string idleAnimPath = null,
+		string attackAnimPath = null)
 	{
 		this.name = name;
+		this.hitBoxPath = hitBoxPath;
+		this.idleAnimPath = idleAnimPath;
+		this.attackAnimPath = attackAnimPath;
 	}
 
 	public string getName() { return this.name; }
 	public string getHitBoxPath() { return this.hitBoxPath; }
 	public string getIdleAnim() { return this.idleAnimPath; }
 	public string getAttackAnim() { return this.attackAnimPath; }
-
 }

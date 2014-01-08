@@ -14,50 +14,28 @@ public class Weapon : Item
 
 	private float scale;				// Model and hitbox scale
 
-	private Weapon() : base()
+	public Weapon(string name = "Arme",
+		string description = null,
+		string modelPath = null,
+		string iconPath = null,
+		uint recyclingXP = 0,
+		uint level = 0,
+		uint skillID = 0,
+		uint weaponTypeID = 0,
+		float damage = 0.0f,
+		float attackRate = 1.0f,
+		float scale = 1.0f,
+		string effectPath = null,
+		string attackSoundPath = null)
+		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID)
 	{
-		this.effectPath = null;
-		this.attackSoundPath = null;
-		this.projectileID = 0;
-		this.skillID = 0;
-	}
-
-	// Test constructor
-	public Weapon(string name, float damage, float attackRate, uint weaponTypeID) : this()
-	{
-		this.name = name;
-		this.damage = damage;
-		this.attackRate = attackRate;
-		this.weaponTypeID = weaponTypeID;
-	}
-
-	public Weapon(string name,
-				  string description,
-				  string modelPath,
-				  uint weaponTypeID,
-				  float damage,
-				  float attackRate,
-				  uint recyclingXP,
-				  uint level,
-				  float scale,
-				  string effectPath,
-				  string iconPath,
-				  string attackSoundPath)
-	{
-		this.name = name;
-		this.description = description;
-		this.modelPath = modelPath;
 		this.weaponTypeID = weaponTypeID;
 		this.damage = damage;
 		this.attackRate = attackRate;
-		this.recyclingXP = recyclingXP;
-		this.level = level;
 		this.scale = scale;
 		this.effectPath = effectPath;
-		this.iconPath = iconPath;
 		this.attackSoundPath = attackSoundPath;
 	}
-
 
 	public float getDamage() { return this.damage; }
 	public float getAttackRate() { return this.attackRate; }
