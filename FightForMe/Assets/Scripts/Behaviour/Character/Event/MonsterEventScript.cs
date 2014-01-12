@@ -5,11 +5,13 @@ public class MonsterEventScript : CharacterEventScript
 {
 	private NPCAIScript _ai;
 	private MonsterMiscDataScript _misc;
+	private CharacterInventoryScript _inventory;
 
 	void Start()
 	{
 		_ai = (NPCAIScript)_manager.GetInputScript();
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
+		_inventory = _manager.GetInventoryScript();
 	}
 
 	public override void OnPain(float damage)
@@ -18,13 +20,15 @@ public class MonsterEventScript : CharacterEventScript
 	}
 
 	public override void OnDeath(CharacterManager killer)
-	{ // TODO: Drop our items
+	{
 		MonsterSpawnerScript spawner = _misc.GetSpawner();
 
 		if (spawner)
 		{
 			spawner.OnBoundMonsterDeath();
 		}
+
+		_inventory.DropAllItems();
 	}
 
 	public override void OnSpotEntity(GameObject entity)

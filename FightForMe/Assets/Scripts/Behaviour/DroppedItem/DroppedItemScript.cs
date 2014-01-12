@@ -3,11 +3,30 @@ using System.Collections;
 
 public class DroppedItemScript : MonoBehaviour
 {
-	private uint itemID;	// Index of the entry in the item table this entity represents
+	[SerializeField] // Serialized for debugging
+	private int _itemID; // ...
+
+	// Index of the entry in the item table this entity represents
+	private uint itemID
+	{
+		get
+		{
+			return (uint)_itemID;
+		}
+		set
+		{
+			_itemID = (int)value;
+		}
+	}
 
 	public uint GetItemID()
 	{
 		return itemID;
+	}
+
+	public void SetItemID(uint itemID)
+	{
+		this.itemID = itemID;
 	}
 
 	// Add an "OnClick()" function that displays a menu allowing the user to pick up or recycle the item
@@ -24,4 +43,5 @@ public class DroppedItemScript : MonoBehaviour
 		this.itemID = conflictingItem;
 	}
 
+	
 }

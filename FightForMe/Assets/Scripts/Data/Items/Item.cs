@@ -10,6 +10,7 @@ public abstract class Item
 	protected uint recyclingXP;		// Experience reward for recycling this item
 	protected uint level;			// Quality level of this item
 	protected uint skillID;			// ID of the entry in the skill table this weapon gives access to
+	protected bool iAmAWeapon;		// True if the item is a weapon, false otherwise
 
 	protected Item(string name,
 		string description,
@@ -56,5 +57,10 @@ public abstract class Item
 	public uint getLevel()
 	{
 		return this.level;
+	}
+
+	public bool isWeapon()
+	{
+		return this.iAmAWeapon;
 	}
 }

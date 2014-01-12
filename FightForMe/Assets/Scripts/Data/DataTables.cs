@@ -44,6 +44,7 @@ public static class DataTables
 		// Items
 		ItemTable.Add(1, new Weapon(name: "Epee des mile phote d'ortograff", damage: 10.0f, attackRate: 1.0f));
 		ItemTable.Add(2, new Armor(name: "Armure du test ultime"));
+		ItemTable.Add(3, new Weapon(name: "La Dague", damage: 6.66f, attackRate: 1.5f));
 
 		// Weapon types
 		WeaponTypeTable.Add(1, new WeaponType(name: "Lame courte"));

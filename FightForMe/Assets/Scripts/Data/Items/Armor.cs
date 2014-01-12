@@ -29,6 +29,8 @@ public class Armor : Item
 			this.stats = stats;
 		else
 			this.stats = new Stats(5, 5, 5);
+
+		this.iAmAWeapon = false;
 	}
 
 	public ArmorSlot GetSlot() { return this.slot; }

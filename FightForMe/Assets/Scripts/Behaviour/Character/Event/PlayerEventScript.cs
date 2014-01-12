@@ -19,6 +19,11 @@ public class PlayerEventScript : CharacterEventScript
 	}
 
 	public override void OnCollision(Collider collider)
-	{ // Nothing?
+	{ // Temporary debug stuff
+		if (collider.tag == "DroppedItem")
+		{
+			DroppedItemScript item = collider.GetComponent<DroppedItemScript>();
+			item.OnPickUp(_manager.GetInventoryScript());
+		}
 	}
 }

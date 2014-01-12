@@ -35,6 +35,7 @@ public class Weapon : Item
 		this.scale = scale;
 		this.effectPath = effectPath;
 		this.attackSoundPath = attackSoundPath;
+		this.iAmAWeapon = true;
 	}
 
 	public float getDamage() { return this.damage; }
