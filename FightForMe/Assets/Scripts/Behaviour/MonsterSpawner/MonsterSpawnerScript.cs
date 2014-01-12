@@ -38,6 +38,30 @@ public class MonsterSpawnerScript : MonoBehaviour
 		}
 	}
 
+	private void DoSpawnMonster(uint monsterID)
+	{
+		Monster monster = DataTables.getMonster(monsterID);
+
+		if (monster == null)
+		{ // Hmmm...
+			Debug.LogWarning("Spawner tried to spawn unknown monster " + monsterID);
+			return;
+		}
+
+		// Spawn the entity
+		GameObject monsterObject = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
+
+		// Link us together
+		CharacterManager manager = monsterObject.GetComponent<CharacterManager>();
+		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
+
+		// Set him the data we got from the data table
+		monsterObject.name = monster.getName();
+		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.getBehaviour());
+		manager.GetInventoryScript().SetItems(monster.getItems());
+		// TODO: Model, scale
+	}
+
 	public void Spawn()
 	{
 		if (_monsterList.Length == 0)
@@ -64,17 +88,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 			}
 		}
 
-		Monster monster = DataTables.getMonster(monsterID);
-
-		GameObject monsterObject = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
-		CharacterManager manager = monsterObject.GetComponent<CharacterManager>();
-		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
-
-		if (monster != null)
-		{
-			monsterObject.name = monster.getName();
-			((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.getBehaviour());
-		}
+		DoSpawnMonster(monsterID);
 	}
 
 	public void OnBoundMonsterDeath()
@@ -84,7 +98,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 			camp.OnBoundMonsterDeath();
 		}
 		else
-		{ // Kill us or respawn him? I'll go with respawn him for now for debugging
+		{ // Kill us or respawn him? I'll go with respawn for now for debugging
 			Spawn();
 		}
 	}

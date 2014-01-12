@@ -50,7 +50,9 @@ public static class DataTables
 		WeaponTypeTable.Add(1, new WeaponType(name: "Lame courte"));
 
 		// Monsters
-		MonsterTable.Add(1, new Monster(name: "Zombie", behaviour: AIType.aggressive));
+		uint[] temp = new uint[1];
+		temp[0] = 1;
+		MonsterTable.Add(1, new Monster(name: "Zombie", behaviour: AIType.aggressive, items:temp));
 	}
 
 	public static Item getItem(uint key)

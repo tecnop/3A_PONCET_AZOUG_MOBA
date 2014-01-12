@@ -48,4 +48,9 @@ public class CharacterMovementScript : MonoBehaviour
 		//float save = _characterTransform.eulerAngles.y;
 		_characterTransform.rotation = Quaternion.Euler(0, yaw, 0);
 	}
+
+	public CharacterManager GetManager()
+	{ // This is required for proper interactions with colliders
+		return _manager;
+	}
 }

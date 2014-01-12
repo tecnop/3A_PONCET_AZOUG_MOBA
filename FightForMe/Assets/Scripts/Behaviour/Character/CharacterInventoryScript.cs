@@ -13,7 +13,11 @@ public class CharacterInventoryScript : MonoBehaviour
 	void Start()
 	{
 		this._transform = this.transform;
-		items = new ArrayList();
+
+		if (items == null)
+		{
+			items = new ArrayList();
+		}
 	}
 
 	public void DropItem(uint index)
@@ -30,10 +34,17 @@ public class CharacterInventoryScript : MonoBehaviour
 
 	public void DropAllItems()
 	{
+		Debug.Log(items.Count);
 		for (int i = 0; i < items.Count; i++)
 		{
+			Debug.Log("Dropping " + (uint)items[0]);
 			DropItem(0);
 		}
+	}
+
+	public void SetItems(ArrayList items)
+	{ // Should only be called when spawning a monster
+		this.items = new ArrayList(items);
 	}
 
 	public uint PickUpItem(uint item)
