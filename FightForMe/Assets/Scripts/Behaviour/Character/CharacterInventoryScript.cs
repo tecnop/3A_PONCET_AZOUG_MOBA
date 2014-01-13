@@ -34,7 +34,6 @@ public class CharacterInventoryScript : MonoBehaviour
 
 	public void DropAllItems()
 	{
-		Debug.Log(items.Count);
 		for (int i = 0; i < items.Count; i++)
 		{
 			Debug.Log("Dropping " + (uint)items[0]);

@@ -6,12 +6,17 @@ public class CharacterCombatScript : MonoBehaviour
 	[SerializeField]
 	CharacterManager _manager;
 
-	public void Damage(GameObject target, float damage, Vector3 damageDir, uint damageFlags)
+	public void Damage(CharacterManager target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0)
+	{
+		target.GetStatsScript().loseHealth(_manager, damage);
+	}
+
+	public void Damage(GameObject target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0)
 	{
 		CharacterManager hisManager = target.GetComponent<CharacterManager>();
 		if (hisManager)
 		{
-			hisManager.GetStatsScript().loseHealth(_manager, damage);
+			this.Damage(hisManager, damage, damageDir, damageFlags);
 		}
 	}
 }
