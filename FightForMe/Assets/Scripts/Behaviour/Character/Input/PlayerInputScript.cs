@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerInputScript : CharacterInputScript
 {
+	[SerializeField]
+	private bool isActive;		// Is this the active player for the current build settings?
+
 	private PlayerCameraScript _cameraScript;
 
 	private Transform _playerTransform;
@@ -12,19 +15,38 @@ public class PlayerInputScript : CharacterInputScript
 
 	void Start()
 	{
-		_cameraScript = _manager.GetCameraScript();
-		_camera = _cameraScript.GetCamera();
+		if (!isActive)
+		{ // Delete our camera
+			Destroy(_manager.GetCameraScript().gameObject);
+		}
+		else
+		{
+			_cameraScript = _manager.GetCameraScript();
+			_camera = _cameraScript.GetCamera();
+		}
 
 		_playerTransform = _manager.GetCharacterTransform();
 	}
 
 	public override Vector3 GetDirectionalInput()
 	{
-		return new Vector3(Input.GetAxis("HorzMove"), 0, Input.GetAxis("VertMove"));
+		if (isActive)
+		{
+			return new Vector3(Input.GetAxis("HorzMove"), 0, Input.GetAxis("VertMove"));
+		}
+		else
+		{ // Get it from the network
+			return Vector3.zero;
+		}
 	}
 
 	public override float GetIdealOrientation()
 	{
+		if (!isActive)
+		{ // Get it from the network
+			return 0.0f;
+		}
+
 		Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 		RaycastHit rayInfo;
 		Vector3 diff;
@@ -64,6 +86,11 @@ public class PlayerInputScript : CharacterInputScript
 
 	public override void ReadGenericInput()
 	{
+		if (!isActive)
+		{ // Nothing to see here
+			return;
+		}
+
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			this.hasLockedCamera = !this.hasLockedCamera;
@@ -72,6 +99,11 @@ public class PlayerInputScript : CharacterInputScript
 
 	public Vector3 GetMousePos()
 	{
+		if (!isActive)
+		{ // Won't be needed
+			return Vector3.zero;
+		}
+
 		return Input.mousePosition;
 	}
 

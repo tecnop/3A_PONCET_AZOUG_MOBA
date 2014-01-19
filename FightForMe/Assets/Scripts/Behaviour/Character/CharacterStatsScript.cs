@@ -24,11 +24,16 @@ public class CharacterStatsScript : MonoBehaviour
 	// Total stats obtained from items and skills; they are used to recalculate every other stat
 	Stats stats;
 
+	void Start()
+	{
+		this.UpdateStats();
+	}
+
 	public void UpdateStats()
 	{
 		this.stats = Stats.Base;
 
-		// TODO: Get stats from items, skills and buffs
+		// TODO: Get stats from items, armor sets, skills and buffs
 
 		// TODO: Define stat conversion ratios
 

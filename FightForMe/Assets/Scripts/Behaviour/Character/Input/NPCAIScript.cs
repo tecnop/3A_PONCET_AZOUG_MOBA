@@ -105,7 +105,10 @@ public class NPCAIScript : CharacterInputScript
 				}
 			}
 
-			goalPosition = Pathfinding.GetNodePos((uint)this.currentPath[0]);
+			if (this.currentPath.Count > 0)
+			{
+				goalPosition = Pathfinding.GetNodePos((uint)this.currentPath[0]);
+			}
 		}
 	}
 

@@ -25,6 +25,7 @@ public class ProjectileScript : MonoBehaviour
 			if (hisManager)
 			{
 				owner.GetCombatScript().Damage(hisManager, damage, collider.ClosestPointOnBounds(_transform.position), 0);
+				// TODO: Debuffs
 			}
 		}
 

@@ -97,6 +97,10 @@ public class MonsterSpawnerScript : MonoBehaviour
 		{
 			camp.OnBoundMonsterDeath();
 		}
+		else if ((uint)_monsterList[0] == 2)
+		{ // The Lord is dead! (hard-coded for now)
+			// Here: Victory sequence
+		}
 		else
 		{ // Kill us or respawn him? I'll go with respawn for now for debugging
 			Spawn();

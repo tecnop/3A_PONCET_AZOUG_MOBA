@@ -25,6 +25,7 @@ public class Weapon : Item
 		float damage = 0.0f,
 		float attackRate = 1.0f,
 		float scale = 1.0f,
+		uint projectileID = 0,
 		string effectPath = null,
 		string attackSoundPath = null)
 		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID)
@@ -33,6 +34,7 @@ public class Weapon : Item
 		this.damage = damage;
 		this.attackRate = attackRate;
 		this.scale = scale;
+		this.projectileID = projectileID;
 		this.effectPath = effectPath;
 		this.attackSoundPath = attackSoundPath;
 		this.iAmAWeapon = true;

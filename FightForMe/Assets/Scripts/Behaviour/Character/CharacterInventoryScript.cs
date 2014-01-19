@@ -6,6 +6,9 @@ public class CharacterInventoryScript : MonoBehaviour
 	[SerializeField]
 	private GameObject _droppedItemPrefab;
 
+	[SerializeField]
+	private CharacterManager _manager;
+
 	private Transform _transform;
 
 	private ArrayList items;
@@ -30,6 +33,9 @@ public class CharacterInventoryScript : MonoBehaviour
 
 		droppedItemScript.SetItemID((uint)this.items[(int)index]);
 		this.items.RemoveAt((int)index);
+
+		// Note: Doing that is not ideal when we're dropping all our items, but considering that should only happen when we die, we should be fine
+		_manager.GetStatsScript().UpdateStats();
 	}
 
 	public void DropAllItems()
@@ -44,6 +50,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	public void SetItems(ArrayList items)
 	{ // Should only be called when spawning a monster
 		this.items = new ArrayList(items);
+		//_manager.GetStatsScript().UpdateStats(); // Should we? Need to make sure this is called when I think it is...
 	}
 
 	public uint PickUpItem(uint item)
@@ -87,6 +94,8 @@ public class CharacterInventoryScript : MonoBehaviour
 
 		this.items.Add(item);
 		Debug.Log("Player gained item " + item + ": " + DataTables.getItem(item).getName());
+
+		_manager.GetStatsScript().UpdateStats();
 
 		return conflictingItem;
 	}

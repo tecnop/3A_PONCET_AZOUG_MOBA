@@ -25,10 +25,15 @@ public class Armor : Item
 		this.slot = slot;
 		this.setID = setID;
 
+		if (setID != 0)
+		{ // Notify the item set that a new item is now a part of it
+			DataTables.getArmorSet(setID).IncreaseSetSize();
+		}
+
 		if (stats != null)
 			this.stats = stats;
 		else
-			this.stats = new Stats(5, 5, 5);
+			this.stats = new Stats(0, 0, 0);
 
 		this.iAmAWeapon = false;
 	}
