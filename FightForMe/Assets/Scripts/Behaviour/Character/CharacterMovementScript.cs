@@ -3,21 +3,19 @@ using System.Collections;
 
 public class CharacterMovementScript : MonoBehaviour
 {
-	[SerializeField]
 	private CharacterManager _manager;
 
-	//[SerializeField] // Don't need to serialize this anymore, we can get it from the manager
 	private Transform _characterTransform;
 
-	//[SerializeField]
 	private CharacterController _controller;
 
 	private Transform _myTransform;
 
 	private CharacterEventScript _event;
 
-	void Start()
+	public void Initialize(CharacterManager manager)
 	{
+		_manager = manager;
 		_myTransform = this.transform;
 		_characterTransform = _manager.GetCharacterTransform();
 		_controller = this.GetComponent<CharacterController>();
@@ -41,6 +39,20 @@ public class CharacterMovementScript : MonoBehaviour
 		_myTransform.position = _characterTransform.position;
 
 		_characterTransform.position += actualMove;
+
+		if (_manager.GetCharacterAnimator() != null)
+		{
+			if (actualMove.magnitude > 0.001f && _manager.GetCharacterAnimator().GetCurrentAnimatorStateInfo(0).nameHash == Animator.StringToHash("Idle"))
+			{
+				Debug.Log("Now moving");
+				_manager.GetCharacterAnimator().Play("Moving");
+			}
+			else if (_manager.GetCharacterAnimator().GetCurrentAnimatorStateInfo(0).nameHash == Animator.StringToHash("Moving"))
+			{
+				Debug.Log("Now idle");
+				_manager.GetCharacterAnimator().Play("Idle");
+			}
+		}
 	}
 
 	public void SetAngle(float yaw)

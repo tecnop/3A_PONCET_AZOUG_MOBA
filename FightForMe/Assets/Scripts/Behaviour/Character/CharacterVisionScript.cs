@@ -3,8 +3,7 @@ using System.Collections;
 
 public class CharacterVisionScript : MonoBehaviour
 {
-	[SerializeField]
-	CharacterManager _manager;
+	private CharacterManager _manager;
 
 	private CharacterEventScript _event;
 
@@ -14,8 +13,10 @@ public class CharacterVisionScript : MonoBehaviour
 	private GameObject[] entitiesInSight;
 	private float lastUpdate;
 
-	void Start()
+	public void Initialize(CharacterManager manager)
 	{
+		_manager = manager;
+
 		lastUpdate = Time.time;
 		_event = _manager.GetEventScript();
 		_collider = _manager.GetMovementScript().collider;

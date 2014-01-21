@@ -18,6 +18,7 @@ public static class DataTables
 	static Dictionary<uint, Skill> SkillTable = new Dictionary<uint, Skill>();
 
 	// Buffs
+	static Dictionary<uint, Effect> EffectTable = new Dictionary<uint, Effect>();
 	static Dictionary<uint, Buff> BuffTable = new Dictionary<uint, Buff>();
 
 	private static void clearTables()
@@ -31,6 +32,7 @@ public static class DataTables
 
 		SkillTable.Clear();
 
+		EffectTable.Clear();
 		BuffTable.Clear();
 	}
 
@@ -39,13 +41,16 @@ public static class DataTables
 		clearTables();
 
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
-		// 1 - Buffs
-		// 2 - Skill tree
-		// 3 - Projectiles
-		// 4 - Weapon types, armor sets
-		// 5 - Items
-		// 6 - Monsters
+		// 1 - Status changes (AKA effects)
+		// 2 - Buffs
+		// 3 - Skill tree
+		// 4 - Projectiles
+		// 5 - Weapon types, armor sets
+		// 6 - Items
+		// 7 - Monsters
 		// Technically it doesn't matter because we only use IDs (for now), but for the sake of consistency this order should be used
+
+		// Effects
 
 		// Buffs
 
@@ -146,6 +151,15 @@ public static class DataTables
 		if (BuffTable.ContainsKey(key))
 		{
 			return BuffTable[key];
+		}
+		return null;
+	}
+
+	public static Effect getEffect(uint key)
+	{
+		if (EffectTable.ContainsKey(key))
+		{
+			return EffectTable[key];
 		}
 		return null;
 	}

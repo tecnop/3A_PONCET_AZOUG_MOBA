@@ -31,10 +31,30 @@ public class CharacterManager : MonoBehaviour
 	private PlayerCameraScript _camera;
 
 	private Transform _transform;
+	private Animator _animator;
 
 	void Start()
 	{
 		_transform = this.transform;
+		_animator = this.GetComponent<Animator>();
+
+		// Link all the serialized scripts to us and initialize them
+		// THIS ORDER IS IMPORTANT (TO AN EXTENT)
+		if (_camera != null)
+		{
+			_camera.Initialize(this);
+		}
+		_inventory.Initialize(this);
+		_combat.Initialize(this);
+		_stats.Initialize(this);
+		_event.Initialize(this);
+		_vision.Initialize(this);
+		if (_misc)
+		{
+			_misc.Initialize(this);
+		}
+		_movement.Initialize(this);
+		_input.Initialize(this);
 	}
 
 	void Update()
@@ -64,4 +84,5 @@ public class CharacterManager : MonoBehaviour
 	public PlayerCameraScript GetCameraScript() { return _camera; }
 
 	public Transform GetCharacterTransform() { return _transform; }
+	public Animator GetCharacterAnimator() { return _animator; }
 }

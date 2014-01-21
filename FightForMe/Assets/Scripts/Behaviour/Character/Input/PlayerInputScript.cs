@@ -11,12 +11,15 @@ public class PlayerInputScript : CharacterInputScript
 	private Transform _playerTransform;
 	private Camera _camera;
 
-	private bool hasLockedCamera = false;
+	private bool hasLockedCamera;
 
-	void Start()
+	public override void Initialize(CharacterManager manager)
 	{
+		//base.Initialize(manager);
+		_manager = manager;
+
 		if (!isActive)
-		{ // Delete our camera
+		{ // Delete our camera TODO: How about just ignoring it? Allow us to place a single camera on the scene, and have each player use it for themselves?
 			Destroy(_manager.GetCameraScript().gameObject);
 		}
 		else
@@ -26,6 +29,7 @@ public class PlayerInputScript : CharacterInputScript
 		}
 
 		_playerTransform = _manager.GetCharacterTransform();
+		hasLockedCamera = true;
 	}
 
 	public override Vector3 GetDirectionalInput()

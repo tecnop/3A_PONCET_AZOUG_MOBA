@@ -23,7 +23,7 @@ public class ArmorSet
 		if (stats != null)
 			this.stats = stats;
 		else
-			this.stats = new Stats(0, 0, 0);
+			this.stats = new Stats();
 
 		this.setSize = setSize;
 		this.autoSize = (setSize == 0);

@@ -7,8 +7,10 @@ public class MonsterEventScript : CharacterEventScript
 	private MonsterMiscDataScript _misc;
 	private CharacterInventoryScript _inventory;
 
-	void Start()
+	public override void Initialize(CharacterManager manager)
 	{
+		//base.Initialize(manager);
+		_manager = manager;
 		_ai = (NPCAIScript)_manager.GetInputScript();
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 		_inventory = _manager.GetInventoryScript();

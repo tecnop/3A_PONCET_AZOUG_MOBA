@@ -3,6 +3,11 @@ using System.Collections;
 
 public class PlayerEventScript : CharacterEventScript
 {
+	public override void Initialize(CharacterManager manager)
+	{
+		_manager = manager;
+	}
+
 	public override void OnPain(float damage)
 	{
 

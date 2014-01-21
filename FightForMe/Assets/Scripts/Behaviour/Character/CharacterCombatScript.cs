@@ -3,13 +3,14 @@ using System.Collections;
 
 public class CharacterCombatScript : MonoBehaviour
 {
-	[SerializeField]
-	CharacterManager _manager;
+	private CharacterManager _manager;
 
-	ArrayList buffs;		// List of active buffs and debuffs (type: InflictedBuff)
+	private ArrayList buffs;		// List of active buffs and debuffs (type: InflictedBuff)
 
-	void Start()
+	public void Initialize(CharacterManager manager)
 	{
+		_manager = manager;
+
 		if (buffs == null)
 		{
 			buffs = new ArrayList();

@@ -3,9 +3,6 @@ using System.Collections;
 
 public class PlayerCameraScript : MonoBehaviour
 {
-	[SerializeField]
-	private GameObject _boundPlayer;
-
 	private CharacterManager _manager;
 	private PlayerInputScript _input;
 
@@ -15,9 +12,9 @@ public class PlayerCameraScript : MonoBehaviour
 	private Transform _characterTransform;
 	private Transform _myTransform;
 
-	void Start()
+	public void Initialize(CharacterManager manager)
 	{
-		_manager = _boundPlayer.GetComponent<CharacterManager>();
+		_manager = manager;
 		_input = (PlayerInputScript)_manager.GetInputScript();
 
 		_characterTransform = _manager.GetCharacterTransform();

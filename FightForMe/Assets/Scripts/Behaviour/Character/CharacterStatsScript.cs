@@ -3,7 +3,6 @@ using System.Collections;
 
 public class CharacterStatsScript : MonoBehaviour
 {
-	[SerializeField]
 	private CharacterManager _manager;
 
 	// Ressources
@@ -24,8 +23,10 @@ public class CharacterStatsScript : MonoBehaviour
 	// Total stats obtained from items and skills; they are used to recalculate every other stat
 	Stats stats;
 
-	void Start()
+	public void Initialize(CharacterManager manager)
 	{
+		_manager = manager;
+
 		this.UpdateStats();
 	}
 

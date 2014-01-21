@@ -3,5 +3,10 @@ using System.Collections;
 
 public abstract class CharacterMiscDataScript : MonoBehaviour
 {
-	// Empty abstract class used only to fit different scripts to the same CharacterManager
+	protected CharacterManager _manager;
+
+	public void Initialize(CharacterManager manager)
+	{
+		_manager = manager;
+	}
 }

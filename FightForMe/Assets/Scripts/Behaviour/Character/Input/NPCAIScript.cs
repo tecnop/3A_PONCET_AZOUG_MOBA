@@ -28,8 +28,10 @@ public class NPCAIScript : CharacterInputScript
 	private ArrayList currentPath;
 	private Vector3 finalPathDest;
 
-	void Start()
+	public override void Initialize(CharacterManager manager)
 	{
+		//base.Initialize(manager);
+		_manager = manager;
 		_characterTransform = _manager.GetCharacterTransform();
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 		_vision = _manager.GetVisionScript();

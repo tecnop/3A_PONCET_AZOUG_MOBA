@@ -6,16 +6,16 @@ public class CharacterInventoryScript : MonoBehaviour
 	[SerializeField]
 	private GameObject _droppedItemPrefab;
 
-	[SerializeField]
 	private CharacterManager _manager;
 
 	private Transform _transform;
 
 	private ArrayList items;
 
-	void Start()
+	public void Initialize(CharacterManager manager)
 	{
-		this._transform = this.transform;
+		_manager = manager;
+		_transform = this.transform;
 
 		if (items == null)
 		{

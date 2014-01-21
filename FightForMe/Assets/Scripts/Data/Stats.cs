@@ -7,7 +7,9 @@ public class Stats
 	private uint agility;			// Affects weapon damage
 	private uint intelligence;		// Affects max MP and MP/s
 
-	public Stats(uint strength, uint agility, uint intelligence)
+	public Stats(uint strength = 0,
+		uint agility = 0,
+		uint intelligence = 0)
 	{
 		this.strength = strength;
 		this.agility = agility;
@@ -37,7 +39,7 @@ public class Stats
 		return new Stats(finalStr, finalAgi, finalInt);
 	}
 
-	public static Stats Base {
+	public static Stats Base { // Starting stats for every character
 		get {
 			return new Stats(10,10,10);
 		}

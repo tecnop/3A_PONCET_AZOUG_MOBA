@@ -3,8 +3,9 @@ using System.Collections;
 
 public abstract class CharacterEventScript : MonoBehaviour
 {
-	[SerializeField]
 	protected CharacterManager _manager;
+
+	public abstract void Initialize(CharacterManager manager);
 
 	public abstract void OnPain(float damage);
 	public abstract void OnDeath(CharacterManager killer);
