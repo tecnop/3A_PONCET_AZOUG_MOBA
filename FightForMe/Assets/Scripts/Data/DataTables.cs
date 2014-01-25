@@ -50,9 +50,15 @@ public static class DataTables
 		// 7 - Monsters
 		// Technically it doesn't matter because we only use IDs (for now), but for the sake of consistency this order should be used
 
+		uint[] temp;
+
 		// Effects
+		EffectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
 
 		// Buffs
+		temp = new uint[1];
+		temp[0] = 1;
+		BuffTable.Add(1, new Buff(name: "Seigneur", effects: temp));
 
 		// Skills
 
@@ -66,7 +72,7 @@ public static class DataTables
 		WeaponTypeTable.Add(3, new WeaponType(name: "Arc"));
 
 		// Armor sets
-		ArmorSetTable.Add(1, new ArmorSet(name: "Panoplie du Seigneur", stats: new Stats(50, 50, 50)));	// Stats du Seigneur!
+		ArmorSetTable.Add(1, new ArmorSet(name: "Panoplie du Seigneur", buffID: 1));
 
 		// Items
 		ItemTable.Add(1, new Weapon(name: "Epee des mile phote d'ortograff", damage: 10.0f, attackRate: 1.0f));
@@ -79,7 +85,7 @@ public static class DataTables
 		ItemTable.Add(8, new Armor(name: "Bottes du Seigneur", slot: ArmorSlot.FEET, setID: 1));
 
 		// Monsters
-		uint[] temp = new uint[1];
+		temp = new uint[1];
 		temp[0] = 1;
 		MonsterTable.Add(1, new Monster(name: "Zombie", behaviour: AIType.aggressive, items: temp));
 

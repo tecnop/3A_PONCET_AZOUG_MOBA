@@ -78,6 +78,7 @@
      <Compile Include="Assets\Scripts\Data\Misc\Buff.cs" />
      <Compile Include="Assets\Scripts\Data\Misc\Effect.cs" />
      <Compile Include="Assets\Scripts\Data\Misc\InflictedBuff.cs" />
+     <Compile Include="Assets\Scripts\Data\SkillTree\Ability.cs" />
      <Compile Include="Assets\Scripts\Data\SkillTree\Skill.cs" />
      <Compile Include="Assets\Scripts\Data\Stats.cs" />
      <Compile Include="Assets\Scripts\Data\UnitTest.cs" />

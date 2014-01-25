@@ -20,7 +20,7 @@ public class CharacterStatsScript : MonoBehaviour
 	float attackRate;		// Swings per second of the equipped weapon
 	float movementSpeed;	// Distance crossed by the player each second, in game units
 
-	// Total stats obtained from items and skills; they are used to recalculate every other stat
+	// Total stats obtained from items and skills; they affect other stats in various ways
 	Stats stats;
 
 	public void Initialize(CharacterManager manager)

@@ -13,7 +13,8 @@ public class Projectile
 	private float damage;						// Damage to deal on impact
 	private float speed;						// Projectile's speed
 	private float impactRadius;					// Radius of the area around impact where entities will be affected
-	// TODO: Debuffs
+	private uint buffID;						// Index of the entry in the buff table that should be inflicted upon impact
+	private float buffDuration;					// Duration of the buff
 
 	//private float missileRadius;
 	private Vector3 hitboxSize;					// Hitbox
@@ -26,6 +27,8 @@ public class Projectile
 		float damage = 0.0f,
 		float speed = 1.0f,
 		float impactRadius = 0.0f,
+		uint buffID = 0,
+		float buffDuration = 0,
 		Vector3 hitboxSize = new Vector3(),
 		ProjectileTrajectory trajectory = ProjectileTrajectory.Straight)
 	{
@@ -36,6 +39,8 @@ public class Projectile
 		this.damage = damage;
 		this.speed = speed;
 		this.impactRadius = impactRadius;
+		this.buffID = buffID;
+		this.buffDuration = buffDuration;
 		this.hitboxSize = hitboxSize;
 		this.trajectory = trajectory;
 	}

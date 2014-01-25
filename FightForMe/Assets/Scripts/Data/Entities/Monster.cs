@@ -10,14 +10,14 @@ public class Monster
 	private float scale;		// Model and hitbox scale of the monster
 
 	private ArrayList items;	// Indexes of entries from the weapon table that this monster is carrying
-	private ArrayList skills;	// Indexes of entries from the skill table that this monster has access to
+	private ArrayList buffs;	// Indexes of entries from the buff table that this monster has by default
 
 	public Monster(string name = null,
 		AIType behaviour = AIType.defensive,
 		string modelPath = null,
 		float scale = 1.0f,
 		uint[] items = null,
-		uint[] skill = null)
+		uint[] buffs = null)
 	{
 		if (name == null)
 			this.name = "Monster";
@@ -35,10 +35,10 @@ public class Monster
 		else
 			this.items = new ArrayList(items);
 
-		if (skills == null)
-			this.skills = new ArrayList();
+		if (buffs == null)
+			this.buffs = new ArrayList();
 		else
-			this.skills = new ArrayList(skills);
+			this.buffs = new ArrayList(buffs);
 	}
 
 	public string getName() { return this.name; }

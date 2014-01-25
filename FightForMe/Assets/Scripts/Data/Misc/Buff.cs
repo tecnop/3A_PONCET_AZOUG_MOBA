@@ -4,13 +4,11 @@ using System.Collections;
 public class Buff
 {
 	private string name;			// Name of the buff
-	private ArrayList effects;		// List of effects this buff inflicts (also used for description)
-	private Stats stats;			// Stat modifiers of this buff
-	private string iconPath;		// Icon to display to represent this buff
+	private ArrayList effects;		// List of effects this buff inflicts (also used for description) (type: uint)
+	private string iconPath;		// Icon to display to represent this buff (NOTE: If null, the buff will not be displayed)
 
 	public Buff(string name,
-		Effect[] effects = null,
-		Stats stats = null,
+		uint[] effects = null,
 		string iconPath = null)
 	{
 		this.name = name;
@@ -22,15 +20,6 @@ public class Buff
 		else
 		{
 			this.effects = new ArrayList(effects);
-		}
-
-		if (stats == null)
-		{
-			this.stats = new Stats();
-		}
-		else
-		{
-			this.stats = stats;
 		}
 
 		this.iconPath = iconPath;

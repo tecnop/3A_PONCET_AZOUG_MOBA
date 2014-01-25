@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class CharacterCombatScript : MonoBehaviour
-{
+{ // NOTE FOR RELEASE: Create a DamageInstance class for a cleaner code and combat logging
 	private CharacterManager _manager;
 
 	private ArrayList buffs;		// List of active buffs and debuffs (type: InflictedBuff)
@@ -31,7 +31,7 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 	}
 
-	public void RecieveBuff(CharacterManager inflictor, uint buffID, float duration)
+	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration)
 	{
 		this.buffs.Add(new InflictedBuff(buffID, duration, inflictor));
 		_manager.GetStatsScript().UpdateStats();
@@ -39,7 +39,7 @@ public class CharacterCombatScript : MonoBehaviour
 
 	public void InflictBuff(CharacterManager target, uint buffID, float duration)
 	{
-		target.GetCombatScript().RecieveBuff(_manager, buffID, duration);
+		target.GetCombatScript().ReceiveBuff(_manager, buffID, duration);
 	}
 
 	public void UpdateBuffs()
@@ -52,10 +52,6 @@ public class CharacterCombatScript : MonoBehaviour
 				buffs.RemoveAt(i);
 				i--;
 				updated = true;
-			}
-			else
-			{
-				// TODO: Check periodic effects like DoT
 			}
 		}
 

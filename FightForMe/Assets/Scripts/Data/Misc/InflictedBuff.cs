@@ -6,9 +6,7 @@ public class InflictedBuff
 	private uint buffID;					// ID of the entry in the Buff table that this buff was created from
 	private float endTime;					// Time at which this buff will run out
 
-	// TODO:
-	//	Intensity? Other %-based stats?
-	//	last tick (for periodic effects)
+	// TODO: Intensity? Other %-based stats?
 
 	private CharacterManager inflictor;		// Character responsible for this buff
 
