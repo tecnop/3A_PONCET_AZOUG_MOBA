@@ -12,6 +12,7 @@ public class CharacterMovementScript : MonoBehaviour
 	private Transform _myTransform;
 
 	private CharacterEventScript _event;
+	private CharacterStatsScript _stats;
 
 	public void Initialize(CharacterManager manager)
 	{
@@ -21,6 +22,7 @@ public class CharacterMovementScript : MonoBehaviour
 		_controller = this.GetComponent<CharacterController>();
 
 		_event = _manager.GetEventScript();
+		_stats = _manager.GetStatsScript();
 	}
 
 	void OnTriggerEnter(Collider collider)
@@ -31,7 +33,7 @@ public class CharacterMovementScript : MonoBehaviour
 	public void ApplyMove(Vector3 dir)
 	{
 		//_controller.SimpleMove(dir);
-		_controller.Move(dir.normalized * 0.05f);
+		_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed()/100.0f));
 
 		Vector3 actualMove = _myTransform.position - _characterTransform.position;
 

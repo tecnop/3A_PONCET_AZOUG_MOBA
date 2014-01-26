@@ -71,6 +71,10 @@ public class CharacterManager : MonoBehaviour
 		{
 			_camera.UpdateCamera();
 		}
+
+		_combat.UpdateBuffs();
+
+		_stats.ApplyRegen();
 	}
 
 	public CharacterInputScript GetInputScript() { return _input; }

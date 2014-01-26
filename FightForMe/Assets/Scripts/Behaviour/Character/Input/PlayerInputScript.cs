@@ -60,7 +60,7 @@ public class PlayerInputScript : CharacterInputScript
 			diff = rayInfo.point - _playerTransform.position;
 		}
 		else
-		{
+		{ // How do we feel about doing that all the time instead of using a RayCast? Is it as accurate?
 			Vector3 cameraDiff = _camera.WorldToScreenPoint(_cameraScript.GetCameraPos()) - _camera.WorldToScreenPoint(_playerTransform.position);
 
 			diff = new Vector3(Input.mousePosition.x - Screen.width / 2 + cameraDiff.x, 0, Input.mousePosition.y - Screen.height / 2 + cameraDiff.y);

@@ -18,9 +18,9 @@ public class MonsterCampScript : MonoBehaviour
 			return;
 		}
 
-		for (int i = 0; i < _spawners.Length; i++)
+		foreach (MonsterSpawnerScript spawner in _spawners)
 		{
-			_spawners[i].LinkToCamp(this);
+			spawner.LinkToCamp(this);
 		}
 
 		currentLevel = 0;
@@ -29,9 +29,9 @@ public class MonsterCampScript : MonoBehaviour
 
 	private void Spawn()
 	{
-		for (int i = 0; i < _spawners.Length; i++)
+		foreach (MonsterSpawnerScript spawner in _spawners)
 		{
-			_spawners[i].Spawn();
+			spawner.Spawn();
 			stillAlive++;
 		}
 	}

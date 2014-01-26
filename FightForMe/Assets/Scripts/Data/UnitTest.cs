@@ -4,11 +4,7 @@ using System.Collections;
 public class UnitTest : MonoBehaviour
 {
 	void Start()
-	{
+	{ // Temporary entity used to initialize the data tables
 		DataTables.updateTables();
-		Weapon w = (Weapon)DataTables.getItem(1);
-		string name = w.getName();
-		float damage = w.getDamage();
-		Debug.Log("Oulala ! mega dégats ! Arme : " + name + ", Degats : " + damage);
 	}
 }
