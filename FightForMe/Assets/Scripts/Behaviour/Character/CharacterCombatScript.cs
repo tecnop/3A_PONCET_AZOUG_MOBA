@@ -6,6 +6,7 @@ public class CharacterCombatScript : MonoBehaviour
 	private CharacterManager _manager;
 
 	private ArrayList buffs;		// List of active buffs and debuffs (type: InflictedBuff)
+	// TODO: Add a list of effects built from the list of buffs for quicker access? Would building it be more expensive than accessing each entry individually...?
 
 	public void Initialize(CharacterManager manager)
 	{
@@ -59,5 +60,10 @@ public class CharacterCombatScript : MonoBehaviour
 		{
 			_manager.GetStatsScript().UpdateStats();
 		}
+	}
+
+	public ArrayList GetBuffs()
+	{
+		return this.buffs;
 	}
 }

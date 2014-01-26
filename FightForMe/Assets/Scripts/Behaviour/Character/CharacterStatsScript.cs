@@ -23,16 +23,64 @@ public class CharacterStatsScript : MonoBehaviour
 	// Total stats obtained from items and skills; they affect other stats in various ways
 	Stats stats;
 
+	private CharacterInventoryScript _inventory;
+	private CharacterCombatScript _combat;
+
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
+		_inventory = _manager.GetInventoryScript();
+		_combat = _manager.GetCombatScript();
 
 		this.UpdateStats();
 	}
 
 	public void UpdateStats()
 	{
+		if (this.health <= 0)
+		{ // No need to do that now
+			return;
+		}
+
+		Weapon weapon = _inventory.GetWeapon();
+		ArrayList armorList = _inventory.GetAllArmor();
+
+		// Initial values
 		this.stats = Stats.Base;
+		if (weapon != null)
+		{
+			this.damage = weapon.getDamage();
+			this.attackRate = weapon.getAttackRate();
+		}
+
+		// Get all currently applied effects
+		ArrayList buffList = new ArrayList(_combat.GetBuffs());
+		ArrayList effects = new ArrayList();
+		foreach (InflictedBuff buff in buffList)
+		{
+			effects.AddRange(buff.GetEffects());
+		}
+
+		foreach (Armor armor in armorList)
+		{ // Tempted to make armor pieces apply the buff as they are equipped, buuuut... meh...
+			foreach (uint effect in armor.getBuff().GetEffects())
+			{
+				effects.Add(DataTables.getEffect(effect));
+			}
+		}
+
+		foreach (ArmorSet set in _inventory.GetCompletedSets())
+		{ // Same deal here... will be the same for skills too
+			foreach (uint effect in set.GetBuff().GetEffects())
+			{
+				effects.Add(DataTables.getEffect(effect));
+			}
+		}
+
+		foreach (Effect effect in effects)
+		{ // Have fun parsing it... really tempted to make everything public :|
+
+		}
 
 		// TODO: Get stats from items, armor sets, skills and buffs
 

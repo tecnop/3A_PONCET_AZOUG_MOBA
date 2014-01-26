@@ -30,7 +30,13 @@ public class InflictedBuff
 
 	public ArrayList GetEffects()
 	{
-		return _buff.GetEffects();
+		ArrayList res = new ArrayList();
+		ArrayList curEffects = _buff.GetEffects();
+		foreach (uint effect in curEffects)
+		{
+			res.Add(DataTables.getEffect(effect));
+		}
+		return res;
 	}
 
 	public float GetTimeLeft()
