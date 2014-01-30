@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/*
+ * Update : Mr.p 28 01 2014
+ * > Ajout de 2 entrées sur l'Animator ("isAttacking" = true et = false) dans ReadGenericInput()
+ * 
+ */ 
 public class PlayerInputScript : CharacterInputScript
 {
 	[SerializeField]
@@ -95,10 +99,23 @@ public class PlayerInputScript : CharacterInputScript
 			return;
 		}
 
+
 		if (Input.GetKeyDown(KeyCode.Space))
-		{
+		{ 
 			this.hasLockedCamera = !this.hasLockedCamera;
 		}
+
+		if (Input.GetMouseButtonDown(0))
+		{ 
+			if(! _manager.GetCharacterAnimator().GetBool("isAttacking"))
+				_manager.GetCharacterAnimator().SetBool("isAttacking", true);
+		}
+
+		if (Input.GetMouseButtonUp(0))
+		{
+			_manager.GetCharacterAnimator().SetBool("isAttacking", false);
+		}
+
 	}
 
 	public Vector3 GetMousePos()

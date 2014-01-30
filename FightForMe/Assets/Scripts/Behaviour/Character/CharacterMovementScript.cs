@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/*
+ * Update : Mr.P 30 01 2014
+ * > Ajout d'une entrée sur l'Animator pour la gestion de la vitesse actuel ("speed" dans l'Animator) du perso dans ApplyMove().
+ * 
+ */
 public class CharacterMovementScript : MonoBehaviour
 {
 	private CharacterManager _manager;
@@ -44,6 +48,10 @@ public class CharacterMovementScript : MonoBehaviour
 
 		if (_manager.GetCharacterAnimator() != null)
 		{
+
+			_manager.GetCharacterAnimator().SetFloat("speed", actualMove.magnitude);
+
+			/*
 			if (actualMove.magnitude > 0.001f && _manager.GetCharacterAnimator().GetCurrentAnimatorStateInfo(0).nameHash == Animator.StringToHash("Idle"))
 			{
 				Debug.Log("Now moving");
@@ -54,6 +62,7 @@ public class CharacterMovementScript : MonoBehaviour
 				Debug.Log("Now idle");
 				_manager.GetCharacterAnimator().Play("Idle");
 			}
+			*/
 		}
 	}
 
