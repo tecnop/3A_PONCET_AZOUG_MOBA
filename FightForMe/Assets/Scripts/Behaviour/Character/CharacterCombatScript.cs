@@ -33,6 +33,11 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 	}
 
+	public void AreaOfEffect(Vector3 position, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
+	{
+
+	}
+
 	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration)
 	{
 		this.buffs.Add(new InflictedBuff(buffID, duration, inflictor));

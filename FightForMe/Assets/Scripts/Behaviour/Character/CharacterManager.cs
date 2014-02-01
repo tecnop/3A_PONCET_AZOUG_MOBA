@@ -49,7 +49,7 @@ public class CharacterManager : MonoBehaviour
 		_stats.Initialize(this);
 		_event.Initialize(this);
 		_vision.Initialize(this);
-		if (_misc)
+		if (_misc != null)
 		{
 			_misc.Initialize(this);
 		}
