@@ -3,6 +3,10 @@ using System.Collections;
 
 public class CharacterCombatScript : MonoBehaviour
 { // NOTE FOR RELEASE: Create a DamageInstance class for a cleaner code and combat logging
+	
+	[SerializeField]
+	private GameObject damageSpherePrefab;
+
 	private CharacterManager _manager;
 
 	private ArrayList buffs;		// List of active buffs and debuffs (type: InflictedBuff)
@@ -31,6 +35,14 @@ public class CharacterCombatScript : MonoBehaviour
 		{
 			this.Damage(hisManager, damage, damageDir, damageFlags);
 		}
+	}
+
+	public void AreaOfEffect(Vector3 position, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
+	{
+		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, Quaternion.identity);
+		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
+		sphereScript.storeData(position, radius, this.gameObject.layer, damage, buffID, damageFlags);
+		//ArrayList array = sphereScript.GetResults();
 	}
 
 	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration)

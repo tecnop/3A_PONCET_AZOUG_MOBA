@@ -30,13 +30,14 @@ public class CharacterManager : MonoBehaviour
 	[SerializeField]
 	private PlayerCameraScript _camera;
 
+	[SerializeField]
+	private CharacterAnimatorScript _animator;
+
 	private Transform _transform;
-	private Animator _animator;
 
 	void Start()
 	{
 		_transform = this.transform;
-		_animator = this.GetComponent<Animator>();
 
 		// Link all the serialized scripts to us and initialize them
 		// THIS ORDER IS IMPORTANT (TO AN EXTENT)
@@ -49,10 +50,11 @@ public class CharacterManager : MonoBehaviour
 		_stats.Initialize(this);
 		_event.Initialize(this);
 		_vision.Initialize(this);
-		if (_misc)
+		if (_misc != null)
 		{
 			_misc.Initialize(this);
 		}
+		_animator.Initialize(this);
 		_movement.Initialize(this);
 		_input.Initialize(this);
 	}
@@ -86,7 +88,8 @@ public class CharacterManager : MonoBehaviour
 	public CharacterInventoryScript GetInventoryScript() { return _inventory; }
 	public CharacterMiscDataScript GetMiscDataScript() { return _misc; }
 	public PlayerCameraScript GetCameraScript() { return _camera; }
+	public CharacterAnimatorScript GetAnimatorScript() { return _animator; }
 
 	public Transform GetCharacterTransform() { return _transform; }
-	public Animator GetCharacterAnimator() { return _animator; }
+	public Animator GetCharacterAnimator() { return _animator.GetAnimator(); }
 }

@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterAnimatorScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterCombatScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterInventoryScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterManager.cs" />
@@ -62,6 +63,7 @@
      <Compile Include="Assets\Scripts\Behaviour\Character\Misc\MonsterMiscDataScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Misc\PlayerMiscDataScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\DroppedItem\DroppedItemScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Misc\DetectionSphereScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\MonsterCamp\MonsterCampScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\MonsterSpawner\MonsterSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerCameraScript.cs" />

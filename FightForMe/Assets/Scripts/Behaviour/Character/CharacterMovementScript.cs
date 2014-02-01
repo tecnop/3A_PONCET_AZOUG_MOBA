@@ -36,7 +36,6 @@ public class CharacterMovementScript : MonoBehaviour
 
 	public void ApplyMove(Vector3 dir)
 	{
-		//_controller.SimpleMove(dir);
 		_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed()/100.0f));
 
 		Vector3 actualMove = _myTransform.position - _characterTransform.position;
@@ -46,24 +45,7 @@ public class CharacterMovementScript : MonoBehaviour
 
 		_characterTransform.position += actualMove;
 
-		if (_manager.GetCharacterAnimator() != null)
-		{
-
-			_manager.GetCharacterAnimator().SetFloat("speed", actualMove.magnitude);
-
-			/*
-			if (actualMove.magnitude > 0.001f && _manager.GetCharacterAnimator().GetCurrentAnimatorStateInfo(0).nameHash == Animator.StringToHash("Idle"))
-			{
-				Debug.Log("Now moving");
-				_manager.GetCharacterAnimator().Play("Moving");
-			}
-			else if (_manager.GetCharacterAnimator().GetCurrentAnimatorStateInfo(0).nameHash == Animator.StringToHash("Moving"))
-			{
-				Debug.Log("Now idle");
-				_manager.GetCharacterAnimator().Play("Idle");
-			}
-			*/
-		}
+		_manager.GetCharacterAnimator().SetFloat("speed", actualMove.magnitude / Time.deltaTime);
 	}
 
 	public void SetAngle(float yaw)

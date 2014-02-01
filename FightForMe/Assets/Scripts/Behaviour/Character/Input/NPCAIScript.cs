@@ -139,7 +139,7 @@ public class NPCAIScript : CharacterInputScript
 		RunAI();
 
 		if (this.goalReached)
-		{
+		{ // This is never true, is it?
 			return Vector3.zero;
 		}
 
@@ -149,7 +149,12 @@ public class NPCAIScript : CharacterInputScript
 		if (move.magnitude < approachRange && this.currentPath.Count == 0)
 		{ // If our current goal is our actual target, stay at some distance
 			goalReached = true;
+			_manager.GetCharacterAnimator().SetBool("isAttacking", true);
 			return Vector3.zero;
+		}
+		else
+		{
+			_manager.GetCharacterAnimator().SetBool("isAttacking", false);
 		}
 
 		return move.normalized;
