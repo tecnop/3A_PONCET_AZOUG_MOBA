@@ -87,7 +87,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		Vector2 randPos = Random.insideUnitCircle.normalized;
 		Vector3 pos = new Vector3(_transform.position.x + randPos.x, _transform.position.y, _transform.position.z + randPos.y);
 
-		GameObject droppedItem = (GameObject)Instantiate(_droppedItemPrefab, pos, Quaternion.identity);
+		GameObject droppedItem = (GameObject)Network.Instantiate(_droppedItemPrefab, pos, Quaternion.identity, 0);
 		DroppedItemScript droppedItemScript = droppedItem.GetComponent<DroppedItemScript>();
 
 		if (!DataTables.getItem((uint)this.items[(int)index]).isWeapon())
@@ -171,7 +171,7 @@ public class CharacterInventoryScript : MonoBehaviour
 
 	public void SetItems(ArrayList items)
 	{ // Should only be called when spawning a monster
-		this.items = new ArrayList(items);
+		this.items = new ArrayList(items); // FIXME: Update set progress
 	}
 
 	public Weapon GetWeapon()

@@ -43,6 +43,8 @@ public class CharacterManager : MonoBehaviour
 	[SerializeField]
 	private CharacterPhysicsScript _physics;
 
+	private bool isLocal = false;	// If true, the entity's input will be processed locally, otherwise it will be fetched from the network
+
 	private Transform _transform;
 
 	void Start()
@@ -51,7 +53,7 @@ public class CharacterManager : MonoBehaviour
 
 		// Link all the serialized scripts to us and initialize them
 		// THIS ORDER IS IMPORTANT (TO AN EXTENT)
-		if (_camera != null)
+		if (_camera != null && isLocal)
 		{
 			_camera.Initialize(this);
 		}
@@ -74,11 +76,10 @@ public class CharacterManager : MonoBehaviour
 	{
 		_vision.UpdateVision();
 
+		_input.UpdateInput();
 		_movement.ApplyMove(_input.GetDirectionalInput());
-
 		_movement.SetAngle(_input.GetIdealOrientation());
-
-		_input.ReadGenericInput();
+		
 
 		if (_camera)
 		{
@@ -89,6 +90,9 @@ public class CharacterManager : MonoBehaviour
 
 		_stats.ApplyRegen();
 	}
+
+	public void MakeLocal() { this.isLocal = true; }
+	public bool IsLocal() { return isLocal; }
 
 	public CharacterInputScript GetInputScript() { return _input; }
 	public CharacterEventScript GetEventScript() { return _event; }

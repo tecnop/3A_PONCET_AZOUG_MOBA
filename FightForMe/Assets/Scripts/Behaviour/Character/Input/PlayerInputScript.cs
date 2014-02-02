@@ -1,15 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-/*
- * Update : Mr.p 28 01 2014
- * > Ajout de 2 entrées sur l'Animator ("isAttacking" = true et = false) dans ReadGenericInput()
- * 
- */ 
+
 public class PlayerInputScript : CharacterInputScript
 {
-	[SerializeField]
-	private bool isActive;		// Is this the active player for the current build settings?
-
 	private PlayerCameraScript _cameraScript;
 
 	private Transform _playerTransform;
@@ -22,39 +15,24 @@ public class PlayerInputScript : CharacterInputScript
 		//base.Initialize(manager);
 		_manager = manager;
 
-		if (!isActive)
-		{ // Delete our camera TODO: How about just ignoring it? Allow us to place a single camera on the scene, and have each player use it for themselves?
-			Destroy(_manager.GetCameraScript().gameObject);
-		}
-		else
-		{
+		if (_manager.IsLocal())
+		{ // Only link the camera to us if we're going to be using it
 			_cameraScript = _manager.GetCameraScript();
 			_camera = _cameraScript.GetCamera();
 		}
 
+		_networkView = this.GetComponent<NetworkView>();
 		_playerTransform = _manager.GetCharacterTransform();
 		hasLockedCamera = true;
 	}
 
-	public override Vector3 GetDirectionalInput()
+	protected override Vector3 UpdateDirectionalInput()
 	{
-		if (isActive)
-		{
-			return new Vector3(Input.GetAxis("HorzMove"), 0, Input.GetAxis("VertMove"));
-		}
-		else
-		{ // Get it from the network
-			return Vector3.zero;
-		}
+		return new Vector3(Input.GetAxis("HorzMove"), 0, Input.GetAxis("VertMove"));
 	}
 
-	public override float GetIdealOrientation()
+	protected override float UpdateIdealOrientation()
 	{
-		if (!isActive)
-		{ // Get it from the network
-			return 0.0f;
-		}
-
 		Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 		RaycastHit rayInfo;
 		Vector3 diff;
@@ -92,36 +70,29 @@ public class PlayerInputScript : CharacterInputScript
 		}
 	}
 
-	public override void ReadGenericInput()
+	protected override void ReadGenericInput()
 	{
-		if (!isActive)
-		{ // Nothing to see here
-			return;
-		}
-
-
 		if (Input.GetKeyDown(KeyCode.Space))
-		{ 
+		{
 			this.hasLockedCamera = !this.hasLockedCamera;
 		}
 
+		// How do we send that through the network?
 		if (Input.GetMouseButtonDown(0))
-		{ 
-			if(! _manager.GetCharacterAnimator().GetBool("isAttacking"))
-				_manager.GetCharacterAnimator().SetBool("isAttacking", true);
+		{
+			_manager.GetCharacterAnimator().SetBool("isAttacking", true);
 		}
 
 		if (Input.GetMouseButtonUp(0))
 		{
 			_manager.GetCharacterAnimator().SetBool("isAttacking", false);
 		}
-
 	}
 
 	public Vector3 GetMousePos()
 	{
-		if (!isActive)
-		{ // Won't be needed
+		if (!_manager.IsLocal())
+		{ // This won't be called anyway, but just making sure
 			return Vector3.zero;
 		}
 

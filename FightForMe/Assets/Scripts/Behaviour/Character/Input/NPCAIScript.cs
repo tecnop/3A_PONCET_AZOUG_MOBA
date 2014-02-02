@@ -37,6 +37,7 @@ public class NPCAIScript : CharacterInputScript
 		_vision = _manager.GetVisionScript();
 		this.startPos = _misc.GetSpawnPos();
 		this.currentPath = new ArrayList();
+		_networkView = this.GetComponent<NetworkView>();
 	}
 
 	public bool IsSearchingEnemy()
@@ -134,7 +135,7 @@ public class NPCAIScript : CharacterInputScript
 		}
 	}
 
-	public override Vector3 GetDirectionalInput()
+	protected override Vector3 UpdateDirectionalInput()
 	{
 		RunAI();
 
@@ -149,18 +150,13 @@ public class NPCAIScript : CharacterInputScript
 		if (move.magnitude < approachRange && this.currentPath.Count == 0)
 		{ // If our current goal is our actual target, stay at some distance
 			goalReached = true;
-			_manager.GetCharacterAnimator().SetBool("isAttacking", true);
 			return Vector3.zero;
-		}
-		else
-		{
-			_manager.GetCharacterAnimator().SetBool("isAttacking", false);
 		}
 
 		return move.normalized;
 	}
 
-	public override float GetIdealOrientation()
+	protected override float UpdateIdealOrientation()
 	{
 		Vector3 diff = goalPosition - _characterTransform.position;
 
@@ -186,9 +182,9 @@ public class NPCAIScript : CharacterInputScript
 		}
 	}
 
-	public override void ReadGenericInput()
-	{ // Here: more AI (attacking, etc.)
-
+	protected override void ReadGenericInput()
+	{ // Here: more AI (attacking, etc.) TODO: Send it through the network somehow
+		_manager.GetCharacterAnimator().SetBool("isAttacking", (target && goalReached));
 	}
 
 	public void SetBehaviour(AIType behaviour)

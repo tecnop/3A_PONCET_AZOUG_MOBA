@@ -21,6 +21,12 @@ public class MonsterSpawnerScript : MonoBehaviour
 
 	void Start()
 	{
+		if (!Network.isServer)
+		{ // We're a server-only entity
+			Destroy(this.gameObject);
+			return;
+		}
+
 		if (_monsterList.Length == 0)
 		{ // We don't have any bound monsters, no reason for us to be here
 			Destroy(this.gameObject);
@@ -49,10 +55,11 @@ public class MonsterSpawnerScript : MonoBehaviour
 		}
 
 		// Spawn the entity
-		GameObject monsterObject = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
+		GameObject monsterObject = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 0);
 
 		// Link us together
 		CharacterManager manager = monsterObject.GetComponent<CharacterManager>();
+		manager.MakeLocal(); // If we got here we're the server, so make the monster local
 		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
 
 		// Set him the data we got from the data table

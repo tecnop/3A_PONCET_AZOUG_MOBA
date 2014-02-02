@@ -10,6 +10,12 @@ public class MonsterCampScript : MonoBehaviour
 
 	void Start()
 	{
+		if (!Network.isServer)
+		{ // We're a server-only entity
+			Destroy(this.gameObject);
+			return;
+		}
+
 		_spawners = this.GetComponentsInChildren<MonsterSpawnerScript>();
 
 		if (_spawners.Length == 0)

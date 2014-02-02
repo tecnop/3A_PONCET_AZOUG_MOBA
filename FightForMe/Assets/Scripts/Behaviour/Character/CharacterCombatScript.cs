@@ -46,7 +46,7 @@ public class CharacterCombatScript : MonoBehaviour
 
 	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
 	{
-		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
+		GameObject sphere = (GameObject)Network.Instantiate(damageSpherePrefab, position, angle, 0);
 		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
 		sphereScript.storeData(_manager, position, radius, this.gameObject.layer, damage, buffID, damageFlags);
 		//ArrayList array = sphereScript.GetResults();
