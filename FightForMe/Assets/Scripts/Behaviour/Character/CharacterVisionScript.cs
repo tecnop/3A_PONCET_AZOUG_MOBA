@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * CharacterVisionScript.cs
+ * 
+ * Defines which entities and positions the character can see
+ * 
+ */
+
 public class CharacterVisionScript : MonoBehaviour
 {
 	private CharacterManager _manager;

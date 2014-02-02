@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * CharacterCombatScript.cs
+ * 
+ * Allows characters to "interact" with each other.
+ * 
+ */
+
 public class CharacterCombatScript : MonoBehaviour
 { // NOTE FOR RELEASE: Create a DamageInstance class for a cleaner code and combat logging
 	
@@ -37,11 +44,11 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 	}
 
-	public void AreaOfEffect(Vector3 position, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
+	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
 	{
-		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, Quaternion.identity);
+		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
 		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
-		sphereScript.storeData(position, radius, this.gameObject.layer, damage, buffID, damageFlags);
+		sphereScript.storeData(_manager, position, radius, this.gameObject.layer, damage, buffID, damageFlags);
 		//ArrayList array = sphereScript.GetResults();
 	}
 

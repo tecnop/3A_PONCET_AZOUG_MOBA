@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * CharacterManager.cs
+ * 
+ * Initializes all the character's scripts and allows them to communicate with each other
+ * 
+ */
+
 public class CharacterManager : MonoBehaviour
 {
 	[SerializeField]
@@ -33,6 +40,9 @@ public class CharacterManager : MonoBehaviour
 	[SerializeField]
 	private CharacterAnimatorScript _animator;
 
+	[SerializeField]
+	private CharacterPhysicsScript _physics;
+
 	private Transform _transform;
 
 	void Start()
@@ -57,6 +67,7 @@ public class CharacterManager : MonoBehaviour
 		_animator.Initialize(this);
 		_movement.Initialize(this);
 		_input.Initialize(this);
+		_physics.Initialize(this);
 	}
 
 	void Update()
@@ -89,6 +100,7 @@ public class CharacterManager : MonoBehaviour
 	public CharacterMiscDataScript GetMiscDataScript() { return _misc; }
 	public PlayerCameraScript GetCameraScript() { return _camera; }
 	public CharacterAnimatorScript GetAnimatorScript() { return _animator; }
+	public CharacterPhysicsScript GetPhysicsScript() { return _physics; }
 
 	public Transform GetCharacterTransform() { return _transform; }
 	public Animator GetCharacterAnimator() { return _animator.GetAnimator(); }

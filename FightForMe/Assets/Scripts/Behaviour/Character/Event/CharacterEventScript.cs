@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * CharacterEventScript.cs
+ * 
+ * Receives various events from other scripts and executes character type-specific code
+ * 
+ */
+
 public abstract class CharacterEventScript : MonoBehaviour
 {
 	protected CharacterManager _manager;

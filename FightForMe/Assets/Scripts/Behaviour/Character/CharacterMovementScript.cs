@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+
 /*
- * Update : Mr.P 30 01 2014
- * > Ajout d'une entrée sur l'Animator pour la gestion de la vitesse actuel ("speed" dans l'Animator) du perso dans ApplyMove().
+ * CharacterMovementScript.cs
+ * 
+ * Translates received input in character movement and rotation
  * 
  */
+
 public class CharacterMovementScript : MonoBehaviour
 {
 	private CharacterManager _manager;
@@ -29,11 +32,6 @@ public class CharacterMovementScript : MonoBehaviour
 		_stats = _manager.GetStatsScript();
 	}
 
-	void OnTriggerEnter(Collider collider)
-	{ // Redirect it
-		_event.OnCollision(collider);
-	}
-
 	public void ApplyMove(Vector3 dir)
 	{
 		_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed()/100.0f));
@@ -52,10 +50,5 @@ public class CharacterMovementScript : MonoBehaviour
 	{
 		//float save = _characterTransform.eulerAngles.y;
 		_characterTransform.rotation = Quaternion.Euler(0, yaw, 0);
-	}
-
-	public CharacterManager GetManager()
-	{ // This is required for proper interactions with colliders
-		return _manager;
 	}
 }

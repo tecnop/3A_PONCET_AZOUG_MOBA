@@ -24,7 +24,7 @@ public class ProjectileScript : MonoBehaviour
 	{
 		if (collider.tag == "Player")
 		{ // If we collided with it then it's got to be an enemy
-			CharacterManager hisManager = collider.GetComponent<CharacterMovementScript>().GetManager();
+			CharacterManager hisManager = collider.GetComponent<CharacterPhysicsScript>().GetManager();
 
 			if (hisManager)
 			{

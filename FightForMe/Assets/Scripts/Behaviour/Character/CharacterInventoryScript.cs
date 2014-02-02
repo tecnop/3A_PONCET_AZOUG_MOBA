@@ -2,6 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+ * CharacterInventoryScript.cs
+ * 
+ * Stores the character's items and acts as an interface to equip/drop items
+ * 
+ */
+
 public class CharacterInventoryScript : MonoBehaviour
 {
 	[SerializeField]

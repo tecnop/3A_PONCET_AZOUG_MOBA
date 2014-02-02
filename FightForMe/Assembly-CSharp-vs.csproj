@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterInventoryScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterManager.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterMovementScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterPhysicsScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterStatsScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterVisionScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Event\CharacterEventScript.cs" />

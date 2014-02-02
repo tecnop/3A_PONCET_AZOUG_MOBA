@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * CharacterStatsScript.cs
+ * 
+ * Calculates and stores the character's various stats
+ * 
+ */
+
 public class CharacterStatsScript : MonoBehaviour
 {
 	private CharacterManager _manager;
@@ -202,6 +209,8 @@ public class CharacterStatsScript : MonoBehaviour
 	public void loseHealth(CharacterManager inflictor, float amount)
 	{
 		health -= amount;
+
+		Debug.Log(_manager.name + " took " + amount + " damage");
 
 		if (health <= 0)
 		{
