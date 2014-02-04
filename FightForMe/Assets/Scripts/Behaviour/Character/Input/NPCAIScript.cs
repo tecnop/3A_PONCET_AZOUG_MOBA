@@ -184,7 +184,7 @@ public class NPCAIScript : CharacterInputScript
 
 	protected override void ReadGenericInput()
 	{ // Here: more AI (attacking, etc.) TODO: Send it through the network somehow
-		_manager.GetCharacterAnimator().SetBool("isAttacking", (target && goalReached));
+		SetAttackState(target && goalReached);
 	}
 
 	public void SetBehaviour(AIType behaviour)

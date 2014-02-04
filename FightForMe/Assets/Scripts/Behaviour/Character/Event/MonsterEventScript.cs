@@ -32,7 +32,14 @@ public class MonsterEventScript : CharacterEventScript
 
 		_inventory.DropAllItems();
 
-		Network.Destroy(_manager.gameObject);
+		if (Network.isClient || Network.isServer)
+		{
+			Network.Destroy(_manager.gameObject);
+		}
+		else
+		{
+			Destroy(_manager.gameObject);
+		}
 	}
 
 	public override void OnSpotEntity(GameObject entity)

@@ -65,6 +65,8 @@
      <Compile Include="Assets\Scripts\Behaviour\Character\Misc\PlayerMiscDataScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\DroppedItem\DroppedItemScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Misc\DetectionSphereScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Misc\GraphicsLoader.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Misc\ModelListScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\MonsterCamp\MonsterCampScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\MonsterSpawner\MonsterSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerCameraScript.cs" />

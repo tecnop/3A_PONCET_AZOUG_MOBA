@@ -37,7 +37,7 @@ public class ArmorSet
 
 	public Buff GetBuff()
 	{
-		return DataTables.getBuff(this.buffID);
+		return DataTables.GetBuff(this.buffID);
 	}
 
 	public uint GetSize()

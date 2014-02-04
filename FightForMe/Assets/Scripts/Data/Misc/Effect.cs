@@ -76,84 +76,20 @@ public class Effect
 	}
 
 	// Here we go...
-
-	public float GetFlatHP()
-	{
-		return this.flatHP;
-	}
-
-	public float GetPctHP()
-	{
-		return this.pctHP;
-	}
-
-	public float GetFlatMP()
-	{
-		return this.flatMP;
-	}
-
-	public float GetPctMP()
-	{
-		return this.pctMP;
-	}
-
-	public float GetFlatHPRegen()
-	{
-		return this.flatHPRegen;
-	}
-
-	public float GetPctHPRegen()
-	{
-		return this.pctHPRegen;
-	}
-
-	public float GetFlatMPRegen()
-	{
-		return this.flatMPRegen;
-	}
-
-	public float GetPctMPRegen()
-	{
-		return this.pctMPRegen;
-	}
-
-	public float GetFlatMS()
-	{
-		return this.flatMS;
-	}
-
-	public float GetPctMS()
-	{
-		return this.pctMS;
-	}
-
-	public float GetBonusDamage()
-	{
-		return this.bonusDamage;
-	}
-
-	public float GetBonusAtkSpd()
-	{
-		return this.bonusAtkSpd;
-	}
-
-	public Stats GetStats()
-	{
-		return this.stats;
-	}
-
-	public uint GetUnlockedAbility()
-	{
-		return this.unlockedAbility;
-	}
-
-	public MiscEffect GetMiscEffect()
-	{
-		return this.misc;
-	}
-
-	public float GetMiscParm()
-	{
-		return this.miscParm;
-	}
+	public float GetFlatHP() { return this.flatHP; }
+	public float GetPctHP() { return this.pctHP; }
+	public float GetFlatMP() { return this.flatMP; }
+	public float GetPctMP() { return this.pctMP; }
+	public float GetFlatHPRegen() { return this.flatHPRegen; }
+	public float GetPctHPRegen() { return this.pctHPRegen; }
+	public float GetFlatMPRegen() { return this.flatMPRegen; }
+	public float GetPctMPRegen() { return this.pctMPRegen; }
+	public float GetFlatMS() { return this.flatMS; }
+	public float GetPctMS() { return this.pctMS; }
+	public float GetBonusDamage() { return this.bonusDamage; }
+	public float GetBonusAtkSpd() { return this.bonusAtkSpd; }
+	public Stats GetStats() { return this.stats; }
+	public uint GetUnlockedAbility() { return this.unlockedAbility; }
+	public MiscEffect GetMiscEffect() { return this.misc; }
+	public float GetMiscParm() { return this.miscParm; }
 }

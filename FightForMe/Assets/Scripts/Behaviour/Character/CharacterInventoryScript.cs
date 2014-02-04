@@ -35,12 +35,20 @@ public class CharacterInventoryScript : MonoBehaviour
 		}
 		else
 		{ // We need to update our progress on each set then...
+			foreach (uint itemID in items)
+			{
+				Item item = DataTables.GetItem(itemID);
+				if (!item.isWeapon())
+				{
+					UpdateSetProgress(((Armor)item).GetSetID(), true);
+				}
+			}
 		}
 	}
 
 	private void UpdateSetProgress(uint setID, bool increase)
 	{ // NOTE: This method is simple but implies that a character can't have the same item equipped twice
-		ArmorSet set = DataTables.getArmorSet(setID);
+		ArmorSet set = DataTables.GetArmorSet(setID);
 
 		if (set == null)
 		{ // Eh, might as well make sure now I guess? This won't (well, shouldn't) be needed for release
@@ -75,6 +83,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		if (this.setProgress[setID] == set.GetSize())
 		{
 			this.completedSets.Add(set);
+			Debug.Log(_manager.name + " has completed set " + setID);
 		}
 		else if (this.completedSets.Contains(set))
 		{
@@ -87,12 +96,21 @@ public class CharacterInventoryScript : MonoBehaviour
 		Vector2 randPos = Random.insideUnitCircle.normalized;
 		Vector3 pos = new Vector3(_transform.position.x + randPos.x, _transform.position.y, _transform.position.z + randPos.y);
 
-		GameObject droppedItem = (GameObject)Network.Instantiate(_droppedItemPrefab, pos, Quaternion.identity, 0);
+		GameObject droppedItem;
+		if (Network.isServer || Network.isClient)
+		{
+			droppedItem = (GameObject)Network.Instantiate(_droppedItemPrefab, pos, Quaternion.identity, 0);
+		}
+		else
+		{
+			droppedItem = (GameObject)Instantiate(_droppedItemPrefab, pos, Quaternion.identity);
+		}
+
 		DroppedItemScript droppedItemScript = droppedItem.GetComponent<DroppedItemScript>();
 
-		if (!DataTables.getItem((uint)this.items[(int)index]).isWeapon())
+		if (!DataTables.GetItem((uint)this.items[(int)index]).isWeapon())
 		{ // TODO: This is not pretty. Make this pretty.
-			UpdateSetProgress(((Armor)DataTables.getItem((uint)this.items[(int)index])).GetSetID(), false);
+			UpdateSetProgress(((Armor)DataTables.GetItem((uint)this.items[(int)index])).GetSetID(), false);
 		}
 
 		droppedItemScript.SetItemID((uint)this.items[(int)index]);
@@ -106,7 +124,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	{
 		for (int i = 0; i < items.Count; i++)
 		{
-			Debug.Log("Dropping " + (uint)items[0]);
+			Debug.Log("Dropping item " + (uint)items[0]);
 			DropItem(0);
 		}
 	}
@@ -116,7 +134,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		int i = 0;
 		uint conflictingItem = 0; // If we have a weapon currently equipped on that same slot, return it
 
-		Item newItem = DataTables.getItem(item);
+		Item newItem = DataTables.GetItem(item);
 
 		if (newItem == null)
 		{ // Hmmm...
@@ -126,7 +144,7 @@ public class CharacterInventoryScript : MonoBehaviour
 
 		while (i < items.Count && conflictingItem == 0)
 		{
-			Item curItem = DataTables.getItem((uint)items[i]);
+			Item curItem = DataTables.GetItem((uint)items[i]);
 			if (curItem.isWeapon())
 			{ // TODO: Dual-wielding? Yay or nay?
 				if (newItem.isWeapon())
@@ -146,18 +164,18 @@ public class CharacterInventoryScript : MonoBehaviour
 
 		if (conflictingItem != 0)
 		{
-			Item thatItem = DataTables.getItem(conflictingItem);
+			Item thatItem = DataTables.GetItem(conflictingItem);
 			if (!thatItem.isWeapon())
 			{
 				UpdateSetProgress(((Armor)thatItem).GetSetID(), false);
 			}
 
 			this.items.Remove(conflictingItem);
-			Debug.Log("Player lost item " + conflictingItem + ": " + DataTables.getItem(conflictingItem).getName());
+			Debug.Log("Player lost item " + conflictingItem + ": " + DataTables.GetItem(conflictingItem).getName());
 		}
 
 		this.items.Add(item);
-		Debug.Log("Player gained item " + item + ": " + DataTables.getItem(item).getName());
+		Debug.Log("Player gained item " + item + ": " + DataTables.GetItem(item).getName());
 
 		if (!newItem.isWeapon())
 		{
@@ -171,7 +189,7 @@ public class CharacterInventoryScript : MonoBehaviour
 
 	public void SetItems(ArrayList items)
 	{ // Should only be called when spawning a monster
-		this.items = new ArrayList(items); // FIXME: Update set progress
+		this.items = new ArrayList(items);
 	}
 
 	public Weapon GetWeapon()
@@ -181,7 +199,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		while (i < this.items.Count)
 		{
 			uint id = (uint)this.items[i];
-			Item item = DataTables.getItem(id);
+			Item item = DataTables.GetItem(id);
 
 			if (item != null && item.isWeapon())
 			{
@@ -200,7 +218,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		while (i < this.items.Count)
 		{
 			uint id = (uint)this.items[i];
-			Item item = DataTables.getItem(id);
+			Item item = DataTables.GetItem(id);
 
 			if (item != null && !item.isWeapon() && ((Armor)item).GetSlot() == slot)
 			{
@@ -220,7 +238,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		while (i < this.items.Count)
 		{
 			uint id = (uint)this.items[i];
-			Item item = DataTables.getItem(id);
+			Item item = DataTables.GetItem(id);
 
 			if (item != null && !item.isWeapon())
 			{

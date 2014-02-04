@@ -10,7 +10,8 @@ public abstract class Item
 	protected uint recyclingXP;		// Experience reward for recycling this item
 	protected uint level;			// Quality level of this item
 	protected uint buffID;			// ID of the entry in the buff table carrying this item enables
-	protected bool iAmAWeapon;		// True if the item is a weapon, false otherwise
+
+	private bool iAmAWeapon;		// True if the item is a weapon, false if it is an armor
 
 	protected Item(string name,
 		string description,
@@ -18,7 +19,8 @@ public abstract class Item
 		string iconPath,
 		uint recyclingXP,
 		uint level,
-		uint buffID)
+		uint buffID,
+		bool isWeapon)
 	{
 		this.name = name;
 		this.description = description;
@@ -27,6 +29,7 @@ public abstract class Item
 		this.recyclingXP = recyclingXP;
 		this.level = level;
 		this.buffID = buffID;
+		this.iAmAWeapon = isWeapon;
 	}
 
 	public string getName()
@@ -61,7 +64,7 @@ public abstract class Item
 
 	public Buff getBuff()
 	{
-		return DataTables.getBuff(this.buffID);
+		return DataTables.GetBuff(this.buffID);
 	}
 
 	public bool isWeapon()

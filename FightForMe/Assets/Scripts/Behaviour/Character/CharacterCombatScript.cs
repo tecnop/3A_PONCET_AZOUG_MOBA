@@ -46,7 +46,15 @@ public class CharacterCombatScript : MonoBehaviour
 
 	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
 	{
-		GameObject sphere = (GameObject)Network.Instantiate(damageSpherePrefab, position, angle, 0);
+		GameObject sphere;
+		if (Network.isServer || Network.isClient)
+		{
+			sphere = (GameObject)Network.Instantiate(damageSpherePrefab, position, angle, 0);
+		}
+		else
+		{
+			sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
+		}
 		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
 		sphereScript.storeData(_manager, position, radius, this.gameObject.layer, damage, buffID, damageFlags);
 		//ArrayList array = sphereScript.GetResults();

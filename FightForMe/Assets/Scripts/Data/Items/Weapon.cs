@@ -28,7 +28,7 @@ public class Weapon : Item
 		uint projectileID = 0,
 		string effectPath = null,
 		string attackSoundPath = null)
-		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID)
+		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID, true)
 	{
 		this.weaponTypeID = weaponTypeID;
 		this.damage = damage;
@@ -37,7 +37,6 @@ public class Weapon : Item
 		this.projectileID = projectileID;
 		this.effectPath = effectPath;
 		this.attackSoundPath = attackSoundPath;
-		this.iAmAWeapon = true;
 	}
 
 	public float getDamage() { return this.damage; }
@@ -46,9 +45,9 @@ public class Weapon : Item
 	public string getEffect() { return this.effectPath; }
 	public string getAttackSound() { return this.attackSoundPath; }
 
-	public WeaponType getWeaponType() { return DataTables.getWeaponType(this.weaponTypeID); }
-	//public Projectile getProjectile() {return DataTables.getProjectile(this.projectileID);}
-	//public Skill getWeaponSkill() {return DataTables.getSkill(this.skillID);}
+	public WeaponType getWeaponType() { return DataTables.GetWeaponType(this.weaponTypeID); }
+	//public Projectile getProjectile() {return DataTables.GetProjectile(this.projectileID);}
+	//public Skill getWeaponSkill() {return DataTables.GetSkill(this.skillID);}
 
 	public float getScale() { return this.scale; }
 }

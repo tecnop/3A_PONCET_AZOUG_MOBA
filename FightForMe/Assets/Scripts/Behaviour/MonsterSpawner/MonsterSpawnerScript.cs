@@ -21,7 +21,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 
 	void Start()
 	{
-		if (!Network.isServer)
+		if (!GameData.isServer)
 		{ // We're a server-only entity
 			Destroy(this.gameObject);
 			return;
@@ -46,7 +46,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 
 	private void DoSpawnMonster(uint monsterID)
 	{
-		Monster monster = DataTables.getMonster(monsterID);
+		Monster monster = DataTables.GetMonster(monsterID);
 
 		if (monster == null)
 		{ // Hmmm...
@@ -55,7 +55,15 @@ public class MonsterSpawnerScript : MonoBehaviour
 		}
 
 		// Spawn the entity
-		GameObject monsterObject = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 0);
+		GameObject monsterObject;
+		if (Network.isServer)
+		{
+			monsterObject = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 0);
+		}
+		else
+		{
+			monsterObject = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
+		}
 
 		// Link us together
 		CharacterManager manager = monsterObject.GetComponent<CharacterManager>();
@@ -67,6 +75,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.getBehaviour());
 		manager.GetInventoryScript().SetItems(monster.getItems());
 		// TODO: Model, scale
+		manager.GetGraphicsLoader().LoadModel(monster.getModelPath());
 	}
 
 	public void Spawn()

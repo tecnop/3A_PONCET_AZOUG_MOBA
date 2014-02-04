@@ -29,7 +29,7 @@ public abstract class CharacterInputScript : MonoBehaviour
 			Vector3 newInput = UpdateDirectionalInput();
 			float newAngle = UpdateIdealOrientation();
 
-			ReadGenericInput(); // This one handles events by itself
+			ReadGenericInput(); // This one handles events by itself... store it in a struct maybe?
 
 			SetDirectionalInput(newInput);
 			SetIdealOrientation(newAngle);
@@ -42,16 +42,32 @@ public abstract class CharacterInputScript : MonoBehaviour
 		}
 	}
 
+	protected void SetAttackState(bool state)
+	{
+		_SetAttackState(state);
+
+		if (Network.isServer || Network.isClient)
+		{
+			_networkView.RPC("_SetAttackState", RPCMode.Others, state);
+		}
+	}
+
 	[RPC]
-	protected void SetDirectionalInput(Vector3 vec)
+	private void SetDirectionalInput(Vector3 vec)
 	{
 		this.directionalInput = vec;
 	}
 
 	[RPC]
-	protected void SetIdealOrientation(float yaw)
+	private void SetIdealOrientation(float yaw)
 	{
 		this.idealOrientation = yaw;
+	}
+
+	[RPC]
+	private void _SetAttackState(bool state)
+	{
+		_manager.GetCharacterAnimator().SetBool("isAttacking", state);
 	}
 
 	public Vector3 GetDirectionalInput()

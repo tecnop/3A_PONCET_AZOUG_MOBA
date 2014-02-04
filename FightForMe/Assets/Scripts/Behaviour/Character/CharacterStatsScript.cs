@@ -13,22 +13,22 @@ public class CharacterStatsScript : MonoBehaviour
 	private CharacterManager _manager;
 
 	// Ressources
-	float health;
-	float mana;
+	private float health;
+	private float mana;
 
 	// Stats
-	float maxHealth;
-	float healthRegen;		// In HP per second
+	private float maxHealth;
+	private float healthRegen;		// In HP per second
 
-	float maxMana;
-	float manaRegen;		// In MP per second
+	private float maxMana;
+	private float manaRegen;		// In MP per second
 
-	float damage;			// Damage per swing of the equipped weapon
-	float attackRate;		// Swings per second of the equipped weapon
-	float movementSpeed;	// Distance crossed by the player each second, in 0.01 of a game unit
+	private float damage;			// Damage per swing of the equipped weapon
+	private float attackRate;		// Swings per second of the equipped weapon
+	private float movementSpeed;	// Distance crossed by the player each second, in 0.01 of a game unit
 
 	// Total stats obtained from items and skills; they affect other stats in various ways
-	Stats stats;
+	private Stats stats;
 
 	private CharacterInventoryScript _inventory;
 	private CharacterCombatScript _combat;
@@ -64,7 +64,7 @@ public class CharacterStatsScript : MonoBehaviour
 			this.attackRate = weapon.getAttackRate();
 		}
 		else
-		{
+		{ // Use your fists! (Damage is only gained from agility)
 			this.damage = 0.0f;
 			this.attackRate = 1.0f;
 		}
@@ -86,7 +86,7 @@ public class CharacterStatsScript : MonoBehaviour
 			{
 				foreach (uint effect in buff.GetEffects())
 				{
-					effects.Add(DataTables.getEffect(effect));
+					effects.Add(DataTables.GetEffect(effect));
 				}
 			}
 		}
@@ -98,7 +98,7 @@ public class CharacterStatsScript : MonoBehaviour
 			{
 				foreach (uint effect in buff.GetEffects())
 				{
-					effects.Add(DataTables.getEffect(effect));
+					effects.Add(DataTables.GetEffect(effect));
 				}
 			}
 		}
@@ -115,9 +115,9 @@ public class CharacterStatsScript : MonoBehaviour
 		foreach (Effect effect in effects)
 		{ // Have fun parsing it... really tempted to make everything public :|
 			this.maxHealth += effect.GetFlatHP();
-			maxHealthPctChange *= effect.GetPctHP();
+			maxHealthPctChange += effect.GetPctHP();
 			this.maxMana += effect.GetFlatMP();
-			maxManaPctChange *= effect.GetPctMP();
+			maxManaPctChange += effect.GetPctMP();
 			this.healthRegen += effect.GetFlatHPRegen();
 			healthRegenPct += effect.GetPctHPRegen();
 			this.manaRegen += effect.GetFlatMPRegen();
@@ -133,11 +133,11 @@ public class CharacterStatsScript : MonoBehaviour
 
 		// Convert stats into... er... stats.
 		// I wanted to #define those ratios but apparently that doesn't work in C#? No internet atm :(
-		this.maxHealth		+= 10.0f	* this.stats.GetStrength();
-		this.healthRegen	+=  0.1f	* this.stats.GetStrength();
-		this.damage			+=  0.5f	* this.stats.GetAgility();
-		this.maxMana		+=  7.5f	* this.stats.GetIntelligence();
-		this.manaRegen		+=  0.2f	* this.stats.GetIntelligence();
+		this.maxHealth += 10.0f * this.stats.GetStrength();
+		this.healthRegen += 0.1f * this.stats.GetStrength();
+		this.damage += 0.5f * this.stats.GetAgility();
+		this.maxMana += 7.5f * this.stats.GetIntelligence();
+		this.manaRegen += 0.2f * this.stats.GetIntelligence();
 
 		// Apply percentage-based stat modifiers
 		this.maxHealth *= maxHealthPctChange;
@@ -163,6 +163,8 @@ public class CharacterStatsScript : MonoBehaviour
 			this.health *= healthChange;
 			this.mana *= manaChange;
 		}
+
+		//Debug.Log(_manager.name + " has " + this.health + "/" + this.maxHealth + " health");
 	}
 
 	public void ApplyRegen()
@@ -232,8 +234,14 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 	}
 
-	public float GetMovementSpeed()
-	{
-		return this.movementSpeed;
-	}
+	public float GetHealth() { return this.health; }
+	public float GetMana() { return this.mana; }
+	public float GetMaxHealth() { return this.maxHealth; }
+	public float GetHealthRegen() { return this.healthRegen; }
+	public float GetMaxMana() { return this.maxMana; }
+	public float GetManaRegen() { return this.manaRegen; }
+	public float GetDamage() { return this.damage; }
+	public float GetAttackRate() { return this.attackRate; }
+	public float GetMovementSpeed() { return this.movementSpeed; }
+	public Stats GetStats() { return this.stats; }
 }

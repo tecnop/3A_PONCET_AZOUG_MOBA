@@ -10,7 +10,7 @@ public class MonsterCampScript : MonoBehaviour
 
 	void Start()
 	{
-		if (!Network.isServer)
+		if (!GameData.isServer)
 		{ // We're a server-only entity
 			Destroy(this.gameObject);
 			return;

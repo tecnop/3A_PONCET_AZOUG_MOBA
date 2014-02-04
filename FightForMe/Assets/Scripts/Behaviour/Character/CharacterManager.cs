@@ -43,6 +43,9 @@ public class CharacterManager : MonoBehaviour
 	[SerializeField]
 	private CharacterPhysicsScript _physics;
 
+	[SerializeField]
+	private GraphicsLoader _graphics;
+
 	private bool isLocal = false;	// If true, the entity's input will be processed locally, otherwise it will be fetched from the network
 
 	private Transform _transform;
@@ -74,13 +77,17 @@ public class CharacterManager : MonoBehaviour
 
 	void Update()
 	{
+		if (GameData.gamePaused)
+		{ // No updating
+			return;
+		}
+
 		_vision.UpdateVision();
 
 		_input.UpdateInput();
 		_movement.ApplyMove(_input.GetDirectionalInput());
 		_movement.SetAngle(_input.GetIdealOrientation());
 		
-
 		if (_camera)
 		{
 			_camera.UpdateCamera();
@@ -108,4 +115,5 @@ public class CharacterManager : MonoBehaviour
 
 	public Transform GetCharacterTransform() { return _transform; }
 	public Animator GetCharacterAnimator() { return _animator.GetAnimator(); }
+	public GraphicsLoader GetGraphicsLoader() { return _graphics; }
 }

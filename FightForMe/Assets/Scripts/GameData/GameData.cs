@@ -11,5 +11,6 @@ using System.Collections;
 
 public static class GameData
 {
-	public static bool isServer;
+	public static bool isServer = false;
+	public static bool gamePaused = false;
 }

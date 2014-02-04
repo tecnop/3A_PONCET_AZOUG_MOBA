@@ -80,12 +80,12 @@ public class PlayerInputScript : CharacterInputScript
 		// How do we send that through the network?
 		if (Input.GetMouseButtonDown(0))
 		{
-			_manager.GetCharacterAnimator().SetBool("isAttacking", true);
+			SetAttackState(true);
 		}
 
 		if (Input.GetMouseButtonUp(0))
 		{
-			_manager.GetCharacterAnimator().SetBool("isAttacking", false);
+			SetAttackState(false);
 		}
 	}
 

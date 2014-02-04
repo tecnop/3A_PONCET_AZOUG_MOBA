@@ -20,7 +20,7 @@ public class InflictedBuff
 		this.endTime = Time.time + duration;
 		this.inflictor = inflictor;
 
-		this._buff = DataTables.getBuff(this.buffID);
+		this._buff = DataTables.GetBuff(this.buffID);
 	}
 
 	public string GetName()
@@ -34,7 +34,7 @@ public class InflictedBuff
 		ArrayList curEffects = _buff.GetEffects();
 		foreach (uint effect in curEffects)
 		{
-			res.Add(DataTables.getEffect(effect));
+			res.Add(DataTables.GetEffect(effect));
 		}
 		return res;
 	}

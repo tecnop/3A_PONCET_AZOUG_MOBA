@@ -20,22 +20,20 @@ public class Armor : Item
 		ArmorSlot slot = ArmorSlot.TORSO,
 		uint setID = 0,
 		Stats stats = null)
-		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID)
+		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID, false)
 	{
 		this.slot = slot;
 		this.setID = setID;
 
 		if (setID != 0)
 		{ // Notify the item set that a new item is now a part of it
-			DataTables.getArmorSet(setID).IncreaseSetSize();
+			DataTables.GetArmorSet(setID).IncreaseSetSize();
 		}
 
 		if (stats != null)
 			this.stats = stats;
 		else
 			this.stats = new Stats();
-
-		this.iAmAWeapon = false;
 	}
 
 	public ArmorSlot GetSlot() { return this.slot; }
