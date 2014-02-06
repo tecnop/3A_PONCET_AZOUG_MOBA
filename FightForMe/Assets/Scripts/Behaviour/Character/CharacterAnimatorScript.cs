@@ -38,4 +38,9 @@ public class CharacterAnimatorScript : MonoBehaviour
 	{
 
 	}
+
+	public void isDead()
+	{
+		print ("X_X");
+	}
 }
