@@ -9,6 +9,9 @@ public class PlayerCameraScript : MonoBehaviour
 	[SerializeField]
 	private Camera _camera;
 
+	[SerializeField]
+	private PlayerHUDScript _hudScript;
+
 	private Transform _characterTransform;
 	private Transform _myTransform;
 
@@ -19,6 +22,8 @@ public class PlayerCameraScript : MonoBehaviour
 
 		_characterTransform = _manager.GetCharacterTransform();
 		_myTransform = this.transform;
+
+		_hudScript._Initialize(manager);
 	}
 
 	public Camera GetCamera()

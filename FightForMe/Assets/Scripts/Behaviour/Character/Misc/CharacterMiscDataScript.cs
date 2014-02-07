@@ -12,8 +12,5 @@ public abstract class CharacterMiscDataScript : MonoBehaviour
 {
 	protected CharacterManager _manager;
 
-	public void Initialize(CharacterManager manager)
-	{
-		_manager = manager;
-	}
+	public abstract void Initialize(CharacterManager manager);
 }

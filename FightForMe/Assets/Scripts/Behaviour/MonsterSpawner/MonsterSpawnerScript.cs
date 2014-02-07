@@ -74,8 +74,9 @@ public class MonsterSpawnerScript : MonoBehaviour
 		monsterObject.name = monster.getName();
 		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.getBehaviour());
 		manager.GetInventoryScript().SetItems(monster.getItems());
-		// TODO: Model, scale
+
 		manager.GetGraphicsLoader().LoadModel(monster.getModelPath());
+		//manager.GetCharacterTransform().localScale *= monster.getScale(); // Serialize Transform on the manager if we want to do that
 	}
 
 	public void Spawn()
@@ -116,6 +117,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 		else if ((uint)_monsterList[0] == 2)
 		{ // The Lord is dead! (hard-coded for now)
 			// Here: Victory sequence
+			Debug.Log("Lord died!");
 		}
 		else
 		{ // Kill us or respawn him? I'll go with respawn for now for debugging

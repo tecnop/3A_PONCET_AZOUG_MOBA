@@ -183,8 +183,8 @@ public class NPCAIScript : CharacterInputScript
 	}
 
 	protected override void ReadGenericInput()
-	{ // Here: more AI (attacking, etc.) TODO: Send it through the network somehow
-		SetAttackState(target && goalReached);
+	{ // Here: more AI (attacking, etc.)
+		SetAttackState(target && goalReached && Vector3.Distance(_characterTransform.position, targetTransform.position) <= approachRange*1.1f);
 	}
 
 	public void SetBehaviour(AIType behaviour)

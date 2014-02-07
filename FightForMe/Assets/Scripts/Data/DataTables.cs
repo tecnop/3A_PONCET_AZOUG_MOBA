@@ -76,6 +76,7 @@ public static class DataTables
 		buffTable.Add(1, new Buff(name: "Seigneur", effects: temp));
 
 		// Skills
+		skillTable.Add(1, new Skill(name: "Première compétence"));
 
 		// Projectiles
 		projectileTable.Add(1, new Projectile(name: "Flèche du seigneur", damage: 30.0f, speed: 5.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));

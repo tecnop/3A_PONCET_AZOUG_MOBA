@@ -1,10 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-/*
- * Update : Mr.p 30 01 2014
- * > Ajout de l'entrée "isDead" = true sur l'animator
- * 
- */
+
 public class PlayerEventScript : CharacterEventScript
 {
 	public override void Initialize(CharacterManager manager)
@@ -20,7 +16,9 @@ public class PlayerEventScript : CharacterEventScript
 	public override void OnDeath(CharacterManager killer)
 	{
 
-		_manager.GetCharacterAnimator ().SetBool("isDead", true);
+		_manager.GetCharacterAnimator().SetBool("isDead", true);
+
+		//((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpawner().OnBoundEntityDeath();
 	}
 
 	public override void OnSpotEntity(GameObject entity)

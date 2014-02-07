@@ -103,7 +103,18 @@ public class CharacterStatsScript : MonoBehaviour
 			}
 		}
 
-		// TODO: Buffs from skills
+		if (_manager.GetCameraScript())
+		{ // THIS IS A TERRIBLE WAY TO CHECK IF WE'RE A PLAYER
+			ArrayList unlockedSkills = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetUnlockedSkills();
+			foreach (Skill skill in unlockedSkills)
+			{
+				Effect effect = skill.GetEffect();
+				if (effect != null)
+				{
+					effects.Add(effect);
+				}
+			}
+		}
 
 		float maxHealthPctChange = 1.0f;
 		float maxManaPctChange = 1.0f;
@@ -113,7 +124,7 @@ public class CharacterStatsScript : MonoBehaviour
 		float damagePctChange = 1.0f;
 
 		foreach (Effect effect in effects)
-		{ // Have fun parsing it... really tempted to make everything public :|
+		{ // I had a lot of fun writing this particular bit
 			this.maxHealth += effect.GetFlatHP();
 			maxHealthPctChange += effect.GetPctHP();
 			this.maxMana += effect.GetFlatMP();

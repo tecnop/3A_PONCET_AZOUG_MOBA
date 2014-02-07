@@ -11,6 +11,9 @@ using System.Collections;
 public class CharacterManager : MonoBehaviour
 {
 	[SerializeField]
+	private Transform _transform;
+
+	[SerializeField]
 	private CharacterInputScript _input;
 
 	[SerializeField]
@@ -48,12 +51,8 @@ public class CharacterManager : MonoBehaviour
 
 	private bool isLocal = false;	// If true, the entity's input will be processed locally, otherwise it will be fetched from the network
 
-	private Transform _transform;
-
 	void Start()
 	{
-		_transform = this.transform;
-
 		// Link all the serialized scripts to us and initialize them
 		// THIS ORDER IS IMPORTANT (TO AN EXTENT)
 		if (_camera != null && isLocal)
@@ -62,13 +61,13 @@ public class CharacterManager : MonoBehaviour
 		}
 		_inventory.Initialize(this);
 		_combat.Initialize(this);
-		_stats.Initialize(this);
-		_event.Initialize(this);
-		_vision.Initialize(this);
 		if (_misc != null)
 		{
 			_misc.Initialize(this);
 		}
+		_stats.Initialize(this);
+		_event.Initialize(this);
+		_vision.Initialize(this);
 		_animator.Initialize(this);
 		_movement.Initialize(this);
 		_input.Initialize(this);
@@ -88,7 +87,7 @@ public class CharacterManager : MonoBehaviour
 		_movement.ApplyMove(_input.GetDirectionalInput());
 		_movement.SetAngle(_input.GetIdealOrientation());
 		
-		if (_camera)
+		if (_camera && isLocal)
 		{
 			_camera.UpdateCamera();
 		}

@@ -30,8 +30,8 @@ public class InflictedBuff
 
 	public ArrayList GetEffects()
 	{
-		ArrayList res = new ArrayList();
 		ArrayList curEffects = _buff.GetEffects();
+		ArrayList res = new ArrayList(curEffects.Count);
 		foreach (uint effect in curEffects)
 		{
 			res.Add(DataTables.GetEffect(effect));

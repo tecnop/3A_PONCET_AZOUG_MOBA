@@ -250,6 +250,26 @@ public class CharacterInventoryScript : MonoBehaviour
 		return res;
 	}
 
+	public ArrayList GetItems()
+	{ // Return type: Item
+		int i = 0;
+		ArrayList res = new ArrayList(this.items.Count);
+
+		while (i < this.items.Count)
+		{
+			uint id = (uint)this.items[i];
+			Item item = DataTables.GetItem(id);
+
+			if (item != null)
+			{
+				res.Add(item);
+			}
+			i++;
+		}
+
+		return res;
+	}
+
 	public ArrayList GetCompletedSets()
 	{
 		return this.completedSets;
