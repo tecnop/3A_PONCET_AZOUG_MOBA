@@ -27,11 +27,13 @@ public class GameMasterScript : MonoBehaviour
 
 	void Start()
 	{
+		//print("PREFS INFO = serv " + PlayerPrefs.GetInt("isServer") + ", bot " + PlayerPrefs.GetInt("isBotGame")+ ", ip " + PlayerPrefs.GetString("ipAddress"));
+
 		Application.runInBackground = true;
 
-		if (!isBotGame)
+		if (PlayerPrefs.GetInt("isBotGame")!= 1)//isBotGame
 		{
-			if (isServer)
+			if (PlayerPrefs.GetInt("isServer") == 1)
 			{
 				GameData.isServer = true;
 				player1.MakeLocal();
@@ -41,8 +43,10 @@ public class GameMasterScript : MonoBehaviour
 			}
 			else
 			{
+
 				player2.MakeLocal();
-				Network.Connect("127.0.0.1", 6600);
+				// Test existence of the ipaddress ?
+				Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600); // 127.0.0.1
 			}
 		}
 		else

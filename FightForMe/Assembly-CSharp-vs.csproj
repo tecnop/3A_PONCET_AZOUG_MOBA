@@ -89,6 +89,7 @@
      <Compile Include="Assets\Scripts\GameData\GameData.cs" />
      <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
      <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
+     <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
