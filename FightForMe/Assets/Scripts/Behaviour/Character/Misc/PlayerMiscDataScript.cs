@@ -3,11 +3,12 @@ using System.Collections;
 
 public class PlayerMiscDataScript : CharacterMiscDataScript
 {
-	private TeamEntitySpawnerScript spawner;	// Entity that spawned us
+	private PlayerSpawnerScript spawner;		// Entity that spawned us
 
 	private ArrayList unlockedSkills;			// Skills we have learned so far (type: Skill)
 	private ArrayList availableSkills;			// Neighbours of unlocked skills (type: Skill)
 	private uint skillPoints;					// Skill points left to spend
+	private uint experience;					// Our current progress to a new skill point
 
 	public override void Initialize(CharacterManager manager)
 	{
@@ -21,12 +22,12 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		LearnSkill(1); // And learn it
 	}
 
-	public void SetSpawner(TeamEntitySpawnerScript spawner)
+	public override void SetSpawner(SpawnerScript spawner)
 	{
-		this.spawner = spawner;
+		this.spawner = (PlayerSpawnerScript)spawner;
 	}
 
-	public TeamEntitySpawnerScript GetSpawner()
+	public override SpawnerScript GetSpawner()
 	{
 		return this.spawner;
 	}
@@ -61,6 +62,8 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		}
 
 		skillPoints--;
+
+		_manager.GetStatsScript().UpdateStats();
 	}
 
 	public void LearnSkill(uint skillID)
@@ -81,5 +84,20 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 	public uint GetSkillPoints()
 	{
 		return this.skillPoints;
+	}
+
+	public void GainExperience(uint amount)
+	{
+		this.experience += amount;
+		while (experience >= 100)
+		{
+			experience -= 100;
+			skillPoints++;
+		}
+	}
+
+	public uint GetExperience()
+	{
+		return this.experience;
 	}
 }

@@ -60,8 +60,8 @@ public class CharacterStatsScript : MonoBehaviour
 		this.healthRegen = this.manaRegen = 0.0f;
 		if (weapon != null)
 		{
-			this.damage = weapon.getDamage();
-			this.attackRate = weapon.getAttackRate();
+			this.damage = weapon.GetDamage();
+			this.attackRate = weapon.GetAttackRate();
 		}
 		else
 		{ // Use your fists! (Damage is only gained from agility)
@@ -81,7 +81,7 @@ public class CharacterStatsScript : MonoBehaviour
 
 		foreach (Armor armor in armorList)
 		{ // Tempted to make armor pieces apply the buff as they are equipped, buuuut... meh...
-			Buff buff = armor.getBuff();
+			Buff buff = armor.GetBuff();
 			if (buff != null)
 			{
 				foreach (uint effect in buff.GetEffects())
@@ -89,6 +89,8 @@ public class CharacterStatsScript : MonoBehaviour
 					effects.Add(DataTables.GetEffect(effect));
 				}
 			}
+
+			this.stats += armor.GetStats(); // Armors have this little extra thing
 		}
 
 		foreach (ArmorSet set in _inventory.GetCompletedSets())

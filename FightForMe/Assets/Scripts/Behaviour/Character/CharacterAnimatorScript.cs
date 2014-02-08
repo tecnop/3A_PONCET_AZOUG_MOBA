@@ -30,8 +30,8 @@ public class CharacterAnimatorScript : MonoBehaviour
 	}
 
 	public void DoAttack()
-	{ // TODO: Check our weapon type and effects
-		_manager.GetCombatScript().AreaOfEffect(_transform.position, _transform.rotation, 2.0f, _manager.GetStatsScript().GetDamage());
+	{
+		_manager.GetCombatScript().DoAttack();
 	}
 
 	public void UseAbility()

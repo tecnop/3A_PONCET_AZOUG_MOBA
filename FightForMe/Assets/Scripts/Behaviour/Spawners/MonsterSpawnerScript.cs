@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MonsterSpawnerScript : MonoBehaviour
+public class MonsterSpawnerScript : SpawnerScript
 {
 	[SerializeField] // WHY CAN'T UNSIGNED INTEGERS BE SERIALIZED
 	private int[] _monsterList;		// List of monsters we should spawn (index is the level of the camp)
@@ -71,15 +71,15 @@ public class MonsterSpawnerScript : MonoBehaviour
 		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
 
 		// Set him the data we got from the data table
-		monsterObject.name = monster.getName();
-		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.getBehaviour());
-		manager.GetInventoryScript().SetItems(monster.getItems());
+		monsterObject.name = monster.GetName();
+		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.GetBehaviour());
+		manager.GetInventoryScript().SetItems(monster.GetItems());
 
-		manager.GetGraphicsLoader().LoadModel(monster.getModelPath());
-		//manager.GetCharacterTransform().localScale *= monster.getScale(); // Serialize Transform on the manager if we want to do that
+		manager.GetGraphicsLoader().LoadModel(monster.GetModelPath());
+		//manager.GetCharacterTransform().localScale *= monster.GetScale();
 	}
 
-	public void Spawn()
+	public override void Spawn()
 	{
 		if (_monsterList.Length == 0)
 		{ // We don't have any bound monsters, no reason for us to be here (checking again in case dynamic stuff happens)
@@ -108,7 +108,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 		DoSpawnMonster(monsterID);
 	}
 
-	public void OnBoundMonsterDeath()
+	public override void OnSpawnedEntityDeath()
 	{
 		if (camp)
 		{

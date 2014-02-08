@@ -11,13 +11,13 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 		_manager = manager;
 	}
 
-	public void SetSpawner(MonsterSpawnerScript spawner)
+	public override void SetSpawner(SpawnerScript spawner)
 	{
-		this.spawner = spawner;
+		this.spawner = (MonsterSpawnerScript)spawner;
 		this.spawnerPos = spawner.transform.position;
 	}
 
-	public MonsterSpawnerScript GetSpawner()
+	public override SpawnerScript GetSpawner()
 	{
 		return this.spawner;
 	}

@@ -23,6 +23,11 @@ public class InflictedBuff
 		this._buff = DataTables.GetBuff(this.buffID);
 	}
 
+	public void AddToDuration(float time)
+	{
+		this.endTime += time;
+	}
+
 	public string GetName()
 	{
 		return _buff.GetName();

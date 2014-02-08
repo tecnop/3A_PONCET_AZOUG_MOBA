@@ -13,4 +13,7 @@ public abstract class CharacterMiscDataScript : MonoBehaviour
 	protected CharacterManager _manager;
 
 	public abstract void Initialize(CharacterManager manager);
+
+	public abstract void SetSpawner(SpawnerScript spawner);
+	public abstract SpawnerScript GetSpawner();
 }

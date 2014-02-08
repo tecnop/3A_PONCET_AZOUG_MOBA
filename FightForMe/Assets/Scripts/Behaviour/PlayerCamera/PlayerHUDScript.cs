@@ -103,6 +103,19 @@ public class PlayerHUDScript : MonoBehaviour
 				}
 			}
 
+			{ // XP bar
+				uint curXP = _misc.GetExperience();
+				{ // Background
+					Rect barRect = new Rect(0.3f * w, 0.95f * h, 0.4f * w, 0.025f * h);
+					GUI.Box(barRect, GUIContent.none);
+					GUI.Label(barRect, curXP + " / " + 100 + " XP", mid);
+				}
+				if (curXP > 0)
+				{ // Bar
+					GUI.Box(new Rect(0.3f * w, 0.95f * h, ((float)curXP / 100.0f) * 0.4f * w, 0.025f * h), GUIContent.none);
+				}
+			}
+
 			{ // Menu buttons
 				if (GUI.Button(new Rect(0.775f * w, 0.825f * h, 0.2f * w, 0.075f * h), "Inventaire"))
 				{
@@ -140,7 +153,7 @@ public class PlayerHUDScript : MonoBehaviour
 					uint i=0;
 					foreach (Item item in objects)
 					{
-						if (GUI.Button(new Rect(0.0f, 40.0f * i, menuW, 40.0f * (i+1)), item.getName()))
+						if (GUI.Button(new Rect(0.0f, 40.0f * i, menuW, 40.0f), item.GetName()))
 						{
 							_manager.GetInventoryScript().DropItem(i);
 						}
@@ -149,11 +162,11 @@ public class PlayerHUDScript : MonoBehaviour
 				}
 				else if (curMenu == HUDMenu.Skill)
 				{
-					ArrayList objects = _misc.GetAvailableSkills();
+					ArrayList objects = new ArrayList(_misc.GetAvailableSkills());
 					uint i=0;
 					foreach (Skill skill in objects)
 					{
-						if (GUI.Button(new Rect(0.0f, 40.0f * i, menuW, 40.0f * (i + 1)), skill.GetName()))
+						if (GUI.Button(new Rect(0.0f, 40.0f * i, menuW, 40.0f), skill.GetName()))
 						{
 							_misc.LearnSkill(skill);
 						}

@@ -18,7 +18,7 @@ public class PlayerEventScript : CharacterEventScript
 
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
 
-		//((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpawner().OnBoundEntityDeath();
+		//_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
 	}
 
 	public override void OnSpotEntity(GameObject entity)

@@ -35,6 +35,7 @@ public class GameMasterScript : MonoBehaviour
 			{
 				GameData.isServer = true;
 				player1.MakeLocal();
+				GameData.activePlayer = player1;
 				Network.maxConnections = 1;
 				Network.InitializeSecurity();
 				Network.InitializeServer(2, 6600, true);
@@ -42,6 +43,7 @@ public class GameMasterScript : MonoBehaviour
 			else
 			{
 				player2.MakeLocal();
+				GameData.activePlayer = player2;
 				Network.Connect("127.0.0.1", 6600);
 			}
 		}
@@ -49,6 +51,7 @@ public class GameMasterScript : MonoBehaviour
 		{
 			GameData.isServer = true;
 			player1.MakeLocal();
+			GameData.activePlayer = player1; // Temporary?
 			//player2.MakeBotOrSomething();
 		}
 
@@ -88,6 +91,11 @@ public class GameMasterScript : MonoBehaviour
 		if (Time.time - lastSpawnTime > 120.0f)
 		{ // There is probably a better way to run such a simple timer...
 			SpawnCamps();
+		}
+
+		if (GameData.gamePaused)
+		{ // Make the timer catch up
+			lastSpawnTime += Time.deltaTime;
 		}
 	}
 

@@ -23,11 +23,11 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnDeath(CharacterManager killer)
 	{
-		MonsterSpawnerScript spawner = _misc.GetSpawner();
+		MonsterSpawnerScript spawner = (MonsterSpawnerScript)_misc.GetSpawner();
 
 		if (spawner)
 		{
-			spawner.OnBoundMonsterDeath();
+			spawner.OnSpawnedEntityDeath();
 		}
 
 		_inventory.DropAllItems();

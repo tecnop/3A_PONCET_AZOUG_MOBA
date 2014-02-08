@@ -24,13 +24,22 @@ public class Skill
 	public Skill(string name,
 		string description = null,
 		SkillColor color = SkillColor.W,
-		uint effect = 0)
+		uint effect = 0,
+		uint[] neighbours = null)
 	{
 		this.name = name;
 		this.description = description;
 		this.color = color;
 		this.effect = effect;
-		this.neighbours = new ArrayList();
+
+		if (neighbours == null)
+		{
+			this.neighbours = new ArrayList();
+		}
+		else
+		{
+			this.neighbours = new ArrayList(neighbours);
+		}
 	}
 
 	public string GetName()

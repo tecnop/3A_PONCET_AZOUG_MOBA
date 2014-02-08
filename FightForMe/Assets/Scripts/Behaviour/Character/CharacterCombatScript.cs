@@ -14,7 +14,12 @@ public class CharacterCombatScript : MonoBehaviour
 	[SerializeField]
 	private GameObject damageSpherePrefab;
 
+	[SerializeField]
+	private GameObject projectilePrefab;
+
 	private CharacterManager _manager;
+
+	private Transform _transform;
 
 	private ArrayList buffs;		// List of active buffs and debuffs (type: InflictedBuff)
 	// TODO: Add a list of effects built from the list of buffs for quicker access? Would building it be more expensive than accessing each entry individually...?
@@ -22,6 +27,7 @@ public class CharacterCombatScript : MonoBehaviour
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
+		_transform = this.transform;
 
 		if (buffs == null)
 		{
@@ -57,11 +63,60 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
 		sphereScript.storeData(_manager, position, radius, this.gameObject.layer, damage, buffID, damageFlags);
-		//ArrayList array = sphereScript.GetResults();
+	}
+
+	public void ShootProjectile(Projectile projectile)
+	{
+		GameObject proj;
+		if (Network.isServer || Network.isClient)
+		{
+			proj = (GameObject)Network.Instantiate(projectilePrefab, _transform.position, _transform.rotation, 0);
+		}
+		else
+		{
+			proj = (GameObject)Instantiate(projectilePrefab, _transform.position, _transform.rotation);
+		}
+		proj.name = projectile.GetName();
+		ProjectileScript projScript = proj.GetComponent<ProjectileScript>();
+		projScript.StoreData(_manager, this.gameObject.layer, projectile.GetSpeed(), projectile.GetDamage(), projectile.GetImpactRadius(), projectile.GetBuffID(), projectile.GetBuffDuration());
+		projScript.GetGraphicsLoader().LoadModel(projectile.GetModelPath());
+	}
+
+	public void DoMeleeAttack()
+	{ // TODO: Inflict buffs
+		AreaOfEffect(_transform.position, _transform.rotation, 2.0f, _manager.GetStatsScript().GetDamage());
+	}
+
+	public void DoAttack()
+	{ // Main attack function
+		Weapon myWeapon = _manager.GetInventoryScript().GetWeapon();
+		
+		if (myWeapon == null)
+		{ // Using our fists
+			DoMeleeAttack();
+			return;
+		}
+
+		WeaponType type = myWeapon.GetWeaponType();
+		if (type == null || !type.IsRanged())
+		{
+			DoMeleeAttack();
+		}
+
+		Projectile proj = myWeapon.GetProjectile();
+		if (proj != null)
+		{
+			ShootProjectile(proj);
+		}
 	}
 
 	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration)
 	{
+		if (DataTables.GetBuff(buffID) == null)
+		{ // DEBUG
+			return;
+		}
+
 		this.buffs.Add(new InflictedBuff(buffID, duration, inflictor));
 		_manager.GetStatsScript().UpdateStats();
 	}
@@ -76,7 +131,13 @@ public class CharacterCombatScript : MonoBehaviour
 		bool updated = false;
 		for (int i = 0; i < buffs.Count; i++)
 		{
-			if (((InflictedBuff)buffs[i]).GetTimeLeft() <= 0.0f)
+			InflictedBuff buff = (InflictedBuff)buffs[i];
+			if (GameData.gamePaused)
+			{ // Don't lose the time spent with the game paused
+				buff.AddToDuration(Time.deltaTime);
+			}
+
+			if (buff.GetTimeLeft() <= 0.0f)
 			{
 				buffs.RemoveAt(i);
 				i--;

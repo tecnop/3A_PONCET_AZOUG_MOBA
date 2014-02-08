@@ -26,7 +26,7 @@ public class CharacterVisionScript : MonoBehaviour
 
 		lastUpdate = Time.time;
 		_event = _manager.GetEventScript();
-		_collider = _manager.GetMovementScript().collider;
+		_collider = _manager.GetPhysicsScript().collider;
 		_transform = this.transform;
 
 		entitiesInSight = new GameObject[1];

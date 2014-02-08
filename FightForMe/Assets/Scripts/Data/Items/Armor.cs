@@ -14,7 +14,7 @@ public class Armor : Item
 		string description = null,
 		string modelPath = null,
 		string iconPath = null,
-		uint recyclingXP = 0,
+		uint recyclingXP = 100,
 		uint level = 0,
 		uint skillID = 0,
 		ArmorSlot slot = ArmorSlot.TORSO,
@@ -38,4 +38,5 @@ public class Armor : Item
 
 	public ArmorSlot GetSlot() { return this.slot; }
 	public uint GetSetID() { return this.setID; }
+	public Stats GetStats() { return this.stats; }
 }

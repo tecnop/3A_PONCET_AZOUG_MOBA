@@ -18,7 +18,7 @@ public class Weapon : Item
 		string description = null,
 		string modelPath = null,
 		string iconPath = null,
-		uint recyclingXP = 0,
+		uint recyclingXP = 100,
 		uint level = 0,
 		uint skillID = 0,
 		uint weaponTypeID = 0,
@@ -39,15 +39,14 @@ public class Weapon : Item
 		this.attackSoundPath = attackSoundPath;
 	}
 
-	public float getDamage() { return this.damage; }
-	public float getAttackRate() { return this.attackRate; }
+	public float GetDamage() { return this.damage; }
+	public float GetAttackRate() { return this.attackRate; }
 
-	public string getEffect() { return this.effectPath; }
-	public string getAttackSound() { return this.attackSoundPath; }
+	public string GetEffect() { return this.effectPath; }
+	public string GetAttackSound() { return this.attackSoundPath; }
 
-	public WeaponType getWeaponType() { return DataTables.GetWeaponType(this.weaponTypeID); }
-	//public Projectile getProjectile() {return DataTables.GetProjectile(this.projectileID);}
-	//public Skill getWeaponSkill() {return DataTables.GetSkill(this.skillID);}
+	public WeaponType GetWeaponType() { return DataTables.GetWeaponType(this.weaponTypeID); }
+	public Projectile GetProjectile() {return DataTables.GetProjectile(this.projectileID);}
 
-	public float getScale() { return this.scale; }
+	public float GetScale() { return this.scale; }
 }

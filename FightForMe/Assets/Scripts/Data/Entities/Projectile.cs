@@ -44,4 +44,15 @@ public class Projectile
 		this.hitboxSize = hitboxSize;
 		this.trajectory = trajectory;
 	}
+
+	public string GetName() { return this.name; }
+	public string GetModelPath() { return this.modelPath; }
+	public string GetEffectPath() { return this.effectPath; }
+	public string GetImpactEffectPath() { return this.impactEffectPath; }
+	public float GetDamage() { return this.damage; }
+	public float GetSpeed() { return this.speed; }
+	public float GetImpactRadius() { return this.impactRadius; }
+	public uint GetBuffID() { return this.buffID; }
+	public Buff GetBuff() { return DataTables.GetBuff(this.buffID); } // Adding them both in this case
+	public float GetBuffDuration() { return this.buffDuration; }
 }

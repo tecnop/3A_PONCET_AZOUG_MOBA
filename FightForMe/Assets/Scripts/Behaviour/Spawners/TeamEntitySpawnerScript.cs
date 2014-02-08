@@ -8,7 +8,7 @@ public enum TeamEntity
 	Lord
 }
 
-public class TeamEntitySpawnerScript : MonoBehaviour
+public class TeamEntitySpawnerScript : SpawnerScript
 {
 	[SerializeField]
 	private TeamEntity _entityType;			// Which type of team entity we're spawning
@@ -34,7 +34,7 @@ public class TeamEntitySpawnerScript : MonoBehaviour
 		playerIsDead = false;
 	}
 
-	public void OnBoundEntityDeath()
+	public override void OnSpawnedEntityDeath()
 	{
 		if (_entityType == TeamEntity.Lord)
 		{ // The Lord is dead!
@@ -47,7 +47,7 @@ public class TeamEntitySpawnerScript : MonoBehaviour
 		}
 	}
 
-	public void Spawn()
+	public override void Spawn()
 	{
 		if (playerIsDead)
 		{

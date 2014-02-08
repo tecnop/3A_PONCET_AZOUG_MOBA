@@ -52,7 +52,15 @@ public class DetectionSphereScript : MonoBehaviour
 
 		entities.Add(col);
 
-		applyToCharacter(col.GetComponent<CharacterPhysicsScript>().GetManager());
+		CharacterPhysicsScript phys = col.GetComponent<CharacterPhysicsScript>();
+		if (phys)
+		{
+			applyToCharacter(phys.GetManager());
+		}
+		else
+		{
+			Debug.LogWarning("Detection sphere found something else than a player");
+		}
 	}
 
 	void LateUpdate()
