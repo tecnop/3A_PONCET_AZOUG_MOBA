@@ -141,7 +141,9 @@ public static class DataTables
 		temp[2] = 6;
 		temp[3] = 7;
 		temp[4] = 8;
+		// ============= HARD-CODED REFERENCE =============
 		monsterTable.Add(2, new Monster(name: "Lord", behaviour: AIType.defensive, items: temp));
+		// ============= HARD-CODED REFERENCE =============
 	}
 
 	public static Item GetItem(uint key)

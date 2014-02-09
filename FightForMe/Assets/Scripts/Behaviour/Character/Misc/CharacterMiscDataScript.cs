@@ -12,8 +12,24 @@ public abstract class CharacterMiscDataScript : MonoBehaviour
 {
 	protected CharacterManager _manager;
 
+	protected SpawnerScript _spawner;
+	protected Vector3 _spawnerPos;
+
 	public abstract void Initialize(CharacterManager manager);
 
-	public abstract void SetSpawner(SpawnerScript spawner);
-	public abstract SpawnerScript GetSpawner();
+	public void SetSpawner(SpawnerScript spawner)
+	{
+		this._spawner = spawner;
+		this._spawnerPos = spawner.transform.position;
+	}
+
+	public SpawnerScript GetSpawner()
+	{
+		return this._spawner;
+	}
+
+	public Vector3 GetSpawnPos()
+	{
+		return this._spawnerPos;
+	}
 }

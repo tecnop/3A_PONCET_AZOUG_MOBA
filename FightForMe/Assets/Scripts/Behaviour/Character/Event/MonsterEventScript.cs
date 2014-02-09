@@ -22,7 +22,7 @@ public class MonsterEventScript : CharacterEventScript
 
 		if (!_ai.HasAnEnemy() &&
 			inflictor.tag == "Player" &&
-			LayerMask.LayerToName(inflictor.gameObject.layer) != "NeutralEntity")
+			inflictor.gameObject.layer != _manager.gameObject.layer)
 		{
 			Debug.Log("Monster acquired an enemy: " + inflictor.name);
 			_ai.SetTarget(inflictor.gameObject);
@@ -56,7 +56,7 @@ public class MonsterEventScript : CharacterEventScript
 	{
 		if (_ai.IsSearchingEnemy() &&
 			entity.tag == "Player" &&
-			LayerMask.LayerToName(entity.layer) != "NeutralEntity")
+			entity.gameObject.layer != _manager.gameObject.layer)
 		{
 			Debug.Log("Monster acquired an enemy: " + entity.name);
 			_ai.SetTarget(entity);

@@ -3,8 +3,6 @@ using System.Collections;
 
 public class PlayerMiscDataScript : CharacterMiscDataScript
 {
-	private PlayerSpawnerScript spawner;		// Entity that spawned us
-
 	private ArrayList unlockedSkills;			// Skills we have learned so far (type: Skill)
 	private ArrayList availableSkills;			// Neighbours of unlocked skills (type: Skill)
 	private uint skillPoints;					// Skill points left to spend
@@ -20,16 +18,6 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		skillPoints = 1; // Give us a point
 		availableSkills.Add(DataTables.GetSkill(1));	// Force the first skill to be available
 		LearnSkill(1); // And learn it
-	}
-
-	public override void SetSpawner(SpawnerScript spawner)
-	{
-		this.spawner = (PlayerSpawnerScript)spawner;
-	}
-
-	public override SpawnerScript GetSpawner()
-	{
-		return this.spawner;
 	}
 
 	public void LearnSkill(Skill skill)
