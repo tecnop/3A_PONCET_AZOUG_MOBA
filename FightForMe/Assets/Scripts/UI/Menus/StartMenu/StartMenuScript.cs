@@ -64,8 +64,9 @@ public class StartMenuScript : MonoBehaviour {
 
 	private void drawMainMenu()
 	{
-		GUILayout.BeginArea (new Rect (mainScreenLeft, 100f, boxMultiWidth, boxMultiHeight));
-		
+
+		GUILayout.BeginArea (new Rect (mainScreenLeft, (Screen.height / 6), boxMultiWidth, boxMultiHeight));
+
 		GUILayout.Label ("Multi");
 		
 		if (GUILayout.Button("Héberger")) {
@@ -86,7 +87,7 @@ public class StartMenuScript : MonoBehaviour {
 		
 		GUILayout.EndArea ();
 		
-		GUILayout.BeginArea (new Rect (mainScreenLeft, mainScreenCurrentTop + 100f, boxQuitWidth, boxQuitHeight));
+		GUILayout.BeginArea (new Rect (mainScreenLeft,(float)(Screen.height / 2.5f), boxQuitWidth, boxQuitHeight));
 		
 		GUILayout.Label ("Mono");
 		
@@ -97,7 +98,7 @@ public class StartMenuScript : MonoBehaviour {
 		
 		GUILayout.EndArea ();
 		
-		GUILayout.BeginArea (new Rect (mainScreenLeft, mainScreenCurrentTop + 200f, boxMonoWidth, boxMonoHeight));
+		GUILayout.BeginArea (new Rect (mainScreenLeft, (float)(Screen.height / 1.5f), boxMonoWidth, boxMonoHeight));
 		
 		if(GUILayout.Button("Quitter")) {
 			
@@ -110,7 +111,7 @@ public class StartMenuScript : MonoBehaviour {
 
 	private void drawLobby()
 	{
-		GUILayout.BeginArea (new Rect (mainScreenLeft, 100f, boxMultiWidth, boxMultiHeight));
+		GUILayout.BeginArea (new Rect (mainScreenLeft, (Screen.height / 6), boxMultiWidth, boxMultiHeight));
 		GUILayout.Label ("En attente d'un autre joueur ...");
 		if(GUILayout.Button("Revenir")) {
 			planeAnimator.Play("Angry");

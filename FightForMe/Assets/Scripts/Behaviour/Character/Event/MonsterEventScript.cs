@@ -18,6 +18,8 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnPain(CharacterManager inflictor, float damage)
 	{
+		_manager.GetCharacterAnimator ().SetBool ("onPain", true);
+
 		if (!_ai.HasAnEnemy() &&
 			inflictor.tag == "Player" &&
 			LayerMask.LayerToName(inflictor.gameObject.layer) != "NeutralEntity")
@@ -29,6 +31,8 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnDeath(CharacterManager killer)
 	{
+		_manager.GetCharacterAnimator().SetBool("isDead", true);
+
 		MonsterSpawnerScript spawner = (MonsterSpawnerScript)_misc.GetSpawner();
 
 		if (spawner)
