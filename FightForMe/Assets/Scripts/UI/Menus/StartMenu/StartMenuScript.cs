@@ -24,13 +24,13 @@ public class StartMenuScript : MonoBehaviour {
 	
 	private float boxQuitWidth;
 	private float boxQuitHeight;
+
+	private GameType gameType;
 	
 	void Start()
 	{
 		// Reseting preferences :
-		PlayerPrefs.SetInt ("isBotGame", 0);  // < - TO DELETE / REPLACE
-		PlayerPrefs.SetInt ("isServer", 0);  // < - TO DELETE / REPLACE
-		PlayerPrefs.SetString ("ipAddress", "");  // < - TO DELETE / REPLACE
+		PlayerPrefs.SetString ("ipAddress", "");
 
 		waitingForPlayer = false;
 
@@ -55,7 +55,12 @@ public class StartMenuScript : MonoBehaviour {
 	}
 	
 	void OnGUI () {
-		
+
+		if (planeAnimator.GetBool("launchGame"))
+		{
+			return;
+		}
+
 		if (!waitingForPlayer) {
 			drawMainMenu();
 		}else
@@ -70,14 +75,15 @@ public class StartMenuScript : MonoBehaviour {
 		GUILayout.Label ("Multi");
 		
 		if (GUILayout.Button("Héberger")) {
-			PlayerPrefs.SetInt("isServer", 1); // < - TO DELETE / REPLACE
+			gameType = GameType.ListenServer;
 			waitingForPlayer = true;
 			//planeAnimator.SetBool("launchGame", true);
 		}
 		
 		if(GUILayout.Button("Rejoindre")) {
 			if(Regex.IsMatch(ipAddress, "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$")){ // <- Fixer cette putain de regex que c-sharp ne gere pas bien
-				PlayerPrefs.SetString("ipAddress", ipAddress); // < - TO DELETE / REPLACE
+				PlayerPrefs.SetString("ipAddress", ipAddress);
+				gameType = GameType.Client;
 				planeAnimator.SetBool("launchGame", true);
 			}else
 				planeAnimator.Play("Angry");
@@ -92,7 +98,7 @@ public class StartMenuScript : MonoBehaviour {
 		GUILayout.Label ("Mono");
 		
 		if(GUILayout.Button("Jouer")) {
-			PlayerPrefs.SetInt("isBotGame", 1); // < - TO DELETE / REPLACE
+			gameType = GameType.Local;
 			planeAnimator.SetBool("launchGame", true);
 		}
 		
@@ -119,13 +125,15 @@ public class StartMenuScript : MonoBehaviour {
 		}
 
 		// Insert condition for run the game
-		// planeAnimator.SetBool("launchGame", true); <- Load the game (it'll fire "startGame" event)
+		planeAnimator.SetBool("launchGame", true); // <- Load the game (it'll fire "startGame" event)
 
 		GUILayout.EndArea ();
 	}
 
 	void startGame()
 	{
+		GameData.wentThroughMenu = true;
+		GameData.gameType = gameType;
 		Application.LoadLevel (_MainSceneName);
 	}
 	

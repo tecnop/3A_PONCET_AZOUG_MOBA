@@ -56,4 +56,6 @@ public static class GameData
 			return 0;
 		}
 	}
+
+	public static bool wentThroughMenu; // Did the game go through the main menu?
 }

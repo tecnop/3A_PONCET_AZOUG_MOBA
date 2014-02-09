@@ -24,19 +24,15 @@ public class GameMasterScript : MonoBehaviour
 
 	void Start()
 	{
-		//print("PREFS INFO = serv " + PlayerPrefs.GetInt("isServer") + ", bot " + PlayerPrefs.GetInt("isBotGame")+ ", ip " + PlayerPrefs.GetString("ipAddress"));
-
-		Application.runInBackground = true;
-
 		if (GameData.gameType == GameType.DedicatedServer)
-		{
-			_networkView.RPC("LinkMeToPlayer", Network.connections[0], true);
-			_networkView.RPC("LinkMeToPlayer", Network.connections[1], false);
+		{ // TODO
+			//_networkView.RPC("LinkMeToPlayer", Network.connections[0], true);
+			//_networkView.RPC("LinkMeToPlayer", Network.connections[1], false);
 		}
 		else if (GameData.gameType == GameType.ListenServer)
 		{
 			LinkMeToPlayer(true);
-			_networkView.RPC("LinkMeToPlayer", Network.connections[0], false);
+			//_networkView.RPC("LinkMeToPlayer", Network.connections[0], false);
 		}
 		else if (GameData.gameType == GameType.Local)
 		{
@@ -45,6 +41,7 @@ public class GameMasterScript : MonoBehaviour
 		}
 		else
 		{ // We'll just receive it from the network
+			LinkMeToPlayer(false); // TEMPORARY
 		}
 
 		DataTables.updateTables();

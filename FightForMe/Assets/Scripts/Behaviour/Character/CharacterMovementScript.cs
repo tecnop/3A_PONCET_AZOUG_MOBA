@@ -18,7 +18,6 @@ public class CharacterMovementScript : MonoBehaviour
 
 	private Transform _myTransform;
 
-	private CharacterEventScript _event;
 	private CharacterStatsScript _stats;
 
 	public void Initialize(CharacterManager manager)
@@ -28,7 +27,6 @@ public class CharacterMovementScript : MonoBehaviour
 		_characterTransform = _manager.GetCharacterTransform();
 		_controller = this.GetComponent<CharacterController>();
 
-		_event = _manager.GetEventScript();
 		_stats = _manager.GetStatsScript();
 	}
 

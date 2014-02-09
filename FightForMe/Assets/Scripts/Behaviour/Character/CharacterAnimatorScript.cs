@@ -14,14 +14,11 @@ public class CharacterAnimatorScript : MonoBehaviour
 
 	private Animator _animator;
 
-	private Transform _transform;
-
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
 
 		_animator = this.GetComponent<Animator>();
-		_transform = _manager.GetCharacterTransform();
 	}
 
 	public Animator GetAnimator()
@@ -42,7 +39,6 @@ public class CharacterAnimatorScript : MonoBehaviour
 	public void afterDeath()
 	{
 		_manager.GetCharacterAnimator().SetBool("isDead", false);
-	
 	}
 
 	public void afterPain()

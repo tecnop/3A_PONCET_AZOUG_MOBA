@@ -21,14 +21,17 @@ public class NetworkScript : MonoBehaviour
 	{
 		Application.runInBackground = true;
 
-		GameData.gameType = gameType;
+		if (!GameData.wentThroughMenu)
+		{
+			GameData.gameType = gameType;
+		}
 
-		if (gameType == GameType.DedicatedServer || gameType == GameType.ListenServer)
+		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{
 			Network.InitializeSecurity();
 			Network.InitializeServer((int)GameData.expectedConnections, 6600, true);
 		}
-		else if (gameType == GameType.Client)
+		else if (GameData.gameType == GameType.Client)
 		{
 			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600); // 127.0.0.1
 		}
@@ -58,6 +61,11 @@ public class NetworkScript : MonoBehaviour
 			Debug.Log("Pausing game");
 			PauseGame(true);
 		}
+	}
+
+	void OnFailedToConnect(NetworkConnectionError error)
+	{ // Just keep retrying...
+		Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
 	}
 
 	//[RPC]
