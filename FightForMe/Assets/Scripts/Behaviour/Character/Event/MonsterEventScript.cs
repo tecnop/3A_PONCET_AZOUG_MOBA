@@ -16,23 +16,29 @@ public class MonsterEventScript : CharacterEventScript
 		_inventory = _manager.GetInventoryScript();
 	}
 
-	public override void OnPain(float damage)
+	public override void OnPain(CharacterManager inflictor, float damage)
 	{
-
+		if (!_ai.HasAnEnemy() &&
+			inflictor.tag == "Player" &&
+			LayerMask.LayerToName(inflictor.gameObject.layer) != "NeutralEntity")
+		{
+			Debug.Log("Monster acquired an enemy: " + inflictor.name);
+			_ai.SetTarget(inflictor.gameObject);
+		}
 	}
 
 	public override void OnDeath(CharacterManager killer)
 	{
-		MonsterSpawnerScript spawner = _misc.GetSpawner();
+		MonsterSpawnerScript spawner = (MonsterSpawnerScript)_misc.GetSpawner();
 
 		if (spawner)
 		{
-			spawner.OnBoundMonsterDeath();
+			spawner.OnSpawnedEntityDeath();
 		}
 
 		_inventory.DropAllItems();
 
-		if (Network.isClient || Network.isServer)
+		if (GameData.isOnline)
 		{
 			Network.Destroy(_manager.gameObject);
 		}
@@ -46,7 +52,7 @@ public class MonsterEventScript : CharacterEventScript
 	{
 		if (_ai.IsSearchingEnemy() &&
 			entity.tag == "Player" &&
-			LayerMask.LayerToName(entity.layer) == "Team1Entity") // Temporary
+			LayerMask.LayerToName(entity.layer) != "NeutralEntity")
 		{
 			Debug.Log("Monster acquired an enemy: " + entity.name);
 			_ai.SetTarget(entity);

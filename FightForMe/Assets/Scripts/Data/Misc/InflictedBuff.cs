@@ -23,6 +23,11 @@ public class InflictedBuff
 		this._buff = DataTables.GetBuff(this.buffID);
 	}
 
+	public void AddToDuration(float time)
+	{
+		this.endTime += time;
+	}
+
 	public string GetName()
 	{
 		return _buff.GetName();
@@ -30,8 +35,8 @@ public class InflictedBuff
 
 	public ArrayList GetEffects()
 	{
-		ArrayList res = new ArrayList();
 		ArrayList curEffects = _buff.GetEffects();
+		ArrayList res = new ArrayList(curEffects.Count);
 		foreach (uint effect in curEffects)
 		{
 			res.Add(DataTables.GetEffect(effect));

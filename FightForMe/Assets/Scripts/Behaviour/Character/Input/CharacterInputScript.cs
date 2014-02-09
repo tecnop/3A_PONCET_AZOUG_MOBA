@@ -34,7 +34,7 @@ public abstract class CharacterInputScript : MonoBehaviour
 			SetDirectionalInput(newInput);
 			SetIdealOrientation(newAngle);
 
-			if (Network.isServer || Network.isClient)
+			if (GameData.isOnline)
 			{
 				_networkView.RPC("SetDirectionalInput", RPCMode.Others, newInput);
 				_networkView.RPC("SetIdealOrientation", RPCMode.Others, newAngle);
@@ -46,7 +46,7 @@ public abstract class CharacterInputScript : MonoBehaviour
 	{
 		_SetAttackState(state);
 
-		if (Network.isServer || Network.isClient)
+		if (GameData.isOnline)
 		{
 			_networkView.RPC("_SetAttackState", RPCMode.Others, state);
 		}

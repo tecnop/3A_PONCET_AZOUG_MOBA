@@ -4,17 +4,14 @@ using System.Collections;
 /*
  * GameMaster.cs
  * 
- * Tracks progress of the game, handles large-scale events and manages connections
+ * Initializes the game and handles large-scale events
  * 
  */
 
 public class GameMasterScript : MonoBehaviour
 {
 	[SerializeField]
-	private bool isServer;
-
-	[SerializeField]
-	private bool isBotGame;
+	private NetworkView _networkView;
 
 	[SerializeField]
 	private CharacterManager player1;
@@ -31,36 +28,30 @@ public class GameMasterScript : MonoBehaviour
 
 		Application.runInBackground = true;
 
-		if (PlayerPrefs.GetInt("isBotGame")!= 1)//isBotGame
+		if (GameData.gameType == GameType.DedicatedServer)
 		{
-			if (PlayerPrefs.GetInt("isServer") == 1)
-			{
-				GameData.isServer = true;
-				player1.MakeLocal();
-				Network.maxConnections = 1;
-				Network.InitializeSecurity();
-				Network.InitializeServer(2, 6600, true);
-			}
-			else
-			{
-
-				player2.MakeLocal();
-				// Test existence of the ipaddress ?
-				Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600); // 127.0.0.1
-			}
+			_networkView.RPC("LinkMeToPlayer", Network.connections[0], true);
+			_networkView.RPC("LinkMeToPlayer", Network.connections[1], false);
+		}
+		else if (GameData.gameType == GameType.ListenServer)
+		{
+			LinkMeToPlayer(true);
+			_networkView.RPC("LinkMeToPlayer", Network.connections[0], false);
+		}
+		else if (GameData.gameType == GameType.Local)
+		{
+			LinkMeToPlayer(true);
+			// Make the other one a bot
 		}
 		else
-		{
-			GameData.isServer = true;
-			player1.MakeLocal();
-			//player2.MakeBotOrSomething();
+		{ // We'll just receive it from the network
 		}
 
 		DataTables.updateTables();
 
-		if (!isServer)
+		if (!GameData.isServer)
 		{ // We won't be needed anymore
-			Destroy(this.gameObject);
+			//Destroy(this.gameObject);
 			return;
 		}
 
@@ -71,11 +62,6 @@ public class GameMasterScript : MonoBehaviour
 			monsterCamps.Add(camp.GetComponent<MonsterCampScript>());
 		}
 		SpawnCamps();
-
-		if (!isBotGame)
-		{ // Pause until the second player connects
-			PauseGame(true);
-		}
 	}
 
 	private void SpawnCamps()
@@ -95,27 +81,18 @@ public class GameMasterScript : MonoBehaviour
 		}
 	}
 
-	void OnPlayerConnected(NetworkPlayer player)
-	{
-		if (Network.connections.Length == 1)
-		{
-			Debug.Log("Unpausing game");
-			PauseGame(false);
-		}
-	}
-
-	void OnPlayerDisconnected(NetworkPlayer player)
-	{
-		if (Network.connections.Length < 2)
-		{
-			Debug.Log("Pausing game");
-			PauseGame(true);
-		}
-	}
-
 	[RPC]
-	private static void PauseGame(bool state)
-	{ // This does not need to be RPC for now considering it will only be called if the client is MISSING, but I have plans...
-		GameData.gamePaused = state;
+	private void LinkMeToPlayer(bool first)
+	{
+		if (first)
+		{
+			player1.MakeLocal();
+			GameData.activePlayer = player1;
+		}
+		else
+		{
+			player2.MakeLocal();
+			GameData.activePlayer = player2;
+		}
 	}
 }

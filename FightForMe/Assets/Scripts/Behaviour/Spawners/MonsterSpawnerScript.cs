@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MonsterSpawnerScript : MonoBehaviour
+public class MonsterSpawnerScript : SpawnerScript
 {
 	[SerializeField] // WHY CAN'T UNSIGNED INTEGERS BE SERIALIZED
 	private int[] _monsterList;		// List of monsters we should spawn (index is the level of the camp)
@@ -13,6 +13,9 @@ public class MonsterSpawnerScript : MonoBehaviour
 
 	private Vector3 _pos;
 	private Quaternion _ang;
+
+	private bool _initialized;
+	private bool _spawnPending;
 
 	public void LinkToCamp(MonsterCampScript camp)
 	{
@@ -38,7 +41,9 @@ public class MonsterSpawnerScript : MonoBehaviour
 		_pos = transform.position;
 		_ang = transform.rotation;
 
-		if (!camp)
+		_initialized = true;
+
+		if (!camp || _spawnPending)
 		{ // We're not linked to a trigger, we're probably just a one-time spawner then
 			Spawn();
 		}
@@ -56,7 +61,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 
 		// Spawn the entity
 		GameObject monsterObject;
-		if (Network.isServer)
+		if (GameData.isOnline)
 		{
 			monsterObject = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 0);
 		}
@@ -71,15 +76,22 @@ public class MonsterSpawnerScript : MonoBehaviour
 		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
 
 		// Set him the data we got from the data table
-		monsterObject.name = monster.getName();
-		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.getBehaviour());
-		manager.GetInventoryScript().SetItems(monster.getItems());
-		// TODO: Model, scale
-		manager.GetGraphicsLoader().LoadModel(monster.getModelPath());
+		monsterObject.name = monster.GetName();
+		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.GetBehaviour());
+		manager.GetInventoryScript().SetItems(monster.GetItems());
+
+		manager.GetGraphicsLoader().LoadModel(monster.GetModelPath());
+		//manager.GetCharacterTransform().localScale *= monster.GetScale();
 	}
 
-	public void Spawn()
+	public override void Spawn()
 	{
+		if (!_initialized)
+		{ // Let us initialize first!
+			_spawnPending = true;
+			return;
+		}
+
 		if (_monsterList.Length == 0)
 		{ // We don't have any bound monsters, no reason for us to be here (checking again in case dynamic stuff happens)
 			Destroy(this.gameObject);
@@ -107,7 +119,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 		DoSpawnMonster(monsterID);
 	}
 
-	public void OnBoundMonsterDeath()
+	public override void OnSpawnedEntityDeath()
 	{
 		if (camp)
 		{
@@ -116,6 +128,7 @@ public class MonsterSpawnerScript : MonoBehaviour
 		else if ((uint)_monsterList[0] == 2)
 		{ // The Lord is dead! (hard-coded for now)
 			// Here: Victory sequence
+			Debug.Log("Lord died!");
 		}
 		else
 		{ // Kill us or respawn him? I'll go with respawn for now for debugging

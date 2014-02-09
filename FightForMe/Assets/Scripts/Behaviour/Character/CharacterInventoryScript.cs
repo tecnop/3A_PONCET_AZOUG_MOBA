@@ -38,7 +38,7 @@ public class CharacterInventoryScript : MonoBehaviour
 			foreach (uint itemID in items)
 			{
 				Item item = DataTables.GetItem(itemID);
-				if (!item.isWeapon())
+				if (!item.IsWeapon())
 				{
 					UpdateSetProgress(((Armor)item).GetSetID(), true);
 				}
@@ -97,7 +97,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		Vector3 pos = new Vector3(_transform.position.x + randPos.x, _transform.position.y, _transform.position.z + randPos.y);
 
 		GameObject droppedItem;
-		if (Network.isServer || Network.isClient)
+		if (GameData.isOnline)
 		{
 			droppedItem = (GameObject)Network.Instantiate(_droppedItemPrefab, pos, Quaternion.identity, 0);
 		}
@@ -108,13 +108,17 @@ public class CharacterInventoryScript : MonoBehaviour
 
 		DroppedItemScript droppedItemScript = droppedItem.GetComponent<DroppedItemScript>();
 
-		if (!DataTables.GetItem((uint)this.items[(int)index]).isWeapon())
+		Item item = DataTables.GetItem((uint)this.items[(int)index]);
+
+		if (!item.IsWeapon())
 		{ // TODO: This is not pretty. Make this pretty.
-			UpdateSetProgress(((Armor)DataTables.GetItem((uint)this.items[(int)index])).GetSetID(), false);
+			UpdateSetProgress(((Armor)item).GetSetID(), false);
 		}
 
 		droppedItemScript.SetItemID((uint)this.items[(int)index]);
 		this.items.RemoveAt((int)index);
+
+		droppedItemScript.GetGraphicsLoader().LoadModel(item.GetModel());
 
 		// NOTE: Doing that is not ideal when we're dropping all our items, but considering that should only happen when we die, we should be fine
 		_manager.GetStatsScript().UpdateStats();
@@ -122,9 +126,9 @@ public class CharacterInventoryScript : MonoBehaviour
 
 	public void DropAllItems()
 	{
-		for (int i = 0; i < items.Count; i++)
+		int count = items.Count;
+		for (int i = 0; i < count; i++)
 		{
-			Debug.Log("Dropping item " + (uint)items[0]);
 			DropItem(0);
 		}
 	}
@@ -145,9 +149,9 @@ public class CharacterInventoryScript : MonoBehaviour
 		while (i < items.Count && conflictingItem == 0)
 		{
 			Item curItem = DataTables.GetItem((uint)items[i]);
-			if (curItem.isWeapon())
+			if (curItem.IsWeapon())
 			{ // TODO: Dual-wielding? Yay or nay?
-				if (newItem.isWeapon())
+				if (newItem.IsWeapon())
 				{
 					conflictingItem = (uint)items[i];
 				}
@@ -165,19 +169,19 @@ public class CharacterInventoryScript : MonoBehaviour
 		if (conflictingItem != 0)
 		{
 			Item thatItem = DataTables.GetItem(conflictingItem);
-			if (!thatItem.isWeapon())
+			if (!thatItem.IsWeapon())
 			{
 				UpdateSetProgress(((Armor)thatItem).GetSetID(), false);
 			}
 
 			this.items.Remove(conflictingItem);
-			Debug.Log("Player lost item " + conflictingItem + ": " + DataTables.GetItem(conflictingItem).getName());
+			Debug.Log(_manager.name + " lost item " + conflictingItem + ": " + DataTables.GetItem(conflictingItem).GetName());
 		}
 
 		this.items.Add(item);
-		Debug.Log("Player gained item " + item + ": " + DataTables.GetItem(item).getName());
+		Debug.Log(_manager.name + " gained item " + item + ": " + DataTables.GetItem(item).GetName());
 
-		if (!newItem.isWeapon())
+		if (!newItem.IsWeapon())
 		{
 			UpdateSetProgress(((Armor)newItem).GetSetID(), true);
 		}
@@ -201,7 +205,7 @@ public class CharacterInventoryScript : MonoBehaviour
 			uint id = (uint)this.items[i];
 			Item item = DataTables.GetItem(id);
 
-			if (item != null && item.isWeapon())
+			if (item != null && item.IsWeapon())
 			{
 				return (Weapon)item;
 			}
@@ -220,7 +224,7 @@ public class CharacterInventoryScript : MonoBehaviour
 			uint id = (uint)this.items[i];
 			Item item = DataTables.GetItem(id);
 
-			if (item != null && !item.isWeapon() && ((Armor)item).GetSlot() == slot)
+			if (item != null && !item.IsWeapon() && ((Armor)item).GetSlot() == slot)
 			{
 				return (Armor)item;
 			}
@@ -240,9 +244,29 @@ public class CharacterInventoryScript : MonoBehaviour
 			uint id = (uint)this.items[i];
 			Item item = DataTables.GetItem(id);
 
-			if (item != null && !item.isWeapon())
+			if (item != null && !item.IsWeapon())
 			{
 				res.Add((Armor)item);
+			}
+			i++;
+		}
+
+		return res;
+	}
+
+	public ArrayList GetItems()
+	{ // Return type: Item
+		int i = 0;
+		ArrayList res = new ArrayList(this.items.Count);
+
+		while (i < this.items.Count)
+		{
+			uint id = (uint)this.items[i];
+			Item item = DataTables.GetItem(id);
+
+			if (item != null)
+			{
+				res.Add(item);
 			}
 			i++;
 		}

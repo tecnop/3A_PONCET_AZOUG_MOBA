@@ -6,13 +6,18 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 	private MonsterSpawnerScript spawner;			// Entity that spawned us
 	private Vector3 spawnerPos;
 
-	public void SetSpawner(MonsterSpawnerScript spawner)
+	public override void Initialize(CharacterManager manager)
 	{
-		this.spawner = spawner;
+		_manager = manager;
+	}
+
+	public override void SetSpawner(SpawnerScript spawner)
+	{
+		this.spawner = (MonsterSpawnerScript)spawner;
 		this.spawnerPos = spawner.transform.position;
 	}
 
-	public MonsterSpawnerScript GetSpawner()
+	public override SpawnerScript GetSpawner()
 	{
 		return this.spawner;
 	}

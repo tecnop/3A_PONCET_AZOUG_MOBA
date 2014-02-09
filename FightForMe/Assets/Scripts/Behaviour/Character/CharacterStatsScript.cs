@@ -60,8 +60,8 @@ public class CharacterStatsScript : MonoBehaviour
 		this.healthRegen = this.manaRegen = 0.0f;
 		if (weapon != null)
 		{
-			this.damage = weapon.getDamage();
-			this.attackRate = weapon.getAttackRate();
+			this.damage = weapon.GetDamage();
+			this.attackRate = weapon.GetAttackRate();
 		}
 		else
 		{ // Use your fists! (Damage is only gained from agility)
@@ -81,7 +81,7 @@ public class CharacterStatsScript : MonoBehaviour
 
 		foreach (Armor armor in armorList)
 		{ // Tempted to make armor pieces apply the buff as they are equipped, buuuut... meh...
-			Buff buff = armor.getBuff();
+			Buff buff = armor.GetBuff();
 			if (buff != null)
 			{
 				foreach (uint effect in buff.GetEffects())
@@ -89,6 +89,8 @@ public class CharacterStatsScript : MonoBehaviour
 					effects.Add(DataTables.GetEffect(effect));
 				}
 			}
+
+			this.stats += armor.GetStats(); // Armors have this little extra thing
 		}
 
 		foreach (ArmorSet set in _inventory.GetCompletedSets())
@@ -103,7 +105,18 @@ public class CharacterStatsScript : MonoBehaviour
 			}
 		}
 
-		// TODO: Buffs from skills
+		if (_manager.GetCameraScript())
+		{ // THIS IS A TERRIBLE WAY TO CHECK IF WE'RE A PLAYER
+			ArrayList unlockedSkills = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetUnlockedSkills();
+			foreach (Skill skill in unlockedSkills)
+			{
+				Effect effect = skill.GetEffect();
+				if (effect != null)
+				{
+					effects.Add(effect);
+				}
+			}
+		}
 
 		float maxHealthPctChange = 1.0f;
 		float maxManaPctChange = 1.0f;
@@ -113,7 +126,7 @@ public class CharacterStatsScript : MonoBehaviour
 		float damagePctChange = 1.0f;
 
 		foreach (Effect effect in effects)
-		{ // Have fun parsing it... really tempted to make everything public :|
+		{ // I had a lot of fun writing this particular bit
 			this.maxHealth += effect.GetFlatHP();
 			maxHealthPctChange += effect.GetPctHP();
 			this.maxMana += effect.GetFlatMP();
@@ -190,7 +203,7 @@ public class CharacterStatsScript : MonoBehaviour
 		this.mana = Mathf.Clamp(this.mana + this.manaRegen * Time.deltaTime, 0.0f, this.maxMana);
 	}
 
-	public void gainHealth(float amount)
+	public void GainHealth(float amount)
 	{
 		health += amount;
 		if (health > maxHealth)
@@ -199,7 +212,7 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 	}
 
-	public void gainMana(float amount)
+	public void GainMana(float amount)
 	{
 		mana += amount;
 		if (mana > maxMana)
@@ -208,7 +221,7 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 	}
 
-	public void loseHealth(CharacterManager inflictor, float amount)
+	public void LoseHealth(CharacterManager inflictor, float amount)
 	{
 		health -= amount;
 
@@ -221,11 +234,11 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 		else
 		{
-			_manager.GetEventScript().OnPain(amount);
+			_manager.GetEventScript().OnPain(inflictor, amount);
 		}
 	}
 
-	public void loseMana(float amount)
+	public void LoseMana(float amount)
 	{
 		mana -= amount;
 		if (mana <= 0)

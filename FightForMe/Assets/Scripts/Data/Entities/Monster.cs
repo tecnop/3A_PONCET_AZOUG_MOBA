@@ -41,9 +41,9 @@ public class Monster
 			this.buffs = new ArrayList(buffs);
 	}
 
-	public string getName() { return this.name; }
-	public AIType getBehaviour() { return this.behaviour; }
-	public string getModelPath() { return this.modelPath; }
-	public float getScale() { return this.scale; }
-	public ArrayList getItems() { return this.items; }
+	public string GetName() { return this.name; }
+	public AIType GetBehaviour() { return this.behaviour; }
+	public string GetModelPath() { return this.modelPath; }
+	public float GetScale() { return this.scale; }
+	public ArrayList GetItems() { return this.items; }
 }

@@ -3,10 +3,10 @@ using System.Collections;
 
 public class MonsterCampScript : MonoBehaviour
 {
-	private MonsterSpawnerScript[] _spawners;	// Spawners that are part of this camp
+	private ArrayList _spawners;	// Spawners that are part of this camp (type: MonsterSpawnerScript)
 
-	private uint currentLevel;					// Current level of the camp (goes up each time all the monsters die)
-	private uint stillAlive;					// Monsters still alive
+	private uint currentLevel;		// Current level of the camp (goes up each time all the monsters die)
+	private uint stillAlive;		// Monsters still alive
 
 	void Start()
 	{
@@ -16,9 +16,9 @@ public class MonsterCampScript : MonoBehaviour
 			return;
 		}
 
-		_spawners = this.GetComponentsInChildren<MonsterSpawnerScript>();
+		_spawners = new ArrayList(this.GetComponentsInChildren<MonsterSpawnerScript>());
 
-		if (_spawners.Length == 0)
+		if (_spawners.Count == 0)
 		{ // No reason to be here...
 			Destroy(this.gameObject);
 			return;
@@ -59,7 +59,7 @@ public class MonsterCampScript : MonoBehaviour
 	{
 		if (stillAlive <= 0)
 		{
-			Debug.Log("ERROR: Camp was not expecting any more death events");
+			Debug.LogWarning("Camp was not expecting any more death events");
 			return;
 		}
 
