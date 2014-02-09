@@ -10,7 +10,7 @@ public class PlayerEventScript : CharacterEventScript
 
 	public override void OnPain(CharacterManager inflictor, float damage)
 	{
-
+		_manager.GetCharacterAnimator().SetBool("onPain", true);
 	}
 
 	public override void OnDeath(CharacterManager killer)
@@ -19,6 +19,7 @@ public class PlayerEventScript : CharacterEventScript
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
 
 		_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
+		
 	}
 
 	public override void OnSpotEntity(GameObject entity)

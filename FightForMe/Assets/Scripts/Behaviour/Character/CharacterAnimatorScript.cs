@@ -39,8 +39,14 @@ public class CharacterAnimatorScript : MonoBehaviour
 
 	}
 
-	public void isDead()
+	public void afterDeath()
 	{
-		print ("X_X");
+		_manager.GetCharacterAnimator().SetBool("isDead", false);
+	
+	}
+
+	public void afterPain()
+	{
+		_manager.GetCharacterAnimator().SetBool("onPain", false);
 	}
 }

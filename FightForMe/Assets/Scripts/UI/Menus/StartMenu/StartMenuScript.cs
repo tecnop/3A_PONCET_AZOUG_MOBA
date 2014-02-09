@@ -8,7 +8,9 @@ public class StartMenuScript : MonoBehaviour {
 	string _MainSceneName;
 	
 	private Animator planeAnimator;
-	
+
+	private bool waitingForPlayer;
+
 	private string ipAddress = "";
 
 	private float mainScreenLeft;
@@ -26,9 +28,11 @@ public class StartMenuScript : MonoBehaviour {
 	void Start()
 	{
 		// Reseting preferences :
-		PlayerPrefs.SetInt ("isBotGame", 0);
-		PlayerPrefs.SetInt ("isServer", 0);
-		PlayerPrefs.SetString ("ipAddress", "");
+		PlayerPrefs.SetInt ("isBotGame", 0);  // < - TO DELETE / REPLACE
+		PlayerPrefs.SetInt ("isServer", 0);  // < - TO DELETE / REPLACE
+		PlayerPrefs.SetString ("ipAddress", "");  // < - TO DELETE / REPLACE
+
+		waitingForPlayer = false;
 
 		boxMultiWidth = 250f;
 		boxMultiHeight = 400f;
@@ -52,18 +56,27 @@ public class StartMenuScript : MonoBehaviour {
 	
 	void OnGUI () {
 		
+		if (!waitingForPlayer) {
+			drawMainMenu();
+		}else
+			drawLobby();
+	}
+
+	private void drawMainMenu()
+	{
 		GUILayout.BeginArea (new Rect (mainScreenLeft, 100f, boxMultiWidth, boxMultiHeight));
 		
 		GUILayout.Label ("Multi");
 		
-		if (GUILayout.Button("Héberger")) { // GUILayout.Height(100)
-			PlayerPrefs.SetInt("isServer", 1);
-			planeAnimator.SetBool("launchGame", true);
+		if (GUILayout.Button("Héberger")) {
+			PlayerPrefs.SetInt("isServer", 1); // < - TO DELETE / REPLACE
+			waitingForPlayer = true;
+			//planeAnimator.SetBool("launchGame", true);
 		}
 		
 		if(GUILayout.Button("Rejoindre")) {
 			if(Regex.IsMatch(ipAddress, "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$")){ // <- Fixer cette putain de regex que c-sharp ne gere pas bien
-				PlayerPrefs.SetString("ipAddress", ipAddress);
+				PlayerPrefs.SetString("ipAddress", ipAddress); // < - TO DELETE / REPLACE
 				planeAnimator.SetBool("launchGame", true);
 			}else
 				planeAnimator.Play("Angry");
@@ -78,7 +91,7 @@ public class StartMenuScript : MonoBehaviour {
 		GUILayout.Label ("Mono");
 		
 		if(GUILayout.Button("Jouer")) {
-			PlayerPrefs.SetInt("isBotGame", 1);
+			PlayerPrefs.SetInt("isBotGame", 1); // < - TO DELETE / REPLACE
 			planeAnimator.SetBool("launchGame", true);
 		}
 		
@@ -92,6 +105,21 @@ public class StartMenuScript : MonoBehaviour {
 			
 		}
 		
+		GUILayout.EndArea ();
+	}
+
+	private void drawLobby()
+	{
+		GUILayout.BeginArea (new Rect (mainScreenLeft, 100f, boxMultiWidth, boxMultiHeight));
+		GUILayout.Label ("En attente d'un autre joueur ...");
+		if(GUILayout.Button("Revenir")) {
+			planeAnimator.Play("Angry");
+			waitingForPlayer = false;
+		}
+
+		// Insert condition for run the game
+		// planeAnimator.SetBool("launchGame", true); <- Load the game (it'll fire "startGame" event)
+
 		GUILayout.EndArea ();
 	}
 
