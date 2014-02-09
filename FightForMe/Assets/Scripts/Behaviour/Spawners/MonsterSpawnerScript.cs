@@ -14,9 +14,6 @@ public class MonsterSpawnerScript : SpawnerScript
 	private Vector3 _pos;
 	private Quaternion _ang;
 
-	private bool _initialized;
-	private bool _spawnPending;
-
 	public void LinkToCamp(MonsterCampScript camp)
 	{
 		this.camp = camp;

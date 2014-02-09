@@ -205,6 +205,11 @@ public class CharacterStatsScript : MonoBehaviour
 
 	public void GainHealth(float amount)
 	{
+		if (health <= 0)
+		{ // Nope
+			return;
+		}
+
 		health += amount;
 		if (health > maxHealth)
 		{
@@ -214,6 +219,11 @@ public class CharacterStatsScript : MonoBehaviour
 
 	public void GainMana(float amount)
 	{
+		if (health <= 0)
+		{ // Nope
+			return;
+		}
+
 		mana += amount;
 		if (mana > maxMana)
 		{
@@ -223,6 +233,11 @@ public class CharacterStatsScript : MonoBehaviour
 
 	public void LoseHealth(CharacterManager inflictor, float amount)
 	{
+		if (health <= 0)
+		{ // Nope
+			return;
+		}
+
 		health -= amount;
 
 		Debug.Log(_manager.name + " took " + amount + " damage");
@@ -240,6 +255,11 @@ public class CharacterStatsScript : MonoBehaviour
 
 	public void LoseMana(float amount)
 	{
+		if (health <= 0)
+		{ // Nope
+			return;
+		}
+
 		mana -= amount;
 		if (mana <= 0)
 		{
