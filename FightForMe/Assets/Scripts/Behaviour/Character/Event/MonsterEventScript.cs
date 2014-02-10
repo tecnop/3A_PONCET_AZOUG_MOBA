@@ -33,7 +33,7 @@ public class MonsterEventScript : CharacterEventScript
 	{
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
 
-		MonsterSpawnerScript spawner = (MonsterSpawnerScript)_misc.GetSpawner();
+		SpawnerScript spawner = _misc.GetSpawner();
 
 		if (spawner)
 		{
@@ -42,6 +42,7 @@ public class MonsterEventScript : CharacterEventScript
 
 		_inventory.DropAllItems();
 
+		// No death animation for monsters yet
 		if (GameData.isOnline)
 		{
 			Network.Destroy(_manager.gameObject);

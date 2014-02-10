@@ -217,6 +217,17 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 	}
 
+	public void Revive()
+	{
+		if (health > 0)
+		{ // We're not dead...
+			return;
+		}
+
+		health = maxHealth;
+		_manager.GetCharacterAnimator().SetBool("isDead", false);
+	}
+
 	public void GainMana(float amount)
 	{
 		if (health <= 0)

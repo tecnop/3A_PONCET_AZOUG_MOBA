@@ -36,7 +36,7 @@ public class PlayerSpawnerScript : SpawnerScript
 		_boundPlayer.GetCharacterTransform().position = _pos;
 		if (_playerDied)
 		{ // Make him alive again
-			_boundPlayer.GetCharacterAnimator().SetBool("isDead", false);
+			_boundPlayer.GetStatsScript().Revive();
 			_playerDied = false;
 		}
 	}

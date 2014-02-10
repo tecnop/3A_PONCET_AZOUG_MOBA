@@ -80,7 +80,8 @@ public class CharacterInventoryScript : MonoBehaviour
 		}
 
 		// This should do. Not very safe though.
-		if (this.setProgress[setID] == set.GetSize())
+		if (this.setProgress.ContainsKey(setID) &&
+			this.setProgress[setID] == set.GetSize())
 		{
 			this.completedSets.Add(set);
 			Debug.Log(_manager.name + " has completed set " + setID);

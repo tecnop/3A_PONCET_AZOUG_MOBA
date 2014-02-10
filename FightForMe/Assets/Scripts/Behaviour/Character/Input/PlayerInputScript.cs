@@ -77,6 +77,11 @@ public class PlayerInputScript : CharacterInputScript
 			this.hasLockedCamera = !this.hasLockedCamera;
 		}
 
+		if (_manager.GetStatsScript().GetHealth() <= 0)
+		{ // No other input should be read
+			return;
+		}
+
 		// How do we send that through the network?
 		if (Input.GetMouseButtonDown(0))
 		{

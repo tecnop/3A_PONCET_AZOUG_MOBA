@@ -58,4 +58,6 @@ public static class GameData
 	}
 
 	public static bool wentThroughMenu; // Did the game go through the main menu?
+
+	public static NetworkConnectionError networkError; // Last connection error we got
 }

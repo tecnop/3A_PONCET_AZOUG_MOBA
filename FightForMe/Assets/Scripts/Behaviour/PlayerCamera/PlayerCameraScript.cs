@@ -23,12 +23,17 @@ public class PlayerCameraScript : MonoBehaviour
 		_characterTransform = _manager.GetCharacterTransform();
 		_myTransform = this.transform;
 
-		_hudScript._Initialize(manager);
+		_hudScript.Initialize(manager);
 	}
 
 	public Camera GetCamera()
 	{
 		return _camera;
+	}
+
+	public PlayerHUDScript GetHUDScript()
+	{
+		return _hudScript;
 	}
 
 	public Vector3 GetCameraPos()

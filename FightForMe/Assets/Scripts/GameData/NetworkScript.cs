@@ -65,12 +65,13 @@ public class NetworkScript : MonoBehaviour
 
 	void OnFailedToConnect(NetworkConnectionError error)
 	{ // Just keep retrying...
+		GameData.networkError = error;
 		Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
 	}
 
 	//[RPC]
 	private void PauseGame(bool state)
-	{ // This does not need to be RPC because everyone should execute it at once
+	{ // This does not need to be RPC because everyone should execute it when needed
 		GameData.gamePaused = state;
 	}
 }

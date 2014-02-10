@@ -189,6 +189,11 @@ public class NPCAIScript : CharacterInputScript
 
 	protected override void ReadGenericInput()
 	{ // Here: more AI (attacking, etc.)
+		if (_manager.GetStatsScript().GetHealth() <= 0)
+		{ // No other input should be read
+			return;
+		}
+
 		SetAttackState(target && goalReached && Vector3.Distance(_characterTransform.position, targetTransform.position) <= approachRange * 1.1f);
 	}
 

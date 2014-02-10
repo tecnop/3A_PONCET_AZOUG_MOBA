@@ -83,6 +83,17 @@ public class LordSpawnerScript : SpawnerScript
 
 	public override void OnSpawnedEntityDeath()
 	{
-		Debug.Log("Lord is dead!");
+		if (_team == Team.Team2)
+		{ // Player 1 won
+			Debug.Log("Player 1 won!");
+			GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Won);
+		}
+		else if (_team == Team.Team1)
+		{ // Player 2 won
+			Debug.Log("Player 2 won!");
+			GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Lost);
+		}
+
+		GameData.gamePaused = true;
 	}
 }

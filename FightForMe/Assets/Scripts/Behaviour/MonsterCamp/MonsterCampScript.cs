@@ -59,7 +59,7 @@ public class MonsterCampScript : MonoBehaviour
 	{
 		if (stillAlive <= 0)
 		{
-			Debug.LogWarning("Camp was not expecting any more death events");
+			Debug.LogWarning(this.name + " was not expecting any more death events");
 			return;
 		}
 

@@ -31,13 +31,16 @@ public abstract class CharacterInputScript : MonoBehaviour
 
 			ReadGenericInput(); // This one handles events by itself... store it in a struct maybe?
 
-			SetDirectionalInput(newInput);
-			SetIdealOrientation(newAngle);
-
-			if (GameData.isOnline)
+			if (_manager.GetStatsScript().GetHealth() > 0)
 			{
-				_networkView.RPC("SetDirectionalInput", RPCMode.Others, newInput);
-				_networkView.RPC("SetIdealOrientation", RPCMode.Others, newAngle);
+				SetDirectionalInput(newInput);
+				SetIdealOrientation(newAngle);
+
+				if (GameData.isOnline)
+				{
+					_networkView.RPC("SetDirectionalInput", RPCMode.Others, newInput);
+					_networkView.RPC("SetIdealOrientation", RPCMode.Others, newAngle);
+				}
 			}
 		}
 	}

@@ -29,6 +29,7 @@ public class MonsterSpawnerScript : SpawnerScript
 
 		if (_monsterList.Length == 0)
 		{ // We don't have any bound monsters, no reason for us to be here
+			Debug.LogWarning(this.name + " has no monster to spawn");
 			Destroy(this.gameObject);
 			return;
 		}
@@ -91,6 +92,7 @@ public class MonsterSpawnerScript : SpawnerScript
 
 		if (_monsterList.Length == 0)
 		{ // We don't have any bound monsters, no reason for us to be here (checking again in case dynamic stuff happens)
+			Debug.LogWarning(this.name + " has no monster to spawn");
 			Destroy(this.gameObject);
 			return;
 		}
@@ -121,11 +123,6 @@ public class MonsterSpawnerScript : SpawnerScript
 		if (camp)
 		{
 			camp.OnBoundMonsterDeath();
-		}
-		else if ((uint)_monsterList[0] == 2)
-		{ // The Lord is dead! (hard-coded for now)
-			// Here: Victory sequence
-			Debug.Log("Lord died!");
 		}
 		else
 		{ // Kill us or respawn him? I'll go with respawn for now for debugging

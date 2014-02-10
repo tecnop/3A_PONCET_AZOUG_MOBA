@@ -44,6 +44,8 @@ public static class DataTables
 
 	public static void LoadModels(GameObject[] models)
 	{
+		modelTable.Clear(); // Have to for now...
+
 		foreach (GameObject obj in models)
 		{
 			modelTable.Add(obj.name, obj);
