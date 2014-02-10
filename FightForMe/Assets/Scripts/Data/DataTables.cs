@@ -163,7 +163,7 @@ public static class DataTables
 		
 		temp = new uint[1];
 		temp[0] = 13;
-		monsterTable.Add(3, new Monster(name: "Ratus", behaviour: AIType.aggressive, items: temp));
+		monsterTable.Add(3, new Monster(name: "Ratus", behaviour: AIType.defensive, items: temp));
 		
 		temp[0] = 15;
 		monsterTable.Add(4, new Monster(name: "Archet", behaviour: AIType.defensive, items: temp));

@@ -62,7 +62,7 @@ public class CharacterCombatScript : MonoBehaviour
 			sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
 		}
 		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
-		sphereScript.storeData(_manager, position, radius, this.gameObject.layer, damage, buffID, damageFlags);
+		sphereScript.storeData(_manager, position, radius, _manager.GetLayer(), damage, buffID, damageFlags);
 	}
 
 	public void ShootProjectile(Projectile projectile)
@@ -78,7 +78,7 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 		proj.name = projectile.GetName();
 		ProjectileScript projScript = proj.GetComponent<ProjectileScript>();
-		projScript.StoreData(_manager, this.gameObject.layer, projectile.GetSpeed(), projectile.GetDamage(), projectile.GetImpactRadius(), projectile.GetBuffID(), projectile.GetBuffDuration());
+		projScript.StoreData(_manager, _manager.GetLayer(), projectile.GetSpeed(), projectile.GetDamage(), projectile.GetImpactRadius(), projectile.GetBuffID(), projectile.GetBuffDuration());
 		projScript.GetGraphicsLoader().LoadModel(projectile.GetModelPath());
 	}
 

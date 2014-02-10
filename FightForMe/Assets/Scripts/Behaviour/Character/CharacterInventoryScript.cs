@@ -25,7 +25,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
-		_transform = this.transform;
+		_transform = manager.GetCharacterTransform();
 
 		setProgress = new Dictionary<uint, uint>();
 		completedSets = new ArrayList();
@@ -95,7 +95,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	public void DropItem(uint index)
 	{ // Create a new DroppedItem on a random spot near us FIXME: Don't put it in a wall...
 		Vector2 randPos = Random.insideUnitCircle.normalized;
-		Vector3 pos = new Vector3(_transform.position.x + randPos.x, _transform.position.y, _transform.position.z + randPos.y);
+		Vector3 pos = new Vector3(_transform.position.x + randPos.x, _transform.position.y - 1, _transform.position.z + randPos.y);
 
 		GameObject droppedItem;
 		if (GameData.isOnline)

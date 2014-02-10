@@ -86,7 +86,7 @@ public class CharacterManager : MonoBehaviour
 		_input.UpdateInput();
 		_movement.ApplyMove(_input.GetDirectionalInput());
 		_movement.SetAngle(_input.GetIdealOrientation());
-		
+
 		if (_camera && isLocal)
 		{
 			_camera.UpdateCamera();
@@ -115,4 +115,5 @@ public class CharacterManager : MonoBehaviour
 	public Transform GetCharacterTransform() { return _transform; }
 	public Animator GetCharacterAnimator() { return _animator.GetAnimator(); }
 	public GraphicsLoader GetGraphicsLoader() { return _graphics; }
+	public int GetLayer() { return this.gameObject.layer; }
 }
