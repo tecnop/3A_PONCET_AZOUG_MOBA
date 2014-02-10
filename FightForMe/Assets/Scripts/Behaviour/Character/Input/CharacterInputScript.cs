@@ -29,18 +29,20 @@ public abstract class CharacterInputScript : MonoBehaviour
 			Vector3 newInput = UpdateDirectionalInput();
 			float newAngle = UpdateIdealOrientation();
 
+			if (_manager.GetStatsScript().GetHealth() <= 0)
+			{ // We still execute the update code because of reasons
+				newInput = Vector3.zero;
+				newAngle = idealOrientation;
+			}
+
 			ReadGenericInput(); // This one handles events by itself... store it in a struct maybe?
+			SetDirectionalInput(newInput);
+			SetIdealOrientation(newAngle);
 
-			if (_manager.GetStatsScript().GetHealth() > 0)
+			if (GameData.isOnline)
 			{
-				SetDirectionalInput(newInput);
-				SetIdealOrientation(newAngle);
-
-				if (GameData.isOnline)
-				{
-					_networkView.RPC("SetDirectionalInput", RPCMode.Others, newInput);
-					_networkView.RPC("SetIdealOrientation", RPCMode.Others, newAngle);
-				}
+				_networkView.RPC("SetDirectionalInput", RPCMode.Others, newInput);
+				_networkView.RPC("SetIdealOrientation", RPCMode.Others, newAngle);
 			}
 		}
 	}

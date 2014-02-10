@@ -23,6 +23,7 @@ public class NPCAIScript : CharacterInputScript
 	// AI-Helping variables
 	private bool goalReached;
 	private GameObject target;
+	private CharacterManager targetManager;
 	private Transform targetTransform;
 	private Vector3 startPos;
 	private ArrayList currentPath;
@@ -47,14 +48,22 @@ public class NPCAIScript : CharacterInputScript
 
 	public bool HasAnEnemy()
 	{
-		return target;
+		return target != null;
 	}
 
 	private void RunAI()
 	{
 		if (target)
 		{
-			SetGoal(targetTransform.position);
+			if (targetManager && targetManager.GetStatsScript().GetHealth() <= 0)
+			{ // He died
+				target = null;
+				SetGoal(this.startPos);
+			}
+			else
+			{
+				SetGoal(targetTransform.position);
+			}
 		}
 		else
 		{
@@ -72,6 +81,7 @@ public class NPCAIScript : CharacterInputScript
 	{
 		this.target = target;
 		this.targetTransform = target.transform;
+		this.targetManager = target.GetComponent<CharacterManager>();
 	}
 
 	public void SetGoal(Vector3 pos)

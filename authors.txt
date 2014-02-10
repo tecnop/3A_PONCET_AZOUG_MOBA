@@ -1,0 +1,16 @@
+Depuis FightForMe/Assets/:
+
+Animations: Thomas P.
+Imports: Thomas P.
+Materials: Thomas P.
+Models: Thomas A.
+Prefabs: Thomas A.
+
+Scenes/:
+	PathfindingTest: Thomas A.
+	startMenu: Thomas P.
+	GameplayTest: Thomas P., détails par Thomas A.
+
+Scripts/:
+	Thomas P. : Réalisation du dossier UI/, des prototypes de Data/ et mise à jour de Behaviour/Character/CharacterAnimatorScript.cs
+	Thomas A. : Le reste

@@ -68,6 +68,7 @@ public class LordSpawnerScript : SpawnerScript
 		{
 			lord.layer = LayerMask.NameToLayer("Team2Entity");
 		}
+		manager.GetPhysicsScript().gameObject.layer = lord.layer;
 
 		manager.MakeLocal(); // If we got here we're the server, so make the monster local
 		manager.GetMiscDataScript().SetSpawner(this);
