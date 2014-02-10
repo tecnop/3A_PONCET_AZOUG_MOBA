@@ -15,6 +15,9 @@ public class PlayerEventScript : CharacterEventScript
 
 	public override void OnDeath(CharacterManager killer)
 	{
+		// Reseting states
+		_manager.GetCharacterAnimator().SetBool("isAttacking", false);
+		_manager.GetCharacterAnimator().SetBool("onPain", false);
 
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
 
