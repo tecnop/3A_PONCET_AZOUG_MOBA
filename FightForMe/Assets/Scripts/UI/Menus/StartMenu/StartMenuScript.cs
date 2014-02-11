@@ -29,8 +29,9 @@ public class StartMenuScript : MonoBehaviour {
 	
 	void Start()
 	{
-		// Reseting preferences :
-		PlayerPrefs.SetString ("ipAddress", "");
+		Application.runInBackground = true;
+		ipAddress = PlayerPrefs.GetString("ipAddress");
+		GameData.networkError = NetworkConnectionError.NoError;
 
 		waitingForPlayer = false;
 

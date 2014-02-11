@@ -10,6 +10,9 @@ using System.Collections;
 
 public class CharacterStatsScript : MonoBehaviour
 {
+	[SerializeField]
+	private NetworkView _networkView;
+
 	private CharacterManager _manager;
 
 	// Ressources
@@ -68,7 +71,7 @@ public class CharacterStatsScript : MonoBehaviour
 			this.damage = 0.0f;
 			this.attackRate = 1.0f;
 		}
-		this.movementSpeed = 350.0f;
+		this.movementSpeed = 1350.0f;
 		this.stats = Stats.Base;		// Do we need that anymore? Why not define it here?
 
 		// Get all currently applied effects
@@ -240,6 +243,17 @@ public class CharacterStatsScript : MonoBehaviour
 		{
 			mana = maxMana;
 		}
+	}
+	[RPC]
+	public void _LoseHealthRPC(float amount)
+	{ // TEMPORARY
+		LoseHealth(null, amount);
+	}
+
+	public void LoseHealthRPC(CharacterManager inflictor, float amount)
+	{ // TEMPORARY
+		LoseHealth(inflictor, amount);
+		 _networkView.RPC("_LoseHealthRPC", RPCMode.Others, amount);
 	}
 
 	public void LoseHealth(CharacterManager inflictor, float amount)

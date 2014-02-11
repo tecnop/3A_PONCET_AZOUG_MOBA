@@ -49,14 +49,6 @@ public class MonsterSpawnerScript : SpawnerScript
 
 	private void DoSpawnMonster(uint monsterID)
 	{
-		Monster monster = DataTables.GetMonster(monsterID);
-
-		if (monster == null)
-		{ // Hmmm...
-			Debug.LogWarning("Spawner tried to spawn unknown monster " + monsterID);
-			return;
-		}
-
 		// Spawn the entity
 		GameObject monsterObject;
 		if (GameData.isOnline)
@@ -70,16 +62,11 @@ public class MonsterSpawnerScript : SpawnerScript
 
 		// Link us together
 		CharacterManager manager = monsterObject.GetComponent<CharacterManager>();
-		manager.MakeLocal(); // If we got here we're the server, so make the monster local
-		((MonsterMiscDataScript)manager.GetMiscDataScript()).SetSpawner(this);
+		MonsterMiscDataScript misc = (MonsterMiscDataScript)manager.GetMiscDataScript();
+		misc.SetSpawner(this);
 
-		// Set him the data we got from the data table
-		monsterObject.name = monster.GetName();
-		((NPCAIScript)manager.GetInputScript()).SetBehaviour(monster.GetBehaviour());
-		manager.GetInventoryScript().SetItems(monster.GetItems());
-
-		manager.GetGraphicsLoader().LoadModel(monster.GetModelPath());
-		//manager.GetCharacterTransform().localScale *= monster.GetScale();
+		// Set him up
+		misc.SetUpFromMonster(monsterID);
 	}
 
 	public override void Spawn()

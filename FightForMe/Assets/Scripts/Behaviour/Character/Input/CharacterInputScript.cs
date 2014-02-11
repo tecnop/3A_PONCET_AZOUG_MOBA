@@ -72,6 +72,11 @@ public abstract class CharacterInputScript : MonoBehaviour
 	[RPC]
 	private void _SetAttackState(bool state)
 	{
+		if (!_manager)
+		{ // ????
+			return;
+		}
+
 		_manager.GetCharacterAnimator().SetBool("isAttacking", state);
 	}
 

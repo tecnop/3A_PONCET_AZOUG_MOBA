@@ -195,6 +195,17 @@ public class CharacterInventoryScript : MonoBehaviour
 	public void SetItems(ArrayList items)
 	{ // Should only be called when spawning a monster
 		this.items = new ArrayList(items);
+		if (_manager)
+		{ // We're late!
+			foreach (uint itemID in items)
+			{
+				Item item = DataTables.GetItem(itemID);
+				if (!item.IsWeapon())
+				{
+					UpdateSetProgress(((Armor)item).GetSetID(), true);
+				}
+			}
+		}
 	}
 
 	public Weapon GetWeapon()

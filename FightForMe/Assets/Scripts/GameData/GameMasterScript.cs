@@ -85,11 +85,13 @@ public class GameMasterScript : MonoBehaviour
 		{
 			player1.MakeLocal();
 			GameData.activePlayer = player1;
+			GameData.otherPlayer = player2;
 		}
 		else
 		{
 			player2.MakeLocal();
 			GameData.activePlayer = player2;
+			GameData.otherPlayer = player1;
 		}
 	}
 }

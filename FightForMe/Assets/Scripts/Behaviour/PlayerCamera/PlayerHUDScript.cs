@@ -46,7 +46,13 @@ public class PlayerHUDScript : MonoBehaviour
 		{
 			Network.Disconnect();
 		}
-		// What about servers?
+		else if (GameData.isOnline)
+		{
+			foreach (NetworkPlayer player in Network.connections)
+			{
+				Network.CloseConnection(player, true);
+			}
+		}
 
 		Application.LoadLevel(0);
 	}
@@ -65,6 +71,13 @@ public class PlayerHUDScript : MonoBehaviour
 		mid.wordWrap = false;
 		mid.alignment = TextAnchor.MiddleCenter;
 		mid.normal.textColor = Color.white;
+
+		if (GameData.gameType == GameType.ListenServer && Network.connections.Length > 0)
+		{ // TEMPORARY
+			GUIStyle right = new GUIStyle(mid);
+			right.alignment = TextAnchor.UpperRight;
+			GUI.Label(new Rect(0,0,w,h), "Ping: " + Network.GetLastPing(Network.connections[0]), right);
+		}
 
 		if ((_state == HUDState.Default || _state == HUDState.Leaving) && !GameData.gamePaused)
 		{
@@ -100,7 +113,9 @@ public class PlayerHUDScript : MonoBehaviour
 					if (!_advancedStats)
 					{ // Main stats
 						Stats stats = _stats.GetStats();
-						string statsStr = "Endurance: " + stats.GetStrength() + "\nPuissance: " + stats.GetAgility() + "\nIntelligence: " + stats.GetIntelligence();
+						string statsStr = "Endurance: " + stats.GetStrength() +
+							"\nPuissance: " + stats.GetAgility() +
+							"\nIntelligence: " + stats.GetIntelligence();
 
 						GUI.Label(statsRect, statsStr, mid);
 					}

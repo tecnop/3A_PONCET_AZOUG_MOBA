@@ -19,8 +19,6 @@ public class NetworkScript : MonoBehaviour
 
 	void Start()
 	{
-		Application.runInBackground = true;
-
 		if (!GameData.wentThroughMenu)
 		{
 			GameData.gameType = gameType;
@@ -43,6 +41,10 @@ public class NetworkScript : MonoBehaviour
 		{ // Pause until everyone's connected
 			PauseGame(true);
 		}
+		else if (GameData.gamePaused)
+		{
+			PauseGame(false);
+		}
 	}
 
 	void OnPlayerConnected(NetworkPlayer player)
@@ -56,7 +58,7 @@ public class NetworkScript : MonoBehaviour
 
 	void OnPlayerDisconnected(NetworkPlayer player)
 	{
-		if (Network.connections.Length < GameData.expectedConnections)
+		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			Debug.Log("Pausing game");
 			PauseGame(true);
@@ -67,6 +69,29 @@ public class NetworkScript : MonoBehaviour
 	{ // Just keep retrying...
 		GameData.networkError = error;
 		Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
+	}
+
+	void OnConnectedToServer()
+	{ // Connected!
+		GameData.networkError = NetworkConnectionError.NoError;
+		if (Network.connections.Length == GameData.expectedConnections)
+		{
+			Debug.Log("Unpausing game");
+			PauseGame(false);
+		}
+	}
+
+	void OnDisconnectedFromServer(NetworkDisconnection info)
+	{
+		if (info == NetworkDisconnection.LostConnection)
+		{ // Timed out, try to reconnect
+			PauseGame(true);
+			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
+		}
+		else
+		{ // Left or the server shut down... give him the option to leave
+			PauseGame(true);
+		}
 	}
 
 	//[RPC]

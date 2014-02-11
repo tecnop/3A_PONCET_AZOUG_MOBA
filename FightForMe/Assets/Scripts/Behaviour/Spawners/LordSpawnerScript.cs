@@ -15,31 +15,24 @@ public class LordSpawnerScript : SpawnerScript
 	[SerializeField]
 	private Team _team;
 
+	[SerializeField]
+	private NetworkView _networkView;
+
 	private Vector3 _pos;
 	private Quaternion _ang;
 
-	private static Monster lordData;
-
 	void Start()
 	{
-		if (!GameData.isServer)
-		{ // We're a server-only entity
-			Destroy(this.gameObject);
-			return;
-		}
-
 		Transform transform = this.transform;
 		_pos = transform.position;
 		_ang = transform.rotation;
 
 		_initialized = true;
 
-		if (lordData == null)
-		{ // Let's set it up then!
-			lordData = DataTables.GetMonster(2);
+		if (GameData.isServer)
+		{
+			Spawn();
 		}
-
-		Spawn();
 	}
 
 	public override void Spawn()
@@ -59,30 +52,33 @@ public class LordSpawnerScript : SpawnerScript
 	private void SetUpLord(GameObject lord)
 	{
 		CharacterManager manager = lord.GetComponent<CharacterManager>();
+		int layer;
 
 		if (_team == Team.Team1)
 		{
-			lord.layer = LayerMask.NameToLayer("Team1Entity");
+			layer = LayerMask.NameToLayer("Team1Entity");
 		}
-		else if (_team == Team.Team2)
+		else
 		{
-			lord.layer = LayerMask.NameToLayer("Team2Entity");
+			layer = LayerMask.NameToLayer("Team2Entity");
 		}
-		manager.GetPhysicsScript().gameObject.layer = lord.layer;
 
-		manager.MakeLocal(); // If we got here we're the server, so make the monster local
-		manager.GetMiscDataScript().SetSpawner(this);
+		manager.GetPhysicsScript().SetLayer(layer);
 
-		// Set him the data we got from the data table
-		lord.name = lordData.GetName();
-		((NPCAIScript)manager.GetInputScript()).SetBehaviour(lordData.GetBehaviour());
-		manager.GetInventoryScript().SetItems(lordData.GetItems());
+		MonsterMiscDataScript misc = (MonsterMiscDataScript)manager.GetMiscDataScript();
 
-		manager.GetGraphicsLoader().LoadModel(lordData.GetModelPath());
-		//manager.GetCharacterTransform().localScale *= monster.GetScale();
+		misc.SetSpawner(this);
+
+		misc.SetUpFromMonster(2); // HARD CODED REFERENCE
 	}
 
 	public override void OnSpawnedEntityDeath()
+	{
+		_networkView.RPC("GameOver", RPCMode.All);
+	}
+
+	[RPC]
+	private void GameOver()
 	{
 		if (_team == Team.Team2)
 		{ // Player 1 won

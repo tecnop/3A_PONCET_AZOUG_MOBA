@@ -15,6 +15,9 @@ public abstract class CharacterMiscDataScript : MonoBehaviour
 	protected SpawnerScript _spawner;
 	protected Vector3 _spawnerPos;
 
+	[SerializeField]
+	protected NetworkView _networkView;
+
 	public abstract void Initialize(CharacterManager manager);
 
 	public void SetSpawner(SpawnerScript spawner)

@@ -35,23 +35,35 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 	}
 
-	public void Damage(CharacterManager target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0)
+	public void Damage(CharacterManager target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0, bool rpc = false)
 	{
-		target.GetStatsScript().LoseHealth(_manager, damage);
+		if (rpc && GameData.isOnline)
+		{
+			target.GetStatsScript().LoseHealthRPC(_manager, damage);
+		}
+		else
+		{
+			target.GetStatsScript().LoseHealth(_manager, damage);
+		}
 		// TODO: Knockback, check other flags
 	}
 
-	public void Damage(GameObject target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0)
+	public void Damage(GameObject target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0, bool rpc = false)
 	{
 		CharacterManager hisManager = target.GetComponent<CharacterManager>();
 		if (hisManager)
 		{
-			this.Damage(hisManager, damage, damageDir, damageFlags);
+			this.Damage(hisManager, damage, damageDir, damageFlags, rpc);
 		}
 	}
 
 	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
 	{
+		/*if (!GameData.isServer)
+		{ // SEEMS TO WORK FOR NOW
+			return;
+		}*/
+
 		GameObject sphere;
 		if (GameData.isOnline)
 		{
@@ -65,8 +77,13 @@ public class CharacterCombatScript : MonoBehaviour
 		sphereScript.storeData(_manager, position, radius, _manager.GetLayer(), damage, buffID, damageFlags);
 	}
 
-	public void ShootProjectile(Projectile projectile)
+	public void ShootProjectile(uint projectileID)
 	{
+		if (!GameData.isServer)
+		{
+			return;
+		}
+
 		GameObject proj;
 		if (GameData.isOnline)
 		{
@@ -76,10 +93,9 @@ public class CharacterCombatScript : MonoBehaviour
 		{
 			proj = (GameObject)Instantiate(projectilePrefab, _transform.position, _transform.rotation);
 		}
-		proj.name = projectile.GetName();
 		ProjectileScript projScript = proj.GetComponent<ProjectileScript>();
-		projScript.StoreData(_manager, _manager.GetLayer(), projectile.GetSpeed(), projectile.GetDamage(), projectile.GetImpactRadius(), projectile.GetBuffID(), projectile.GetBuffDuration());
-		projScript.GetGraphicsLoader().LoadModel(projectile.GetModelPath());
+		projScript.SetUpFromProjectile(projectileID);
+		projScript.StoreData(_manager, _manager.GetLayer(), _manager.GetStatsScript().GetDamage());
 	}
 
 	public void DoMeleeAttack()
@@ -103,8 +119,8 @@ public class CharacterCombatScript : MonoBehaviour
 			DoMeleeAttack();
 		}
 
-		Projectile proj = myWeapon.GetProjectile();
-		if (proj != null)
+		uint proj = myWeapon.GetProjectileID();
+		if (proj != 0)
 		{
 			ShootProjectile(proj);
 		}

@@ -46,6 +46,7 @@ public class Weapon : Item
 	public string GetAttackSound() { return this.attackSoundPath; }
 
 	public WeaponType GetWeaponType() { return DataTables.GetWeaponType(this.weaponTypeID); }
+	public uint GetProjectileID() { return this.projectileID; }
 	public Projectile GetProjectile() {return DataTables.GetProjectile(this.projectileID);}
 
 	public float GetScale() { return this.scale; }

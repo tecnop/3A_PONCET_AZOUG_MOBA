@@ -21,6 +21,7 @@ public static class GameData
 {
 	public static bool gamePaused = false;
 	public static CharacterManager activePlayer;
+	public static CharacterManager otherPlayer;	 // Temporary... hopefully :/
 	public static GameType gameType;
 
 	public static bool isServer
