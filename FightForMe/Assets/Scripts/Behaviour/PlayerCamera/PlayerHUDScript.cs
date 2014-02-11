@@ -195,6 +195,16 @@ public class PlayerHUDScript : MonoBehaviour
 						_curMenu = HUDMenu.Skill;
 					}
 
+
+					ArrayList sets = _manager.GetInventoryScript().GetCompletedSets();
+					if (sets.Count > 0)
+					{
+						GUIStyle bottom = new GUIStyle(mid);
+						bottom.alignment = TextAnchor.LowerCenter;
+						bottom.padding.bottom = 2;
+						GUI.Label(new Rect(0.775f * w, 0.825f * h, 0.2f * w, 0.075f * h), "Panoplie complète:" + ((ArmorSet)sets[0]).GetName(), bottom);
+					}
+
 					uint skillPoints = _misc.GetSkillPoints();
 					if (skillPoints > 0)
 					{

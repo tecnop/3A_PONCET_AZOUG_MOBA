@@ -81,16 +81,15 @@ public static class DataTables
 		effectTable.Add(8, new Effect(description: "Intelligence+", isPositive: true, stats: new Stats(intelligence: 30)));
 		effectTable.Add(9, new Effect(description: "Vitesse de Course", isPositive: true, flatMS: 350.0f));
 		effectTable.Add(10, new Effect(description: "Vitesse de Course+", isPositive: true, flatMS: 350.0f));
+		effectTable.Add(11, new Effect(description: "Super Debug", isPositive: true, stats: new Stats(200, 200, 200), bonusDamage: 1000.0f));
 
 		// Buffs
 		temp = new uint[1];
 		temp[0] = 1;
 		buffTable.Add(1, new Buff(name: "Seigneur", effects: temp));
 		
-		temp = new uint[3];
-		temp[0] = 3;
-		temp[1] = 4;
-		temp[2] = 5;
+		temp = new uint[1];
+		temp[0] = 11;
 		buffTable.Add(2, new Buff(name: "Testeur", effects: temp));
 		
 		// Skills
@@ -140,7 +139,7 @@ public static class DataTables
 		armorSetTable.Add(2, new ArmorSet(name: "Le Beta testeur", buffID: 2));
 		
 		// Items
-		itemTable.Add(1, new Weapon(name: "Epee des mile phote d'ortograff", damage: 10.0f, attackRate: 1.0f));
+		itemTable.Add(1, new Weapon(name: "Epee des mile phote d'ortograff", damage: 20.0f, attackRate: 1.0f));
 		itemTable.Add(2, new Armor(name: "Armure du test ultime", slot: ArmorSlot.TORSO, setID: 2));
 		itemTable.Add(3, new Weapon(name: "La Dague", damage: 6.66f, attackRate: 1.5f));
 		itemTable.Add(4, new Weapon(name: "Marteau du Seigneur", damage: 50.0f, attackRate: 1.0f, weaponTypeID: 2));
@@ -155,10 +154,11 @@ public static class DataTables
 		itemTable.Add(13, new Weapon(name: "Croc de la Téci", damage: 6.0f, attackRate: 2.0f));
 		itemTable.Add(14, new Weapon(name: "La quat'cinq", attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
 		itemTable.Add(15, new Weapon(name: "Arc biodégradable", attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
+		itemTable.Add(16, new Weapon(name: "Pierre à XP", recyclingXP:1000));
 		
 		// Monsters
 		temp = new uint[1];
-		temp[0] = 1;
+		temp[0] = 9;
 		monsterTable.Add(1, new Monster(name: "Zombie", behaviour: AIType.defensive, modelPath: "Cylinder", items: temp));
 		
 		temp = new uint[5];
@@ -180,6 +180,15 @@ public static class DataTables
 		
 		temp[0] = 14;
 		monsterTable.Add(5, new Monster(name: "Snaille'p", behaviour: AIType.defensive, items: temp));
+
+		// Debug Monsters
+		temp = new uint[2];
+		temp[0] = 2;
+		temp[1] = 10;
+		monsterTable.Add(6, new Monster(name: "Debug1", behaviour: AIType.defensive, items: temp));
+		temp[0] = 11;
+		temp[1] = 12;
+		monsterTable.Add(7, new Monster(name: "Debug2", behaviour: AIType.defensive, items: temp));
 	}
 	
 	public static Item GetItem(uint key)

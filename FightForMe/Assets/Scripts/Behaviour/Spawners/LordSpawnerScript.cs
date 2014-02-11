@@ -74,7 +74,14 @@ public class LordSpawnerScript : SpawnerScript
 
 	public override void OnSpawnedEntityDeath()
 	{
-		_networkView.RPC("GameOver", RPCMode.All);
+		if (GameData.isOnline)
+		{
+			_networkView.RPC("GameOver", RPCMode.All);
+		}
+		else
+		{
+			GameOver();
+		}
 	}
 
 	[RPC]
