@@ -71,7 +71,7 @@ public class CharacterStatsScript : MonoBehaviour
 			this.damage = 0.0f;
 			this.attackRate = 1.0f;
 		}
-		this.movementSpeed = 1350.0f;
+		this.movementSpeed = 350.0f;
 		this.stats = Stats.Base;		// Do we need that anymore? Why not define it here?
 
 		// Get all currently applied effects
