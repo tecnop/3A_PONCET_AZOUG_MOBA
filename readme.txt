@@ -10,3 +10,5 @@ Pour aider au debug, certains objets très déséquilibrés sont présents sur la car
 
 Près du point d'apparition, vous trouverez un arme relativement puissante (en haut) et une pierre (en bas). Détruire la pierre débloque 10 points de compétence, pour vous permettre de tester les différentes capacitées.
 Au dessus se trouvent deux monstres, chacun portant deux morceaux d'armure. Ces morceaux sont sans effets, mais si les 4 morceaux sont réunis, vous débloquerez alors une panoplie surpuissante.
+
+Certains ennemis possèdent des arcs (mais ne s'en servent pas très bien), en les tuant vous pourrez les récupérer

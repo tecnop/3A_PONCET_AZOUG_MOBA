@@ -157,7 +157,7 @@ public class CharacterInventoryScript : MonoBehaviour
 					conflictingItem = (uint)items[i];
 				}
 			}
-			else
+			else if (!newItem.IsWeapon())
 			{
 				if (((Armor)newItem).GetSlot() == ((Armor)curItem).GetSlot())
 				{
