@@ -79,7 +79,9 @@ public static class DataTables
 		effectTable.Add(6, new Effect(description: "Endurance+", isPositive: true, stats: new Stats(strength: 30)));
 		effectTable.Add(7, new Effect(description: "Puissance+", isPositive: true, stats: new Stats(agility: 30)));
 		effectTable.Add(8, new Effect(description: "Intelligence+", isPositive: true, stats: new Stats(intelligence: 30)));
-		
+		effectTable.Add(9, new Effect(description: "Vitesse de Course", isPositive: true, flatMS: 350.0f));
+		effectTable.Add(10, new Effect(description: "Vitesse de Course+", isPositive: true, flatMS: 350.0f));
+
 		// Buffs
 		temp = new uint[1];
 		temp[0] = 1;
@@ -92,10 +94,7 @@ public static class DataTables
 		buffTable.Add(2, new Buff(name: "Testeur", effects: temp));
 		
 		// Skills
-		temp = new uint[3];
-		temp[0] = 2;
-		temp[1] = 3;
-		temp[2] = 4;
+		temp = new uint[]{2,3,4,8};
 		skillTable.Add(1, new Skill(name: "Première compétence", neighbours:temp));
 		
 		temp = new uint[2];
@@ -115,6 +114,15 @@ public static class DataTables
 		skillTable.Add(6, new Skill(name: "Super bonus de puissance", color: SkillColor.G, effect: 7, neighbours: temp));
 		temp[0] = 4;
 		skillTable.Add(7, new Skill(name: "Super bonus d'intelligence", color: SkillColor.B, effect: 8, neighbours: temp));
+
+		temp = new uint[2];
+		temp[0] = 1;
+		temp[1] = 9;
+		skillTable.Add(8, new Skill(name: "Bonus vitesse de Course", color: SkillColor.B, effect: 9, neighbours: temp));
+
+		temp = new uint[1];
+		temp[0] = 8;
+		skillTable.Add(9, new Skill(name: "Super bonus vit. de Course", color: SkillColor.B, effect: 10, neighbours: temp));
 		
 		// Projectiles
 		projectileTable.Add(1, new Projectile(name: "Flèche du seigneur", damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
