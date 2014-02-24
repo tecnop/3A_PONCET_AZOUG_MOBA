@@ -51,7 +51,6 @@ public class NetworkScript : MonoBehaviour
 	{
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
-			Debug.Log("Unpausing game");
 			PauseGame(false);
 		}
 	}
@@ -60,7 +59,6 @@ public class NetworkScript : MonoBehaviour
 	{
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
-			Debug.Log("Pausing game");
 			PauseGame(true);
 		}
 	}

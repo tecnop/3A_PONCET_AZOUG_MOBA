@@ -62,239 +62,322 @@ public class PlayerHUDScript : MonoBehaviour
 		this._state = state;
 	}
 
-	void OnGUI()
-	{ // I was going to use groups but I feel like it would just make things even more complicated for now... this is just a test
-		int w = Screen.width;
-		int h = Screen.height;
+	private void DrawMinimap(Rect rect)
+	{
+		GUI.BeginGroup(rect);
 
-		GUIStyle mid = new GUIStyle();
-		mid.wordWrap = false;
-		mid.alignment = TextAnchor.MiddleCenter;
-		mid.normal.textColor = Color.white;
+		// TODO
+
+		GUI.EndGroup();
+	}
+
+	private void DrawStats(Rect rect)
+	{
+		//GUI.BeginGroup(rect); // Meh
+
+		if (GUI.Button(rect, GUIContent.none))
+		{
+			_advancedStats = !_advancedStats;
+		}
+
+		if (!_advancedStats)
+		{ // Main stats
+			Stats stats = _stats.GetStats();
+			string statsStr = "Endurance: " + stats.GetStrength() +
+				"\nPuissance: " + stats.GetAgility() +
+				"\nIntelligence: " + stats.GetIntelligence();
+
+			GUI.Label(rect, statsStr, FFMStyles.centeredText);
+		}
+		else
+		{ // Misc stats
+			string statsStr = "Dégâts: " + _stats.GetDamage() +
+				"\n" + _stats.GetAttackRate() + " attaque(s)/s" +
+				"\nVitesse: " + _stats.GetMovementSpeed() + " unités/s";
+
+			GUI.Label(rect, statsStr, FFMStyles.centeredText);
+		}
+
+		//GUI.EndGroup();
+	}
+
+	private void DrawHealthBar(Rect rect)
+	{
+		float w = rect.width;
+		float h = rect.height;
+		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+
+		GUI.BeginGroup(rect);
+
+		float curHealth = _stats.GetHealth();
+		float maxHealth = _stats.GetMaxHealth();
+
+		// Background
+		GUI.Box(localRect, GUIContent.none);
+
+		if (curHealth > 1)
+		{ // Bar
+			GUI.Box(new Rect(0.0f, 0.0f, (curHealth / maxHealth) * w , h), GUIContent.none);
+		}
+		
+		// Text
+		GUIStyle right = FFMStyles.Text(TextAnchor.MiddleRight, rightPadding: 5);
+		GUI.Label(localRect, Mathf.Ceil(curHealth) + " / " + Mathf.Ceil(maxHealth) + " HP", FFMStyles.centeredText);
+		GUI.Label(localRect, "+ " + _stats.GetHealthRegen() + "/s", right);
+
+		GUI.EndGroup();
+	}
+
+	private void DrawManaBar(Rect rect)
+	{
+		float w = rect.width;
+		float h = rect.height;
+		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+
+		GUI.BeginGroup(rect);
+
+		float curMana = _stats.GetMana();
+		float maxMana = _stats.GetMaxMana();
+
+		// Background
+		GUI.Box(localRect, GUIContent.none);
+
+		if (curMana > 1)
+		{ // Bar
+			GUI.Box(new Rect(0.0f, 0.0f, (curMana / maxMana) * w, h), GUIContent.none);
+		}
+		
+		// Text
+		GUIStyle right = FFMStyles.Text(TextAnchor.MiddleRight, rightPadding: 5);
+		GUI.Label(localRect, Mathf.Ceil(curMana) + " / " + Mathf.Ceil(maxMana) + " MP", FFMStyles.centeredText);
+		GUI.Label(localRect, "+ " + _stats.GetManaRegen() + "/s", right);
+
+		GUI.EndGroup();
+	}
+
+	private void DrawXPBar(Rect rect)
+	{
+		float w = rect.width;
+		float h = rect.height;
+		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+
+		GUI.BeginGroup(rect);
+
+		uint curXP = _misc.GetExperience();
+
+		// Background
+		GUI.Box(localRect, GUIContent.none);
+
+		if (curXP > 0)
+		{ // Bar
+			GUI.Box(new Rect(0.0f, 0.0f, ((float)curXP / 100.0f) * w, h), GUIContent.none);
+		}
+		
+		// Text
+		GUI.Label(localRect, curXP + " / " + 100 + " XP", FFMStyles.centeredText);
+
+		GUI.EndGroup();
+	}
+
+	private void DrawMenuButtons(Rect rect)
+	{
+		float w = rect.width;
+		float h = rect.height;
+
+		GUI.BeginGroup(rect);
+
+		Rect inventoryRect = new Rect(0.0f, 0.0f, w, 0.5f * h);
+		Rect skillsRect = new Rect(0.0f, 0.5f * h, w, 0.5f * h);
+
+		if (GUI.Button(inventoryRect, "Inventaire"))
+		{
+			_curMenu = HUDMenu.Inventory;
+		}
+
+		if (GUI.Button(skillsRect, "Compétences"))
+		{
+			_curMenu = HUDMenu.Skill;
+		}
+
+
+		ArrayList sets = _manager.GetInventoryScript().GetCompletedSets();
+		if (sets.Count > 0)
+		{
+			GUIStyle bottom = FFMStyles.Text(TextAnchor.LowerCenter, bottomPadding: 2);
+			GUI.Label(inventoryRect, "Panoplie complète:" + ((ArmorSet)sets[0]).GetName(), bottom);
+		}
+
+		uint skillPoints = _misc.GetSkillPoints();
+		if (skillPoints > 0)
+		{
+			GUIStyle bottom = FFMStyles.Text(TextAnchor.LowerCenter, bottomPadding: 2);
+			GUI.Label(skillsRect, skillPoints + " point(s) à attribuer", bottom);
+		}
+
+		GUI.EndGroup();
+	}
+
+	private void DrawBuffs(Rect rect)
+	{
+		GUI.BeginGroup(rect);
+
+		// TODO
+
+		GUI.EndGroup();
+	}
+
+	private void DrawHUDBar(Rect rect)
+	{
+		float w = rect.width;
+		float h = rect.height;
+
+		GUI.Box(rect, GUIContent.none);
+
+		GUI.BeginGroup(rect);
+
+		DrawMinimap(new Rect());
+		DrawStats(new Rect(0.025f * w, 0.1f * h, 0.2f * w, 0.8f * h));
+		DrawHealthBar(new Rect(0.25f * w, 0.25f * h, 0.5f * w, 0.25f * h));
+		DrawManaBar(new Rect(0.25f * w, 0.5f * h, 0.5f * w, 0.25f * h));
+		DrawXPBar(new Rect(0.3f * w, 0.75f * h, 0.4f * w, 0.125f * h));
+		DrawMenuButtons(new Rect(0.775f * w, 0.1f * h, 0.2f * w, 0.8f * h));
+
+		GUI.EndGroup();
+	}
+
+	private void DrawActiveMenu(Rect rect)
+	{
+		float w = rect.width;
+		float h = rect.height;
+
+		GUI.Box(rect, GUIContent.none);
+
+		GUI.BeginGroup(rect);
+
+		if (_curMenu == HUDMenu.Inventory)
+		{
+			ArrayList objects = _manager.GetInventoryScript().GetItems();
+			uint i = 0;
+			foreach (Item item in objects)
+			{
+				if (GUI.Button(new Rect(0.0f, 40.0f * i, w, 40.0f), item.GetName()))
+				{
+					_manager.GetInventoryScript().DropItem(i);
+				}
+				i++;
+			}
+		}
+		else if (_curMenu == HUDMenu.Skill)
+		{
+			ArrayList objects = new ArrayList(_misc.GetAvailableSkills());
+			uint i = 0;
+			foreach (Skill skill in objects)
+			{
+				if (GUI.Button(new Rect(0.0f, 40.0f * i, w, 40.0f), skill.GetName()))
+				{
+					_misc.LearnSkill(skill);
+				}
+				i++;
+			}
+		}
+
+		if (GUI.Button(new Rect(0.25f * w, 0.9f * h, 0.5f * w, 0.1f * h), "Fermer"))
+		{ // Exit button
+			_curMenu = HUDMenu.None;
+		}
+
+		GUI.EndGroup();
+	}
+
+	private void DrawPauseMenu(Rect rect)
+	{ // Game is paused for whatever reason
+		float w = rect.width;
+		float h = rect.height;
+		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+
+		GUI.BeginGroup(rect);
+
+		GUIStyle bottom = FFMStyles.Text(TextAnchor.LowerCenter, bottomPadding: 2);
+
+		// Background
+		GUI.Box(localRect, GUIContent.none);
+
+		if (_state == HUDState.Won)
+		{
+			GUI.Box(localRect, "Le joueur 1 a gagné!", FFMStyles.centeredText);
+		}
+		else if (_state == HUDState.Lost)
+		{
+			GUI.Box(localRect, "Le joueur 2 a gagné!", FFMStyles.centeredText);
+		}
+		else if (GameData.gamePaused)
+		{
+			if (GameData.networkError != NetworkConnectionError.NoError)
+			{
+				GUI.Box(localRect, "En attente de connexion...\n\nErreur: " + GameData.networkError.ToString(), FFMStyles.centeredText);
+			}
+			else
+			{
+				GUI.Box(localRect, "En attente de connexion...", FFMStyles.centeredText);
+			}
+		}
+
+		if (GUI.Button(new Rect(0.4f * w, 0.8f * h, 0.2f * w, 0.2f * h), "Quitter"))
+		{
+			BackToMainMenu();
+		}
+
+		GUI.EndGroup();
+	}
+
+	private void DrawExitButton()
+	{
+		if (GUI.Button(new Rect(0, 0, 100, 20), "Quitter"))
+		{
+			SetState(HUDState.Leaving);
+		}
+
+		if (_state == HUDState.Leaving)
+		{
+			if (GUI.Button(new Rect(0, 20, 100, 20), "Confirmer"))
+			{
+				BackToMainMenu();
+			}
+			if (GUI.Button(new Rect(100, 20, 100, 20), "Annuler"))
+			{
+				SetState(HUDState.Default);
+			}
+		}
+	}
+
+	void OnGUI()
+	{
+		float w = Screen.width;
+		float h = Screen.height;
 
 		if (GameData.gameType == GameType.ListenServer && Network.connections.Length > 0)
 		{ // TEMPORARY
-			GUIStyle right = new GUIStyle(mid);
-			right.alignment = TextAnchor.UpperRight;
-			GUI.Label(new Rect(0,0,w,h), "Ping: " + Network.GetLastPing(Network.connections[0]), right);
+			GUIStyle topRight = FFMStyles.Text(TextAnchor.UpperRight);
+			GUI.Label(new Rect(0, 0, w, h), "Ping: " + Network.GetLastPing(Network.connections[0]), topRight);
 		}
 
 		if ((_state == HUDState.Default || _state == HUDState.Leaving) && !GameData.gamePaused)
 		{
-			if (GUI.Button(new Rect(0, 0, 100, 20), "Quitter"))
-			{
-				SetState(HUDState.Leaving);
-			}
-
-			if (_state == HUDState.Leaving)
-			{
-				if (GUI.Button(new Rect(0, 20, 100, 20), "Confirmer"))
-				{
-					BackToMainMenu();
-				}
-				if (GUI.Button(new Rect(100, 20, 100, 20), "Annuler"))
-				{
-					SetState(HUDState.Default);
-				}
-			}
+			DrawExitButton();
 
 			// TODO: Buffs
+			DrawBuffs(new Rect());
 
-			{ // Lower bar
-				GUI.Box(new Rect(0.0f, 0.8f * h, w, 0.2f * h), GUIContent.none);
+			DrawHUDBar(new Rect(0.0f, 0.8f * h, w, 0.2f * h));
 
-				{ // Stats panel
-					Rect statsRect = new Rect(0.025f * w, 0.825f * h, 0.2f * w, 0.15f * h);
-					if (GUI.Button(statsRect, GUIContent.none))
-					{
-						_advancedStats = !_advancedStats;
-					}
-
-					if (!_advancedStats)
-					{ // Main stats
-						Stats stats = _stats.GetStats();
-						string statsStr = "Endurance: " + stats.GetStrength() +
-							"\nPuissance: " + stats.GetAgility() +
-							"\nIntelligence: " + stats.GetIntelligence();
-
-						GUI.Label(statsRect, statsStr, mid);
-					}
-					else
-					{ // Misc stats
-						string statsStr = "Dégâts: " + _stats.GetDamage() +
-							"\n" + _stats.GetAttackRate() + " attaque(s)/s" +
-							"\nVitesse: " + _stats.GetMovementSpeed() + " unités/s";
-
-						GUI.Label(statsRect, statsStr, mid);
-					}
-				}
-
-				{ // Health bar
-					float curHealth = _stats.GetHealth();
-					float maxHealth = _stats.GetMaxHealth();
-					Rect barRect = new Rect(0.25f * w, 0.85f * h, 0.5f * w, 0.05f * h);
-					{ // Background
-						GUI.Box(barRect, GUIContent.none);
-					}
-					if (curHealth > 1)
-					{ // Bar
-						GUI.Box(new Rect(0.25f * w, 0.85f * h, (curHealth / maxHealth) * 0.5f * w, 0.05f * h), GUIContent.none);
-					}
-					{ // Text
-						GUIStyle right = new GUIStyle(mid);
-						right.alignment = TextAnchor.MiddleRight;
-						right.padding.right = 5;
-						GUI.Label(barRect, Mathf.Ceil(curHealth) + " / " + Mathf.Ceil(maxHealth) + " HP", mid);
-						GUI.Label(barRect, "+ " + _stats.GetHealthRegen() + "/s", right);
-					}
-				}
-
-				{ // Mana bar
-					float curMana = _stats.GetMana();
-					float maxMana = _stats.GetMaxMana();
-					Rect barRect = new Rect(0.25f * w, 0.9f * h, 0.5f * w, 0.05f * h);
-					{ // Background
-						GUI.Box(barRect, GUIContent.none);
-					}
-					if (curMana > 1)
-					{ // Bar
-						GUI.Box(new Rect(0.25f * w, 0.9f * h, (curMana / maxMana) * 0.5f * w, 0.05f * h), GUIContent.none);
-					}
-					{ // Text
-						GUIStyle right = new GUIStyle(mid);
-						right.alignment = TextAnchor.MiddleRight;
-						right.padding.right = 5;
-						GUI.Label(barRect, Mathf.Ceil(curMana) + " / " + Mathf.Ceil(maxMana) + " MP", mid);
-						GUI.Label(barRect, "+ " + _stats.GetManaRegen() + "/s", right);
-					}
-				}
-
-				{ // XP bar
-					uint curXP = _misc.GetExperience();
-					Rect barRect = new Rect(0.3f * w, 0.95f * h, 0.4f * w, 0.025f * h);
-					{ // Background
-						GUI.Box(barRect, GUIContent.none);
-					}
-					if (curXP > 0)
-					{ // Bar
-						GUI.Box(new Rect(0.3f * w, 0.95f * h, ((float)curXP / 100.0f) * 0.4f * w, 0.025f * h), GUIContent.none);
-					}
-					{ // Text
-						GUI.Label(barRect, curXP + " / " + 100 + " XP", mid);
-					}
-				}
-
-				{ // Menu buttons
-					if (GUI.Button(new Rect(0.775f * w, 0.825f * h, 0.2f * w, 0.075f * h), "Inventaire"))
-					{
-						_curMenu = HUDMenu.Inventory;
-					}
-
-					if (GUI.Button(new Rect(0.775f * w, 0.9f * h, 0.2f * w, 0.075f * h), "Compétences"))
-					{
-						_curMenu = HUDMenu.Skill;
-					}
-
-
-					ArrayList sets = _manager.GetInventoryScript().GetCompletedSets();
-					if (sets.Count > 0)
-					{
-						GUIStyle bottom = new GUIStyle(mid);
-						bottom.alignment = TextAnchor.LowerCenter;
-						bottom.padding.bottom = 2;
-						GUI.Label(new Rect(0.775f * w, 0.825f * h, 0.2f * w, 0.075f * h), "Panoplie complète:" + ((ArmorSet)sets[0]).GetName(), bottom);
-					}
-
-					uint skillPoints = _misc.GetSkillPoints();
-					if (skillPoints > 0)
-					{
-						GUIStyle bottom = new GUIStyle(mid);
-						bottom.alignment = TextAnchor.LowerCenter;
-						bottom.padding.bottom = 2;
-						GUI.Label(new Rect(0.775f * w, 0.9f * h, 0.2f * w, 0.075f * h), skillPoints + " point(s) à attribuer", bottom);
-					}
-				}
-
-				if (_curMenu != HUDMenu.None)
-				{ // Menus
-					Rect menuRect = new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h);
-
-					GUI.Box(menuRect, GUIContent.none);
-
-					float menuW = 0.25f * w;
-					float menuH = 0.6f * h;
-					GUI.BeginGroup(menuRect);
-
-					if (_curMenu == HUDMenu.Inventory)
-					{
-						ArrayList objects = _manager.GetInventoryScript().GetItems();
-						uint i = 0;
-						foreach (Item item in objects)
-						{
-							if (GUI.Button(new Rect(0.0f, 40.0f * i, menuW, 40.0f), item.GetName()))
-							{
-								_manager.GetInventoryScript().DropItem(i);
-							}
-							i++;
-						}
-					}
-					else if (_curMenu == HUDMenu.Skill)
-					{
-						ArrayList objects = new ArrayList(_misc.GetAvailableSkills());
-						uint i = 0;
-						foreach (Skill skill in objects)
-						{
-							if (GUI.Button(new Rect(0.0f, 40.0f * i, menuW, 40.0f), skill.GetName()))
-							{
-								_misc.LearnSkill(skill);
-							}
-							i++;
-						}
-					}
-
-					if (GUI.Button(new Rect(0.25f * menuW, 0.9f * menuH, 0.5f * menuW, 0.1f * menuH), "Fermer"))
-					{ // Exit button
-						_curMenu = HUDMenu.None;
-					}
-
-					GUI.EndGroup();
-				}
+			if (_curMenu != HUDMenu.None)
+			{ // Menus
+				DrawActiveMenu(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h));
 			}
 		}
 		else
-		{ // Game is paused for whatever reason
-			Rect box = new Rect(0.25f * w, 0.25f * h, 0.5f * w, 0.5f * h);
-
-			GUIStyle bottom = new GUIStyle(mid);
-			bottom.alignment = TextAnchor.LowerCenter;
-			bottom.padding.bottom = 2;
-
-			GUI.Box(box, GUIContent.none);
-
-			if (_state == HUDState.Won)
-			{
-				GUI.Box(box, "Le joueur 1 a gagné!", mid);
-			}
-			else if (_state == HUDState.Lost)
-			{
-				GUI.Box(box, "Le joueur 2 a gagné!", mid);
-			}
-			else if (GameData.gamePaused)
-			{
-				if (GameData.networkError != NetworkConnectionError.NoError)
-				{
-					GUI.Box(box, "En attente de connexion...\n\nErreur: " + GameData.networkError.ToString(), mid);
-				}
-				else
-				{
-					GUI.Box(box, "En attente de connexion...", mid);
-				}
-			}
-
-			if (GUI.Button(new Rect(0.4f * w, 0.65f * h, 0.2f * w, 0.1f * h), "Quitter"))
-			{
-				BackToMainMenu();
-			}
+		{
+			DrawPauseMenu(new Rect(0.25f * w, 0.25f * h, 0.5f * w, 0.5f * h));
 		}
 	}
 }

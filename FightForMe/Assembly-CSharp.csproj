@@ -95,6 +95,7 @@
      <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
      <Compile Include="Assets\Scripts\GameData\NetworkScript.cs" />
      <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
+     <Compile Include="Assets\Scripts\UI\FFMStyles.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
