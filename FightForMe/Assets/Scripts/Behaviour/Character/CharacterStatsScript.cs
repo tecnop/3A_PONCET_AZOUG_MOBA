@@ -45,6 +45,21 @@ public class CharacterStatsScript : MonoBehaviour
 		this.UpdateStats(true);
 	}
 
+	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+	{
+		//if (stream.isWriting)
+		if (GameData.isServer)
+		{
+			stream.Serialize(ref this.health);
+			stream.Serialize(ref this.mana);
+		}
+		else
+		{
+			stream.Serialize(ref this.health);
+			stream.Serialize(ref this.mana);
+		}
+	}
+
 	public void UpdateStats(bool firstTime = false)
 	{
 		if (!firstTime && this.health <= 0)
@@ -243,17 +258,6 @@ public class CharacterStatsScript : MonoBehaviour
 		{
 			mana = maxMana;
 		}
-	}
-	[RPC]
-	public void _LoseHealthRPC(float amount)
-	{ // TEMPORARY
-		LoseHealth(null, amount);
-	}
-
-	public void LoseHealthRPC(CharacterManager inflictor, float amount)
-	{ // TEMPORARY
-		LoseHealth(inflictor, amount);
-		 _networkView.RPC("_LoseHealthRPC", RPCMode.Others, amount);
 	}
 
 	public void LoseHealth(CharacterManager inflictor, float amount)

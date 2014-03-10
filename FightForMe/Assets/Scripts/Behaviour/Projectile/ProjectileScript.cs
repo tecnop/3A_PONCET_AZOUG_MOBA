@@ -15,11 +15,8 @@ public class ProjectileScript : MonoBehaviour
 	[SerializeField]
 	private NetworkView _networkView;
 
-	//private float damageAmplifier;		// Percentage of damage to inflict on impact (default: 1.0f)
-	private float damage;				// Damage to inflict on impact
+	private DamageInstance damage;		// Damage instance to apply to hit targets
 	private float damageRadius;			// Radius of the area in which to inflict damage
-	private uint buffID;				// Index of the entry in the buff table that should be inflicted upon collision
-	private float buffDuration;			// Duration of the buff
 
 	private CharacterManager owner;		// Character responsible for our actions
 
@@ -88,10 +85,8 @@ public class ProjectileScript : MonoBehaviour
 		}
 
 		this.name = projectile.GetName();
-		this.damage = projectile.GetDamage();
+		this.damage = new DamageInstance(owner, projectile.GetDamage(), projectile.GetBuffID(), projectile.GetBuffDuration());
 		this.damageRadius = projectile.GetImpactRadius();
-		this.buffID = projectile.GetBuffID();
-		this.buffDuration = projectile.GetBuffDuration();
 		_rigidBody.velocity = _transform.rotation * Vector3.forward * projectile.GetSpeed();
 		_graphics.LoadModel(projectile.GetModelPath());
 
@@ -102,17 +97,17 @@ public class ProjectileScript : MonoBehaviour
 
 		if (pendingDamage != 0)
 		{
-			this.damage += pendingDamage;
+			//this.damage += pendingDamage; // TODO
 		}
 	}
 
 	public void SetUpFromProjectile(uint projectileID)
 	{
-		if (GameData.isOnline)
-		{
+		/*if (GameData.isOnline)
+		{ // No longer used as this object is entirely run by prediction
 			_networkView.RPC("DoSetUp", RPCMode.All, (int)projectileID);
 		}
-		else
+		else*/
 		{
 			DoSetUp((int)projectileID);
 		}
@@ -130,17 +125,11 @@ public class ProjectileScript : MonoBehaviour
 		}
 
 		self.layer = layer;
-		this.damage += extraDamage;
+		//this.damage += extraDamage; // TODO
 	}
 
 	void OnCollisionEnter(Collision collision)
 	{
-		if (!GameData.isServer)
-		{ // Let the server handle the rest
-			Destroy(this.gameObject);
-			return;
-		}
-
 		if (!self)
 		{
 			Debug.LogError("ERROR: Projectile has not been initialized properly!");
@@ -161,8 +150,9 @@ public class ProjectileScript : MonoBehaviour
 			{ // If we collided with it then it's got to be an enemy
 				CharacterManager hisManager = phys.GetManager();
 
-				_ownerCombat.Damage(hisManager, damage, collider.ClosestPointOnBounds(_transform.position), 0, true);
-				_ownerCombat.InflictBuff(hisManager, this.buffID, this.buffDuration);
+				//_ownerCombat.Damage(hisManager, damage, collider.ClosestPointOnBounds(_transform.position), 0);
+				//_ownerCombat.InflictBuff(hisManager, this.buffID, this.buffDuration);
+				hisManager.GetCombatScript().ApplyDamageInstance(this.damage);
 			}
 		}
 

@@ -77,6 +77,7 @@
      <Compile Include="Assets\Scripts\Behaviour\Spawners\SpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\TeamEntitySpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\WayPoint\WayPointScript.cs" />
+     <Compile Include="Assets\Scripts\Data\DamageInstance.cs" />
      <Compile Include="Assets\Scripts\Data\DataTables.cs" />
      <Compile Include="Assets\Scripts\Data\Entities\Monster.cs" />
      <Compile Include="Assets\Scripts\Data\Entities\Projectile.cs" />
@@ -93,6 +94,7 @@
      <Compile Include="Assets\Scripts\Data\Stats.cs" />
      <Compile Include="Assets\Scripts\GameData\GameData.cs" />
      <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
+     <Compile Include="Assets\Scripts\GameData\InstantiateManagerScript.cs" />
      <Compile Include="Assets\Scripts\GameData\NetworkScript.cs" />
      <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
      <Compile Include="Assets\Scripts\UI\FFMStyles.cs" />

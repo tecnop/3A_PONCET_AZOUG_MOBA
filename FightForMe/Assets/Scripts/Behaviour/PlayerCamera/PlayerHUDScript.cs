@@ -72,10 +72,14 @@ public class PlayerHUDScript : MonoBehaviour
 	}
 
 	private void DrawStats(Rect rect)
-	{
-		//GUI.BeginGroup(rect); // Meh
+	{ // This needs some work, will do for now
+		float w = rect.width;
+		float h = rect.height;
+		Rect localRect = new Rect(0.0f, 0.0f, w, h);
 
-		if (GUI.Button(rect, GUIContent.none))
+		GUI.BeginGroup(rect);
+
+		if (GUI.Button(localRect, GUIContent.none))
 		{
 			_advancedStats = !_advancedStats;
 		}
@@ -87,7 +91,7 @@ public class PlayerHUDScript : MonoBehaviour
 				"\nPuissance: " + stats.GetAgility() +
 				"\nIntelligence: " + stats.GetIntelligence();
 
-			GUI.Label(rect, statsStr, FFMStyles.centeredText);
+			GUI.Label(localRect, statsStr, FFMStyles.centeredText);
 		}
 		else
 		{ // Misc stats
@@ -95,10 +99,10 @@ public class PlayerHUDScript : MonoBehaviour
 				"\n" + _stats.GetAttackRate() + " attaque(s)/s" +
 				"\nVitesse: " + _stats.GetMovementSpeed() + " unités/s";
 
-			GUI.Label(rect, statsStr, FFMStyles.centeredText);
+			GUI.Label(localRect, statsStr, FFMStyles.centeredText);
 		}
 
-		//GUI.EndGroup();
+		GUI.EndGroup();
 	}
 
 	private void DrawHealthBar(Rect rect)
@@ -246,7 +250,7 @@ public class PlayerHUDScript : MonoBehaviour
 	}
 
 	private void DrawActiveMenu(Rect rect)
-	{
+	{ // TODO: Add a slider to support an unlimited amount of items/skills
 		float w = rect.width;
 		float h = rect.height;
 
@@ -365,7 +369,6 @@ public class PlayerHUDScript : MonoBehaviour
 		{
 			DrawExitButton();
 
-			// TODO: Buffs
 			DrawBuffs(new Rect());
 
 			DrawHUDBar(new Rect(0.0f, 0.8f * h, w, 0.2f * h));
