@@ -35,6 +35,11 @@ public abstract class WikiEntry
 		this.quality = quality;
 	}
 
+	public string ParseDescription(CharacterManager manager)
+	{ // TODO: Parses the item's short description and replace character-related tags with the required values
+		return this.description;
+	}
+
 	public string GetName()
 	{
 		return this.name;
@@ -42,12 +47,12 @@ public abstract class WikiEntry
 
 	public string GetDesc()
 	{
-		return this.description;
+		return this.ParseDescription(null);
 	}
 
 	public string GetLongDesc()
 	{
-		return this.description + "\n\n" + this.description2;
+		return this.GetDesc() + "\n\n" + this.description2;
 	}
 
 	public GameObject GetModel()

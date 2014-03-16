@@ -90,12 +90,14 @@ public class LordSpawnerScript : SpawnerScript
 		if (_team == Team.Team2)
 		{ // Player 1 won
 			Debug.Log("Player 1 won!");
-			GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Won);
+			//GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Won);
+			HUDRenderer.SetState(HUDState.Won);
 		}
 		else if (_team == Team.Team1)
 		{ // Player 2 won
 			Debug.Log("Player 2 won!");
-			GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Lost);
+			//GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Lost);
+			HUDRenderer.SetState(HUDState.Lost);
 		}
 
 		GameData.gamePaused = true;

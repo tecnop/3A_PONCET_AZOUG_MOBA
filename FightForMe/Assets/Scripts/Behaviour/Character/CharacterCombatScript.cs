@@ -167,4 +167,9 @@ public class CharacterCombatScript : MonoBehaviour
 	{
 		return this.buffs;
 	}
+
+	public ArrayList GetCombatLog()
+	{
+		return this.combatLog;
+	}
 }

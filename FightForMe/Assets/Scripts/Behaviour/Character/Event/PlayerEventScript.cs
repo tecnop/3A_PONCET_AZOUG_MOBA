@@ -21,6 +21,13 @@ public class PlayerEventScript : CharacterEventScript
 
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
 
+		// DEBUG
+		ArrayList combatLog = _manager.GetCombatScript().GetCombatLog();
+		foreach (DamageInstance log in combatLog)
+		{
+			Debug.Log(log);
+		}
+
 		_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
 		
 	}

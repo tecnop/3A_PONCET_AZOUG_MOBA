@@ -61,4 +61,16 @@ public class DamageInstance
 			return (this.target == null);
 		}
 	}
+
+	public override string ToString()
+	{
+		if (this.isPending)
+		{
+			return "THIS DAMAGE INSTANCE IS NOT INITIALIZED AND SHOULD NOT BE DISPLAYED";
+		}
+		else
+		{
+			return this.inflictor.name + " inflicted " + this.damage + " damage to " + this.target.name + " using <insert damage source here>";
+		}
+	}
 }

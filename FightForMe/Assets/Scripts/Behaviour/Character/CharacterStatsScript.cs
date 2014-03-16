@@ -10,6 +10,13 @@ using System.Collections;
 
 public class CharacterStatsScript : MonoBehaviour
 {
+	// Stat conversion constants
+	private const float strToMaxHealth = 10.0f;
+	private const float strToHealthRegen = 0.1f;
+	private const float agiToDamage = 0.5f;
+	private const float intToMaxMana = 7.5f;
+	private const float intToManaRegen = 0.2f;
+
 	[SerializeField]
 	private NetworkView _networkView;
 
@@ -163,12 +170,11 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 
 		// Convert stats into... er... stats.
-		// I wanted to #define those ratios but apparently that doesn't work in C#? No internet atm :(
-		this.maxHealth += 10.0f * this.stats.GetStrength();
-		this.healthRegen += 0.1f * this.stats.GetStrength();
-		this.damage += 0.5f * this.stats.GetAgility();
-		this.maxMana += 7.5f * this.stats.GetIntelligence();
-		this.manaRegen += 0.2f * this.stats.GetIntelligence();
+		this.maxHealth += strToMaxHealth * this.stats.GetStrength();
+		this.healthRegen += strToHealthRegen * this.stats.GetStrength();
+		this.damage += agiToDamage * this.stats.GetAgility();
+		this.maxMana += intToMaxMana * this.stats.GetIntelligence();
+		this.manaRegen += intToManaRegen * this.stats.GetIntelligence();
 
 		// Apply percentage-based stat modifiers
 		this.maxHealth *= maxHealthPctChange;
@@ -194,8 +200,6 @@ public class CharacterStatsScript : MonoBehaviour
 			this.health *= healthChange;
 			this.mana *= manaChange;
 		}
-
-		//Debug.Log(_manager.name + " has " + this.health + "/" + this.maxHealth + " health");
 	}
 
 	public void ApplyRegen()
@@ -221,6 +225,18 @@ public class CharacterStatsScript : MonoBehaviour
 		this.mana = Mathf.Clamp(this.mana + this.manaRegen * Time.deltaTime, 0.0f, this.maxMana);
 	}
 
+	public void Revive()
+	{
+		if (health > 0)
+		{ // We're not dead...
+			return;
+		}
+
+		health = maxHealth;
+		_manager.GetCharacterAnimator().SetBool("isDead", false);
+		_manager.GetCombatScript().ResetCombatLog();
+	}
+
 	public void GainHealth(float amount)
 	{
 		if (health <= 0)
@@ -233,17 +249,6 @@ public class CharacterStatsScript : MonoBehaviour
 		{
 			health = maxHealth;
 		}
-	}
-
-	public void Revive()
-	{
-		if (health > 0)
-		{ // We're not dead...
-			return;
-		}
-
-		health = maxHealth;
-		_manager.GetCharacterAnimator().SetBool("isDead", false);
 	}
 
 	public void GainMana(float amount)
@@ -268,8 +273,6 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 
 		health -= amount;
-
-		Debug.Log(_manager.name + " took " + amount + " damage");
 
 		if (health <= 0)
 		{
