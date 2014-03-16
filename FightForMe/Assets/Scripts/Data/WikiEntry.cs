@@ -16,21 +16,21 @@ public abstract class WikiEntry
 	protected string name;			// Entry name
 	protected string description;	// Quite short, generally stats and such
 	protected string description2;	// May be longer and contain less important information such as lore, jokes, tips...
-	protected string modelPath;		// Path to the model associated with this entry
+	protected GameModel model;		// Game model associated with this entry
 	protected string iconPath;		// Path to the picture associated with this entry
 	protected Quality quality;		// Quality level of the associated object, changes the color of the title
 
 	protected WikiEntry(string name,
 		string description,
 		string description2 = null,
-		string modelPath = null,
+		GameModel model = null,
 		string iconPath = null,
 		Quality quality = Quality.COMMON)
 	{
 		this.name = name;
 		this.description = description;
 		this.description2 = description2;
-		this.modelPath = modelPath;
+		this.model = model;
 		this.iconPath = iconPath;
 		this.quality = quality;
 	}
@@ -47,12 +47,17 @@ public abstract class WikiEntry
 
 	public string GetLongDesc()
 	{
-		return this.description+"\n"+this.description2;
+		return this.description + "\n\n" + this.description2;
 	}
 
-	public string GetModel()
+	public GameObject GetModel()
 	{
-		return this.modelPath;
+		return this.model.GetModel();
+	}
+
+	public string GetModelPath()
+	{ // Shouldn't be needed anymore, oh well
+		return this.model.GetModelPath();
 	}
 
 	public string GetIcon()

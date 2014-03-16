@@ -34,6 +34,11 @@ public class CharacterCombatScript : MonoBehaviour
 		{
 			buffs = new ArrayList();
 		}
+
+		if (combatLog == null)
+		{
+			combatLog = new ArrayList();
+		}
 	}
 
 	public void Damage(CharacterManager target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0)
@@ -51,35 +56,23 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 	}
 
-	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
+	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, DamageInstance damageInstance)
 	{
-		GameObject sphere;
-		/*if (GameData.isOnline)
-		{ // No longer used as this object is entirely run by prediction
-			sphere = (GameObject)Network.Instantiate(damageSpherePrefab, position, angle, 0);
-		}
-		else*/
-		{
-			sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
-		}
+		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
 		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
-		sphereScript.storeData(_manager, position, radius, _manager.GetLayer(), damage, buffID, damageFlags);
+		sphereScript.SetUp(_manager, position, radius, _manager.GetLayer(), damageInstance);
+	}
+
+	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, float damage = 0.0f, uint buffID = 0, float buffDuration = 0, uint damageFlags = 0)
+	{
+		AreaOfEffect(position, angle, radius, new DamageInstance(_manager, damage, buffID, buffDuration));
 	}
 
 	public void ShootProjectile(uint projectileID)
 	{
-		GameObject proj;
-		/*if (GameData.isOnline)
-		{ // No longer used as this object is entirely run by prediction
-			proj = (GameObject)Network.Instantiate(projectilePrefab, _transform.position, _transform.rotation, 0);
-		}
-		else*/
-		{
-			proj = (GameObject)Instantiate(projectilePrefab, _transform.position, _transform.rotation);
-		}
+		GameObject proj = (GameObject)Instantiate(projectilePrefab, _transform.position, _transform.rotation);
 		ProjectileScript projScript = proj.GetComponent<ProjectileScript>();
-		projScript.SetUpFromProjectile(projectileID);
-		projScript.StoreData(_manager, _manager.GetLayer(), _manager.GetStatsScript().GetDamage());
+		projScript.SetUp(_manager, projectileID);
 	}
 
 	public void DoMeleeAttack()
@@ -90,7 +83,7 @@ public class CharacterCombatScript : MonoBehaviour
 	public void DoAttack()
 	{ // Main attack function
 		Weapon myWeapon = _manager.GetInventoryScript().GetWeapon();
-		
+
 		if (myWeapon == null)
 		{ // Using our fists
 			DoMeleeAttack();
@@ -126,12 +119,12 @@ public class CharacterCombatScript : MonoBehaviour
 		target.GetCombatScript().ReceiveBuff(_manager, buffID, duration);
 	}
 
-	[RPC]
+	/*[RPC]
 	public void CreateDamageInstance(CharacterManager inflictor, float damage, uint buffID, float buffDuration)
 	{
 		DamageInstance instance = new DamageInstance(inflictor, damage, buffID, buffDuration);
-
-	}
+		// I don't remember what I was doing here, but I don't think it's required anymore
+	}*/
 
 	public void ApplyDamageInstance(DamageInstance instance)
 	{ // This is stupid but at least I don't need to make getters :3
@@ -139,7 +132,6 @@ public class CharacterCombatScript : MonoBehaviour
 		this.combatLog.Add(appliedDamage);
 		appliedDamage.ApplyEffects();
 	}
-	// Create a remote function that takes every field of the DamageInstance class and applies a new local damage instance
 
 	public void ResetCombatLog()
 	{

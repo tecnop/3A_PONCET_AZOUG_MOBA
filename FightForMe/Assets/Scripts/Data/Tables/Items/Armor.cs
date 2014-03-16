@@ -12,15 +12,16 @@ public class Armor : Item
 
 	public Armor(string name = "Armure",
 		string description = null,
+		string description2 = null,
 		string modelPath = null,
 		string iconPath = null,
+		Quality quality = Quality.COMMON,
 		uint recyclingXP = 100,
-		uint level = 0,
 		uint skillID = 0,
 		ArmorSlot slot = ArmorSlot.TORSO,
 		uint setID = 0,
 		Stats stats = null)
-		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID, false)
+		: base(name, description, description2, modelPath, 1.0f, iconPath, quality, recyclingXP, skillID, false)
 	{
 		this.slot = slot;
 		this.setID = setID;

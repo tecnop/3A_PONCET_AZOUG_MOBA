@@ -68,7 +68,7 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 		((NPCAIScript)_manager.GetInputScript()).SetBehaviour(monster.GetBehaviour());
 		_manager.GetInventoryScript().SetItems(monster.GetItems());
 
-		_manager.GetGraphicsLoader().LoadModel(monster.GetModelPath());
+		_manager.GetGraphicsLoader().LoadModel(monster.GetModel());
 		//_manager.GetCharacterTransform().localScale *= monster.GetScale();
 	}
 }

@@ -12,28 +12,26 @@ public class Weapon : Item
 	private uint weaponTypeID;			// ID of the entry in the weapon type table this weapon matches
 	private uint projectileID;			// ID of the entry in the projectile table this weapon should shoot when swung
 
-	private float scale;				// Model and hitbox scale
-
 	public Weapon(string name = "Arme",
 		string description = null,
+		string description2 = null,
 		string modelPath = null,
+		float scale = 1.0f,
 		string iconPath = null,
+		Quality quality = Quality.COMMON,
 		uint recyclingXP = 100,
-		uint level = 0,
 		uint skillID = 0,
 		uint weaponTypeID = 0,
 		float damage = 0.0f,
 		float attackRate = 1.0f,
-		float scale = 1.0f,
 		uint projectileID = 0,
 		string effectPath = null,
 		string attackSoundPath = null)
-		: base(name, description, modelPath, iconPath, recyclingXP, level, skillID, true)
+		: base(name, description, description2, modelPath, scale, iconPath, quality, recyclingXP, skillID, true)
 	{
 		this.weaponTypeID = weaponTypeID;
 		this.damage = damage;
 		this.attackRate = attackRate;
-		this.scale = scale;
 		this.projectileID = projectileID;
 		this.effectPath = effectPath;
 		this.attackSoundPath = attackSoundPath;
@@ -47,7 +45,5 @@ public class Weapon : Item
 
 	public WeaponType GetWeaponType() { return DataTables.GetWeaponType(this.weaponTypeID); }
 	public uint GetProjectileID() { return this.projectileID; }
-	public Projectile GetProjectile() {return DataTables.GetProjectile(this.projectileID);}
-
-	public float GetScale() { return this.scale; }
+	public Projectile GetProjectile() { return DataTables.GetProjectile(this.projectileID); }
 }

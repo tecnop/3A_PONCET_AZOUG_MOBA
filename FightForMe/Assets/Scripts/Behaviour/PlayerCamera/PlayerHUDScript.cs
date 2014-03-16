@@ -301,7 +301,7 @@ public class PlayerHUDScript : MonoBehaviour
 
 		GUI.BeginGroup(rect);
 
-		GUIStyle bottom = FFMStyles.Text(TextAnchor.LowerCenter, bottomPadding: 2);
+		//GUIStyle bottom = FFMStyles.Text(TextAnchor.LowerCenter, bottomPadding: 2);
 
 		// Background
 		GUI.Box(localRect, GUIContent.none);

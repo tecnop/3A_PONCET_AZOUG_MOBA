@@ -14,7 +14,7 @@ public class StartMenuScript : MonoBehaviour {
 	private string ipAddress = "";
 
 	private float mainScreenLeft;
-	private float mainScreenCurrentTop;
+	//private float mainScreenCurrentTop;
 	
 	private float boxMultiWidth;
 	private float boxMultiHeight;
@@ -45,7 +45,7 @@ public class StartMenuScript : MonoBehaviour {
 		boxQuitHeight = 200f;
 		
 		mainScreenLeft = (Screen.width / 2) - (boxMultiWidth / 2);
-		mainScreenCurrentTop = (Screen.height / 4); //- (mainContHeight / 2);
+		//mainScreenCurrentTop = (Screen.height / 4); //- (mainContHeight / 2);
 
 		planeAnimator = this.GetComponent<Animator>();
 

@@ -61,12 +61,11 @@ public static class DataTables
 		// 2 - Abilities
 		// 3 - Status changes (AKA effects)
 		// 4 - Buffs
-		// 5 - Skill tree
+		// 5 - Skill tree	// NOTE: Place before status changes so we can build effect descriptions automatically?
 		// 6 - Projectiles
 		// 7 - Weapon types, armor sets
 		// 8 - Items
 		// 9 - Monsters
-		// It doesn't always matter because we mostly use IDs (for now), but for the sake of consistency this order should be used
 		
 		uint[] temp;
 		
@@ -265,7 +264,7 @@ public static class DataTables
 	
 	public static GameObject GetModel(string name)
 	{
-		if (modelTable.ContainsKey(name))
+		if (name != null && modelTable.ContainsKey(name))
 		{
 			return modelTable[name];
 		}

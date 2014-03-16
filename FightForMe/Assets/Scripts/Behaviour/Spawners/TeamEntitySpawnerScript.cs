@@ -21,7 +21,7 @@ public class TeamEntitySpawnerScript : SpawnerScript
 
 	private bool playerIsDead;
 
-	static Monster minion = new Monster("Minion", AIType.roaming);
+	//static Monster minion = new Monster("Minion", AIType.roaming);
 
 	void Start()
 	{

@@ -7,10 +7,13 @@ public class DetectionSphereScript : MonoBehaviour
 
 	private float startTime;	// Time at which we spawned
 
-	private CharacterManager inflictor;
-	private float damage;
+	private CharacterManager owner;
+
+	private DamageInstance damageInstance;
 
 	private GameObject self;
+
+	[SerializeField]
 	private Transform _transform;
 
 	void Start()
@@ -20,27 +23,27 @@ public class DetectionSphereScript : MonoBehaviour
 		if (!self)
 		{
 			self = this.gameObject;
-			_transform = self.transform;
 		}
 	}
 
-	public void storeData(CharacterManager inflictor, Vector3 position, float radius, int layer, float damage = 0.0f, uint buffID = 0, uint damageFlags = 0)
+	public void SetUp(CharacterManager inflictor, Vector3 position, float radius, int layer, DamageInstance damageInstance)
 	{
 		if (!self)
 		{
 			self = this.gameObject;
-			_transform = self.transform;
 		}
 
 		self.layer = layer;
-		this.inflictor = inflictor;
-		this.damage = damage;
+		this.owner = inflictor;
+
+		this.damageInstance = damageInstance;
+
 		_transform.localScale *= radius;
 	}
 
-	private void applyToCharacter(CharacterManager target)
+	private void ApplyToCharacter(CharacterManager target)
 	{
-		inflictor.GetCombatScript().Damage(target, damage);
+		target.GetCombatScript().ApplyDamageInstance(this.damageInstance);
 	}
 
 	void OnTriggerEnter(Collider col)
@@ -55,11 +58,7 @@ public class DetectionSphereScript : MonoBehaviour
 		CharacterPhysicsScript phys = col.GetComponent<CharacterPhysicsScript>();
 		if (phys)
 		{
-			applyToCharacter(phys.GetManager());
-		}
-		else
-		{
-			Debug.LogWarning("Detection sphere found something else than a player");
+			ApplyToCharacter(phys.GetManager());
 		}
 	}
 

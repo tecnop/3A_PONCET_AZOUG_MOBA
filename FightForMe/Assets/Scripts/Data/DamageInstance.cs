@@ -45,6 +45,12 @@ public class DamageInstance
 			return;
 		}
 
+		if (inflictor)
+		{ // Do something when this is not true?
+			//Debug.Log(inflictor.name + " hit " + target.name + " for " + damage + " damage");
+			inflictor.GetCombatScript().Damage(target, damage);
+		}
+
 		target.GetCombatScript().ReceiveBuff(inflictor, this.buffID, this.buffDuration);
 	}
 

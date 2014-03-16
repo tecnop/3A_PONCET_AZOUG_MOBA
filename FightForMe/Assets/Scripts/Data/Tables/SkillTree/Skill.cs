@@ -12,10 +12,8 @@ public enum SkillColor
 	W	// Neutral (starting skill only please!)
 }
 
-public class Skill
+public class Skill : WikiEntry
 {
-	private string name;			// Preferably single-word descriptive name
-	private string description;		// Longer description
 	private SkillColor color;		// Alignement of the skill between the three main stats
 	private uint effect;			// ID of the entry in the effects table unlocking this skill applies
 	// TODO: Position in the tree
@@ -23,12 +21,14 @@ public class Skill
 
 	public Skill(string name,
 		string description = null,
+		string description2 = null,
+		string iconPath = null,
+		Quality quality = Quality.COMMON,
 		SkillColor color = SkillColor.W,
 		uint effect = 0,
 		uint[] neighbours = null)
+		: base(name, description, description2, null, iconPath, quality)
 	{
-		this.name = name;
-		this.description = description;
 		this.color = color;
 		this.effect = effect;
 
@@ -40,16 +40,6 @@ public class Skill
 		{
 			this.neighbours = new ArrayList(neighbours);
 		}
-	}
-
-	public string GetName()
-	{
-		return this.name;
-	}
-
-	public string GetDesc()
-	{
-		return this.description;
 	}
 
 	public SkillColor GetColor()

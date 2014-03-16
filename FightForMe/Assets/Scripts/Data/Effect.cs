@@ -9,10 +9,10 @@ public enum MiscEffect
 
 public class Effect
 {
-	private string description;		// Descriptive text of the effect
+	private string description;		// Descriptive text of the effect (used to create a buff's description)
 	private bool isPositive;		// If true, the effect is an improvement, otherwise it is negative
 
-	// Split that into child classes maybe? Also tempted to make everything public... *sigh*
+	// Split that into child classes maybe?
 	private float flatHP, pctHP;
 	private float flatMP, pctMP;
 	private float flatHPRegen, pctHPRegen;
@@ -74,6 +74,9 @@ public class Effect
 		this.misc = misc;
 		this.miscParm = miscParm;
 	}
+
+	public string GetDescription() { return this.description; }
+	public bool IsPositive() { return this.isPositive; }
 
 	// Here we go...
 	public float GetFlatHP() { return this.flatHP; }

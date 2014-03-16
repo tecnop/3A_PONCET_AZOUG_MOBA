@@ -3,10 +3,8 @@ using System.Collections;
 
 public enum ProjectileTrajectory { Straight, Throw };
 
-public class Projectile
+public class Projectile : WikiEntry
 {
-	private string name;						// Projectile name
-	private string modelPath;					// Projectile model
 	private string effectPath;					// Effect to display around the model
 	private string impactEffectPath;			// Effect to play upon impact
 
@@ -21,7 +19,12 @@ public class Projectile
 	private ProjectileTrajectory trajectory;	// Trajectory type
 
 	public Projectile(string name = "Projectile",
+		string description = null,
+		string description2 = null,
 		string modelPath = null,
+		float scale = 1.0f,
+		string iconPath = null,
+		Quality quality = Quality.COMMON,
 		string effectPath = null,
 		string impactEffectPath = null,
 		float damage = 0.0f,
@@ -31,9 +34,8 @@ public class Projectile
 		float buffDuration = 0,
 		Vector3 hitboxSize = new Vector3(),
 		ProjectileTrajectory trajectory = ProjectileTrajectory.Straight)
+		: base(name, description, description2, new GameModel(modelPath, scale), iconPath, quality)
 	{
-		this.name = name;
-		this.modelPath = modelPath;
 		this.effectPath = effectPath;
 		this.impactEffectPath = effectPath;
 		this.damage = damage;
@@ -45,8 +47,6 @@ public class Projectile
 		this.trajectory = trajectory;
 	}
 
-	public string GetName() { return this.name; }
-	public string GetModelPath() { return this.modelPath; }
 	public string GetEffectPath() { return this.effectPath; }
 	public string GetImpactEffectPath() { return this.impactEffectPath; }
 	public float GetDamage() { return this.damage; }

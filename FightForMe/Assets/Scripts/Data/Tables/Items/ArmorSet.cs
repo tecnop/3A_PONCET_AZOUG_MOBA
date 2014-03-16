@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArmorSet
+public class ArmorSet : WikiEntry
 {
-	private string name;			// Descriptive name of the set
-
 	private uint buffID;			// Index of the entry in the buff table completing this set enables
 
 	private uint setSize;			// Number of items in this set
 	private bool autoSize;			// If true, "setSize" will increase automatically as items are created using this set
 
 	public ArmorSet(string name,
+		string description = null,
+		string description2 = null,
+		string iconPath = null,
+		Quality quality = Quality.COMMON,
 		uint buffID = 0,
 		uint setSize = 0)
+		: base(name, description, description2, null, iconPath, quality)
 	{
-		this.name = name;
-
 		this.buffID = buffID;
 
 		this.setSize = setSize;
@@ -28,11 +29,6 @@ public class ArmorSet
 		{
 			this.setSize++;
 		}
-	}
-
-	public string GetName()
-	{
-		return this.name;
 	}
 
 	public Buff GetBuff()

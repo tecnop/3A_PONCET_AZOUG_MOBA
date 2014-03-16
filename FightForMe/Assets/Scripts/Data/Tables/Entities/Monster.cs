@@ -1,34 +1,25 @@
 using UnityEngine;
 using System.Collections;
 
-public class Monster
+public class Monster : WikiEntry
 {
-	private string name;		// Name of the monster
 	private AIType behaviour;	// Defines how the monster should act and react to enemies
-
-	private string modelPath;	// Model of the monster
-	private float scale;		// Model and hitbox scale of the monster
-
 	private ArrayList items;	// Indexes of entries from the weapon table that this monster is carrying
 	private ArrayList buffs;	// Indexes of entries from the buff table that this monster has by default
 
-	public Monster(string name = null,
-		AIType behaviour = AIType.defensive,
+	public Monster(string name = "Monster",
+		string description = null,
+		string description2 = null,
 		string modelPath = null,
 		float scale = 1.0f,
+		string iconPath = null,
+		Quality quality = Quality.COMMON,
+		AIType behaviour = AIType.defensive,
 		uint[] items = null,
 		uint[] buffs = null)
+		: base(name, description, description2, new GameModel(modelPath, scale), iconPath, quality)
 	{
-		if (name == null)
-			this.name = "Monster";
-		else
-			this.name = name;
-
 		this.behaviour = behaviour;
-
-		this.modelPath = modelPath;
-
-		this.scale = Mathf.Clamp(scale, 0.1f, 10.0f);
 
 		if (items == null)
 			this.items = new ArrayList();
@@ -41,9 +32,7 @@ public class Monster
 			this.buffs = new ArrayList(buffs);
 	}
 
-	public string GetName() { return this.name; }
 	public AIType GetBehaviour() { return this.behaviour; }
-	public string GetModelPath() { return this.modelPath; }
-	public float GetScale() { return this.scale; }
 	public ArrayList GetItems() { return this.items; }
+	public ArrayList GetBuffs() { return this.buffs; }
 }
