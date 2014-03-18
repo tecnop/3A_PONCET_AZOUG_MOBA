@@ -1,0 +1,64 @@
+Player (Tag: Player, Layer: Team1Entity or Team2Entity)
+	Components: Animator, CharacterManagerScript
+	Children:
+		-> PlayerCamera
+			Components: Camera, GUILayer, Flare Layer, Audio Listener
+		-> CharacterPhysics
+			Components: Capsule Collider, Character Controller, CharacterMovementScript
+		-> CharacterLogic
+			Components: CharacterAttackScript, CharacterInventoryScript, CharacterStatsScript, PlayerEventScript, PlayerInputScript, PlayerDataScript, CharacterVisionScript
+		-> CharacterGraphics
+
+Bot (Tag: Player, Layer: Team2Entity)
+	Components: Animator, CharacterManagerScript
+	Children:
+		-> CharacterPhysics
+			Components: Capsule Collider, Character Controller, CharacterMovementScript
+		-> CharacterLogic
+			Components: CharacterAttackScript, CharacterInventoryScript, CharacterStatsScript, PlayerEventScript, BotAIScript, PlayerDataScript, CharacterVisionScript
+		-> CharacterGraphics
+
+Minion (Tag: Minion, Layer: Team1Entity or Team2Entity)
+	Components: Animator, CharacterManagerScript
+	Children:
+		-> CharacterPhysics
+			Components: Capsule Collider, Character Controller, CharacterMovementScript
+		-> CharacterLogic
+			Components: CharacterAttackScript, CharacterInventoryScript, CharacterStatsScript, MinionEventScript, NPCAIScript, CharacterVisionScript
+		-> CharacterGraphics
+
+Monster (Tag: Monster, Layer: NeutralMonster)
+	Components: Animator, CharacterManagerScript
+	Children:
+		-> CharacterPhysics
+			Components: Capsule Collider, Character Controller, CharacterMovementScript
+		-> CharacterLogic
+			Components: CharacterAttackScript, CharacterInventoryScript, CharacterStatsScript, MonsterEventScript, NPCAIScript, MonsterDataScript, CharacterVisionScript
+		-> CharacterGraphics
+
+MonsterCamp (Tag: MonsterCamp, Layer: Default)
+	Components: MonsterCampScript
+	Children:
+		-> MonsterSpawner
+			Components: MonsterSpawnerScript
+
+MinionSpawner (Tag: MinionSpawner1 or MinionSpawner2, Layer: Default)
+	Components: MinionSpawnerScript
+
+DroppedItem (Tag: Item, Layer: Default)
+	Components: DroppedItemScript
+	Children:
+		-> ItemGraphics
+
+Projectile (Tag: Projectile, Layer: NeutralProjectile or Team1Projectile or Team2Projectile)
+	Components: ProjectileScript
+	Children:
+		-> ProjectilePhysics
+			Components: RigidBody, Sphere Collider
+		-> ProjectileGraphics
+		
+EnvObject (Tag: Untagged, Layer: Terrain)
+	Children:
+		-> EnvPhysics
+			Components: Capsule Collider
+		-> EnvGraphics
