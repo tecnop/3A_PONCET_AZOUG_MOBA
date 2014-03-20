@@ -13,11 +13,11 @@ public class ProjectileScript : MonoBehaviour
 	private Rigidbody _rigidBody;
 
 	private DamageInstance damageInstance;	// Damage instance to apply to hit targets
-	private float damageRadius;				// Radius of the area in which to inflict damage
+	private Ability impactAbility;			// Ability to execute on impact
 
 	private CharacterManager owner;			// Character responsible for our actions
 
-	private CharacterCombatScript _ownerCombat;
+	//private CharacterCombatScript _ownerCombat;
 
 	private GameObject self;
 
@@ -37,18 +37,19 @@ public class ProjectileScript : MonoBehaviour
 
 		self = this.gameObject;
 
-		_ownerCombat = owner.GetCombatScript();
+		//_ownerCombat = owner.GetCombatScript();
 
 		this.name = projectile.GetName();
-		float damage = projectile.GetDamage() + owner.GetStatsScript().GetDamage();
-		this.damageRadius = projectile.GetImpactRadius();
+		float damage = owner.GetStatsScript().GetProjDamage();
+		this.impactAbility = DataTables.GetAbility(projectile.GetImpactAbilityID());
 		_rigidBody.velocity = _transform.rotation * Vector3.forward * projectile.GetSpeed();
 		_graphics.LoadModel(projectile.GetModel());
 		self.layer = owner.GetLayer();
 
-		// Here: get more data from the guy's stats
+		// TODO: Load more stuff from the guy's stats
+		// Also use the new fields in Projectile (collision, range, lifeTime, trajectory)
 
-		this.damageInstance = new DamageInstance(owner, damage, projectile.GetBuffID(), projectile.GetBuffDuration());
+		this.damageInstance = new DamageInstance(owner, damage);
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -60,23 +61,21 @@ public class ProjectileScript : MonoBehaviour
 			return;
 		}
 
-		if (this.damageRadius > 0.0f)
-		{ // Even if we hit someone in particular, just run the area of effect
-			_ownerCombat.AreaOfEffect(_transform.position, _transform.rotation, this.damageRadius, this.damageInstance);
-		}
-		else
+		if (this.impactAbility != null)
 		{
-			Collider collider = collision.collider;
-			CharacterPhysicsScript phys = collider.GetComponent<CharacterPhysicsScript>();
+			this.impactAbility.Execute();
+		}
 
-			if (phys)
-			{ // If we collided with it then it's got to be an enemy
-				CharacterManager hisManager = phys.GetManager();
+		Collider collider = collision.collider;
+		CharacterPhysicsScript phys = collider.GetComponent<CharacterPhysicsScript>();
 
-				//_ownerCombat.Damage(hisManager, damage, collider.ClosestPointOnBounds(_transform.position), 0);
-				//_ownerCombat.InflictBuff(hisManager, this.buffID, this.buffDuration);
-				hisManager.GetCombatScript().ApplyDamageInstance(this.damageInstance);
-			}
+		if (phys)
+		{ // If we collided with it then it's got to be an enemy
+			CharacterManager hisManager = phys.GetManager();
+
+			//_ownerCombat.Damage(hisManager, damage, collider.ClosestPointOnBounds(_transform.position), 0);
+			//_ownerCombat.InflictBuff(hisManager, this.buffID, this.buffDuration);
+			hisManager.GetCombatScript().ApplyDamageInstance(this.damageInstance);
 		}
 
 		Destroy(self);

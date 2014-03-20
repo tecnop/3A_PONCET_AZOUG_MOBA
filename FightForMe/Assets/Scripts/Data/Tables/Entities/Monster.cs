@@ -7,17 +7,11 @@ public class Monster : WikiEntry
 	private ArrayList items;	// Indexes of entries from the weapon table that this monster is carrying
 	private ArrayList buffs;	// Indexes of entries from the buff table that this monster has by default
 
-	public Monster(string name = "Monster",
-		string description = null,
-		string description2 = null,
-		string modelPath = null,
-		float scale = 1.0f,
-		string iconPath = null,
-		Quality quality = Quality.COMMON,
+	public Monster(Metadata metadata,
 		AIType behaviour = AIType.defensive,
 		uint[] items = null,
 		uint[] buffs = null)
-		: base(name, description, description2, new GameModel(modelPath, scale), iconPath, quality)
+		: base(metadata)
 	{
 		this.behaviour = behaviour;
 

@@ -19,7 +19,7 @@ public class Effect
 	private float flatMPRegen, pctMPRegen;
 	private float flatMS, pctMS;
 
-	private float bonusDamage, bonusAtkSpd;		// Percentages
+	private float bonusDamage, bonusAtkSpd, bonusProjDamage;	// Percentages
 
 	private Stats stats;
 
@@ -42,6 +42,7 @@ public class Effect
 		float pctMS = 0.0f,
 		float bonusDamage = 0.0f,
 		float bonusAtkSpd = 0.0f,
+		float bonusProjDamage = 0.0f,
 		Stats stats = null,
 		uint unlockedAbility = 0,
 		MiscEffect misc = MiscEffect.NONE,
@@ -62,6 +63,7 @@ public class Effect
 		this.pctMS = pctMS;
 		this.bonusDamage = bonusDamage;
 		this.bonusAtkSpd = bonusAtkSpd;
+		this.bonusProjDamage = bonusProjDamage;
 		if (stats == null)
 		{
 			this.stats = new Stats();
@@ -91,6 +93,7 @@ public class Effect
 	public float GetPctMS() { return this.pctMS; }
 	public float GetBonusDamage() { return this.bonusDamage; }
 	public float GetBonusAtkSpd() { return this.bonusAtkSpd; }
+	public float GetBonusProjDamage() { return this.bonusProjDamage; }
 	public Stats GetStats() { return this.stats; }
 	public uint GetUnlockedAbility() { return this.unlockedAbility; }
 	public MiscEffect GetMiscEffect() { return this.misc; }

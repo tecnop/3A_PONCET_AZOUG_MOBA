@@ -7,23 +7,26 @@ public class WeaponType : WikiEntry
 	private string idleAnimPath;	// Path to the humanoid idle animation used by this weapon type
 	private string attackAnimPath;	// Path to the humanoid attack animation used by this weapon type
 	private bool isRanged;			// If true, the weapon should not attempt to hit melee-ranged enemies
+	private bool isTwoHanded;		// If true, the weapon may not be used with another weapon
 
-	public WeaponType(string name,
-		string description = null,
+	public WeaponType(Metadata metadata,
 		string hitBoxPath = null,
 		string idleAnimPath = null,
 		string attackAnimPath = null,
-		bool isRanged = false)
-		: base(name: name, description: description)
+		bool isRanged = false,
+		bool isTwoHanded = true)
+		: base(metadata)
 	{
 		this.hitBoxPath = hitBoxPath;
 		this.idleAnimPath = idleAnimPath;
 		this.attackAnimPath = attackAnimPath;
 		this.isRanged = isRanged;
+		this.isTwoHanded = isTwoHanded;
 	}
 
 	public string GetHitBoxPath() { return this.hitBoxPath; }
 	public string GetIdleAnim() { return this.idleAnimPath; }
 	public string GetAttackAnim() { return this.attackAnimPath; }
 	public bool IsRanged() { return this.isRanged; }
+	public bool IsTwoHanded() { return this.isTwoHanded; }
 }

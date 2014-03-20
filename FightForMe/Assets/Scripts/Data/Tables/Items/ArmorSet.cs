@@ -8,14 +8,10 @@ public class ArmorSet : WikiEntry
 	private uint setSize;			// Number of items in this set
 	private bool autoSize;			// If true, "setSize" will increase automatically as items are created using this set
 
-	public ArmorSet(string name,
-		string description = null,
-		string description2 = null,
-		string iconPath = null,
-		Quality quality = Quality.COMMON,
+	public ArmorSet(Metadata metadata,
 		uint buffID = 0,
 		uint setSize = 0)
-		: base(name, description, description2, null, iconPath, quality)
+		: base(metadata)
 	{
 		this.buffID = buffID;
 

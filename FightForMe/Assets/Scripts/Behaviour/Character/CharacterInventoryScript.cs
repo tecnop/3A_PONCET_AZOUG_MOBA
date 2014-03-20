@@ -209,7 +209,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	}
 
 	public Weapon GetWeapon()
-	{ // NOTE: If we implement dual-wielding, this should be affected
+	{ // NOTE: If we implement dual-wielding, this should be affected // TODO: We implemented dual-wielding, now affect this please
 		int i = 0;
 
 		while (i < this.items.Count)

@@ -16,6 +16,9 @@ public static class DataTables
 	
 	// Skill Tree
 	static Dictionary<uint, Skill> skillTable = new Dictionary<uint, Skill>();
+
+	// Abilities
+	static Dictionary<uint, Ability> abilityTable = new Dictionary<uint, Ability>();
 	
 	// Buffs
 	static Dictionary<uint, Effect> effectTable = new Dictionary<uint, Effect>();
@@ -34,6 +37,8 @@ public static class DataTables
 		armorSetTable.Clear();
 		
 		skillTable.Clear();
+
+		abilityTable.Clear();
 		
 		effectTable.Clear();
 		buffTable.Clear();
@@ -80,85 +85,85 @@ public static class DataTables
 		effectTable.Add(8, new Effect(description: "Intelligence+", isPositive: true, stats: new Stats(intelligence: 30)));
 		effectTable.Add(9, new Effect(description: "Vitesse de Course", isPositive: true, flatMS: 350.0f));
 		effectTable.Add(10, new Effect(description: "Vitesse de Course+", isPositive: true, flatMS: 350.0f));
-		effectTable.Add(11, new Effect(description: "Super Debug", isPositive: true, stats: new Stats(200, 200, 200), bonusDamage: 1000.0f));
+		effectTable.Add(11, new Effect(description: "Super Debug", isPositive: true, stats: new Stats(200, 200, 200), bonusDamage: 1000.0f, bonusProjDamage: 1000.0f));
 
 		// Buffs
 		temp = new uint[1];
 		temp[0] = 1;
-		buffTable.Add(1, new Buff(name: "Seigneur", effects: temp));
+		buffTable.Add(1, new Buff(metadata:new Metadata(name: "Seigneur"), effects: temp));
 		
 		temp = new uint[1];
 		temp[0] = 11;
-		buffTable.Add(2, new Buff(name: "Testeur", effects: temp));
+		buffTable.Add(2, new Buff(metadata:new Metadata(name: "Testeur"), effects: temp));
 		
 		// Skills
 		temp = new uint[]{2,3,4,8};
-		skillTable.Add(1, new Skill(name: "Première compétence", neighbours:temp));
+		skillTable.Add(1, new Skill(metadata:new Metadata(name: "Première compétence"), neighbours:temp));
 		
 		temp = new uint[2];
 		temp[0] = 1;
 		temp[1] = 5;
-		skillTable.Add(2, new Skill(name: "Bonus d'endurance", color: SkillColor.R, effect: 3, neighbours: temp));
+		skillTable.Add(2, new Skill(metadata:new Metadata(name: "Bonus d'endurance"), color: SkillColor.R, effect: 3, neighbours: temp));
 		temp[0] = 1;
 		temp[1] = 6;
-		skillTable.Add(3, new Skill(name: "Bonus de puissance", color: SkillColor.G, effect: 4, neighbours: temp));
+		skillTable.Add(3, new Skill(metadata:new Metadata(name: "Bonus de puissance"), color: SkillColor.G, effect: 4, neighbours: temp));
 		temp[0] = 1;
 		temp[1] = 7;
-		skillTable.Add(4, new Skill(name: "Bonus d'intelligence", color: SkillColor.B, effect: 5, neighbours: temp));
+		skillTable.Add(4, new Skill(metadata:new Metadata(name: "Bonus d'intelligence"), color: SkillColor.B, effect: 5, neighbours: temp));
 		temp = new uint[1];
 		temp[0] = 2;
-		skillTable.Add(5, new Skill(name: "Super bonus d'endurance", color: SkillColor.R, effect: 6, neighbours: temp));
+		skillTable.Add(5, new Skill(metadata:new Metadata(name: "Super bonus d'endurance"), color: SkillColor.R, effect: 6, neighbours: temp));
 		temp[0] = 3;
-		skillTable.Add(6, new Skill(name: "Super bonus de puissance", color: SkillColor.G, effect: 7, neighbours: temp));
+		skillTable.Add(6, new Skill(metadata:new Metadata(name: "Super bonus de puissance"), color: SkillColor.G, effect: 7, neighbours: temp));
 		temp[0] = 4;
-		skillTable.Add(7, new Skill(name: "Super bonus d'intelligence", color: SkillColor.B, effect: 8, neighbours: temp));
+		skillTable.Add(7, new Skill(metadata:new Metadata(name: "Super bonus d'intelligence"), color: SkillColor.B, effect: 8, neighbours: temp));
 
 		temp = new uint[2];
 		temp[0] = 1;
 		temp[1] = 9;
-		skillTable.Add(8, new Skill(name: "Bonus vitesse de Course", color: SkillColor.B, effect: 9, neighbours: temp));
+		skillTable.Add(8, new Skill(metadata:new Metadata(name: "Bonus vitesse de Course"), color: SkillColor.B, effect: 9, neighbours: temp));
 
 		temp = new uint[1];
 		temp[0] = 8;
-		skillTable.Add(9, new Skill(name: "Super bonus vit. de Course", color: SkillColor.B, effect: 10, neighbours: temp));
+		skillTable.Add(9, new Skill(metadata:new Metadata(name: "Super bonus vit. de Course"), color: SkillColor.B, effect: 10, neighbours: temp));
 		
 		// Projectiles
-		projectileTable.Add(1, new Projectile(name: "Flèche du seigneur", damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
-		projectileTable.Add(2, new Projectile(name: "Boule de feu", damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactRadius: 2.0f));
-		projectileTable.Add(3, new Projectile(name: "Balle", damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
-		projectileTable.Add(4, new Projectile(name: "Flèche", damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
+		projectileTable.Add(1, new Projectile(metadata:new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
+		projectileTable.Add(2, new Projectile(metadata:new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f)));
+		projectileTable.Add(3, new Projectile(metadata:new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
+		projectileTable.Add(4, new Projectile(metadata:new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		
 		// Weapon types
-		weaponTypeTable.Add(1, new WeaponType(name: "Epee courte"));
-		weaponTypeTable.Add(2, new WeaponType(name: "Marteau"));
-		weaponTypeTable.Add(3, new WeaponType(name: "Arc", isRanged:true));
+		weaponTypeTable.Add(1, new WeaponType(metadata:new Metadata(name: "Epee courte")));
+		weaponTypeTable.Add(2, new WeaponType(metadata:new Metadata(name: "Marteau")));
+		weaponTypeTable.Add(3, new WeaponType(metadata:new Metadata(name: "Arc"), isRanged:true));
 		
 		// Armor sets
-		armorSetTable.Add(1, new ArmorSet(name: "Panoplie du Seigneur", buffID: 1));
-		armorSetTable.Add(2, new ArmorSet(name: "Le Beta testeur", buffID: 2));
+		armorSetTable.Add(1, new ArmorSet(metadata:new Metadata(name: "Panoplie du Seigneur"), buffID: 1));
+		armorSetTable.Add(2, new ArmorSet(metadata:new Metadata(name: "Le Beta testeur"), buffID: 2));
 		
 		// Items
-		itemTable.Add(1, new Weapon(name: "Epee des mile phote d'ortograff", damage: 20.0f, attackRate: 1.0f));
-		itemTable.Add(2, new Armor(name: "Armure du test ultime", slot: ArmorSlot.TORSO, setID: 2));
-		itemTable.Add(3, new Weapon(name: "La Dague", damage: 6.66f, attackRate: 1.5f));
-		itemTable.Add(4, new Weapon(name: "Marteau du Seigneur", damage: 50.0f, attackRate: 1.0f, weaponTypeID: 2));
-		itemTable.Add(5, new Weapon(name: "Arc du Seigneur", attackRate: 0.5f, weaponTypeID: 3, projectileID: 1));
-		itemTable.Add(6, new Armor(name: "Armure du Seigneur", slot: ArmorSlot.TORSO, setID: 1));
-		itemTable.Add(7, new Armor(name: "Casque du Seigneur", slot: ArmorSlot.HEAD, setID: 1));
-		itemTable.Add(8, new Armor(name: "Bottes du Seigneur", slot: ArmorSlot.FEET, setID: 1));
-		itemTable.Add(9, new Weapon(name: "Le fouetteur d'Yggtralala", damage: 15.0f, attackRate: 1.0f));
-		itemTable.Add(10, new Armor(name: "Casque du super debug", slot: ArmorSlot.HEAD, setID: 2));
-		itemTable.Add(11, new Armor(name: "Gants de l'incroyable fix", slot: ArmorSlot.HANDS, setID:2));
-		itemTable.Add(12, new Armor(name: "Bottes de l'interminable alpha", slot: ArmorSlot.FEET, setID:2));
-		itemTable.Add(13, new Weapon(name: "Croc de la Téci", damage: 6.0f, attackRate: 2.0f));
-		itemTable.Add(14, new Weapon(name: "La quat'cinq", attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
-		itemTable.Add(15, new Weapon(name: "Arc biodégradable", attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
-		itemTable.Add(16, new Weapon(name: "Pierre à XP", recyclingXP:1000));
+		itemTable.Add(1, new Weapon(metadata:new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, attackRate: 1.0f));
+		itemTable.Add(2, new Armor(metadata:new Metadata(name: "Armure du test ultime"), slot: ArmorSlot.TORSO, setID: 2));
+		itemTable.Add(3, new Weapon(metadata:new Metadata(name: "La Dague"), damage: 6.66f, attackRate: 1.5f));
+		itemTable.Add(4, new Weapon(metadata:new Metadata(name: "Marteau du Seigneur"), damage: 50.0f, attackRate: 1.0f, weaponTypeID: 2));
+		itemTable.Add(5, new Weapon(metadata:new Metadata(name: "Arc du Seigneur"), attackRate: 0.5f, weaponTypeID: 3, projectileID: 1));
+		itemTable.Add(6, new Armor(metadata:new Metadata(name: "Armure du Seigneur"), slot: ArmorSlot.TORSO, setID: 1));
+		itemTable.Add(7, new Armor(metadata:new Metadata(name: "Casque du Seigneur"), slot: ArmorSlot.HEAD, setID: 1));
+		itemTable.Add(8, new Armor(metadata:new Metadata(name: "Bottes du Seigneur"), slot: ArmorSlot.FEET, setID: 1));
+		itemTable.Add(9, new Weapon(metadata:new Metadata(name: "Le fouetteur d'Yggtralala"), damage: 15.0f, attackRate: 1.0f));
+		itemTable.Add(10, new Armor(metadata:new Metadata(name: "Casque du super debug"), slot: ArmorSlot.HEAD, setID: 2));
+		itemTable.Add(11, new Armor(metadata:new Metadata(name: "Gants de l'incroyable fix"), slot: ArmorSlot.HANDS, setID:2));
+		itemTable.Add(12, new Armor(metadata:new Metadata(name: "Bottes de l'interminable alpha"), slot: ArmorSlot.FEET, setID:2));
+		itemTable.Add(13, new Weapon(metadata:new Metadata(name: "Croc de la Téci"), damage: 6.0f, attackRate: 2.0f));
+		itemTable.Add(14, new Weapon(metadata:new Metadata(name: "La quat'cinq"), attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
+		itemTable.Add(15, new Weapon(metadata:new Metadata(name: "Arc biodégradable"), attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
+		itemTable.Add(16, new Weapon(metadata:new Metadata(name: "Pierre à XP"), recyclingXP:1000));
 		
 		// Monsters
 		temp = new uint[1];
 		temp[0] = 9;
-		monsterTable.Add(1, new Monster(name: "Zombie", behaviour: AIType.defensive, modelPath: "Cylinder", items: temp));
+		monsterTable.Add(1, new Monster(metadata:new Metadata(name: "Zombie", modelPath: "Cylinder"), behaviour: AIType.defensive, items: temp));
 		
 		temp = new uint[5];
 		temp[0] = 4;
@@ -167,27 +172,27 @@ public static class DataTables
 		temp[3] = 7;
 		temp[4] = 8;
 		// ============= HARD-CODED REFERENCE =============
-		monsterTable.Add(2, new Monster(name: "Lord", behaviour: AIType.defensive, items: temp));
+		monsterTable.Add(2, new Monster(metadata:new Metadata(name: "Lord"), behaviour: AIType.defensive, items: temp));
 		// ============= HARD-CODED REFERENCE =============
 		
 		temp = new uint[1];
 		temp[0] = 13;
-		monsterTable.Add(3, new Monster(name: "Ratus", behaviour: AIType.defensive, items: temp));
+		monsterTable.Add(3, new Monster(metadata:new Metadata(name: "Ratus"), behaviour: AIType.defensive, items: temp));
 		
 		temp[0] = 15;
-		monsterTable.Add(4, new Monster(name: "Archet", behaviour: AIType.defensive, items: temp));
+		monsterTable.Add(4, new Monster(metadata:new Metadata(name: "Archet"), behaviour: AIType.defensive, items: temp));
 		
 		temp[0] = 14;
-		monsterTable.Add(5, new Monster(name: "Snaille'p", behaviour: AIType.defensive, items: temp));
+		monsterTable.Add(5, new Monster(metadata:new Metadata(name: "Snaille'p"), behaviour: AIType.defensive, items: temp));
 
 		// Debug Monsters
 		temp = new uint[2];
 		temp[0] = 2;
 		temp[1] = 10;
-		monsterTable.Add(6, new Monster(name: "Debug1", behaviour: AIType.defensive, items: temp));
+		monsterTable.Add(6, new Monster(metadata:new Metadata(name: "Debug1"), behaviour: AIType.defensive, items: temp));
 		temp[0] = 11;
 		temp[1] = 12;
-		monsterTable.Add(7, new Monster(name: "Debug2", behaviour: AIType.defensive, items: temp));
+		monsterTable.Add(7, new Monster(metadata:new Metadata(name: "Debug2"), behaviour: AIType.defensive, items: temp));
 	}
 	
 	public static Item GetItem(uint key)
@@ -240,6 +245,15 @@ public static class DataTables
 		if (skillTable.ContainsKey(key))
 		{
 			return skillTable[key];
+		}
+		return null;
+	}
+
+	public static Ability GetAbility(uint key)
+	{
+		if (abilityTable.ContainsKey(key))
+		{
+			return abilityTable[key];
 		}
 		return null;
 	}

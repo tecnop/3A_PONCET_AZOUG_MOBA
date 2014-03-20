@@ -12,13 +12,7 @@ public class Weapon : Item
 	private uint weaponTypeID;			// ID of the entry in the weapon type table this weapon matches
 	private uint projectileID;			// ID of the entry in the projectile table this weapon should shoot when swung
 
-	public Weapon(string name = "Arme",
-		string description = null,
-		string description2 = null,
-		string modelPath = null,
-		float scale = 1.0f,
-		string iconPath = null,
-		Quality quality = Quality.COMMON,
+	public Weapon(Metadata metadata,
 		uint recyclingXP = 100,
 		uint skillID = 0,
 		uint weaponTypeID = 0,
@@ -27,7 +21,7 @@ public class Weapon : Item
 		uint projectileID = 0,
 		string effectPath = null,
 		string attackSoundPath = null)
-		: base(name, description, description2, modelPath, scale, iconPath, quality, recyclingXP, skillID, true)
+		: base(metadata, recyclingXP, skillID, true)
 	{
 		this.weaponTypeID = weaponTypeID;
 		this.damage = damage;

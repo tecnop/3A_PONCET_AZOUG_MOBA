@@ -8,17 +8,11 @@ public abstract class Item : WikiEntry
 
 	private bool isWeapon;			// True if the item is a weapon, false if it is an armor
 
-	protected Item(string name,
-		string description,
-		string description2,
-		string modelPath,
-		float scale,
-		string iconPath,
-		Quality quality,
+	protected Item(Metadata metadata,
 		uint recyclingXP,
 		uint buffID,
 		bool isWeapon)
-		: base(name, description, description2, new GameModel(modelPath, scale), iconPath, quality)
+		: base(metadata)
 	{
 		this.recyclingXP = recyclingXP;
 		this.buffID = buffID;

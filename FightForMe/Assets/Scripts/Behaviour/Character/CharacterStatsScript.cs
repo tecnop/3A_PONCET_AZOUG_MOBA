@@ -34,11 +34,14 @@ public class CharacterStatsScript : MonoBehaviour
 	private float manaRegen;		// In MP per second
 
 	private float damage;			// Damage per swing of the equipped weapon
+	private float projDamage;		// Damage of each projectile shot by the equipped weapon (TODO)
 	private float attackRate;		// Swings per second of the equipped weapon
 	private float movementSpeed;	// Distance crossed by the player each second, in 0.01 of a game unit
 
 	// Total stats obtained from items and skills; they affect other stats in various ways
 	private Stats stats;
+
+	private ArrayList knownAbilities;	// List of all known abilities (type: uint)
 
 	private CharacterInventoryScript _inventory;
 	private CharacterCombatScript _combat;
@@ -49,11 +52,13 @@ public class CharacterStatsScript : MonoBehaviour
 		_inventory = _manager.GetInventoryScript();
 		_combat = _manager.GetCombatScript();
 
+		knownAbilities = new ArrayList();
+
 		this.UpdateStats(true);
 	}
 
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
-	{
+	{ // Do we want this? I sure as hell don't
 		//if (stream.isWriting)
 		if (GameData.isServer)
 		{
@@ -87,14 +92,21 @@ public class CharacterStatsScript : MonoBehaviour
 		{
 			this.damage = weapon.GetDamage();
 			this.attackRate = weapon.GetAttackRate();
+			Projectile proj = weapon.GetProjectile();
+			if (proj != null)
+			{
+				this.projDamage = proj.GetDamage();
+			}
 		}
 		else
 		{ // Use your fists! (Damage is only gained from agility)
 			this.damage = 0.0f;
+			this.projDamage = 0.0f;
 			this.attackRate = 1.0f;
 		}
 		this.movementSpeed = 350.0f;
 		this.stats = Stats.Base;		// Do we need that anymore? Why not define it here?
+		this.knownAbilities.Clear();
 
 		// Get all currently applied effects
 		ArrayList buffList = new ArrayList(_combat.GetBuffs());
@@ -149,6 +161,7 @@ public class CharacterStatsScript : MonoBehaviour
 		float manaRegenPct = 0.0f;
 		float moveSpeedPctChange = 1.0f;
 		float damagePctChange = 1.0f;
+		float projDamagePctChange = 1.0f;
 
 		foreach (Effect effect in effects)
 		{ // I had a lot of fun writing this particular bit
@@ -163,13 +176,19 @@ public class CharacterStatsScript : MonoBehaviour
 			this.movementSpeed += effect.GetFlatMS();
 			moveSpeedPctChange += effect.GetPctMS();
 			damagePctChange += effect.GetBonusDamage();
+			projDamagePctChange += effect.GetBonusProjDamage();
 			this.attackRate += effect.GetBonusAtkSpd();
 			this.stats += effect.GetStats();
-			// TODO: Unlock effect.GetUnlockedAbility() when skill tree is implemented
-			// Also use effect.GetMiscEffect() somewhere? Does it belong here?
+
+			if (effect.GetUnlockedAbility() != 0)
+			{
+				this.knownAbilities.Add(effect.GetUnlockedAbility());
+			}
+
+			// Check effect.GetMiscEffect() if necessary, although it shouldn't be needed here
 		}
 
-		// Convert stats into... er... stats.
+		// Convert stats into... er... more stats.
 		this.maxHealth += strToMaxHealth * this.stats.GetStrength();
 		this.healthRegen += strToHealthRegen * this.stats.GetStrength();
 		this.damage += agiToDamage * this.stats.GetAgility();
@@ -183,6 +202,7 @@ public class CharacterStatsScript : MonoBehaviour
 		this.manaRegen += this.maxMana * manaRegenPct;
 		this.movementSpeed *= moveSpeedPctChange;
 		this.damage *= damagePctChange;
+		this.projDamage *= projDamagePctChange;
 
 		if (this.maxHealth < 1) this.maxHealth = 1;
 		if (this.maxMana < 1) this.maxMana = 1;		// This might be possible later, but not yet
@@ -213,7 +233,7 @@ public class CharacterStatsScript : MonoBehaviour
 
 		if (this.health <= 0)
 		{ // Died from damage over time... need to find the killer somehow. TODO: Combat script should keep track of that
-			_manager.GetEventScript().OnDeath(_manager);
+			_manager.GetEventScript().OnDeath(_manager); // Count it as a suicide for now
 			return;
 		}
 
@@ -307,6 +327,8 @@ public class CharacterStatsScript : MonoBehaviour
 	public float GetManaRegen() { return this.manaRegen; }
 	public float GetDamage() { return this.damage; }
 	public float GetAttackRate() { return this.attackRate; }
+	public float GetProjDamage() { return this.projDamage; }
 	public float GetMovementSpeed() { return this.movementSpeed; }
 	public Stats GetStats() { return this.stats; }
+	public ArrayList GetKnownAbilities() { return this.knownAbilities; }
 }

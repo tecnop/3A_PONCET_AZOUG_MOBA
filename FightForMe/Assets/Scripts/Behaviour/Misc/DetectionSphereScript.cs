@@ -7,7 +7,7 @@ public class DetectionSphereScript : MonoBehaviour
 
 	private float startTime;	// Time at which we spawned
 
-	private CharacterManager owner;
+	//private CharacterManager owner;
 
 	private DamageInstance damageInstance;
 
@@ -34,7 +34,7 @@ public class DetectionSphereScript : MonoBehaviour
 		}
 
 		self.layer = layer;
-		this.owner = inflictor;
+		//this.owner = inflictor;
 
 		this.damageInstance = damageInstance;
 

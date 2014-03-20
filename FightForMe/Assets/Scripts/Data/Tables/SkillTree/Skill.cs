@@ -19,15 +19,11 @@ public class Skill : WikiEntry
 	// TODO: Position in the tree
 	private ArrayList neighbours;	// List of skills this skill is connected to (type: uint)
 
-	public Skill(string name,
-		string description = null,
-		string description2 = null,
-		string iconPath = null,
-		Quality quality = Quality.COMMON,
+	public Skill(Metadata metadata,
 		SkillColor color = SkillColor.W,
 		uint effect = 0,
 		uint[] neighbours = null)
-		: base(name, description, description2, null, iconPath, quality)
+		: base(metadata)
 	{
 		this.color = color;
 		this.effect = effect;
