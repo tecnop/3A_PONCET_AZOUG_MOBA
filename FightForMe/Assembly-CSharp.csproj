@@ -94,9 +94,11 @@
      <Compile Include="Assets\Scripts\Data\Tables\Items\WeaponType.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\Misc\Buff.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\Ability.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\SpellArea.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\SpellProj.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\SpellSelf.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\SpellTarget.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Spells\SpellBurn.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Spells\SpellFireExplosion.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Spells\SpellFireball.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Skill.cs" />
      <Compile Include="Assets\Scripts\GameData\GameData.cs" />
@@ -111,6 +113,7 @@
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDManaBar.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDMenuButtons.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDMinimap.cs" />
+     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDSkillBar.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDStatsDisplay.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDXPBar.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBuffDisplay.cs" />

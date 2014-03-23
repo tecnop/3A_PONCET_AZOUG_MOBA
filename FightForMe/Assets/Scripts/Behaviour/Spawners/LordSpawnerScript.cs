@@ -69,7 +69,7 @@ public class LordSpawnerScript : SpawnerScript
 
 		misc.SetSpawner(this);
 
-		misc.SetUpFromMonster(2); // HARD CODED REFERENCE
+		misc.SetUpFromMonster(1); // HARD CODED REFERENCE
 	}
 
 	public override void OnSpawnedEntityDeath()

@@ -73,7 +73,7 @@ public class PlayerInputScript : CharacterInputScript
 	protected override void ReadGenericInput()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
-		{
+		{ // Don't forget to turn that into an axis
 			this.hasLockedCamera = !this.hasLockedCamera;
 		}
 
@@ -82,7 +82,7 @@ public class PlayerInputScript : CharacterInputScript
 			return;
 		}
 
-		// How do we send that through the network?
+		//if (Input.GetAxis("Ability1") > 0)
 		if (Input.GetMouseButtonDown(0))
 		{
 			SetAttackState(true);
@@ -91,6 +91,11 @@ public class PlayerInputScript : CharacterInputScript
 		if (Input.GetMouseButtonUp(0))
 		{
 			SetAttackState(false);
+		}
+
+		if (Input.GetAxis("Ability2") > 0)
+		{ // Temporary
+			_manager.GetCombatScript().UseAbility(((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetAbilityForSlot(1));
 		}
 	}
 

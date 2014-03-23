@@ -133,6 +133,21 @@ public class CharacterCombatScript : MonoBehaviour
 		appliedDamage.ApplyEffects();
 	}
 
+	public void UseAbility(uint abilityID)
+	{
+		if (!_manager.GetStatsScript().GetKnownAbilities().Contains(abilityID))
+		{ // Unknown ability
+			return;
+		}
+
+		Ability ability = DataTables.GetAbility(abilityID);
+		if (ability != null)
+		{
+			//ability.Execute(_manager, _manager.GetInputScript().GetMousePos(), _manager); // Ideal version
+			ability.Execute(_manager, _manager.GetCharacterTransform().position, null);
+		}
+	}
+
 	public void ResetCombatLog()
 	{
 		this.combatLog.Clear();

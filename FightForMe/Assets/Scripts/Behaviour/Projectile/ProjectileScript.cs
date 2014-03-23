@@ -40,14 +40,15 @@ public class ProjectileScript : MonoBehaviour
 		//_ownerCombat = owner.GetCombatScript();
 
 		this.name = projectile.GetName();
-		float damage = owner.GetStatsScript().GetProjDamage();
+		float damage = owner.GetStatsScript().GetProjDamage(); // TODO: Allow for a damage override if we're using an ability
 		this.impactAbility = DataTables.GetAbility(projectile.GetImpactAbilityID());
-		_rigidBody.velocity = _transform.rotation * Vector3.forward * projectile.GetSpeed();
 		_graphics.LoadModel(projectile.GetModel());
+
+		// TODO: Use the new fields in Projectile (collision, range, lifeTime, trajectory)
+		_rigidBody.velocity = _transform.rotation * Vector3.forward * projectile.GetSpeed();
 		self.layer = owner.GetLayer();
 
-		// TODO: Load more stuff from the guy's stats
-		// Also use the new fields in Projectile (collision, range, lifeTime, trajectory)
+		// TODO: Load more stuff from the guy's stats (misc effects and such)
 
 		this.damageInstance = new DamageInstance(owner, damage);
 	}
@@ -61,21 +62,22 @@ public class ProjectileScript : MonoBehaviour
 			return;
 		}
 
-		if (this.impactAbility != null)
-		{
-			this.impactAbility.Execute();
-		}
-
 		Collider collider = collision.collider;
 		CharacterPhysicsScript phys = collider.GetComponent<CharacterPhysicsScript>();
+		CharacterManager hisManager = null;
 
 		if (phys)
 		{ // If we collided with it then it's got to be an enemy
-			CharacterManager hisManager = phys.GetManager();
+			hisManager = phys.GetManager();
 
 			//_ownerCombat.Damage(hisManager, damage, collider.ClosestPointOnBounds(_transform.position), 0);
 			//_ownerCombat.InflictBuff(hisManager, this.buffID, this.buffDuration);
 			hisManager.GetCombatScript().ApplyDamageInstance(this.damageInstance);
+		}
+
+		if (this.impactAbility != null)
+		{
+			this.impactAbility.Execute(owner, _transform.position, hisManager);
 		}
 
 		Destroy(self);

@@ -26,9 +26,19 @@ public class CharacterAnimatorScript : MonoBehaviour
 		return _animator;
 	}
 
+	public void StartAttack()
+	{
+		_animator.speed = _manager.GetStatsScript().GetAttackRate();
+	}
+
 	public void DoAttack()
 	{
 		_manager.GetCombatScript().DoAttack();
+	}
+
+	public void EndAttack()
+	{ // NOTE: Animations should NOT blend into each other or this is not executed and it makes things look STUPID
+		_animator.speed = 1.0f;
 	}
 
 	public void UseAbility()

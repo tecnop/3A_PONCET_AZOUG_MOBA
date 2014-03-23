@@ -3,10 +3,12 @@ using System.Collections;
 
 public class HUDQuickSkills : HUDComponent
 {
+	PlayerMiscDataScript _misc;
+
 	public HUDQuickSkills(Rect frame)
 		: base("HUD_quick_skills", frame, false)
-	{
-		// TODO: Initialize misc here so we don't have to cast it every frame
+	{ // Storing it so we don't have to cast it every frame
+		_misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
 	}
 
 	public override void Render()
@@ -18,14 +20,13 @@ public class HUDQuickSkills : HUDComponent
 
 		GUI.BeginGroup(frame);
 
-		PlayerMiscDataScript misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
-		ArrayList objects = new ArrayList(misc.GetAvailableSkills());
+		ArrayList objects = new ArrayList(_misc.GetAvailableSkills());
 		uint i = 0;
 		foreach (Skill skill in objects)
 		{
 			if (GUI.Button(new Rect(0.0f, 40.0f * i, w, 40.0f), skill.GetName()))
 			{
-				misc.LearnSkill(skill);
+				_misc.LearnSkill(skill);
 			}
 			i++;
 		}

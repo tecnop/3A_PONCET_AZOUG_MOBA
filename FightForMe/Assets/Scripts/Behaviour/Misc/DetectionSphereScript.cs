@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class DetectionSphereScript : MonoBehaviour
-{
+{ // TODO: Make a datatable of hitboxes?
 	private ArrayList entities;	// Array of entities we've already hit
 
 	private float startTime;	// Time at which we spawned
@@ -10,6 +10,7 @@ public class DetectionSphereScript : MonoBehaviour
 	//private CharacterManager owner;
 
 	private DamageInstance damageInstance;
+	private Ability targetAbility;			// Ability to execute on each hit target (TODO)
 
 	private GameObject self;
 

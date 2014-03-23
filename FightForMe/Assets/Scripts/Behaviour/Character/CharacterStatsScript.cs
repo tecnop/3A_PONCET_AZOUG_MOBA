@@ -253,6 +253,8 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 
 		health = maxHealth;
+		mana = maxMana;
+
 		_manager.GetCharacterAnimator().SetBool("isDead", false);
 		_manager.GetCombatScript().ResetCombatLog();
 	}
