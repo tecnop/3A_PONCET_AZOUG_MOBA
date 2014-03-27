@@ -13,7 +13,7 @@ public class SpellFireball : SpellProj
 	{
 		/*Vector3 pos = inflictor.GetCharacterTransform().position;
 		Quaternion dir = Quaternion.LookRotation(position - pos);
-		ShootProjectile(inflictor, pos, dir, 2);*/
-		inflictor.GetCombatScript().ShootProjectile(2);
+		CreateProjectile(inflictor, pos, dir, 2);*/
+		inflictor.GetCombatScript().CreateProjectile(2);
 	}
 }

@@ -3,8 +3,8 @@ using System.Collections;
 
 public class HUDHealthBar : HUDComponent
 {
-	public HUDHealthBar(Rect frame)
-		: base("HUD_health_bar", frame)
+	public HUDHealthBar(Rect frame, HUDContainer parent)
+		: base("HUD_health_bar", frame, parent:parent)
 	{
 
 	}

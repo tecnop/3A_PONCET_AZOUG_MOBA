@@ -41,66 +41,35 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 	}
 
-	public void Damage(CharacterManager target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0)
+	public void Damage(CharacterManager target, float damage)
 	{
 		target.GetStatsScript().LoseHealth(_manager, damage);
-		// TODO: Knockback, check other flags
 	}
 
-	public void Damage(GameObject target, float damage, Vector3 damageDir = new Vector3(), uint damageFlags = 0)
-	{
-		CharacterManager hisManager = target.GetComponent<CharacterManager>();
-		if (hisManager)
-		{
-			this.Damage(hisManager, damage, damageDir, damageFlags);
-		}
-	}
-
-	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, DamageInstance damageInstance)
+	public HitboxScript CreateAoE(Vector3 position, Quaternion angle, float radius, uint collisionSpellID)
 	{
 		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
-		DetectionSphereScript sphereScript = sphere.GetComponent<DetectionSphereScript>();
-		sphereScript.SetUp(_manager, position, radius, _manager.GetLayer(), damageInstance);
+		HitboxScript sphereScript = sphere.GetComponent<HitboxScript>();
+		sphereScript.SetUp(_manager, radius, _manager.GetLayer(), collisionSpellID);
+		return sphereScript;
 	}
 
-	public void AreaOfEffect(Vector3 position, Quaternion angle, float radius, float damage = 0.0f, uint buffID = 0, float buffDuration = 0, uint damageFlags = 0)
+	public HitboxScript CreateAoE(float radius, uint collisionSpellID)
 	{
-		AreaOfEffect(position, angle, radius, new DamageInstance(_manager, damage, buffID, buffDuration));
+		return CreateAoE(_transform.position, _transform.rotation, radius, collisionSpellID);
 	}
 
-	public void ShootProjectile(uint projectileID)
+	public ProjectileScript CreateProjectile(uint projectileID, Vector3 position, Quaternion angle, uint impactSpellOverride = 0)
 	{
 		GameObject proj = (GameObject)Instantiate(projectilePrefab, _transform.position, _transform.rotation);
 		ProjectileScript projScript = proj.GetComponent<ProjectileScript>();
-		projScript.SetUp(_manager, projectileID);
+		projScript.SetUp(_manager, projectileID, impactSpellOverride);
+		return projScript;
 	}
 
-	public void DoMeleeAttack()
-	{ // TODO: Inflict buffs
-		AreaOfEffect(_transform.position, _transform.rotation, 2.0f, _manager.GetStatsScript().GetDamage());
-	}
-
-	public void DoAttack()
-	{ // Main attack function
-		Weapon myWeapon = _manager.GetInventoryScript().GetWeapon();
-
-		if (myWeapon == null)
-		{ // Using our fists
-			DoMeleeAttack();
-			return;
-		}
-
-		WeaponType type = myWeapon.GetWeaponType();
-		if (type == null || !type.IsRanged())
-		{
-			DoMeleeAttack();
-		}
-
-		uint proj = myWeapon.GetProjectileID();
-		if (proj != 0)
-		{
-			ShootProjectile(proj);
-		}
+	public ProjectileScript CreateProjectile(uint projectileID, uint impactSpellOverride = 0)
+	{
+		return CreateProjectile(projectileID, _transform.position, _transform.rotation, impactSpellOverride);
 	}
 
 	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration)
@@ -119,32 +88,24 @@ public class CharacterCombatScript : MonoBehaviour
 		target.GetCombatScript().ReceiveBuff(_manager, buffID, duration);
 	}
 
-	/*[RPC]
-	public void CreateDamageInstance(CharacterManager inflictor, float damage, uint buffID, float buffDuration)
+	public void ApplySpell(CharacterManager inflictor, Spell spell)
 	{
-		DamageInstance instance = new DamageInstance(inflictor, damage, buffID, buffDuration);
-		// I don't remember what I was doing here, but I don't think it's required anymore
-	}*/
-
-	public void ApplyDamageInstance(DamageInstance instance)
-	{ // This is stupid but at least I don't need to make getters :3
-		DamageInstance appliedDamage = instance.ApplyToTarget(_manager);
-		this.combatLog.Add(appliedDamage);
-		appliedDamage.ApplyEffects();
+		DamageInstance appliedSpell = new DamageInstance(inflictor, _manager, spell);
+		this.combatLog.Add(appliedSpell);
 	}
 
-	public void UseAbility(uint abilityID)
-	{
-		if (!_manager.GetStatsScript().GetKnownAbilities().Contains(abilityID))
-		{ // Unknown ability
+	public void UseSpell(uint spellID)
+	{ // RPC ME PLS
+		if (!_manager.GetStatsScript().GetKnownSpells().Contains(spellID))
+		{ // Unknown spell
 			return;
 		}
 
-		Ability ability = DataTables.GetAbility(abilityID);
-		if (ability != null)
+		Spell spell = DataTables.GetSpell(spellID);
+		if (spell != null)
 		{
-			//ability.Execute(_manager, _manager.GetInputScript().GetMousePos(), _manager); // Ideal version
-			ability.Execute(_manager, _manager.GetCharacterTransform().position, null);
+			//spell.Execute(_manager, _manager.GetInputScript().GetMousePos(), _manager); // Ideal version
+			spell.Execute(_manager, _manager.GetCharacterTransform().position, null);
 		}
 	}
 

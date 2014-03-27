@@ -5,8 +5,8 @@ public class HUDQuickSkills : HUDComponent
 {
 	PlayerMiscDataScript _misc;
 
-	public HUDQuickSkills(Rect frame)
-		: base("HUD_quick_skills", frame, false)
+	public HUDQuickSkills(Rect frame, HUDContainer parent)
+		: base("HUD_quick_skills", frame, false, parent)
 	{ // Storing it so we don't have to cast it every frame
 		_misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
 	}

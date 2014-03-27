@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DetectionSphereScript : MonoBehaviour
+public class HitboxScript : MonoBehaviour
 { // TODO: Make a datatable of hitboxes?
 	private ArrayList entities;	// Array of entities we've already hit
 
 	private float startTime;	// Time at which we spawned
 
-	//private CharacterManager owner;
+	private CharacterManager owner;
 
-	private DamageInstance damageInstance;
-	private Ability targetAbility;			// Ability to execute on each hit target (TODO)
+	private Spell collisionSpell;	// Spell to execute on each hit target
 
 	private GameObject self;
 
@@ -27,7 +26,7 @@ public class DetectionSphereScript : MonoBehaviour
 		}
 	}
 
-	public void SetUp(CharacterManager inflictor, Vector3 position, float radius, int layer, DamageInstance damageInstance)
+	public void SetUp(CharacterManager inflictor, float radius, int layer, uint collisionSpellID)
 	{
 		if (!self)
 		{
@@ -35,16 +34,10 @@ public class DetectionSphereScript : MonoBehaviour
 		}
 
 		self.layer = layer;
-		//this.owner = inflictor;
-
-		this.damageInstance = damageInstance;
-
+		this.owner = inflictor;
 		_transform.localScale *= radius;
-	}
 
-	private void ApplyToCharacter(CharacterManager target)
-	{
-		target.GetCombatScript().ApplyDamageInstance(this.damageInstance);
+		this.collisionSpell = DataTables.GetSpell(collisionSpellID);
 	}
 
 	void OnTriggerEnter(Collider col)
@@ -59,7 +52,11 @@ public class DetectionSphereScript : MonoBehaviour
 		CharacterPhysicsScript phys = col.GetComponent<CharacterPhysicsScript>();
 		if (phys)
 		{
-			ApplyToCharacter(phys.GetManager());
+			CharacterManager hisManager = phys.GetManager();
+			if (this.collisionSpell != null)
+			{
+				this.collisionSpell.Execute(this.owner, _transform.position, hisManager);
+			}
 		}
 	}
 

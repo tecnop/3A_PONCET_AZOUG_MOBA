@@ -12,12 +12,9 @@ public class ProjectileScript : MonoBehaviour
 	[SerializeField]
 	private Rigidbody _rigidBody;
 
-	private DamageInstance damageInstance;	// Damage instance to apply to hit targets
-	private Ability impactAbility;			// Ability to execute on impact
+	private Spell impactSpell;			// Spell to execute on impact
 
 	private CharacterManager owner;			// Character responsible for our actions
-
-	//private CharacterCombatScript _ownerCombat;
 
 	private GameObject self;
 
@@ -25,7 +22,7 @@ public class ProjectileScript : MonoBehaviour
 
 	Vector3 velocity;
 
-	public void SetUp(CharacterManager owner, uint projectileID)
+	public void SetUp(CharacterManager owner, uint projectileID, uint impactSpellOverride = 0)
 	{
 		Projectile projectile = DataTables.GetProjectile((uint)projectileID);
 
@@ -36,12 +33,17 @@ public class ProjectileScript : MonoBehaviour
 		}
 
 		self = this.gameObject;
-
-		//_ownerCombat = owner.GetCombatScript();
+		this.owner = owner;
 
 		this.name = projectile.GetName();
-		float damage = owner.GetStatsScript().GetProjDamage(); // TODO: Allow for a damage override if we're using an ability
-		this.impactAbility = DataTables.GetAbility(projectile.GetImpactAbilityID());
+		if (impactSpellOverride != 0)
+		{
+			this.impactSpell = DataTables.GetSpell(impactSpellOverride);
+		}
+		else
+		{
+			this.impactSpell = DataTables.GetSpell(projectile.GetImpactSpellID());
+		}
 		_graphics.LoadModel(projectile.GetModel());
 
 		// TODO: Use the new fields in Projectile (collision, range, lifeTime, trajectory)
@@ -49,8 +51,6 @@ public class ProjectileScript : MonoBehaviour
 		self.layer = owner.GetLayer();
 
 		// TODO: Load more stuff from the guy's stats (misc effects and such)
-
-		this.damageInstance = new DamageInstance(owner, damage);
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -69,31 +69,33 @@ public class ProjectileScript : MonoBehaviour
 		if (phys)
 		{ // If we collided with it then it's got to be an enemy
 			hisManager = phys.GetManager();
-
-			//_ownerCombat.Damage(hisManager, damage, collider.ClosestPointOnBounds(_transform.position), 0);
-			//_ownerCombat.InflictBuff(hisManager, this.buffID, this.buffDuration);
-			hisManager.GetCombatScript().ApplyDamageInstance(this.damageInstance);
 		}
 
-		if (this.impactAbility != null)
+		if (this.impactSpell != null)
 		{
-			this.impactAbility.Execute(owner, _transform.position, hisManager);
+			this.impactSpell.Execute(owner, _transform.position, hisManager);
 		}
 
 		Destroy(self);
 	}
 
 	void Update()
-	{
+	{ // TODO: When implemented, extend our lifetime when the game is paused
 		if (GameData.gamePaused)
 		{
-			paused = true;
-			velocity = _rigidBody.velocity;
+			if (!paused)
+			{ // Store our current velocity
+				paused = true;
+				velocity = _rigidBody.velocity;
+			}
 		}
-		else if (paused)
+		else
 		{
-			_rigidBody.velocity = velocity;
-			paused = false;
+			if (paused)
+			{ // Restore our velocity
+				_rigidBody.velocity = velocity;
+				paused = false;
+			}
 		}
 	}
 

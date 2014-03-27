@@ -6,17 +6,49 @@ public abstract class HUDComponent
 	protected string name;
 	protected Rect frame;
 
+	private HUDContainer parent;
+
 	public bool enabled;
 
-	public HUDComponent(string name, Rect frame, bool enabled = true)
+	public HUDComponent(string name, Rect frame, bool enabled = true, HUDContainer parent = null)
 	{
 		this.name = name;
 		this.frame = frame;
 		this.enabled = enabled;
+		this.parent = parent;
+		if (parent != null)
+		{
+			parent.AddComponent(this);
+		}
 	}
 
 	public abstract void Render();
 
 	public string GetName() { return this.name; }
 	public Rect GetFrame() { return this.frame; }
+
+	internal void SetPos(float x, float y)
+	{
+		if (x < 0)
+		{
+			x = 0;
+		}
+		else if (x + frame.width > Screen.width)
+		{
+			x = Screen.width - frame.width;
+		}
+
+		if (y < 0)
+		{
+			y = 0;
+		}
+		else if (y + frame.height > Screen.height)
+		{
+			y = Screen.height - frame.height;
+		}
+
+		this.frame = new Rect(x, y, frame.width, frame.height);
+	}
+
+	public HUDContainer GetParent() { return this.parent; }
 }

@@ -3,9 +3,11 @@ using System.Collections;
 
 public enum HUDMenu
 {
-	None,
-	Inventory,
-	Skill
+	None = 0,
+	Inventory = 1,
+	QuickSkill = 2,
+	SpellSlot = 4,
+	SkillTree = 8
 }
 
 public enum HUDState
@@ -21,9 +23,12 @@ public static class HUDRenderer
 	private static HUDContainer hudRoot;
 
 	private static HUDState _state;
+	private static SpellSlot _activeSlot;
 
+	// Special components
 	private static HUDInventory _inventory;
 	private static HUDQuickSkills _skills;
+	private static HUDSpellWindow _spells;
 
 	public static void Initialize()
 	{
@@ -31,15 +36,15 @@ public static class HUDRenderer
 		float h = Screen.height;
 
 		_state = HUDState.Default;
+		_activeSlot = SpellSlot.NUM_SLOTS;
 
 		hudRoot = new HUDContainer("HUD_root", new Rect(0, 0, w, h));
 
-		hudRoot.AddComponent(new HUDBuffDisplay(new Rect()));
-		hudRoot.AddComponent(new HUDBar(new Rect(0.0f, 0.8f * h, w, 0.2f * h)));
-		_inventory = new HUDInventory(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h));
-		hudRoot.AddComponent(_inventory);
-		_skills = new HUDQuickSkills(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h));
-		hudRoot.AddComponent(_skills);
+		new HUDBuffDisplay(new Rect(), hudRoot);
+		new HUDBar(new Rect(0.0f, 0.8f * h, w, 0.2f * h), hudRoot);
+		_inventory = new HUDInventory(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
+		_skills = new HUDQuickSkills(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
+		_spells = new HUDSpellWindow(new Rect(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
 	}
 
 	public static void Render()
@@ -92,10 +97,21 @@ public static class HUDRenderer
 		HUDRenderer._state = state;
 	}
 
-	public static void SetMenu(HUDMenu menu)
-	{ // THIS IS TEMPORARY
+	public static void OpenMenu(HUDMenu menu)
+	{ // THIS IS TEMPORARY (maybe)
 		_inventory.enabled = (menu == HUDMenu.Inventory);
-		_skills.enabled = (menu == HUDMenu.Skill);
+		_skills.enabled = (menu == HUDMenu.QuickSkill);
+		_spells.enabled = (menu == HUDMenu.SpellSlot);
+	}
+
+	public static void SetSlot(SpellSlot slot)
+	{ // This is getting stupid
+		_activeSlot = slot;
+	}
+
+	public static SpellSlot GetSlot()
+	{ // I really hope this doesn't stay that way
+		return _activeSlot;
 	}
 
 	private static void DrawPauseMenu(Rect rect)

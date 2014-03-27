@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum AbilitySlot
+public enum SpellSlot
 {
-	SLOT_1,// MOUSE_LEFT,
-	SLOT_2,// MOUSE_RIGHT,
-	SLOT_3,// MOUSE_MIDDLE,
-	SLOT_4,// KEYBOARD_1,
-	SLOT_5,// KEYBOARD_2,
-	SLOT_6,// KEYBOARD_3,
-	SLOT_7,// KEYBOARD_4,
-	SLOT_8,// KEYBOARD_R
+	SLOT_0,// MOUSE_LEFT,
+	SLOT_1,// MOUSE_RIGHT,
+	SLOT_2,// MOUSE_MIDDLE,
+	SLOT_3,// KEYBOARD_1,
+	SLOT_4,// KEYBOARD_2,
+	SLOT_5,// KEYBOARD_3,
+	SLOT_6,// KEYBOARD_4,
+	SLOT_7,// KEYBOARD_R
 
 	NUM_SLOTS
 }
@@ -22,7 +22,7 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 	private uint skillPoints;					// Skill points left to spend
 	private uint experience;					// Our current progress to a new skill point
 
-	private uint[] abilitySlots;
+	private uint[] spellSlots;
 
 	public override void Initialize(CharacterManager manager)
 	{
@@ -31,15 +31,16 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		unlockedSkills = new ArrayList();
 		availableSkills = new ArrayList();
 
-		abilitySlots = new uint[(int)AbilitySlot.NUM_SLOTS];
-		for (int i = 0; i < (int)AbilitySlot.NUM_SLOTS; i++)
+		spellSlots = new uint[(int)SpellSlot.NUM_SLOTS];
+		for (int i = 0; i < (int)SpellSlot.NUM_SLOTS; i++)
 		{
-			abilitySlots[i] = 0;
+			spellSlots[i] = 0;
 		}
 
+		Skill firstSkill = DataTables.GetSkill(1);
 		skillPoints = 1; // Give us a point
-		availableSkills.Add(DataTables.GetSkill(1));	// Force the first skill to be available
-		LearnSkill(1); // And learn it
+		availableSkills.Add(firstSkill);	// Force the first skill to be available
+		LearnSkill(firstSkill); // And learn it
 	}
 
 	public void LearnSkill(Skill skill)
@@ -76,8 +77,8 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		_manager.GetStatsScript().UpdateStats();
 
 		if (skill.GetEffect() != null && skill.GetEffect().GetUnlockedAbility() != 0)
-		{ // TEMPORARY (until we get the skill interface running)
-			AssignAbilityToSlot(skill.GetEffect().GetUnlockedAbility(), 1);
+		{
+			AssignSpellToFreeSlot(skill.GetEffect().GetUnlockedAbility());
 		}
 	}
 
@@ -116,23 +117,44 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		return this.experience;
 	}
 
-	public void AssignAbilityToSlot(uint abilityID, int slotID)
+	public void AssignSpellToSlot(uint spellID, SpellSlot slot)
 	{
-		if (slotID < 0 || slotID >= (int)AbilitySlot.NUM_SLOTS)
-		{ // Invalid slot
+		if (slot < SpellSlot.SLOT_0 || slot >= SpellSlot.NUM_SLOTS)
+		{ // Invalid slot (shouldn't really happen)
 			return;
 		}
 
-		if (!_manager.GetStatsScript().GetKnownAbilities().Contains(abilityID))
-		{ // Unknown ability
+		if (spellID > 1 && !_manager.GetStatsScript().GetKnownSpells().Contains(spellID))
+		{ // Unknown ability (OR HARD CODED CRAP)
 			return;
 		}
 
-		abilitySlots[slotID] = abilityID;
+		spellSlots[(int)slot] = spellID;
 	}
 
-	public uint GetAbilityForSlot(int slotID)
+	public void AssignSpellToFreeSlot(uint spellID)
 	{
-		return abilitySlots[slotID];
+		SpellSlot slot = SpellSlot.SLOT_0;
+
+		while (slot < SpellSlot.NUM_SLOTS)
+		{
+			if (spellSlots[(int)slot] == 0)
+			{
+				break;
+			}
+			slot++;
+		}
+
+		AssignSpellToSlot(spellID, slot);
+	}
+
+	public uint GetSpellForSlot(SpellSlot slot)
+	{
+		return spellSlots[(int)slot];
+	}
+
+	public uint GetSpellForSlot(uint slotID)
+	{
+		return spellSlots[slotID];
 	}
 }

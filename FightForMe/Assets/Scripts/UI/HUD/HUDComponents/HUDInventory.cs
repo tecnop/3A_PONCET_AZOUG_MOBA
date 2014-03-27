@@ -3,10 +3,10 @@ using System.Collections;
 
 public class HUDInventory : HUDComponent
 {
-	public HUDInventory(Rect frame)
-		: base("HUD_inventory", frame, false)
+	public HUDInventory(Rect frame, HUDContainer parent)
+		: base("HUD_inventory", frame, false, parent)
 	{
-		// TODO: Initialize misc here so we don't have to cast it every frame
+
 	}
 
 	public override void Render()

@@ -82,20 +82,18 @@ public class PlayerInputScript : CharacterInputScript
 			return;
 		}
 
-		//if (Input.GetAxis("Ability1") > 0)
-		if (Input.GetMouseButtonDown(0))
+		for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
 		{
-			SetAttackState(true);
-		}
+			string axisName = "Ability" + ((int)(i + 1));
 
-		if (Input.GetMouseButtonUp(0))
-		{
-			SetAttackState(false);
-		}
-
-		if (Input.GetAxis("Ability2") > 0)
-		{ // Temporary
-			_manager.GetCombatScript().UseAbility(((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetAbilityForSlot(1));
+			if (Input.GetAxis(axisName) > 0)
+			{
+				SetAttackState(true, (int)((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i));
+			}
+			else
+			{
+				SetAttackState(false, (int)((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i));
+			}
 		}
 	}
 

@@ -204,7 +204,8 @@ public class NPCAIScript : CharacterInputScript
 			return;
 		}
 
-		SetAttackState(target && goalReached && Vector3.Distance(_characterTransform.position, targetTransform.position) <= approachRange * 1.1f);
+		// Simple attack rule
+		SetAttackState(target && goalReached && Vector3.Distance(_characterTransform.position, targetTransform.position) <= approachRange * 1.1f, 1);
 	}
 
 	public void SetBehaviour(AIType behaviour)

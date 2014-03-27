@@ -17,8 +17,8 @@ public static class DataTables
 	// Skill Tree
 	static Dictionary<uint, Skill> skillTable = new Dictionary<uint, Skill>();
 
-	// Abilities
-	static Dictionary<uint, Ability> abilityTable = new Dictionary<uint, Ability>();
+	// Spells
+	static Dictionary<uint, Spell> spellTable = new Dictionary<uint, Spell>();
 
 	// Buffs
 	static Dictionary<uint, Effect> effectTable = new Dictionary<uint, Effect>();
@@ -38,7 +38,7 @@ public static class DataTables
 
 		skillTable.Clear();
 
-		abilityTable.Clear();
+		spellTable.Clear();
 
 		effectTable.Clear();
 		buffTable.Clear();
@@ -63,7 +63,7 @@ public static class DataTables
 
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
 		// 1 - Resources
-		// 2 - Abilities
+		// 2 - Spells
 		// 3 - Status changes (AKA effects)
 		// 4 - Buffs
 		// 5 - Skill tree	// NOTE: Place before status changes so we can build effect descriptions automatically?
@@ -72,10 +72,15 @@ public static class DataTables
 		// 8 - Items
 		// 9 - Monsters
 
-		//abilityTable.Add(1, new SpellUseWeapon());
-		abilityTable.Add(2, new SpellFireball());
-		abilityTable.Add(3, new SpellFireExplosion());
-		abilityTable.Add(4, new SpellBurn());
+		// Spells
+		// ============= HARD-CODED REFERENCES =============
+		spellTable.Add(1, new SpellUseWeapon());
+		spellTable.Add(2, new SpellMeleeHit());
+		spellTable.Add(3, new SpellProjHit());
+		// ============= HARD-CODED REFERENCES =============
+		spellTable.Add(4, new SpellFireball());
+		spellTable.Add(5, new SpellFireExplosion());
+		spellTable.Add(6, new SpellBurn());
 
 		// Effects
 		effectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
@@ -90,7 +95,10 @@ public static class DataTables
 		effectTable.Add(10, new Effect(description: "Vitesse de Course+", isPositive: true, flatMS: 350.0f));
 		effectTable.Add(11, new Effect(description: "Super Debug", isPositive: true, stats: new Stats(200, 200, 200), bonusDamage: 1000.0f, bonusProjDamage: 1000.0f));
 		effectTable.Add(12, new Effect(description: "Brûlure", isPositive: false, pctHPRegen: -0.05f));
-		effectTable.Add(13, new Effect(description: "Boule de Feu", isPositive: true, unlockedAbility: 2));
+		effectTable.Add(13, new Effect(description: "Boule de Feu", isPositive: true, unlockedAbility: 4));
+		// ============= HARD-CODED REFERENCE =============
+		effectTable.Add(14, new Effect(description: "Attaque", isPositive: true, unlockedAbility: 1));
+		// ============= HARD-CODED REFERENCE =============
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -100,7 +108,9 @@ public static class DataTables
 		buffTable.Add(3, new Buff(metadata: new Metadata(name: "Brûlure"), effects: new uint[] { 12 }));
 
 		// Skills
-		skillTable.Add(1, new Skill(metadata: new Metadata(name: "Première compétence"), neighbours: new uint[] { 2, 3, 4, 8 }));
+		// ============= HARD-CODED REFERENCE =============
+		skillTable.Add(1, new Skill(metadata: new Metadata(name: "Première compétence"), effect: 14, neighbours: new uint[] { 2, 3, 4, 8 }));
+		// ============= HARD-CODED REFERENCE =============
 
 		skillTable.Add(2, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
 		skillTable.Add(3, new Skill(metadata: new Metadata(name: "Bonus de puissance"), color: SkillColor.G, effect: 4, neighbours: new uint[] { 1, 6 }));
@@ -117,7 +127,7 @@ public static class DataTables
 
 		// Projectiles
 		projectileTable.Add(1, new Projectile(metadata: new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
-		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 3));
+		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 5));
 		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 
@@ -218,11 +228,11 @@ public static class DataTables
 		return null;
 	}
 
-	public static Ability GetAbility(uint key)
+	public static Spell GetSpell(uint key)
 	{
-		if (abilityTable.ContainsKey(key))
+		if (spellTable.ContainsKey(key))
 		{
-			return abilityTable[key];
+			return spellTable[key];
 		}
 		return null;
 	}

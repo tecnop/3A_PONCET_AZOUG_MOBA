@@ -3,8 +3,8 @@ using System.Collections;
 
 public class HUDMenuButtons : HUDComponent
 {
-	public HUDMenuButtons(Rect frame)
-		: base("HUD_menu_buttons", frame)
+	public HUDMenuButtons(Rect frame, HUDContainer parent)
+		: base("HUD_menu_buttons", frame, parent:parent)
 	{
 
 	}
@@ -21,12 +21,12 @@ public class HUDMenuButtons : HUDComponent
 
 		if (GUI.Button(inventoryRect, "Inventaire"))
 		{
-			HUDRenderer.SetMenu(HUDMenu.Inventory);
+			HUDRenderer.OpenMenu(HUDMenu.Inventory);
 		}
 
 		if (GUI.Button(skillsRect, "Compétences"))
 		{
-			HUDRenderer.SetMenu(HUDMenu.Skill);
+			HUDRenderer.OpenMenu(HUDMenu.QuickSkill);
 		}
 
 

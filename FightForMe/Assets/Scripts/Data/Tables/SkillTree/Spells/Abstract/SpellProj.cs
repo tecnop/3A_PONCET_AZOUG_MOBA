@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class SpellProj: Ability
+public abstract class SpellProj: Spell
 {
 	protected GameObject ShootProjectile(CharacterManager owner, Vector3 position, Quaternion angle, uint projectileID, CharacterManager target = null)
 	{ // Necessary?
@@ -9,7 +9,7 @@ public abstract class SpellProj: Ability
 	}
 
 	public SpellProj(Metadata metadata)
-		: base(metadata, AbilityType.PROJECTILE)
+		: base(metadata, SpellType.PROJECTILE)
 	{
 
 	}

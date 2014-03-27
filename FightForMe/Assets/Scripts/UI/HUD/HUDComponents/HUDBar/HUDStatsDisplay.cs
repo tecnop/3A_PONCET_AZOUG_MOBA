@@ -5,8 +5,8 @@ public class HUDStatsDisplay : HUDComponent
 {
 	private bool _advancedStats;
 
-	public HUDStatsDisplay(Rect frame)
-		: base("HUD_stats_display", frame)
+	public HUDStatsDisplay(Rect frame, HUDContainer parent)
+		: base("HUD_stats_display", frame, parent:parent)
 	{
 		_advancedStats = false;
 	}

@@ -2,75 +2,22 @@
 using System.Collections;
 
 public class DamageInstance
-{
+{ // Basically an "AppliedSpell", used for combat logging
 	private CharacterManager inflictor;		// If null, damage was inflicted by the environment (I guess)
-	private CharacterManager target;		// If null, the damage has not been applied yet
+	private CharacterManager target;		// If null, the damage has not been applied yet (I don't think this really happens anymore)
 
-	private float damage;			// Amount of damage to inflict (may be negative for heals?)
-	private uint buffID;			// ID of the buff to be inflicted
-	private float buffDuration;			// Duration of the buff to be inflicted
+	private Spell spell;					// Spell that dealt the damage
 
-	public DamageInstance(CharacterManager inflictor = null,
-		float damage = 0,
-		uint buffID = 0,
-		float buffDuration = 0)
+	public DamageInstance(CharacterManager inflictor, CharacterManager target, Spell spell)
 	{
 		this.inflictor = inflictor;
-		this.target = null;
-		this.damage = damage;
-		this.buffID = buffID;
-		this.buffDuration = buffDuration;
-	}
-
-	private DamageInstance(DamageInstance obj)
-	{
-		this.inflictor = obj.inflictor;
-		//this.target = obj.target;
-		this.damage = obj.damage;
-		this.buffID = obj.buffID;
-		this.buffDuration = obj.buffDuration;
-	}
-
-	public DamageInstance ApplyToTarget(CharacterManager target)
-	{
-		DamageInstance newInstance = new DamageInstance(this);
-		newInstance.target = target;
-		return newInstance;
-	}
-
-	public void ApplyEffects()
-	{
-		if (!target)
-		{ // Need someone to apply us to
-			return;
-		}
-
-		if (inflictor)
-		{ // Do something when this is not true?
-			//Debug.Log(inflictor.name + " hit " + target.name + " for " + damage + " damage");
-			inflictor.GetCombatScript().Damage(target, damage);
-		}
-
-		target.GetCombatScript().ReceiveBuff(inflictor, this.buffID, this.buffDuration);
-	}
-
-	public bool isPending
-	{
-		get
-		{
-			return (this.target == null);
-		}
+		this.target = target;
+		this.spell = spell;
 	}
 
 	public override string ToString()
 	{
-		if (this.isPending)
-		{
-			return "THIS DAMAGE INSTANCE IS NOT INITIALIZED AND SHOULD NOT BE DISPLAYED";
-		}
-		else
-		{
-			return this.inflictor.name + " inflicted " + this.damage + " damage to " + this.target.name + " using <insert damage source here>";
-		}
+		string inflictorName = (this.inflictor != null) ? this.inflictor.name : "<world>";
+		return inflictorName + " hit  " + this.target.name + " using " + this.spell.GetName();
 	}
 }

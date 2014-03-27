@@ -11,7 +11,7 @@ public class Projectile : WikiEntry
 
 	private float damage;						// Damage to deal on impact
 	private float speed;						// Projectile's speed
-	private uint impactAbility;					// ID of the Ability to be executed on impact
+	private uint impactSpell;					// ID of the spell to be executed on impact
 
 	//private float missileRadius;
 	private Vector3 hitboxSize;					// Hitbox
@@ -37,7 +37,7 @@ public class Projectile : WikiEntry
 		this.impactEffectPath = effectPath;
 		this.damage = damage;
 		this.speed = speed;
-		this.impactAbility = impactAbility;
+		this.impactSpell = impactAbility;
 		this.hitboxSize = hitboxSize;
 		this.range = range;
 		this.lifeTime = lifeTime;
@@ -49,5 +49,5 @@ public class Projectile : WikiEntry
 	public string GetImpactEffectPath() { return this.impactEffectPath; }
 	public float GetDamage() { return this.damage; }
 	public float GetSpeed() { return this.speed; }
-	public uint GetImpactAbilityID() { return this.impactAbility; }
+	public uint GetImpactSpellID() { return this.impactSpell; }
 }

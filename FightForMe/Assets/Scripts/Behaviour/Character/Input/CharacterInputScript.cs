@@ -47,13 +47,13 @@ public abstract class CharacterInputScript : MonoBehaviour
 		}
 	}
 
-	protected void SetAttackState(bool state)
+	protected void SetAttackState(bool state, int spellNum)
 	{
-		_SetAttackState(state);
+		_SetAttackState(state, spellNum);
 
 		if (GameData.isOnline)
 		{
-			_networkView.RPC("_SetAttackState", RPCMode.Others, state);
+			_networkView.RPC("_SetAttackState", RPCMode.Others, state, spellNum);
 		}
 	}
 
@@ -70,7 +70,7 @@ public abstract class CharacterInputScript : MonoBehaviour
 	}
 
 	[RPC]
-	private void _SetAttackState(bool state)
+	private void _SetAttackState(bool state, int spellNum)
 	{
 		if (!_manager)
 		{ // ????
@@ -78,6 +78,7 @@ public abstract class CharacterInputScript : MonoBehaviour
 		}
 
 		_manager.GetCharacterAnimator().SetBool("isAttacking", state);
+		_manager.GetCharacterAnimator().SetInteger("spellNum", spellNum);
 	}
 
 	public Vector3 GetDirectionalInput()

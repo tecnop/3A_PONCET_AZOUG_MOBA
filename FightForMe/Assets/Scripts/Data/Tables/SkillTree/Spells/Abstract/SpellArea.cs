@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class SpellArea : Ability
+public abstract class SpellArea : Spell
 {
 	public SpellArea(Metadata metadata)
-		: base(metadata, AbilityType.AREA)
+		: base(metadata, SpellType.AREA)
 	{
 
 	}

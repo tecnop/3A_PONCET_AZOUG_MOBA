@@ -41,7 +41,7 @@ public class CharacterStatsScript : MonoBehaviour
 	// Total stats obtained from items and skills; they affect other stats in various ways
 	private Stats stats;
 
-	private ArrayList knownAbilities;	// List of all known abilities (type: uint)
+	private ArrayList knownSpells;	// List of all known spells (type: uint)
 
 	private CharacterInventoryScript _inventory;
 	private CharacterCombatScript _combat;
@@ -52,7 +52,7 @@ public class CharacterStatsScript : MonoBehaviour
 		_inventory = _manager.GetInventoryScript();
 		_combat = _manager.GetCombatScript();
 
-		knownAbilities = new ArrayList();
+		knownSpells = new ArrayList();
 
 		this.UpdateStats(true);
 	}
@@ -106,7 +106,7 @@ public class CharacterStatsScript : MonoBehaviour
 		}
 		this.movementSpeed = 350.0f;
 		this.stats = Stats.Base;		// Do we need that anymore? Why not define it here?
-		this.knownAbilities.Clear();
+		this.knownSpells.Clear();
 
 		// Get all currently applied effects
 		ArrayList buffList = new ArrayList(_combat.GetBuffs());
@@ -182,7 +182,7 @@ public class CharacterStatsScript : MonoBehaviour
 
 			if (effect.GetUnlockedAbility() != 0)
 			{
-				this.knownAbilities.Add(effect.GetUnlockedAbility());
+				this.knownSpells.Add(effect.GetUnlockedAbility());
 			}
 
 			// Check effect.GetMiscEffect() if necessary, although it shouldn't be needed here
@@ -332,5 +332,5 @@ public class CharacterStatsScript : MonoBehaviour
 	public float GetProjDamage() { return this.projDamage; }
 	public float GetMovementSpeed() { return this.movementSpeed; }
 	public Stats GetStats() { return this.stats; }
-	public ArrayList GetKnownAbilities() { return this.knownAbilities; }
+	public ArrayList GetKnownSpells() { return this.knownSpells; }
 }

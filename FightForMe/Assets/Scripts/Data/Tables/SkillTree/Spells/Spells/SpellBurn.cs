@@ -13,6 +13,7 @@ public class SpellBurn : SpellTarget
 	{
 		if (target != null)
 		{
+			target.GetCombatScript().ApplySpell(inflictor, this);
 			inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
 		}
 	}

@@ -3,8 +3,8 @@ using System.Collections;
 
 public class HUDManaBar : HUDComponent
 {
-	public HUDManaBar(Rect frame)
-		: base("HUD_mana_bar", frame)
+	public HUDManaBar(Rect frame, HUDContainer parent)
+		: base("HUD_mana_bar", frame, parent:parent)
 	{
 
 	}

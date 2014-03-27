@@ -3,11 +3,11 @@ using System.Collections;
 
 public class HUDContainer : HUDComponent
 {
-	private ArrayList children;	// Type: HUDComponent
-	private bool drawBackground;
+	protected ArrayList children;	// Type: HUDComponent
+	protected bool drawBackground;
 
-	public HUDContainer(string name, Rect frame, ArrayList children = null, bool enabled = true, bool drawBackground = false)
-		: base(name, frame, enabled)
+	public HUDContainer(string name, Rect frame, ArrayList children = null, bool enabled = true, bool drawBackground = false, HUDContainer parent = null)
+		: base(name, frame, enabled, parent)
 	{
 		if (children != null)
 		{
@@ -83,5 +83,17 @@ public class HUDContainer : HUDComponent
 			}
 		}
 		return res;
+	}
+
+	public HUDComponent GetChildNamed(string name)
+	{
+		foreach (HUDComponent component in this.children)
+		{
+			if (component.GetName() == name)
+			{
+				return component;
+			}
+		}
+		return null;
 	}
 }

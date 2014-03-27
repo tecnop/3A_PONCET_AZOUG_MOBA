@@ -1,128 +1,139 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<ProductVersion>10.0.20506</ProductVersion>
-	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{6E51AAFC-D4B5-BA01-82E4-88682739ADFB}</ProjectGuid>
-	<OutputType>Library</OutputType>
-	<AppDesignerFolder>Properties</AppDesignerFolder>
-	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
-	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<FileAlignment>512</FileAlignment>
-	<BaseDirectory>Assets</BaseDirectory>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6E51AAFC-D4B5-BA01-82E4-88682739ADFB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	<DebugSymbols>true</DebugSymbols>
-	<DebugType>full</DebugType>
-	<Optimize>false</Optimize>
-	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_2;UNITY_4_3;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_2;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	<DebugType>pdbonly</DebugType>
-	<Optimize>true</Optimize>
-	<OutputPath>Temp\bin\Release\</OutputPath>
-	<DefineConstants>TRACE</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-	<Reference Include="System" />
+    <Reference Include="System" />
     <Reference Include="System.XML" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml.Linq" />
-	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
-	</Reference>
-	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
-	</Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterAnimatorScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterCombatScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterInventoryScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterManager.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterMovementScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterPhysicsScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterStatsScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\CharacterVisionScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Event\CharacterEventScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Event\MonsterEventScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Event\PlayerEventScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Input\CharacterInputScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Input\NPCAIScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Input\PlayerInputScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Misc\CharacterMiscDataScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Misc\MonsterMiscDataScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Misc\PlayerMiscDataScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\DroppedItem\DroppedItemScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Misc\DetectionSphereScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Misc\GraphicsLoader.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Misc\ModelListScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\MonsterCamp\MonsterCampScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerCameraScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerHUDScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Projectile\ProjectileScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Spawners\LordSpawnerScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Spawners\MonsterSpawnerScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Spawners\PlayerSpawnerScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Spawners\SpawnerScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Spawners\TeamEntitySpawnerScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\WayPoint\WayPointScript.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\DamageInstance.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\Effect.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\GameModel.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\InflictedBuff.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\Metadata.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\Stats.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\WikiEntry.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\DataTables.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Entities\Monster.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Entities\Projectile.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Items\Armor.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Items\ArmorSet.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Items\Item.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Items\Weapon.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Items\WeaponType.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\Misc\Buff.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\Ability.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\SpellArea.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\SpellProj.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Abstract\SpellTarget.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Spells\SpellBurn.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Spells\SpellFireExplosion.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Abilities\Spells\SpellFireball.cs" />
-     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Skill.cs" />
-     <Compile Include="Assets\Scripts\GameData\GameData.cs" />
-     <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
-     <Compile Include="Assets\Scripts\GameData\InstantiateManagerScript.cs" />
-     <Compile Include="Assets\Scripts\GameData\NetworkScript.cs" />
-     <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
-     <Compile Include="Assets\Scripts\UI\FFMStyles.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponent.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDBar.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDHealthBar.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDManaBar.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDMenuButtons.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDMinimap.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDSkillBar.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDStatsDisplay.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDXPBar.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBuffDisplay.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDContainer.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDInventory.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDQuickSkills.cs" />
-     <Compile Include="Assets\Scripts\UI\HUD\HUDRenderer.cs" />
-     <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
-     <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterAnimatorScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterCombatScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterInventoryScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterManager.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterMovementScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterPhysicsScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterStatsScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\CharacterVisionScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Event\CharacterEventScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Event\MonsterEventScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Event\PlayerEventScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Input\CharacterInputScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Input\NPCAIScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Input\PlayerInputScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Misc\CharacterMiscDataScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Misc\MonsterMiscDataScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Character\Misc\PlayerMiscDataScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Collision\HitboxScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Collision\ProjectileScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\DroppedItem\DroppedItemScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Graphics\GraphicsLoader.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Graphics\ModelListScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\MonsterCamp\MonsterCampScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerCameraScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerHUDScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Spawners\LordSpawnerScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Spawners\MonsterSpawnerScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Spawners\PlayerSpawnerScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Spawners\SpawnerScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\Spawners\TeamEntitySpawnerScript.cs" />
+    <Compile Include="Assets\Scripts\Behaviour\WayPoint\WayPointScript.cs" />
+    <Compile Include="Assets\Scripts\Data\Classes\DamageInstance.cs" />
+    <Compile Include="Assets\Scripts\Data\Classes\Effect.cs" />
+    <Compile Include="Assets\Scripts\Data\Classes\GameModel.cs" />
+    <Compile Include="Assets\Scripts\Data\Classes\InflictedBuff.cs" />
+    <Compile Include="Assets\Scripts\Data\Classes\Metadata.cs" />
+    <Compile Include="Assets\Scripts\Data\Classes\Stats.cs" />
+    <Compile Include="Assets\Scripts\Data\Classes\WikiEntry.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\DataTables.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Entities\Monster.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Entities\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Items\Armor.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Items\ArmorSet.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Items\Item.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Items\Weapon.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Items\WeaponType.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\Misc\Buff.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Skill.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\Spell.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellArea.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellProj.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellTarget.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellBurn.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellFireExplosion.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellFireball.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellMeleeHit.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellProjHit.cs" />
+    <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellUseWeapon.cs" />
+    <Compile Include="Assets\Scripts\GameData\GameData.cs" />
+    <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
+    <Compile Include="Assets\Scripts\GameData\InstantiateManagerScript.cs" />
+    <Compile Include="Assets\Scripts\GameData\NetworkScript.cs" />
+    <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
+    <Compile Include="Assets\Scripts\UI\FFMStyles.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponent.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDBar.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDHealthBar.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDManaBar.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDMenuButtons.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDMinimap.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDSpells\HUDSpellBar.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDSpells\HUDSpellSlot.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDStatsDisplay.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDXPBar.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBuffDisplay.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDContainer.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDInventory.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDQuickSkills.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDSpellList.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDSpellWindow.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDWindowGrabber.cs" />
+    <Compile Include="Assets\Scripts\UI\HUD\HUDRenderer.cs" />
+    <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
+    <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -132,5 +143,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

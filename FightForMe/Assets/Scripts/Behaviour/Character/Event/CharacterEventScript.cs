@@ -5,6 +5,7 @@ using System.Collections;
  * CharacterEventScript.cs
  * 
  * Receives various events from other scripts and executes character type-specific code
+ * TODO: Need more of those now
  * 
  */
 

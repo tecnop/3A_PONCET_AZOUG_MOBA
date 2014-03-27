@@ -3,10 +3,12 @@ using System.Collections;
 
 public class HUDXPBar : HUDComponent
 {
-	public HUDXPBar(Rect frame)
-		: base("HUD_exp_bar", frame)
-	{
+	private PlayerMiscDataScript _misc;
 
+	public HUDXPBar(Rect frame, HUDContainer parent)
+		: base("HUD_exp_bar", frame, parent:parent)
+	{
+		this._misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
 	}
 
 	public override void Render()
@@ -17,7 +19,7 @@ public class HUDXPBar : HUDComponent
 
 		GUI.BeginGroup(frame);
 
-		uint curXP = ((PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript()).GetExperience();
+		uint curXP = _misc.GetExperience();
 
 		// Background
 		GUI.Box(localRect, GUIContent.none);
