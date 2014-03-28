@@ -197,15 +197,24 @@ public class NPCAIScript : CharacterInputScript
 		}
 	}
 
-	protected override void ReadGenericInput()
-	{ // Here: more AI (attacking, etc.)
+	protected override uint UpdateCurrentSpell()
+	{
 		if (_manager.GetStatsScript().GetHealth() <= 0)
-		{ // No other input should be read
-			return;
+		{ // Can't attack
+			return 0;
 		}
 
-		// Simple attack rule
-		SetAttackState(target && goalReached && Vector3.Distance(_characterTransform.position, targetTransform.position) <= approachRange * 1.1f, 1);
+		if (target && goalReached && Vector3.Distance(_characterTransform.position, targetTransform.position) <= approachRange * 1.1f)
+		{ // Simple attack rule
+			return 1;
+		}
+
+		return 0;
+	}
+
+	protected override void ReadGenericInput()
+	{ // Should we do anything here?
+
 	}
 
 	public void SetBehaviour(AIType behaviour)

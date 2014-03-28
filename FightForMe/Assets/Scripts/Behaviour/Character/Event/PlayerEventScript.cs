@@ -13,6 +13,11 @@ public class PlayerEventScript : CharacterEventScript
 		_manager.GetCharacterAnimator().SetBool("onPain", true);
 	}
 
+	public override void OnReceiveBuff(CharacterManager inflictor, uint buffID)
+	{
+		
+	}
+
 	public override void OnDeath(CharacterManager killer)
 	{
 		// Reseting states

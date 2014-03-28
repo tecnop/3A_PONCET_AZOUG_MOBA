@@ -16,6 +16,7 @@ public abstract class CharacterEventScript : MonoBehaviour
 	public abstract void Initialize(CharacterManager manager);
 
 	public abstract void OnPain(CharacterManager inflictor, float damage);
+	public abstract void OnReceiveBuff(CharacterManager inflictor, uint buffID);
 	public abstract void OnDeath(CharacterManager killer);
 	public abstract void OnSpotEntity(GameObject entity);
 	public abstract void OnCollision(Collider collider);

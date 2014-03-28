@@ -70,16 +70,11 @@ public class PlayerInputScript : CharacterInputScript
 		}
 	}
 
-	protected override void ReadGenericInput()
+	protected override uint UpdateCurrentSpell()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{ // Don't forget to turn that into an axis
-			this.hasLockedCamera = !this.hasLockedCamera;
-		}
-
 		if (_manager.GetStatsScript().GetHealth() <= 0)
-		{ // No other input should be read
-			return;
+		{ // Can't attack
+			return 0;
 		}
 
 		for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
@@ -88,12 +83,18 @@ public class PlayerInputScript : CharacterInputScript
 
 			if (Input.GetAxis(axisName) > 0)
 			{
-				SetAttackState(true, (int)((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i));
+				return ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i);
 			}
-			else
-			{
-				SetAttackState(false, (int)((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i));
-			}
+		}
+
+		return 0;
+	}
+
+	protected override void ReadGenericInput()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{ // Don't forget to turn that into an axis
+			this.hasLockedCamera = !this.hasLockedCamera;
 		}
 	}
 

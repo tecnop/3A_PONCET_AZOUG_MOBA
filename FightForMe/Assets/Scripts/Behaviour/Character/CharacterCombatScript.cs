@@ -81,6 +81,7 @@ public class CharacterCombatScript : MonoBehaviour
 
 		this.buffs.Add(new InflictedBuff(buffID, duration, inflictor));
 		_manager.GetStatsScript().UpdateStats();
+		_manager.GetEventScript().OnReceiveBuff(inflictor, buffID);
 	}
 
 	public void InflictBuff(CharacterManager target, uint buffID, float duration)
@@ -94,18 +95,57 @@ public class CharacterCombatScript : MonoBehaviour
 		this.combatLog.Add(appliedSpell);
 	}
 
-	public void UseSpell(uint spellID)
-	{ // RPC ME PLS
+	public bool CanUseSpell(uint spellID)
+	{
 		if (!_manager.GetStatsScript().GetKnownSpells().Contains(spellID))
 		{ // Unknown spell
+			return false;
+		}
+
+		Spell spell = DataTables.GetSpell(spellID);
+
+		if (spell == null)
+		{
+			return false;
+		}
+
+		if (spell.GetCostType() == SpellCostType.MANA)
+		{
+			if (_manager.GetStatsScript().GetMana() < spell.GetCost(_manager))
+			{
+				return false;
+			}
+		}
+		else if (spell.GetCostType() == SpellCostType.HEALTH)
+		{
+			if (_manager.GetStatsScript().GetHealth() < spell.GetCost(_manager))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public void UseSpell(uint spellID)
+	{
+		if (!CanUseSpell(spellID))
+		{
 			return;
 		}
 
 		Spell spell = DataTables.GetSpell(spellID);
-		if (spell != null)
+
+		//spell.Execute(_manager, _manager.GetInputScript().GetMousePos(), _manager); // Ideal version
+		spell.Execute(_manager, _manager.GetCharacterTransform().position, _manager);
+
+		if (spell.GetCostType() == SpellCostType.MANA)
 		{
-			//spell.Execute(_manager, _manager.GetInputScript().GetMousePos(), _manager); // Ideal version
-			spell.Execute(_manager, _manager.GetCharacterTransform().position, null);
+			_manager.GetStatsScript().LoseMana(spell.GetCost(_manager));
+		}
+		else if (spell.GetCostType() == SpellCostType.HEALTH)
+		{ // Don't really want to use that function actually, change it maybe?
+			_manager.GetStatsScript().LoseHealth(_manager, spell.GetCost(_manager));
 		}
 	}
 

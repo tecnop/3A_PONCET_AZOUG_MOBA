@@ -7,16 +7,15 @@ public class SpellUseWeapon : SpellTarget
 	//private Spell projHit;
 
 	public SpellUseWeapon()
-		: base(new Metadata("Attaque", "Utilise l'arme équipée"))
+		: base(new Metadata("Attaque", "Utilise l'arme équipée"), SpellCostType.NONE)
 	{
 		//this.meleeHit = DataTables.GetSpell(2);
 		//this.projHit = DataTables.GetSpell(3);
 	}
 
-	public override void Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
+	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
 		Weapon myWeapon = inflictor.GetInventoryScript().GetWeapon();
-
 		if (myWeapon == null)
 		{ // Using our fists
 			inflictor.GetCombatScript().CreateAoE(2.0f, 2); // meleeHit
@@ -34,5 +33,10 @@ public class SpellUseWeapon : SpellTarget
 		{
 			inflictor.GetCombatScript().CreateProjectile(proj, 3); // projHit
 		}
+	}
+
+	public override float GetCost(CharacterManager caster)
+	{
+		return 0;
 	}
 }

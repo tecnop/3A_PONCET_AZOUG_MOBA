@@ -29,11 +29,12 @@ public class CharacterAnimatorScript : MonoBehaviour
 	public void StartAttack()
 	{
 		_animator.speed = _manager.GetStatsScript().GetAttackRate();
+		_manager.GetCharacterAnimator().SetInteger("currentSpell", (int)_manager.GetInputScript().GetCurrentSpell());
 	}
 
 	public void DoAttack()
 	{
-		_manager.GetCombatScript().UseSpell(1);
+		_manager.GetCombatScript().UseSpell((uint)_manager.GetCharacterAnimator().GetInteger("currentSpell"));
 	}
 
 	public void EndAttack()

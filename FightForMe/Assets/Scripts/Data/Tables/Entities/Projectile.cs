@@ -9,9 +9,9 @@ public class Projectile : WikiEntry
 	private string effectPath;					// Effect to display around the model
 	private string impactEffectPath;			// Effect to play upon impact
 
-	private float damage;						// Damage to deal on impact
-	private float speed;						// Projectile's speed
+	private float damage;						// Damage to deal on impact (used only for weapon projectiles)
 	private uint impactSpell;					// ID of the spell to be executed on impact
+	private float speed;						// Projectile's speed
 
 	//private float missileRadius;
 	private Vector3 hitboxSize;					// Hitbox

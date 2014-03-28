@@ -8,9 +8,24 @@ public enum SpellType
 	AREA
 }
 
+public enum SpellCostType
+{
+	NONE,
+	MANA,
+	HEALTH
+}
+
+public enum SpellCastingType
+{
+	DEFAULT,
+	CONTINUOUS,
+	CHANNELED
+}
+
 public abstract class Spell : WikiEntry
 {
-	SpellType abilityType;
+	SpellType spellType;
+	SpellCostType costType;
 
 	// TODO:
 	// - Health cost, mana cost, pct health cost, pct mana cost
@@ -18,11 +33,17 @@ public abstract class Spell : WikiEntry
 	// - Animations
 	// - Casting speed, casting type
 
-	public Spell(Metadata metadata, SpellType abilityType)
+	protected Spell(Metadata metadata, SpellType spellType, SpellCostType costType)
 		: base(metadata)
 	{
-
+		this.spellType = spellType;
+		this.costType = costType;
 	}
 
 	public abstract void Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null);
+
+	public abstract float GetCost(CharacterManager caster);
+
+	public SpellType GetSpellType() { return this.spellType; }
+	public SpellCostType GetCostType() { return this.costType; }
 }

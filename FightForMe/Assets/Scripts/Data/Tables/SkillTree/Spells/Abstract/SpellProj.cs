@@ -3,14 +3,16 @@ using System.Collections;
 
 public abstract class SpellProj: Spell
 {
-	protected GameObject ShootProjectile(CharacterManager owner, Vector3 position, Quaternion angle, uint projectileID, CharacterManager target = null)
-	{ // Necessary?
-		return null;
-	}
-
-	public SpellProj(Metadata metadata)
-		: base(metadata, SpellType.PROJECTILE)
+	protected SpellProj(Metadata metadata, SpellCostType costType)
+		: base(metadata, SpellType.PROJECTILE, costType)
 	{
 
+	}
+
+	protected abstract void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null);
+
+	public override void Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null)
+	{
+		this._Execute(inflictor, position, target);
 	}
 }

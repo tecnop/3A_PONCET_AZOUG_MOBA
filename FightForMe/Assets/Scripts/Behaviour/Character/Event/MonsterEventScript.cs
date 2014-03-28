@@ -24,7 +24,18 @@ public class MonsterEventScript : CharacterEventScript
 			inflictor.tag == "Player" &&
 			inflictor.gameObject.layer != _manager.gameObject.layer)
 		{
-			Debug.Log("Monster acquired an enemy: " + inflictor.name);
+			Debug.Log(_manager.name + " acquired an enemy: " + inflictor.name);
+			_ai.SetTarget(inflictor.gameObject);
+		}
+	}
+
+	public override void OnReceiveBuff(CharacterManager inflictor, uint buffID)
+	{
+		if (!_ai.HasAnEnemy() &&
+			inflictor.tag == "Player" &&
+			inflictor.gameObject.layer != _manager.gameObject.layer)
+		{
+			Debug.Log(_manager.name + " acquired an enemy: " + inflictor.name);
 			_ai.SetTarget(inflictor.gameObject);
 		}
 	}

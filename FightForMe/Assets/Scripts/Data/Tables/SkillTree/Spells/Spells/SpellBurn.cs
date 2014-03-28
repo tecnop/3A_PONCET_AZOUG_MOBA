@@ -4,17 +4,18 @@ using System.Collections;
 public class SpellBurn : SpellTarget
 {
 	public SpellBurn()
-		: base(new Metadata("Brûlure", "Inflige des dégâts sur la durée à la cible"))
+		: base(new Metadata("Brûlure", "Inflige des dégâts sur la durée à la cible"), SpellCostType.NONE)
 	{
 
 	}
 
-	public override void Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
+	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
-		if (target != null)
-		{
-			target.GetCombatScript().ApplySpell(inflictor, this);
-			inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
-		}
+		inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
+	}
+
+	public override float GetCost(CharacterManager caster)
+	{
+		return 0;
 	}
 }
