@@ -3,25 +3,19 @@ using System.Collections;
 
 public class GraphicsLoader : MonoBehaviour
 {
+	[SerializeField]
 	private Transform _transform;
-
-	private void StoreTransform()
-	{ // FIXME FIXME
-		if (_transform == null)
-			_transform = this.transform;
-	}
 
 	private void ClearOldModel()
 	{
 		foreach (Transform child in _transform)
-		{ // Using a loop to get rid of the default model, we should get rid of this later
+		{ // Some models may be in multiple parts, we want to clear everything here
 			Destroy(child.gameObject);
 		}
 	}
 
 	public void LoadModel(GameObject model, bool safe = true)
 	{
-		StoreTransform();
 		if (safe && model == null)
 		{
 			return;
@@ -38,7 +32,6 @@ public class GraphicsLoader : MonoBehaviour
 
 	public void LoadModel(string model, bool safe = true)
 	{
-		StoreTransform();
 		if (model == null)
 		{
 			if (!safe)
@@ -51,4 +44,6 @@ public class GraphicsLoader : MonoBehaviour
 			LoadModel(DataTables.GetModel(model), safe);
 		}
 	}
+
+	public Transform GetTransform() { return this._transform; }
 }

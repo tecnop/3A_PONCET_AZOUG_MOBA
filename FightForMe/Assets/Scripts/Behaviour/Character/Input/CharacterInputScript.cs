@@ -14,13 +14,13 @@ public abstract class CharacterInputScript : MonoBehaviour
 	protected NetworkView _networkView;
 
 	private Vector3 directionalInput;
-	private float idealOrientation;
+	private Vector3 lookPosition;
 	private uint currentSpell;
 
 	public abstract void Initialize(CharacterManager manager);
 
 	protected abstract Vector3 UpdateDirectionalInput();
-	protected abstract float UpdateIdealOrientation();
+	protected abstract Vector3 UpdateLookPosition();
 	protected abstract uint UpdateCurrentSpell();
 	protected abstract void ReadGenericInput();
 
@@ -29,41 +29,44 @@ public abstract class CharacterInputScript : MonoBehaviour
 		if (_manager.IsLocal())
 		{
 			Vector3 newInput = UpdateDirectionalInput();
-			float newAngle = UpdateIdealOrientation();
+			Vector3 newLookPos = UpdateLookPosition();
 			uint newSpell = UpdateCurrentSpell();
-
-			if (_manager.GetStatsScript().GetHealth() <= 0)
-			{ // We still execute the update code because of reasons
-				newInput = Vector3.zero;
-				newAngle = idealOrientation;
-				newSpell = 0;
-			}
 
 			ReadGenericInput(); // This one handles events by itself... store it in a struct maybe?
 
-			SetDirectionalInput(newInput);
-			SetIdealOrientation(newAngle);
-			SetCurrentSpell((int)newSpell);
+			if (_manager.GetStatsScript().GetHealth() <= 0)
+			{ // We used to still execute some stuff but I don't think we have to anymore?
+				return;
+			}
+
+			_UpdateInput(newInput, newLookPos, (int)newSpell);
 
 			if (GameData.isOnline)
-			{ // There's no reason to send 3 RPCs here, we should send only one
-				_networkView.RPC("SetDirectionalInput", RPCMode.Others, newInput);
-				_networkView.RPC("SetIdealOrientation", RPCMode.Others, newAngle);
-				_networkView.RPC("SetCurrentSpell", RPCMode.Others, (int)newSpell);
+			{
+				_networkView.RPC("_UpdateInput", RPCMode.Others, newInput, newLookPos, (int)newSpell);
 			}
 		}
 	}
 
 	[RPC]
+	private void _UpdateInput(Vector3 dirInput, Vector3 lookPos, int spell)
+	{ // Put in a single function for lighter bandwidth usage
+		this.directionalInput = dirInput;
+		this.lookPosition = lookPos;
+		this.currentSpell = (uint)spell;
+		_manager.GetCharacterAnimator().SetBool("isAttacking", (spell != 0)); // Kinda temporary
+	}
+
+	/*[RPC]
 	private void SetDirectionalInput(Vector3 vec)
 	{
 		this.directionalInput = vec;
 	}
 
 	[RPC]
-	private void SetIdealOrientation(float yaw)
+	private void SetLookPosition(Vector3 pos)
 	{
-		this.idealOrientation = yaw;
+		this.lookPosition = pos;
 	}
 
 	[RPC]
@@ -71,16 +74,16 @@ public abstract class CharacterInputScript : MonoBehaviour
 	{
 		this.currentSpell = (uint)spell;
 		_manager.GetCharacterAnimator().SetBool("isAttacking", (spell != 0)); // Kinda temporary
-	}
+	}*/
 
 	public Vector3 GetDirectionalInput()
 	{
 		return this.directionalInput;
 	}
 
-	public float GetIdealOrientation()
+	public Vector3 GetLookPosition()
 	{
-		return this.idealOrientation;
+		return this.lookPosition;
 	}
 
 	public uint GetCurrentSpell()

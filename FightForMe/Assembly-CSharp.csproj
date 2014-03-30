@@ -99,8 +99,11 @@
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellProj.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellTarget.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellBurn.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellExplosion.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellFireExplosion.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellFireball.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellGrenade.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellKnockback.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellMeleeHit.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellProjHit.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellUseWeapon.cs" />

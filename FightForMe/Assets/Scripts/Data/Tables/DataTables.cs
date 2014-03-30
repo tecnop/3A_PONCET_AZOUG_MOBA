@@ -81,6 +81,9 @@ public static class DataTables
 		spellTable.Add(4, new SpellFireball());
 		spellTable.Add(5, new SpellFireExplosion());
 		spellTable.Add(6, new SpellBurn());
+		spellTable.Add(7, new SpellGrenade());
+		spellTable.Add(8, new SpellExplosion());
+		spellTable.Add(9, new SpellKnockback());
 
 		// Effects
 		effectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
@@ -99,6 +102,7 @@ public static class DataTables
 		// ============= HARD-CODED REFERENCE =============
 		effectTable.Add(14, new Effect(description: "Attaque", isPositive: true, unlockedAbility: 1));
 		// ============= HARD-CODED REFERENCE =============
+		effectTable.Add(15, new Effect(description: "Grenade", isPositive: true, unlockedAbility: 7));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -123,13 +127,15 @@ public static class DataTables
 		skillTable.Add(8, new Skill(metadata: new Metadata(name: "Bonus vitesse de Course"), color: SkillColor.W, effect: 9, neighbours: new uint[] { 1, 9 }));
 		skillTable.Add(9, new Skill(metadata: new Metadata(name: "Super bonus vit. de Course"), color: SkillColor.W, effect: 10, neighbours: new uint[] { 8 }));
 
-		skillTable.Add(10, new Skill(metadata: new Metadata(name: "Sort: Boule de Feu"), color: SkillColor.B, effect: 13, neighbours: new uint[] { 7 }));
+		skillTable.Add(10, new Skill(metadata: new Metadata(name: "Sort: Boule de Feu"), color: SkillColor.B, effect: 13, neighbours: new uint[] { 7, 11 }));
+		skillTable.Add(11, new Skill(metadata: new Metadata(name: "Sort: Grenade"), color: SkillColor.B, effect: 15, neighbours: new uint[] { 10 }));
 
 		// Projectiles
 		projectileTable.Add(1, new Projectile(metadata: new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 5));
 		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
+		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory:ProjectileTrajectory.Throw, lifeTime: 0.0f));
 
 		// Weapon types
 		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epee courte")));

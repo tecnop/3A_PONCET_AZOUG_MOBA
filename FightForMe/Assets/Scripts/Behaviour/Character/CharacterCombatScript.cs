@@ -97,15 +97,20 @@ public class CharacterCombatScript : MonoBehaviour
 
 	public bool CanUseSpell(uint spellID)
 	{
-		if (!_manager.GetStatsScript().GetKnownSpells().Contains(spellID))
-		{ // Unknown spell
-			return false;
-		}
-
 		Spell spell = DataTables.GetSpell(spellID);
 
 		if (spell == null)
 		{
+			return false;
+		}
+
+		if (!GameData.isServer)
+		{ // ;_;
+			return true;
+		}
+
+		if (!_manager.GetStatsScript().GetKnownSpells().Contains(spellID))
+		{ // Unknown spell
 			return false;
 		}
 
@@ -136,8 +141,7 @@ public class CharacterCombatScript : MonoBehaviour
 
 		Spell spell = DataTables.GetSpell(spellID);
 
-		//spell.Execute(_manager, _manager.GetInputScript().GetMousePos(), _manager); // Ideal version
-		spell.Execute(_manager, _manager.GetCharacterTransform().position, _manager);
+		spell.Execute(_manager, _manager.GetInputScript().GetLookPosition(), _manager);
 
 		if (spell.GetCostType() == SpellCostType.MANA)
 		{

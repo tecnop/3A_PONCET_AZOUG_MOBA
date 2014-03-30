@@ -14,6 +14,9 @@ public class CharacterAnimatorScript : MonoBehaviour
 
 	private Animator _animator;
 
+	private bool paused;
+	private float savedSpeed;
+
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
@@ -24,6 +27,24 @@ public class CharacterAnimatorScript : MonoBehaviour
 	public Animator GetAnimator()
 	{
 		return _animator;
+	}
+
+	public void Pause()
+	{
+		this.paused = true;
+		this.savedSpeed = _animator.speed;
+		_animator.speed = 0;
+	}
+
+	public void Unpause()
+	{
+		this.paused = false;
+		_animator.speed = this.savedSpeed;
+	}
+
+	public bool IsPaused()
+	{
+		return paused;
 	}
 
 	public void StartAttack()

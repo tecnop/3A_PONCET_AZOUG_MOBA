@@ -50,4 +50,9 @@ public class Projectile : WikiEntry
 	public float GetDamage() { return this.damage; }
 	public float GetSpeed() { return this.speed; }
 	public uint GetImpactSpellID() { return this.impactSpell; }
+
+	public float GetRange() { return this.range; }
+	public float GetLifeTime() { return this.lifeTime; }
+	public ProjectileTrajectory GetTrajectory() { return this.trajectory; }
+	public ProjectileCollisionType GetCollisionType() { return this.collision; }
 }

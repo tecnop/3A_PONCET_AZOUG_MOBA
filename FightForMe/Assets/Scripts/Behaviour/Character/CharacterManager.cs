@@ -51,6 +51,8 @@ public class CharacterManager : MonoBehaviour
 
 	private bool isLocal = false;	// If true, the entity's input will be processed locally, otherwise it will be fetched from the network
 
+	private float _savedAnimatorSpeed;
+
 	void Start()
 	{
 		// Link all the serialized scripts to us and initialize them
@@ -78,14 +80,22 @@ public class CharacterManager : MonoBehaviour
 	{
 		if (GameData.gamePaused)
 		{ // No updating
+			if (!_animator.IsPaused())
+			{
+				_animator.Pause();
+			}
 			return;
+		}
+		else if (_animator.IsPaused())
+		{
+			_animator.Unpause();
 		}
 
 		_vision.UpdateVision();
 
 		_input.UpdateInput();
 		_movement.ApplyMove(_input.GetDirectionalInput());
-		_movement.SetAngle(_input.GetIdealOrientation());
+		_movement.LookAtPosition(_input.GetLookPosition());
 
 		if (_camera && isLocal)
 		{

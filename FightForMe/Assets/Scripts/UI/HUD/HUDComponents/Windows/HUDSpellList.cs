@@ -36,7 +36,6 @@ public class HUDSpellList : HUDComponent
 			HUDRenderer.SetSlot(SpellSlot.NUM_SLOTS);
 			HUDRenderer.OpenMenu(HUDMenu.None);
 		}
-		//GUI.Label(rect, "", style);
 
 		x += size;
 		if (x + size > localRect.width)

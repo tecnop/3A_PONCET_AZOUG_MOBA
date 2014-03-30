@@ -31,8 +31,8 @@ public class CharacterMovementScript : MonoBehaviour
 	}
 
 	public void ApplyMove(Vector3 dir)
-	{
-		_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed()/100.0f));
+	{ // TODO: When knockback is implemented, replace the controller with a rigidbody
+		_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f));
 
 		Vector3 actualMove = _myTransform.position - _characterTransform.position;
 
@@ -44,9 +44,32 @@ public class CharacterMovementScript : MonoBehaviour
 		_manager.GetCharacterAnimator().SetFloat("speed", actualMove.magnitude / Time.deltaTime);
 	}
 
-	public void SetAngle(float yaw)
+	public void LookAtPosition(Vector3 pos)
 	{
-		//float save = _characterTransform.eulerAngles.y;
+		Vector3 diff = pos - _characterTransform.position;
+		float yaw;
+
+		if (diff.z == 0)
+		{
+			if (diff.x > 0)
+			{
+				yaw = 90;
+			}
+			else
+			{
+				yaw = -90;
+			}
+		}
+
+		if (diff.z > 0)
+		{
+			yaw = Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
+		}
+		else
+		{
+			yaw = 180 + Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
+		}
+
 		_characterTransform.rotation = Quaternion.Euler(0, yaw, 0);
 	}
 }

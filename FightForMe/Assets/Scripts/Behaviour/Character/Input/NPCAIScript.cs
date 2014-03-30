@@ -171,30 +171,9 @@ public class NPCAIScript : CharacterInputScript
 		return move.normalized;
 	}
 
-	protected override float UpdateIdealOrientation()
+	protected override Vector3 UpdateLookPosition()
 	{
-		Vector3 diff = goalPosition - _characterTransform.position;
-
-		if (diff.z == 0)
-		{
-			if (diff.x > 0)
-			{
-				return 90;
-			}
-			else
-			{
-				return -90;
-			}
-		}
-
-		if (diff.z > 0)
-		{
-			return Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
-		}
-		else
-		{
-			return 180 + Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
-		}
+		return goalPosition;
 	}
 
 	protected override uint UpdateCurrentSpell()

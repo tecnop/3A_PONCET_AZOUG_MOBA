@@ -27,7 +27,7 @@ public class NetworkScript : MonoBehaviour
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{
 			Network.InitializeSecurity();
-			Network.InitializeServer((int)GameData.expectedConnections, 6600, true);
+			Network.InitializeServer((int)GameData.expectedConnections, 6600, Network.HavePublicAddress());
 		}
 		else if (GameData.gameType == GameType.Client)
 		{
@@ -66,7 +66,14 @@ public class NetworkScript : MonoBehaviour
 	void OnFailedToConnect(NetworkConnectionError error)
 	{ // Just keep retrying...
 		GameData.networkError = error;
-		Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
+		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
+		{ // Force NAT off maybe? So far it's the only thing that's been an issue for the server
+			Network.InitializeServer((int)GameData.expectedConnections, 6600, Network.HavePublicAddress());
+		}
+		else if (GameData.gameType == GameType.Client)
+		{
+			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
+		}
 	}
 
 	void OnConnectedToServer()
@@ -74,7 +81,6 @@ public class NetworkScript : MonoBehaviour
 		GameData.networkError = NetworkConnectionError.NoError;
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
-			Debug.Log("Unpausing game");
 			PauseGame(false);
 		}
 	}

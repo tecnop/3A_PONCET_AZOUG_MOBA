@@ -20,7 +20,6 @@ public class HUDWindowGrabber : HUDComponent
 		if (GUI.RepeatButton(localRect, this.GetParent().GetName()))
 		{
 			Vector3 pos = Input.mousePosition;
-			Debug.Log(pos.y);
 			this.GetParent().SetPos(pos.x - w / 2, Screen.height - pos.y - h / 2);
 		}
 

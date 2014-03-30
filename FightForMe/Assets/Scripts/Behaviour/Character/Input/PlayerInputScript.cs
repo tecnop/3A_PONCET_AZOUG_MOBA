@@ -31,7 +31,7 @@ public class PlayerInputScript : CharacterInputScript
 		return new Vector3(Input.GetAxis("HorzMove"), 0, Input.GetAxis("VertMove"));
 	}
 
-	protected override float UpdateIdealOrientation()
+	protected override Vector3 UpdateLookPosition()
 	{
 		Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 		RaycastHit rayInfo;
@@ -39,34 +39,16 @@ public class PlayerInputScript : CharacterInputScript
 
 		if (Physics.Raycast(ray, out rayInfo, 100.0f, (1 << LayerMask.NameToLayer("Terrain"))))
 		{
-			diff = rayInfo.point - _playerTransform.position;
+			//diff = rayInfo.point - _playerTransform.position;
+			return rayInfo.point;
 		}
 		else
 		{ // How do we feel about doing that all the time instead of using a RayCast? Is it as accurate?
 			Vector3 cameraDiff = _camera.WorldToScreenPoint(_cameraScript.GetCameraPos()) - _camera.WorldToScreenPoint(_playerTransform.position);
 
 			diff = new Vector3(Input.mousePosition.x - Screen.width / 2 + cameraDiff.x, 0, Input.mousePosition.y - Screen.height / 2 + cameraDiff.y);
-		}
 
-		if (diff.z == 0)
-		{
-			if (diff.x > 0)
-			{
-				return 90;
-			}
-			else
-			{
-				return -90;
-			}
-		}
-
-		if (diff.z > 0)
-		{
-			return Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
-		}
-		else
-		{
-			return 180 + Mathf.Atan(diff.x / diff.z) * 180 / Mathf.PI;
+			return _playerTransform.position + diff;
 		}
 	}
 
