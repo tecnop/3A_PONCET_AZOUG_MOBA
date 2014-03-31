@@ -43,6 +43,8 @@ public class CharacterStatsScript : MonoBehaviour
 
 	private ArrayList knownSpells;	// List of all known spells (type: uint)
 
+	private uint specialEffects;	// Special effect flags
+
 	private CharacterInventoryScript _inventory;
 	private CharacterCombatScript _combat;
 
@@ -107,6 +109,7 @@ public class CharacterStatsScript : MonoBehaviour
 		this.movementSpeed = 350.0f;
 		this.stats = Stats.Base;		// Do we need that anymore? Why not define it here?
 		this.knownSpells.Clear();
+		this.specialEffects = 0;
 
 		// Get all currently applied effects
 		ArrayList buffList = new ArrayList(_combat.GetBuffs());
@@ -185,7 +188,11 @@ public class CharacterStatsScript : MonoBehaviour
 				this.knownSpells.Add(effect.GetUnlockedAbility());
 			}
 
-			// Check effect.GetMiscEffect() if necessary, although it shouldn't be needed here
+			MiscEffect miscEffect = effect.GetMiscEffect();
+			if (miscEffect != MiscEffect.NONE)
+			{
+				this.specialEffects += (uint)(1 << (int)(miscEffect-1));
+			}
 		}
 
 		// Convert stats into... er... more stats.
@@ -333,4 +340,5 @@ public class CharacterStatsScript : MonoBehaviour
 	public float GetMovementSpeed() { return this.movementSpeed; }
 	public Stats GetStats() { return this.stats; }
 	public ArrayList GetKnownSpells() { return this.knownSpells; }
+	public uint GetSpecialEffects() { return this.specialEffects; }
 }

@@ -13,6 +13,12 @@ public abstract class SpellArea : Spell
 
 	public override void Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null)
 	{
-		this._Execute(inflictor, position, target);
+		//if ((inflictor.GetCharacterTransform().position - position).magnitude < GetRange(inflictor)) // Doesn't seem like the right place to do this! Put that in UseSpell() in CharacterCombatScript instead
+		if (true)
+		{
+			this._Execute(inflictor, position, target);
+		}
 	}
+
+	//public abstract float GetRange(CharacterManager caster);
 }

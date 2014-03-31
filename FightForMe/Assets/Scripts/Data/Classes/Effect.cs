@@ -2,9 +2,10 @@
 using System.Collections;
 
 public enum MiscEffect
-{
-	NONE,
-	HEAVY_WEAPONS
+{ // Special effect are stored as flags, so try to have less than 32 of them
+	NONE,				// None
+	HEAVY_WEAPONS,		// Character may use heavy weapons and armor
+	LOSS_OF_CONTROL		// Character cannot move anymore and is made non-kinematic
 }
 
 public class Effect

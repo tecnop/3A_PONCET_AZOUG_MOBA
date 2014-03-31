@@ -14,31 +14,56 @@ public class CharacterMovementScript : MonoBehaviour
 
 	private Transform _characterTransform;
 
-	private CharacterController _controller;
+	[SerializeField]
+	private Transform _transform; // Transform of our own entity (CharacterPhysics)
 
-	private Transform _myTransform;
+	[SerializeField]
+	private Rigidbody _rigidBody;
 
 	private CharacterStatsScript _stats;
 
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
-		_myTransform = this.transform;
 		_characterTransform = _manager.GetCharacterTransform();
-		_controller = this.GetComponent<CharacterController>();
-
 		_stats = _manager.GetStatsScript();
 	}
 
 	public void ApplyMove(Vector3 dir)
 	{ // TODO: When knockback is implemented, replace the controller with a rigidbody
-		_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f));
+		Vector3 actualMove = Vector3.zero;
+		if (false)
+		{ // New system (I don't like it, also it doesn't work)
+			RaycastHit rayHit;
+			float speed = Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f);
+			if (!_rigidBody.SweepTest(dir.normalized, out rayHit, speed))
+			{
+				actualMove = dir.normalized * speed;
+			}
+		}
+		else
+		{
+			//_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f));
+			//actualMove = _transform.position - _characterTransform.position;
+			// Reset our position now that we found the correct value
+			//_transform.position = _characterTransform.position;
 
-		Vector3 actualMove = _myTransform.position - _characterTransform.position;
+			// This will do for now but walls don't work anymore
+			_rigidBody.MovePosition(_rigidBody.position + dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f));
+			actualMove = _rigidBody.position - _transform.position;
+			_rigidBody.position = _transform.position;
 
-		// Reset our position now that we found the correct value
-		_myTransform.position = _characterTransform.position;
+			//_rigidBody.position = _rigidBody.position + dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f);
+			//_transform.position += dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f);
 
+			//actualMove = _rigidBody.position - _transform.position;
+			// Reset our position now that we found the correct value
+			//_rigidBody.position = _transform.position;
+
+			//_rigidBody.AddRelativeForce(dir.normalized * (_stats.GetMovementSpeed() / 100.0f), ForceMode.Acceleration);
+			//_transform.Translate(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f));
+		}
+		
 		_characterTransform.position += actualMove;
 
 		_manager.GetCharacterAnimator().SetFloat("speed", actualMove.magnitude / Time.deltaTime);
