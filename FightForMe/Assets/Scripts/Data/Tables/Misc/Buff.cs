@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Buff : WikiEntry
 {
-	private ArrayList effects;		// List of effects this buff inflicts (also used for description) (type: uint)
+	private List<uint> effects;		// List of effects this buff inflicts (also used for description) (type: uint)
 
 	public Buff(Metadata metadata,
 		uint[] effects = null)
@@ -11,11 +12,11 @@ public class Buff : WikiEntry
 	{
 		if (effects == null)
 		{ // This shouldn't really happen...
-			this.effects = new ArrayList();
+			this.effects = new List<uint>();
 		}
 		else
 		{
-			this.effects = new ArrayList(effects);
+			this.effects = new List<uint>(effects);
 		}
 
 		// Set our short description to list our effects (note: this is the short description in WikiEntry, the one passed as parameter goes to description2)
@@ -30,7 +31,7 @@ public class Buff : WikiEntry
 		this.EditDesc(description);
 	}
 
-	public ArrayList GetEffects()
+	public List<uint> GetEffects()
 	{
 		return effects;
 	}

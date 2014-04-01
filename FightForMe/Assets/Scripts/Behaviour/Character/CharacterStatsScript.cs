@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  * CharacterStatsScript.cs
@@ -41,7 +42,7 @@ public class CharacterStatsScript : MonoBehaviour
 	// Total stats obtained from items and skills; they affect other stats in various ways
 	private Stats stats;
 
-	private ArrayList knownSpells;	// List of all known spells (type: uint)
+	private List<uint> knownSpells;	// List of all known spells
 
 	private uint specialEffects;	// Special effect flags
 
@@ -54,7 +55,7 @@ public class CharacterStatsScript : MonoBehaviour
 		_inventory = _manager.GetInventoryScript();
 		_combat = _manager.GetCombatScript();
 
-		knownSpells = new ArrayList();
+		knownSpells = new List<uint>();
 
 		this.UpdateStats(true);
 	}
@@ -85,7 +86,7 @@ public class CharacterStatsScript : MonoBehaviour
 		float savedMaxMana = this.maxMana;
 
 		Weapon weapon = _inventory.GetWeapon();
-		ArrayList armorList = _inventory.GetAllArmor();
+		List<Armor> armorList = _inventory.GetAllArmor();
 
 		// Initial values
 		this.maxHealth = this.maxMana = 0.0f;
@@ -112,8 +113,8 @@ public class CharacterStatsScript : MonoBehaviour
 		this.specialEffects = 0;
 
 		// Get all currently applied effects
-		ArrayList buffList = new ArrayList(_combat.GetBuffs());
-		ArrayList effects = new ArrayList();
+		List<InflictedBuff> buffList = new List<InflictedBuff>(_combat.GetBuffs());
+		List<Effect> effects = new List<Effect>();
 		foreach (InflictedBuff buff in buffList)
 		{
 			effects.AddRange(buff.GetEffects());
@@ -147,7 +148,7 @@ public class CharacterStatsScript : MonoBehaviour
 
 		if (_manager.GetCameraScript())
 		{ // THIS IS A TERRIBLE WAY TO CHECK IF WE'RE A PLAYER
-			ArrayList unlockedSkills = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetUnlockedSkills();
+			List<Skill> unlockedSkills = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetUnlockedSkills();
 			foreach (Skill skill in unlockedSkills)
 			{
 				Effect effect = skill.GetEffect();
@@ -339,6 +340,6 @@ public class CharacterStatsScript : MonoBehaviour
 	public float GetProjDamage() { return this.projDamage; }
 	public float GetMovementSpeed() { return this.movementSpeed; }
 	public Stats GetStats() { return this.stats; }
-	public ArrayList GetKnownSpells() { return this.knownSpells; }
+	public List<uint> GetKnownSpells() { return this.knownSpells; }
 	public uint GetSpecialEffects() { return this.specialEffects; }
 }

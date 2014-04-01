@@ -107,6 +107,11 @@ public class CharacterManager : MonoBehaviour
 		_stats.ApplyRegen();
 	}
 
+	/*void LateUpdate()
+	{
+		_movement.ConfirmMove();
+	}*/
+
 	public void MakeLocal() { this.isLocal = true; }
 	public bool IsLocal() { return isLocal; }
 

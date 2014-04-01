@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Monster : WikiEntry
 {
 	private AIType behaviour;	// Defines how the monster should act and react to enemies
-	private ArrayList items;	// Indexes of entries from the weapon table that this monster is carrying
-	private ArrayList buffs;	// Indexes of entries from the buff table that this monster has by default
+	private List<uint> items;	// Indexes of entries from the weapon table that this monster is carrying
+	private List<uint> buffs;	// Indexes of entries from the buff table that this monster has by default
 
 	public Monster(Metadata metadata,
 		AIType behaviour = AIType.defensive,
@@ -16,17 +17,17 @@ public class Monster : WikiEntry
 		this.behaviour = behaviour;
 
 		if (items == null)
-			this.items = new ArrayList();
+			this.items = new List<uint>();
 		else
-			this.items = new ArrayList(items);
+			this.items = new List<uint>(items);
 
 		if (buffs == null)
-			this.buffs = new ArrayList();
+			this.buffs = new List<uint>();
 		else
-			this.buffs = new ArrayList(buffs);
+			this.buffs = new List<uint>(buffs);
 	}
 
 	public AIType GetBehaviour() { return this.behaviour; }
-	public ArrayList GetItems() { return this.items; }
-	public ArrayList GetBuffs() { return this.buffs; }
+	public List<uint> GetItems() { return this.items; }
+	public List<uint> GetBuffs() { return this.buffs; }
 }

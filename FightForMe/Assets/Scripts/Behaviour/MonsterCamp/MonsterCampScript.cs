@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MonsterCampScript : MonoBehaviour
 {
-	private ArrayList _spawners;	// Spawners that are part of this camp (type: MonsterSpawnerScript)
+	private List<MonsterSpawnerScript> _spawners;	// Spawners that are part of this camp (type: MonsterSpawnerScript)
 
 	private uint currentLevel;		// Current level of the camp (goes up each time all the monsters die)
 	private uint stillAlive;		// Monsters still alive
@@ -16,7 +17,7 @@ public class MonsterCampScript : MonoBehaviour
 			return;
 		}
 
-		_spawners = new ArrayList(this.GetComponentsInChildren<MonsterSpawnerScript>());
+		_spawners = new List<MonsterSpawnerScript>(this.GetComponentsInChildren<MonsterSpawnerScript>());
 
 		if (_spawners.Count == 0)
 		{ // No reason to be here...

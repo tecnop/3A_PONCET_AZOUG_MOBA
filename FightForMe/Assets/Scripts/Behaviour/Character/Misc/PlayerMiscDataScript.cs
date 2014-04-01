@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum SpellSlot
 {
@@ -17,8 +18,8 @@ public enum SpellSlot
 
 public class PlayerMiscDataScript : CharacterMiscDataScript
 {
-	private ArrayList unlockedSkills;			// Skills we have learned so far (type: Skill)
-	private ArrayList availableSkills;			// Neighbours of unlocked skills (type: Skill)
+	private List<Skill> unlockedSkills;			// Skills we have learned so far (type: Skill)
+	private List<Skill> availableSkills;			// Neighbours of unlocked skills (type: Skill)
 	private uint skillPoints;					// Skill points left to spend
 	private uint experience;					// Our current progress to a new skill point
 
@@ -28,8 +29,8 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 	{
 		_manager = manager;
 
-		unlockedSkills = new ArrayList();
-		availableSkills = new ArrayList();
+		unlockedSkills = new List<Skill>();
+		availableSkills = new List<Skill>();
 
 		spellSlots = new uint[(int)SpellSlot.NUM_SLOTS];
 		for (int i = 0; i < (int)SpellSlot.NUM_SLOTS; i++)
@@ -63,7 +64,7 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		unlockedSkills.Add(skill);
 		availableSkills.Remove(skill);
 
-		ArrayList newSkills = skill.GetNeighbours();
+		List<Skill> newSkills = skill.GetNeighbours();
 		foreach (Skill newSkill in newSkills)
 		{
 			if (!unlockedSkills.Contains(newSkill))
@@ -87,12 +88,12 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		LearnSkill(DataTables.GetSkill(skillID));
 	}
 
-	public ArrayList GetUnlockedSkills()
+	public List<Skill> GetUnlockedSkills()
 	{
 		return this.unlockedSkills;
 	}
 
-	public ArrayList GetAvailableSkills()
+	public List<Skill> GetAvailableSkills()
 	{
 		return this.availableSkills;
 	}

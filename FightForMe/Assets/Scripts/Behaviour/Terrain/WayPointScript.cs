@@ -9,12 +9,12 @@ public class WayPointScript : MonoBehaviour
 
 	private uint _id;
 	private Vector3 _pos;
-	private uint _flags;	// TODO
+	//private uint _flags;	// TODO
 
 	void Start()
 	{
 		this._pos = this.transform.position;
-		this._flags = 0;
+		//this._flags = 0;
 		this._id = Pathfinding.AddNode(this);
 	}
 

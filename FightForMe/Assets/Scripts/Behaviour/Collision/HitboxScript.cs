@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HitboxScript : MonoBehaviour
 { // TODO: Make a datatable of hitboxes?
-	private ArrayList entities;	// Array of entities we've already hit
+	private List<Collider> entities;	// Array of entities we've already hit
 
 	private float startTime;	// Time at which we spawned
 
@@ -19,7 +20,7 @@ public class HitboxScript : MonoBehaviour
 	void Start()
 	{
 		startTime = Time.time;
-		entities = new ArrayList();
+		entities = new List<Collider>();
 		if (!self)
 		{
 			self = this.gameObject;

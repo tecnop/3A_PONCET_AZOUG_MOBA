@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class InflictedBuff
 {
@@ -33,10 +34,10 @@ public class InflictedBuff
 		return _buff.GetName();
 	}
 
-	public ArrayList GetEffects()
+	public List<Effect> GetEffects()
 	{
-		ArrayList curEffects = _buff.GetEffects();
-		ArrayList res = new ArrayList(curEffects.Count);
+		List<uint> curEffects = _buff.GetEffects();
+		List<Effect> res = new List<Effect>(curEffects.Count);
 		foreach (uint effect in curEffects)
 		{
 			res.Add(DataTables.GetEffect(effect));

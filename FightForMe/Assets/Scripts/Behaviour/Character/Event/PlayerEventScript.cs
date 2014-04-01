@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerEventScript : CharacterEventScript
 {
@@ -27,7 +28,7 @@ public class PlayerEventScript : CharacterEventScript
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
 
 		// DEBUG
-		ArrayList combatLog = _manager.GetCombatScript().GetCombatLog();
+		List<DamageInstance> combatLog = _manager.GetCombatScript().GetCombatLog();
 		foreach (DamageInstance log in combatLog)
 		{
 			Debug.Log(log);

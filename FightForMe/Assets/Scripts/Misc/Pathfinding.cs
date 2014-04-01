@@ -53,9 +53,9 @@ public static class Pathfinding
 		return Vector3.Distance(GetNodePos(startNode), GetNodePos(endNode));
 	}
 
-	private static ArrayList BuildPath(Dictionary<uint, uint> previousNodeMap, uint currentNode)
+	private static List<uint> BuildPath(Dictionary<uint, uint> previousNodeMap, uint currentNode)
 	{
-		ArrayList res = new ArrayList();
+		List<uint> res = new List<uint>();
 
 		if (previousNodeMap.ContainsKey(currentNode))
 		{
@@ -68,7 +68,7 @@ public static class Pathfinding
 		return res;
 	}
 
-	private static uint GetKeyOfMinValue(ArrayList keyList, Dictionary<uint, float> values)
+	private static uint GetKeyOfMinValue(List<uint> keyList, Dictionary<uint, float> values)
 	{
 		bool firstRun = true;
 		float minValue = 0;
@@ -87,10 +87,10 @@ public static class Pathfinding
 		return minKey;
 	}
 
-	private static ArrayList AStar(uint startNode, uint endNode)
+	private static List<uint> AStar(uint startNode, uint endNode)
 	{ // A* goes here
-		ArrayList closedSet = new ArrayList();
-		ArrayList openSet = new ArrayList();
+		List<uint> closedSet = new List<uint>();
+		List<uint> openSet = new List<uint>();
 		Dictionary<uint, uint> previousNodeMap = new Dictionary<uint, uint>();
 
 		openSet.Add(startNode);
@@ -143,17 +143,17 @@ public static class Pathfinding
 		}
 
 		// You failed. Too bad.
-		return new ArrayList();
+		return new List<uint>();
 	}
 
-	public static ArrayList GetPath(Vector3 start, Vector3 end)
+	public static List<uint> GetPath(Vector3 start, Vector3 end)
 	{ // Returns the list of waypoints to follow to get from "start" to "end"
 		uint startNode = GetClosestWayPoint(start);
 		uint endNode = GetClosestWayPoint(end);
 
 		if (startNode >= GetNumNodes() || endNode >= GetNumNodes())
 		{ // ERROR: Origin or destination point has no visible waypoint
-			return new ArrayList();
+			return new List<uint>();
 		}
 
 		return AStar(startNode, endNode);

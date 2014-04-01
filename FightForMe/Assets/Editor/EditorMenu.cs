@@ -9,6 +9,7 @@ public class EditorMenu : Editor
 	{
 		TileGenerator window = new TileGenerator();
 		//TileGenerator window = (TileGenerator)ScriptableObject.CreateInstance("TileGenerator");
+		//window.maxSize = window.minSize;
 		window.Show();
 	}
 }

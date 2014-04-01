@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  * GameMaster.cs
@@ -19,7 +20,7 @@ public class GameMasterScript : MonoBehaviour
 	[SerializeField]
 	private CharacterManager player2;
 
-	private ArrayList monsterCamps;
+	private List<MonsterCampScript> monsterCamps;
 	private float lastSpawnTime;
 
 	void Start()
@@ -53,7 +54,7 @@ public class GameMasterScript : MonoBehaviour
 		}
 
 		GameObject[] camps = GameObject.FindGameObjectsWithTag("MonsterCamp");
-		monsterCamps = new ArrayList();
+		monsterCamps = new List<MonsterCampScript>();
 		foreach (GameObject camp in camps)
 		{
 			monsterCamps.Add(camp.GetComponent<MonsterCampScript>());

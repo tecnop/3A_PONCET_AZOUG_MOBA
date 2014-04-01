@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HUDInventory : HUDComponent
 {
@@ -18,9 +19,9 @@ public class HUDInventory : HUDComponent
 
 		GUI.BeginGroup(frame);
 
-		ArrayList objects = GameData.activePlayer.GetInventoryScript().GetItems();
+		List<Item> items = GameData.activePlayer.GetInventoryScript().GetItems();
 		uint i = 0;
-		foreach (Item item in objects)
+		foreach (Item item in items)
 		{
 			if (GUI.Button(new Rect(0.0f, 40.0f * i, w, 40.0f), item.GetName()))
 			{

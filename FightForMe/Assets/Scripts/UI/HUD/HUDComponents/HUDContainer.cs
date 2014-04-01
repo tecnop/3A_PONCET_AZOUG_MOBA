@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HUDContainer : HUDComponent
 {
-	protected ArrayList children;	// Type: HUDComponent
+	protected List<HUDComponent> children;	// Type: HUDComponent
 	protected bool drawBackground;
 
-	public HUDContainer(string name, Rect frame, ArrayList children = null, bool enabled = true, bool drawBackground = false, HUDContainer parent = null)
+	public HUDContainer(string name, Rect frame, List<HUDComponent> children = null, bool enabled = true, bool drawBackground = false, HUDContainer parent = null)
 		: base(name, frame, enabled, parent)
 	{
 		if (children != null)
 		{
-			this.children = new ArrayList(children);
+			this.children = new List<HUDComponent>(children);
 		}
 		else
 		{
-			this.children = new ArrayList();
+			this.children = new List<HUDComponent>();
 		}
 
 		this.drawBackground = drawBackground;
@@ -56,7 +57,7 @@ public class HUDContainer : HUDComponent
 
 	public void RemoveComponentsNamed(string name)
 	{
-		ArrayList newChildren = new ArrayList(this.children);
+		List<HUDComponent> newChildren = new List<HUDComponent>(this.children);
 		foreach (HUDComponent component in this.children)
 		{
 			if (component.GetName() == name)
@@ -67,14 +68,14 @@ public class HUDContainer : HUDComponent
 		this.children = newChildren;
 	}
 
-	public ArrayList GetChildren()
+	public List<HUDComponent> GetChildren()
 	{
-		return new ArrayList(this.children);
+		return new List<HUDComponent>(this.children);
 	}
 
-	public ArrayList GetChildrenNamed(string name)
+	public List<HUDComponent> GetChildrenNamed(string name)
 	{
-		ArrayList res = new ArrayList();
+		List<HUDComponent> res = new List<HUDComponent>();
 		foreach (HUDComponent component in this.children)
 		{
 			if (component.GetName() == name)

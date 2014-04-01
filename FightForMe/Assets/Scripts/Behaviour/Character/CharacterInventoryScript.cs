@@ -18,9 +18,9 @@ public class CharacterInventoryScript : MonoBehaviour
 
 	private Transform _transform;
 
-	private ArrayList items;					// IDs of the entries in the item table that we are currently carrying (type: uint)
+	private List<uint> items;					// IDs of the entries in the item table that we are currently carrying (type: uint)
 	private Dictionary<uint, uint> setProgress;	// <setID, numItems>
-	private ArrayList completedSets;			// For easier access from other scripts (type: ArmorSet)
+	private List<ArmorSet> completedSets;		// For easier access from other scripts (type: ArmorSet)
 
 	public void Initialize(CharacterManager manager)
 	{
@@ -28,10 +28,10 @@ public class CharacterInventoryScript : MonoBehaviour
 		_transform = manager.GetCharacterTransform();
 
 		setProgress = new Dictionary<uint, uint>();
-		completedSets = new ArrayList();
+		completedSets = new List<ArmorSet>();
 		if (items == null)
 		{
-			items = new ArrayList();
+			items = new List<uint>();
 		}
 		else
 		{ // We need to update our progress on each set then...
@@ -192,9 +192,9 @@ public class CharacterInventoryScript : MonoBehaviour
 		return conflictingItem;
 	}
 
-	public void SetItems(ArrayList items)
+	public void SetItems(List<uint> items)
 	{ // Should only be called when spawning a monster
-		this.items = new ArrayList(items);
+		this.items = new List<uint>(items);
 		if (_manager)
 		{ // We're late!
 			foreach (uint itemID in items)
@@ -246,10 +246,10 @@ public class CharacterInventoryScript : MonoBehaviour
 		return null;
 	}
 
-	public ArrayList GetAllArmor()
+	public List<Armor> GetAllArmor()
 	{ // Return type: Armor
 		int i = 0;
-		ArrayList res = new ArrayList();
+		List<Armor> res = new List<Armor>();
 
 		while (i < this.items.Count)
 		{
@@ -266,10 +266,10 @@ public class CharacterInventoryScript : MonoBehaviour
 		return res;
 	}
 
-	public ArrayList GetItems()
+	public List<Item> GetItems()
 	{ // Return type: Item
 		int i = 0;
-		ArrayList res = new ArrayList(this.items.Count);
+		List<Item> res = new List<Item>(this.items.Count);
 
 		while (i < this.items.Count)
 		{
@@ -286,7 +286,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		return res;
 	}
 
-	public ArrayList GetCompletedSets()
+	public List<ArmorSet> GetCompletedSets()
 	{
 		return this.completedSets;
 	}

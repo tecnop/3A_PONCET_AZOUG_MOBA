@@ -13,7 +13,7 @@ public class HUDSpellBar : HUDContainer
 		float minOffset = 4.0f;	// Minimum space between two icons
 
 		// I don't think this is the right place to do this actually
-		int iconPerLine = Mathf.FloorToInt(w / (size+minOffset));
+		//int iconPerLine = Mathf.FloorToInt(w / (size+minOffset));
 
 		float x = 0;
 		float y = (h - size) / 2;

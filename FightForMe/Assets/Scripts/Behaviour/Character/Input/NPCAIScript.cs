@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum AIType { defensive, aggressive, roaming };
 
@@ -26,7 +27,7 @@ public class NPCAIScript : CharacterInputScript
 	private CharacterManager targetManager;
 	private Transform targetTransform;
 	private Vector3 startPos;
-	private ArrayList currentPath;
+	private List<uint> currentPath;
 	private Vector3 finalPathDest;
 
 	public override void Initialize(CharacterManager manager)
@@ -37,7 +38,7 @@ public class NPCAIScript : CharacterInputScript
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 		_vision = _manager.GetVisionScript();
 		this.startPos = _misc.GetSpawnPos();
-		this.currentPath = new ArrayList();
+		this.currentPath = new List<uint>();
 		_networkView = this.GetComponent<NetworkView>();
 	}
 

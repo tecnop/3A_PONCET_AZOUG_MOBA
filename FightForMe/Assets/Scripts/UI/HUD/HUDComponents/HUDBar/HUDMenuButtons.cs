@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HUDMenuButtons : HUDComponent
 {
@@ -30,7 +31,7 @@ public class HUDMenuButtons : HUDComponent
 		}
 
 
-		ArrayList sets = GameData.activePlayer.GetInventoryScript().GetCompletedSets();
+		List<ArmorSet> sets = GameData.activePlayer.GetInventoryScript().GetCompletedSets();
 		if (sets.Count > 0)
 		{
 			GUIStyle bottom = FFMStyles.Text(TextAnchor.LowerCenter, bottomPadding: 2);

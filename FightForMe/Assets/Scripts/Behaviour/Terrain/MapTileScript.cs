@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MapTileScript : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class MapTileScript : MonoBehaviour
 
 	[SerializeField]
 	private MapTileScript[] neighbours;
+
+	private List<GameObject> objects;
 
 	void Start()
 	{

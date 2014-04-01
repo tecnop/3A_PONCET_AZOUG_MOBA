@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HUDQuickSkills : HUDComponent
 {
@@ -20,9 +21,9 @@ public class HUDQuickSkills : HUDComponent
 
 		GUI.BeginGroup(frame);
 
-		ArrayList objects = new ArrayList(_misc.GetAvailableSkills());
+		List<Skill> skills = new List<Skill>(_misc.GetAvailableSkills());
 		uint i = 0;
-		foreach (Skill skill in objects)
+		foreach (Skill skill in skills)
 		{
 			if (GUI.Button(new Rect(0.0f, 40.0f * i, w, 40.0f), skill.GetName()))
 			{

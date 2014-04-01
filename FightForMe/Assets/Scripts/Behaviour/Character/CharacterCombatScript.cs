@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  * CharacterCombatScript.cs
@@ -20,10 +21,10 @@ public class CharacterCombatScript : MonoBehaviour
 
 	private Transform _transform;
 
-	private ArrayList buffs;		// List of active buffs and debuffs (type: InflictedBuff)
+	private List<InflictedBuff> buffs;		// List of active buffs and debuffs (type: InflictedBuff)
 	// TODO: Add a list of effects built from the list of buffs for quicker access? Would building it be more expensive than accessing each entry individually...?
 
-	private ArrayList combatLog;	// List of previously applied damage instances, cleared upon respawn (type: DamageInstance)
+	private List<DamageInstance> combatLog;	// List of previously applied damage instances, cleared upon respawn (type: DamageInstance)
 
 	public void Initialize(CharacterManager manager)
 	{
@@ -32,12 +33,12 @@ public class CharacterCombatScript : MonoBehaviour
 
 		if (buffs == null)
 		{
-			buffs = new ArrayList();
+			buffs = new List<InflictedBuff>();
 		}
 
 		if (combatLog == null)
 		{
-			combatLog = new ArrayList();
+			combatLog = new List<DamageInstance>();
 		}
 	}
 
@@ -183,12 +184,12 @@ public class CharacterCombatScript : MonoBehaviour
 		}
 	}
 
-	public ArrayList GetBuffs()
+	public List<InflictedBuff> GetBuffs()
 	{
 		return this.buffs;
 	}
 
-	public ArrayList GetCombatLog()
+	public List<DamageInstance> GetCombatLog()
 	{
 		return this.combatLog;
 	}

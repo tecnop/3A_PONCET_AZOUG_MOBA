@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum SkillColor
 {
@@ -17,7 +18,7 @@ public class Skill : WikiEntry
 	private SkillColor color;		// Alignement of the skill between the three main stats
 	private uint effect;			// ID of the entry in the effects table unlocking this skill applies
 	// TODO: Position in the tree
-	private ArrayList neighbours;	// List of skills this skill is connected to (type: uint)
+	private List<uint> neighbours;	// List of skills this skill is connected to (type: uint)
 
 	public Skill(Metadata metadata,
 		SkillColor color = SkillColor.W,
@@ -30,11 +31,11 @@ public class Skill : WikiEntry
 
 		if (neighbours == null)
 		{
-			this.neighbours = new ArrayList();
+			this.neighbours = new List<uint>();
 		}
 		else
 		{
-			this.neighbours = new ArrayList(neighbours);
+			this.neighbours = new List<uint>(neighbours);
 		}
 	}
 
@@ -48,9 +49,9 @@ public class Skill : WikiEntry
 		return DataTables.GetEffect(this.effect);
 	}
 
-	public ArrayList GetNeighbours()
+	public List<Skill> GetNeighbours()
 	{
-		ArrayList res = new ArrayList(this.neighbours.Count);
+		List<Skill> res = new List<Skill>(this.neighbours.Count);
 		foreach (uint neighbour in this.neighbours)
 		{
 			res.Add(DataTables.GetSkill(neighbour));
