@@ -192,7 +192,7 @@ public class CharacterStatsScript : MonoBehaviour
 			MiscEffect miscEffect = effect.GetMiscEffect();
 			if (miscEffect != MiscEffect.NONE)
 			{
-				this.specialEffects += (uint)(1 << (int)(miscEffect-1));
+				this.specialEffects += (uint)(1 << (int)(miscEffect - 1));
 			}
 		}
 
@@ -227,6 +227,8 @@ public class CharacterStatsScript : MonoBehaviour
 
 			this.health *= healthChange;
 			this.mana *= manaChange;
+
+			_manager.GetAnimatorScript().UpdateAttackRate();
 		}
 	}
 

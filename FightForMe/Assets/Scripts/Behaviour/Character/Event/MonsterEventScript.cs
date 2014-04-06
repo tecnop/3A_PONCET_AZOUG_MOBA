@@ -77,10 +77,6 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnCollision(Collider collider)
 	{
-		if (collider.tag == "WayPoint")
-		{
-			WayPointScript wp = collider.GetComponent<WayPointScript>();
-			_ai.OnWayPointCollision(wp.GetID());
-		}
+		
 	}
 }

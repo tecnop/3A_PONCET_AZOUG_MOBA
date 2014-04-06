@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class HitboxScript : MonoBehaviour
-{ // TODO: Make a datatable of hitboxes?
+{
 	private List<Collider> entities;	// Array of entities we've already hit
 
-	private float startTime;	// Time at which we spawned
+	private float timeToLive;	// Time left to live
 
 	private CharacterManager owner;
 
@@ -19,7 +19,7 @@ public class HitboxScript : MonoBehaviour
 
 	void Start()
 	{
-		startTime = Time.time;
+		timeToLive = 0.2f;
 		entities = new List<Collider>();
 		if (!self)
 		{
@@ -61,13 +61,15 @@ public class HitboxScript : MonoBehaviour
 		}
 	}
 
-	void LateUpdate()
+	void Update()
 	{
-		if (Time.time < startTime + 0.2f)
-		{ // No time left
-			return;
+		if (!GameData.gamePaused)
+		{
+			timeToLive -= Time.deltaTime;
+			if (timeToLive <= 0)
+			{ // Time's up
+				Destroy(this.gameObject);
+			}
 		}
-
-		Destroy(this.gameObject);
 	}
 }

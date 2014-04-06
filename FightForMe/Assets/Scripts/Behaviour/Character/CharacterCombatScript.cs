@@ -110,6 +110,11 @@ public class CharacterCombatScript : MonoBehaviour
 			return true;
 		}
 
+		if (!_manager.GetCameraScript())
+		{ // A monster or another client... TEMPORARY :<
+			return true;
+		}
+
 		if (!_manager.GetStatsScript().GetKnownSpells().Contains(spellID))
 		{ // Unknown spell
 			return false;

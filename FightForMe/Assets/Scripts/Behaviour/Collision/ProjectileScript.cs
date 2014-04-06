@@ -20,6 +20,7 @@ public class ProjectileScript : MonoBehaviour
 
 	private bool paused;			// If true, the projectile is frozen
 	private Vector3 velocity;		// If the projectile is frozen, this is its stored velocity
+	private bool hadGravity;		// If the projectile is frozen, this indicates whether it was falling or not
 	private float timeToLive;		// Time left to live (infinite if 0)
 
 	public void SetUp(CharacterManager owner, uint projectileID, uint impactSpellOverride = 0)
@@ -46,7 +47,6 @@ public class ProjectileScript : MonoBehaviour
 		}
 		_graphics.LoadModel(projectile.GetModel());
 
-		// TODO: Use the new fields in Projectile (collision, range, lifeTime, trajectory)
 		float lifeTime = projectile.GetLifeTime();
 
 		if (projectile.GetRange() != 0)
@@ -60,10 +60,36 @@ public class ProjectileScript : MonoBehaviour
 
 		this.timeToLive = lifeTime;
 
-		_rigidBody.velocity = _transform.rotation * Vector3.forward * projectile.GetSpeed();
-		self.layer = owner.GetLayer();
+		if (projectile.GetCollisionType() == ProjectileCollisionType.None)
+		{ // Leave the default layer
+		}
+		else if (projectile.GetCollisionType() == ProjectileCollisionType.World)
+		{
+			self.layer = LayerMask.NameToLayer("WorldProj");
+		}
+		else if (projectile.GetCollisionType() == ProjectileCollisionType.Players)
+		{ // TODO
+		}
+		else if (projectile.GetCollisionType() == ProjectileCollisionType.Everything)
+		{
+			if (LayerMask.LayerToName(owner.GetLayer()) == "Team1Entity")
+			{
+				self.layer = LayerMask.NameToLayer("Team1Proj");
+			}
+			else if (LayerMask.LayerToName(owner.GetLayer()) == "Team2Entity")
+			{
+				self.layer = LayerMask.NameToLayer("Team2Proj");
+			}
+			else if (LayerMask.LayerToName(owner.GetLayer()) == "NeutralEntity")
+			{
+				self.layer = LayerMask.NameToLayer("NeutralProj");
+			}
+		}
 
-		// TODO: Load more stuff from the guy's stats (misc effects and such)
+		_transform.localScale = projectile.GetHitBoxSize();
+
+		// Ready to go!
+		_rigidBody.velocity = _transform.rotation * Vector3.forward * projectile.GetSpeed();
 	}
 
 	public void ThrowAt(Vector3 pos)
@@ -71,7 +97,7 @@ public class ProjectileScript : MonoBehaviour
 		_rigidBody.useGravity = true;
 		float flightDuration = this.timeToLive * 0.95f; // Maybe? I don't think this will be used much anyway
 		if (flightDuration == 0)
-		{ // We have a variable life time
+		{ // We have a variable life time (NOTE: Some manipulation needs to be done here to account for height difference)
 			Vector3 diff = pos - _transform.position;
 			flightDuration = diff.magnitude / _rigidBody.velocity.magnitude; // I don't want to get the projectile's stats again
 		}
@@ -112,6 +138,9 @@ public class ProjectileScript : MonoBehaviour
 			{ // Store our current velocity
 				paused = true;
 				velocity = _rigidBody.velocity;
+				hadGravity = _rigidBody.useGravity;
+				_rigidBody.velocity = Vector3.zero;
+				_rigidBody.useGravity = false;
 			}
 		}
 		else
@@ -119,6 +148,7 @@ public class ProjectileScript : MonoBehaviour
 			if (paused)
 			{ // Restore our velocity
 				_rigidBody.velocity = velocity;
+				_rigidBody.useGravity = hadGravity;
 				paused = false;
 			}
 			else
@@ -130,6 +160,10 @@ public class ProjectileScript : MonoBehaviour
 					{ // Time's up
 						_rigidBody.useGravity = true;
 					}
+				}
+				else
+				{ // If we're out of bounds, kill us
+
 				}
 			}
 		}

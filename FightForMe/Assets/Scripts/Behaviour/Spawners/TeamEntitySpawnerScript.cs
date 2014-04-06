@@ -9,7 +9,7 @@ public enum TeamEntity
 }
 
 public class TeamEntitySpawnerScript : SpawnerScript
-{
+{ // NOTE: Unused for now
 	[SerializeField]
 	private TeamEntity _entityType;			// Which type of team entity we're spawning
 

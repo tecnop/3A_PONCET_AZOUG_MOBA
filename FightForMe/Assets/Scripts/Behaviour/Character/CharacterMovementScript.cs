@@ -35,7 +35,7 @@ public class CharacterMovementScript : MonoBehaviour
 	public void ApplyMove(Vector3 dir)
 	{ // TODO: CLEAN THIS UP
 		Vector3 actualMove = Vector3.zero;
-		
+
 		/*RaycastHit rayHit;
 		float speed = Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f);
 		if (!_rigidBody.SweepTest(dir.normalized, out rayHit, speed))
@@ -64,7 +64,7 @@ public class CharacterMovementScript : MonoBehaviour
 		actualMove = _transform.position - _characterTransform.position;
 		// Reset our position now that we found the correct value
 		_transform.position = _characterTransform.position;
-		
+
 		_characterTransform.position += actualMove;
 
 		_manager.GetCharacterAnimator().SetFloat("speed", actualMove.magnitude / Time.deltaTime);
@@ -73,12 +73,12 @@ public class CharacterMovementScript : MonoBehaviour
 	public void ConfirmMove()
 	{ // Should be called in late update
 		//if (_manager.GetCameraScript())
-			//Debug.Log(_characterTransform.position + " " + _transform.position + " " + _rigidBody.position);
+		//Debug.Log(_transform.position + " " + _transform.position + " " + _rigidBody.position);
 
-		/*Vector3 actualMove = _transform.position - _characterTransform.position;
-		_transform.position = _characterTransform.position;
+		/*Vector3 actualMove = _transform.position - _transform.position;
+		_transform.position = _transform.position;
 
-		_characterTransform.position += actualMove;
+		_transform.position += actualMove;
 
 		//Debug.Log(actualMove);
 

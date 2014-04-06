@@ -67,10 +67,10 @@ public class CharacterManager : MonoBehaviour
 		{
 			_misc.Initialize(this);
 		}
+		_animator.Initialize(this);
 		_stats.Initialize(this);
 		_event.Initialize(this);
 		_vision.Initialize(this);
-		_animator.Initialize(this);
 		_movement.Initialize(this);
 		_input.Initialize(this);
 		_physics.Initialize(this);
@@ -94,8 +94,11 @@ public class CharacterManager : MonoBehaviour
 		_vision.UpdateVision();
 
 		_input.UpdateInput();
-		_movement.ApplyMove(_input.GetDirectionalInput());
-		_movement.LookAtPosition(_input.GetLookPosition());
+		if (_stats.GetHealth() > 0.0f)
+		{
+			_movement.ApplyMove(_input.GetDirectionalInput());
+			_movement.LookAtPosition(_input.GetLookPosition());
+		}
 
 		if (_camera && isLocal)
 		{

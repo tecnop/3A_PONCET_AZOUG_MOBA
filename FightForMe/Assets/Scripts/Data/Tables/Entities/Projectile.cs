@@ -26,7 +26,7 @@ public class Projectile : WikiEntry
 		float damage = 0.0f,
 		float speed = 1.0f,
 		uint impactAbility = 0,
-		Vector3 hitboxSize = new Vector3(),
+		Vector3 hitboxSize = new Vector3(), // Not sure why this even works
 		float range = 0,
 		float lifeTime = 0,
 		ProjectileTrajectory trajectory = ProjectileTrajectory.Straight,
@@ -38,7 +38,14 @@ public class Projectile : WikiEntry
 		this.damage = damage;
 		this.speed = speed;
 		this.impactSpell = impactAbility;
-		this.hitboxSize = hitboxSize;
+		if (hitboxSize == Vector3.zero)
+		{
+			this.hitboxSize = new Vector3(1.0f, 1.0f, 1.0f);
+		}
+		else
+		{
+			this.hitboxSize = hitboxSize;
+		}
 		this.range = range;
 		this.lifeTime = lifeTime;
 		this.trajectory = trajectory;
@@ -51,6 +58,7 @@ public class Projectile : WikiEntry
 	public float GetSpeed() { return this.speed; }
 	public uint GetImpactSpellID() { return this.impactSpell; }
 
+	public Vector3 GetHitBoxSize() { return this.hitboxSize; }
 	public float GetRange() { return this.range; }
 	public float GetLifeTime() { return this.lifeTime; }
 	public ProjectileTrajectory GetTrajectory() { return this.trajectory; }

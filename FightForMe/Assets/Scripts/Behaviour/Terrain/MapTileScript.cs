@@ -4,32 +4,27 @@ using System.Collections.Generic;
 
 public class MapTileScript : MonoBehaviour
 {
-	[SerializeField]
-	private Transform _transform;
-
-	[SerializeField]
-	private MapTileScript[] neighbours;
-
-	private List<GameObject> objects;
+	//[SerializeField]
+	private MapTile tile;
 
 	void Start()
 	{
-
-	}
-
-	public bool CanSee(MapTileScript tile)
-	{
-		Vector3 diff = tile.GetTransform().position - _transform.position;
-		RaycastHit hitInfo;
-		if (Physics.Raycast(_transform.position + new Vector3(0,1,0), diff.normalized, out hitInfo, diff.magnitude, LayerMask.NameToLayer("WorldProj")))
-		{
-			return false;
+		if (tile == null)
+		{ // We shouldn't even be here to begin with...
+			Destroy(this.gameObject);
 		}
-		return true;
 	}
 
-	public Transform GetTransform()
+	public void SetTile(MapTile tile)
 	{
-		return _transform;
+		this.tile = tile;
+	}
+
+	void OnDrawGizmosSelected()
+	{
+		foreach (MapTile other in tile.GetNeighbours())
+		{
+			Gizmos.DrawLine(tile.position, other.position);
+		}
 	}
 }

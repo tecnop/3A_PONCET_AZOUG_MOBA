@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class Pathfinding
-{
+{ // NOTE: Now unused
 	private static Dictionary<uint, WayPointScript> nodeTable = new Dictionary<uint, WayPointScript>();
 
 	public static uint AddNode(WayPointScript script)

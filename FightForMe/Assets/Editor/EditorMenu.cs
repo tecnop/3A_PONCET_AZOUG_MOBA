@@ -7,9 +7,6 @@ public class EditorMenu : Editor
 	[MenuItem("Tile generation/Generate...")]
 	public static void OpenTileGenerator()
 	{
-		TileGenerator window = new TileGenerator();
-		//TileGenerator window = (TileGenerator)ScriptableObject.CreateInstance("TileGenerator");
-		//window.maxSize = window.minSize;
-		window.Show();
+		TileGenerator.Open();
 	}
 }

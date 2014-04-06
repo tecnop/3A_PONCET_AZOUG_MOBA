@@ -32,10 +32,10 @@ public abstract class CharacterInputScript : MonoBehaviour
 			Vector3 newLookPos = UpdateLookPosition();
 			uint newSpell = UpdateCurrentSpell();
 
-			ReadGenericInput(); // This one handles events by itself... store it in a struct maybe?
+			ReadGenericInput();
 
 			if (_manager.GetStatsScript().GetHealth() <= 0)
-			{ // We used to still execute some stuff but I don't think we have to anymore?
+			{ // We used to still execute some stuff but I don't think we have to anymore? In fact do we even need to update anything else than generic input?
 				return;
 			}
 

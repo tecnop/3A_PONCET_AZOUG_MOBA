@@ -16,7 +16,7 @@ public class PlayerEventScript : CharacterEventScript
 
 	public override void OnReceiveBuff(CharacterManager inflictor, uint buffID)
 	{
-		
+
 	}
 
 	public override void OnDeath(CharacterManager killer)
@@ -35,12 +35,13 @@ public class PlayerEventScript : CharacterEventScript
 		}
 
 		_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
-		
+
 	}
 
 	public override void OnSpotEntity(GameObject entity)
 	{
-
+		Debug.Log(_manager.name + " spotted " + entity.name);
+		Debug.DrawLine(_manager.GetCharacterTransform().position, entity.transform.position, Color.white, 3.0f);
 	}
 
 	public override void OnCollision(Collider collider)

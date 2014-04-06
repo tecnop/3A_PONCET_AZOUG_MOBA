@@ -16,10 +16,9 @@ public class NPCAIScript : CharacterInputScript
 	[SerializeField] // Serialized for debugging
 	private AIType behaviour;
 
-	private Transform _characterTransform;
+	private Transform _transform;
 
 	private MonsterMiscDataScript _misc;
-	private CharacterVisionScript _vision;
 
 	// AI-Helping variables
 	private bool goalReached;
@@ -27,19 +26,19 @@ public class NPCAIScript : CharacterInputScript
 	private CharacterManager targetManager;
 	private Transform targetTransform;
 	private Vector3 startPos;
-	private List<uint> currentPath;
-	private Vector3 finalPathDest;
+	//private List<uint> currentPath;
+	private Queue<Vector3> currentPath;
+	private Vector3 finalGoalPos;
 
 	public override void Initialize(CharacterManager manager)
 	{
-		//base.Initialize(manager);
 		_manager = manager;
-		_characterTransform = _manager.GetCharacterTransform();
+		_transform = _manager.GetCharacterTransform();
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
-		_vision = _manager.GetVisionScript();
 		this.startPos = _misc.GetSpawnPos();
-		this.currentPath = new List<uint>();
+		this.currentPath = new Queue<Vector3>();
 		_networkView = this.GetComponent<NetworkView>();
+		this.goalPosition = _transform.position;
 	}
 
 	public bool IsSearchingEnemy()
@@ -87,67 +86,20 @@ public class NPCAIScript : CharacterInputScript
 
 	public void SetGoal(Vector3 pos)
 	{
+		if (Vector3.Distance(pos, this.finalGoalPos) < 1.0f)// && this.currentPath.Count > 1)
+		{ // He hasn't moved much and we're already on our way (note: this is making straight movement a bit laggy right now)
+			return;
+		}
+
 		goalReached = false;
 
-		if (_vision.IsPosVisible(pos))
+		this.finalGoalPos = pos;
+		NavMeshPath path = new NavMeshPath();
+
+		if (NavMesh.CalculatePath(_transform.position, pos, (1 << NavMesh.GetNavMeshLayerFromName("Default")), path))
 		{
-			goalPosition = pos;
-			this.currentPath.Clear();
-		}
-		else
-		{
-			if (this.currentPath.Count > 0 && Vector3.Distance(finalPathDest, pos) < 1.0f)
-			{ // Let's avoid unnecessary calls for now... we only recalculate the path if the new goal is somewhat far away from the previous one
-				return;
-			}
-
-			this.currentPath = Pathfinding.GetPath(_characterTransform.position, pos);
-			this.finalPathDest = pos;
-
-			if (this.currentPath.Count > 1)
-			{
-				int i = 1;
-				int lastId = 0;
-				while (i < this.currentPath.Count)
-				{
-					if (_vision.IsPosVisible(Pathfinding.GetNodePos((uint)this.currentPath[i])))
-					{
-						lastId = i;
-					}
-					i++;
-				}
-
-				if (lastId != 0)
-				{
-					//Debug.Log("Taking a shortcut; removing " + lastId + " nodes from my path");
-					this.currentPath.RemoveRange(0, lastId);
-				}
-			}
-
-			if (this.currentPath.Count > 0)
-			{
-				goalPosition = Pathfinding.GetNodePos((uint)this.currentPath[0]);
-			}
-		}
-	}
-
-	public void OnWayPointCollision(uint wpIndex)
-	{
-		if (this.currentPath.Count > 0)
-		{
-			int i = 0;
-			while (i < this.currentPath.Count)
-			{
-				if ((uint)this.currentPath[i] == wpIndex)
-				{
-					this.currentPath.RemoveRange(0, i + 1);
-					if (this.currentPath.Count > 0)
-					{
-						goalPosition = Pathfinding.GetNodePos((uint)this.currentPath[0]);
-					}
-				}
-				i++;
-			}
+			this.currentPath = new Queue<Vector3>(path.corners);
+			this.goalPosition = this.currentPath.Dequeue();
 		}
 	}
 
@@ -160,21 +112,47 @@ public class NPCAIScript : CharacterInputScript
 			return Vector3.zero;
 		}
 
-		Vector3 move = this.goalPosition - _characterTransform.position;
+		Vector3 move = this.goalPosition - _transform.position;
 		move.y = 0;
 
-		if (move.magnitude < approachRange && this.currentPath.Count == 0)
+		if (move.magnitude < approachRange && this.HasAnEnemy() && this.currentPath.Count == 0)
 		{ // If our current goal is our actual target, stay at some distance
 			goalReached = true;
 			return Vector3.zero;
 		}
 
+		if (move.magnitude < 0.25f)
+		{
+			if (this.currentPath.Count > 0)
+			{
+				this.goalPosition = this.currentPath.Dequeue();
+			}
+			else
+			{
+				this.goalPosition = _transform.position;
+				this.goalReached = true;
+				return Vector3.zero;
+			}
+		}
+
 		return move.normalized;
 	}
 
+	private static Vector3 DiffNoY(Vector3 a, Vector3 b)
+	{
+		return new Vector3(a.x - b.x, 0, a.z - b.z);
+	}	
+
 	protected override Vector3 UpdateLookPosition()
 	{
-		return goalPosition;
+		if (DiffNoY(_transform.position, goalPosition).magnitude < 0.1f)
+		{ // Don't panick alright, just look forward
+			return _transform.position + 5.0f * _transform.forward;
+		}
+		else
+		{
+			return goalPosition;
+		}
 	}
 
 	protected override uint UpdateCurrentSpell()
@@ -184,7 +162,7 @@ public class NPCAIScript : CharacterInputScript
 			return 0;
 		}
 
-		if (target && goalReached && Vector3.Distance(_characterTransform.position, targetTransform.position) <= approachRange * 1.1f)
+		if (target && goalReached && Vector3.Distance(_transform.position, targetTransform.position) <= approachRange * 1.1f)
 		{ // Simple attack rule
 			return 1;
 		}
@@ -193,7 +171,7 @@ public class NPCAIScript : CharacterInputScript
 	}
 
 	protected override void ReadGenericInput()
-	{ // Should we do anything here?
+	{ // Should we do anything here? How about using this to run the AI instead?
 
 	}
 

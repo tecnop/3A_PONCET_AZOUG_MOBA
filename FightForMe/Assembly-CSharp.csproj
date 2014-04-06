@@ -82,6 +82,7 @@
      <Compile Include="Assets\Scripts\Data\Classes\Effect.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\GameModel.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\InflictedBuff.cs" />
+     <Compile Include="Assets\Scripts\Data\Classes\MapTile.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\Metadata.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\Stats.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\WikiEntry.cs" />
@@ -112,6 +113,8 @@
      <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
      <Compile Include="Assets\Scripts\GameData\InstantiateManagerScript.cs" />
      <Compile Include="Assets\Scripts\GameData\NetworkScript.cs" />
+     <Compile Include="Assets\Scripts\GameData\TileBuilderScript.cs" />
+     <Compile Include="Assets\Scripts\GameData\TileManager.cs" />
      <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
      <Compile Include="Assets\Scripts\UI\FFMStyles.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponent.cs" />

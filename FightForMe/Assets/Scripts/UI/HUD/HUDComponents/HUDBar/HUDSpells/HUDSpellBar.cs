@@ -6,7 +6,7 @@ public class HUDSpellBar : HUDContainer
 	public HUDSpellBar(Rect frame, HUDContainer parent)
 		: base("HUD_spell_bar", frame, parent:parent)
 	{
-		float w = frame.width;
+		//float w = frame.width;
 		float h = frame.height;
 
 		float size = 64.0f;		// Size of an icon
