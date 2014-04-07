@@ -71,12 +71,14 @@
      <Compile Include="Assets\Scripts\Behaviour\MonsterCamp\MonsterCampScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerCameraScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerHUDScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Spawners\HasnorSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\LordSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\MonsterSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\PlayerSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\SpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\TeamEntitySpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Terrain\MapTileScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Terrain\TrophyDepositAreaScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Terrain\WayPointScript.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\DamageInstance.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\Effect.cs" />

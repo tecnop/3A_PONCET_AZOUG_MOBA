@@ -80,7 +80,7 @@ public static class DataTables
 		spellTable.Add(1, new SpellUseWeapon());
 		spellTable.Add(2, new SpellMeleeHit());
 		spellTable.Add(3, new SpellProjHit());
-		// ============= HARD-CODED REFERENCES =============
+		// ================================================
 		spellTable.Add(4, new SpellFireball());
 		spellTable.Add(5, new SpellFireExplosion());
 		spellTable.Add(6, new SpellBurn());
@@ -104,8 +104,11 @@ public static class DataTables
 		effectTable.Add(13, new Effect(description: "Boule de Feu", isPositive: true, unlockedAbility: 4));
 		// ============= HARD-CODED REFERENCE =============
 		effectTable.Add(14, new Effect(description: "Attaque", isPositive: true, unlockedAbility: 1));
-		// ============= HARD-CODED REFERENCE =============
+		// ================================================
 		effectTable.Add(15, new Effect(description: "Grenade", isPositive: true, unlockedAbility: 7));
+		// ============= HARD-CODED REFERENCE =============
+		effectTable.Add(16, new Effect(description: "Relique", isPositive: true, misc: MiscEffect.CARRYING_TROPHY));
+		// ================================================
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -114,10 +117,12 @@ public static class DataTables
 
 		buffTable.Add(3, new Buff(metadata: new Metadata(name: "Brûlure"), effects: new uint[] { 12 }));
 
+		buffTable.Add(4, new Buff(metadata: new Metadata(name: "Relique"), effects: new uint[] { 16 }));
+
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
 		skillTable.Add(1, new Skill(metadata: new Metadata(name: "Première compétence"), effect: 14, neighbours: new uint[] { 2, 3, 4, 8 }));
-		// ============= HARD-CODED REFERENCE =============
+		// ================================================
 
 		skillTable.Add(2, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
 		skillTable.Add(3, new Skill(metadata: new Metadata(name: "Bonus de puissance"), color: SkillColor.G, effect: 4, neighbours: new uint[] { 1, 6 }));
@@ -138,7 +143,7 @@ public static class DataTables
 		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 5));
 		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
-		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory:ProjectileTrajectory.Throw, lifeTime: 0.0f));
+		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw, lifeTime: 0.0f));
 
 		// Weapon types
 		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epee courte")));
@@ -171,7 +176,7 @@ public static class DataTables
 
 		// ============= HARD-CODED REFERENCE =============
 		monsterTable.Add(1, new Monster(metadata: new Metadata(name: "Lord"), behaviour: AIType.defensive, items: new uint[] { 4, 5, 6, 7, 8 }));
-		// ============= HARD-CODED REFERENCE =============
+		// ================================================
 
 		monsterTable.Add(2, new Monster(metadata: new Metadata(name: "Zombie", modelPath: "Cylinder"), behaviour: AIType.defensive, items: new uint[] { 9 }));
 		monsterTable.Add(3, new Monster(metadata: new Metadata(name: "Ratus"), behaviour: AIType.defensive, items: new uint[] { 13 }));
@@ -181,6 +186,10 @@ public static class DataTables
 		// Debug Monsters
 		monsterTable.Add(6, new Monster(metadata: new Metadata(name: "Debug1"), behaviour: AIType.defensive, items: new uint[] { 2, 10 }));
 		monsterTable.Add(7, new Monster(metadata: new Metadata(name: "Debug2"), behaviour: AIType.defensive, items: new uint[] { 11, 12 }));
+
+		// ============= HARD-CODED REFERENCE =============
+		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 5.0f, quality:Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
+		// ================================================
 	}
 
 	public static int startParsing(string pathConfig){

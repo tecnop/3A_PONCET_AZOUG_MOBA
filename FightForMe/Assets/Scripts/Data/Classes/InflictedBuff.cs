@@ -18,7 +18,14 @@ public class InflictedBuff
 		CharacterManager inflictor)
 	{
 		this.buffID = buffID;
-		this.endTime = Time.time + duration;
+		if (duration > 0)
+		{
+			this.endTime = Time.time + duration;
+		}
+		else
+		{
+			this.endTime = float.MaxValue;
+		}
 		this.inflictor = inflictor;
 
 		this._buff = DataTables.GetBuff(this.buffID);
