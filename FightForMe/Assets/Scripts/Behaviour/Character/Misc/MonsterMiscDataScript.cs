@@ -3,7 +3,9 @@ using System.Collections;
 
 public class MonsterMiscDataScript : CharacterMiscDataScript
 {
-	uint pendingSetup = 0;
+	private uint monsterID;
+
+	private uint pendingSetup = 0;
 
 	public override void Initialize(CharacterManager manager)
 	{
@@ -12,6 +14,11 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 		{
 			SetUpFromMonster(pendingSetup);
 		}
+	}
+
+	public uint GetMonsterID()
+	{
+		return this.monsterID;
 	}
 
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
@@ -51,6 +58,8 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 	private void DoSetUp(int monsterID)
 	{
 		Monster monster = DataTables.GetMonster((uint)monsterID);
+
+		this.monsterID = (uint)monsterID;
 
 		if (monster == null)
 		{ // Hmmm...

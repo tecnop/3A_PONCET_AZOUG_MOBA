@@ -18,7 +18,7 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnPain(CharacterManager inflictor, float damage)
 	{
-		_manager.GetCharacterAnimator ().SetBool ("onPain", true);
+		_manager.GetCharacterAnimator().SetBool("onPain", true);
 
 		if (!_ai.HasAnEnemy() &&
 			inflictor.tag == "Player" &&
@@ -53,6 +53,11 @@ public class MonsterEventScript : CharacterEventScript
 
 		_inventory.DropAllItems();
 
+		if (_misc.GetMonsterID() == 8)
+		{ // Special dude died, give the trophy to the killer
+			_manager.GetCombatScript().InflictBuff(killer, 16, 0);
+		}
+
 		// No death animation for monsters yet
 		if (GameData.isOnline)
 		{
@@ -77,6 +82,6 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnCollision(Collider collider)
 	{
-		
+
 	}
 }

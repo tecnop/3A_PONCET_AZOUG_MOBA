@@ -255,6 +255,17 @@ public class CharacterStatsScript : MonoBehaviour
 		this.mana = Mathf.Clamp(this.mana + this.manaRegen * Time.deltaTime, 0.0f, this.maxMana);
 	}
 
+	public void Restore()
+	{
+		if (health <= 0)
+		{ // Pshh
+			return;
+		}
+
+		health = maxHealth;
+		mana = maxMana;
+	}
+
 	public void Revive()
 	{
 		if (health > 0)
@@ -343,5 +354,6 @@ public class CharacterStatsScript : MonoBehaviour
 	public float GetMovementSpeed() { return this.movementSpeed; }
 	public Stats GetStats() { return this.stats; }
 	public List<uint> GetKnownSpells() { return this.knownSpells; }
-	public uint GetSpecialEffects() { return this.specialEffects; }
+	//public uint GetSpecialEffects() { return this.specialEffects; }
+	public bool HasSpecialEffect(MiscEffect effect) { return (this.specialEffects & (1 << (int)effect)) != 0; }
 }

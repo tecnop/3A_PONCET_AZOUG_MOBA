@@ -16,7 +16,10 @@ public class PlayerEventScript : CharacterEventScript
 
 	public override void OnReceiveBuff(CharacterManager inflictor, uint buffID)
 	{
-
+		if (buffID == 4)
+		{ // Just got the trophy, recover our health and mana (and cooldowns if we decide to implement them)
+			_manager.GetStatsScript().Restore();
+		}
 	}
 
 	public override void OnDeath(CharacterManager killer)
@@ -32,6 +35,11 @@ public class PlayerEventScript : CharacterEventScript
 		foreach (DamageInstance log in combatLog)
 		{
 			Debug.Log(log);
+		}
+
+		if (_manager.GetStatsScript().HasSpecialEffect(MiscEffect.CARRYING_TROPHY))
+		{ // TODO: Respawn the monster
+
 		}
 
 		_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
