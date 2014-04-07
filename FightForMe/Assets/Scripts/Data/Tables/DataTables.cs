@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public static class DataTables
 { // NOTE: All table IDs start at 1, 0 is used as a null value
+	// Config
+	static string pathConfig = "../Configs/main.cfg";
 
 	// Entities
 	static Dictionary<uint, Monster> monsterTable = new Dictionary<uint, Monster>();
@@ -60,7 +63,7 @@ public static class DataTables
 	public static void updateTables()
 	{
 		clearTables();
-
+		startParsing (pathConfig);
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
 		// 1 - Resources
 		// 2 - Spells
@@ -178,6 +181,157 @@ public static class DataTables
 		// Debug Monsters
 		monsterTable.Add(6, new Monster(metadata: new Metadata(name: "Debug1"), behaviour: AIType.defensive, items: new uint[] { 2, 10 }));
 		monsterTable.Add(7, new Monster(metadata: new Metadata(name: "Debug2"), behaviour: AIType.defensive, items: new uint[] { 11, 12 }));
+	}
+
+	public static int startParsing(string pathConfig){
+		StreamReader config = File.OpenText (pathConfig);
+		//Debug.Log ("File > " + config.ReadToEnd());
+
+		Dictionary<string, string> fields = new Dictionary<string, string>();;
+
+		bool clazzFound = false,
+			skipingMode = false;
+
+		string key = "",
+				value = "",
+				clazz = "";
+
+		int curr = 0,
+			start = 0;
+		Debug.Log("Start parsing ...");
+		while (curr != -1) {
+			curr = config.Read ();
+			if (curr == '#'&& (	config.Peek() != -1 || config.Peek() != '\\')){
+				skipingMode = !skipingMode;
+				continue;
+			}else
+			if (skipingMode){
+				continue;
+			}
+
+			if (curr == '\t' || curr == '\n' || curr == '\r' || curr == ' '){
+				continue;
+			}
+
+			if (curr == '"'){
+				value = parseValue(config);
+				if(null == value) return 0;
+
+				if(key != null){
+					fields.Add(key,value);
+					key = "";
+					value = "";
+				}else{
+					Debug.Log ("Missing key for value : "+value);
+					return 0;
+				}
+				continue;
+			}
+
+			if (curr == ':'){
+				if(!clazzFound){
+					clazz = key;
+					if(clazz  == null){
+						Debug.Log ("Missing clazz");
+						return 0;
+					}
+					key = "";
+				}
+				continue;
+			}
+
+			if (curr == '{'){
+				if(!clazzFound){
+					clazzFound = true;
+					//continue;
+				} else {
+					value = parseMap(config);
+					if(key != null){
+						fields.Add(key,value);
+						key = "";
+						value = "";
+					}else{
+						Debug.Log ("Missing key for value : "+value);
+						return 0;
+					}
+				}
+				continue;
+			}
+
+			if(curr == '}'){
+				if(clazzFound){
+					instance (clazz, fields);
+					clazz = "";
+					clazzFound = false;
+					key = "";
+					value = "";
+					fields.Clear();
+				} else {
+					Debug.Log ("Missing clazz and starting '}'");
+					return 0;
+				}
+				continue;
+			}
+
+
+			key+=(char)curr;
+		}
+		Debug.Log("End of parsing ...");
+		config.Close();
+		return 1;
+
+	}
+
+	private static string parseValue(StreamReader file){
+		int curr = file.Read();
+		string value = "";
+		while (curr != '"') {
+			if(curr == -1){
+				Debug.Log ("Error in parsing, missing '\"' ending");
+				return null;
+			}
+			value+=(char)curr;
+			curr = file.Read();
+		}
+		return value;
+	}
+
+	private static string parseMap(StreamReader file){
+		int curr = file.Read(),
+			toEnd = 1;
+		string value = "";
+		while(toEnd > 0){
+
+			if(curr == -1){
+				Debug.Log ("Error in sub Map parsing, missing '}' ending");
+				return null;
+			}
+			if(curr == '{'){
+				toEnd++;
+			}
+
+			if(curr == '}'){
+				toEnd--;
+			}
+			if(toEnd > 0) // tricky tricky
+				value += (char)curr;
+
+			curr = file.Read();
+		}
+		return value;
+	}
+
+	private static void instance(string clazz, Dictionary<string, string> fields){
+		Debug.Log ("Clazz : '" + clazz + "'");
+		foreach (KeyValuePair<string, string> k in fields) {
+			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
+		}
+		/*
+		if (clazz == "monster") {
+		
+		}
+		*/
+
 	}
 
 	public static Item GetItem(uint key)
