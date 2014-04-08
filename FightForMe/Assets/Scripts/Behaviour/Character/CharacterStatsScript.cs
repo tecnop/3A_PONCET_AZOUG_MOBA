@@ -44,7 +44,7 @@ public class CharacterStatsScript : MonoBehaviour
 
 	private List<uint> knownSpells;	// List of all known spells
 
-	private uint specialEffects;	// Special effect flags
+	private int specialEffects;	// Special effect flags
 
 	private CharacterInventoryScript _inventory;
 	private CharacterCombatScript _combat;
@@ -192,7 +192,7 @@ public class CharacterStatsScript : MonoBehaviour
 			MiscEffect miscEffect = effect.GetMiscEffect();
 			if (miscEffect != MiscEffect.NONE)
 			{
-				this.specialEffects += (uint)(1 << (int)(miscEffect - 1));
+				this.specialEffects += (1 << ((int)miscEffect - 1));
 			}
 		}
 
@@ -354,6 +354,6 @@ public class CharacterStatsScript : MonoBehaviour
 	public float GetMovementSpeed() { return this.movementSpeed; }
 	public Stats GetStats() { return this.stats; }
 	public List<uint> GetKnownSpells() { return this.knownSpells; }
-	//public uint GetSpecialEffects() { return this.specialEffects; }
-	public bool HasSpecialEffect(MiscEffect effect) { return (this.specialEffects & (1 << (int)effect)) != 0; }
+	//public int GetSpecialEffects() { return this.specialEffects; }
+	public bool HasSpecialEffect(MiscEffect effect) { return (this.specialEffects & (1 << ((int)effect - 1))) != 0; }
 }

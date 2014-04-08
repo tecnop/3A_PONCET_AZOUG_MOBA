@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class SpellProj: Spell
+public abstract class SpellProj : Spell
 {
-	protected SpellProj(Metadata metadata, SpellCostType costType)
+	protected SpellProj(Metadata metadata, SpellCostType costType = SpellCostType.NONE)
 		: base(metadata, SpellType.PROJECTILE, costType)
 	{
 

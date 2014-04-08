@@ -22,4 +22,9 @@ public class SpellProjHit : SpellTarget
 	{
 		return 0;
 	}
+
+	public override bool CastingCondition(CharacterManager caster)
+	{
+		return true;
+	}
 }

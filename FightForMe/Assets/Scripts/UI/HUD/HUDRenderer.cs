@@ -13,9 +13,10 @@ public enum HUDMenu
 public enum HUDState
 {
 	Default,
-	Won,	// FOR NOW: Player 1 won
-	Lost,	// FOR NOW: Player 2 won
+	Won,		// FOR NOW: Player 1 won
+	Lost,		// FOR NOW: Player 2 won
 	Leaving,	// Asking for confirmation to leave
+	Wiki		// Showing the wiki
 }
 
 public static class HUDRenderer
@@ -58,9 +59,12 @@ public static class HUDRenderer
 			GUI.Label(new Rect(0, 0, w, h), "Ping: " + Network.GetLastPing(Network.connections[0]), topRight);
 		}
 
-		// NOTE: This system and layout is temporary!
-
-		if ((_state == HUDState.Default || _state == HUDState.Leaving) && !GameData.gamePaused)
+		// NOTE: This system and layout is temporary! (maybe, I don't even know anymore)
+		if (_state == HUDState.Wiki)
+		{
+			WikiManager.DrawWiki();
+		}
+		else if ((_state == HUDState.Default || _state == HUDState.Leaving) && !GameData.gamePaused)
 		{
 			DrawExitButton();
 

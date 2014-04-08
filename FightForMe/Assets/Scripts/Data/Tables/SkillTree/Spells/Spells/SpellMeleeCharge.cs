@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpellKnockback : SpellTarget
+public class SpellMeleeCharge : SpellTarget
 {
-	public SpellKnockback()
-		: base(new Metadata("Expulsion", "Repousse la cible sur une certaine distance"))
+	public SpellMeleeCharge()
+		: base(new Metadata("Attaque chargée", "Prépare le prochain coup pour infliger des dégâts supplémentaires"), SpellCostType.MANA)
 	{
 
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{ // So how do we do this?
-		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
+	{
+		inflictor.GetCombatScript().InflictBuff(target, 6, 15.0f);
 	}
 
 	public override float GetCost(CharacterManager caster)
@@ -20,7 +20,7 @@ public class SpellKnockback : SpellTarget
 	}
 
 	public override bool CastingCondition(CharacterManager caster)
-	{
+	{ // TODO: Melee only? Also must not be active
 		return true;
 	}
 }

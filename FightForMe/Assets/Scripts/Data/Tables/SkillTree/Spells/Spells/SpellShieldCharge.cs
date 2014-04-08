@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpellKnockback : SpellTarget
+public class SpellShieldCharge : SpellTarget
 {
-	public SpellKnockback()
-		: base(new Metadata("Expulsion", "Repousse la cible sur une certaine distance"))
+	public SpellShieldCharge()
+		: base(new Metadata("Charge au bouclier", "Propulse l'utilisateur vers l'avant, infligeant des dégâts et repoussant tout ennemi sur son passage"), SpellCostType.MANA)
 	{
 
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{ // So how do we do this?
+	{
 		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
 	}
 
@@ -20,7 +20,7 @@ public class SpellKnockback : SpellTarget
 	}
 
 	public override bool CastingCondition(CharacterManager caster)
-	{
+	{ // TODO: Shield
 		return true;
 	}
 }

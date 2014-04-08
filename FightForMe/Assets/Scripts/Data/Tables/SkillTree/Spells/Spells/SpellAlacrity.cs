@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpellKnockback : SpellTarget
+public class SpellAlacrity : SpellTarget
 {
-	public SpellKnockback()
-		: base(new Metadata("Expulsion", "Repousse la cible sur une certaine distance"))
+	public SpellAlacrity()
+		: base(new Metadata("Alacrité", "Augmente la vitesse d'attaque et de déplacement temporairement"))
 	{
 
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{ // So how do we do this?
-		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
+	{
+		inflictor.GetCombatScript().InflictBuff(target, 5, 10.0f);
 	}
 
 	public override float GetCost(CharacterManager caster)

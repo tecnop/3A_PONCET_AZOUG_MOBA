@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpellKnockback : SpellTarget
+public class SpellLightningStrike : SpellArea
 {
-	public SpellKnockback()
-		: base(new Metadata("Expulsion", "Repousse la cible sur une certaine distance"))
+	public SpellLightningStrike()
+		: base(new Metadata("Eclair", "Frappe la zone ciblée avec un puissant éclair"), SpellCostType.MANA)
 	{
 
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{ // So how do we do this?
-		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
+	{
+		inflictor.GetCombatScript().CreateAoE(position, Quaternion.identity, 8.0f, 0); // electrical discharge goes here
 	}
 
 	public override float GetCost(CharacterManager caster)

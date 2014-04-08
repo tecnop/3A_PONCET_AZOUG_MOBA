@@ -102,14 +102,23 @@
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellArea.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellProj.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Abstract\SpellTarget.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellAlacrity.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellBurn.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellElectricalDischarge.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellExplosion.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellFireExplosion.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellFireball.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellGrenade.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellGroundSlam.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellKnockback.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellLightningStrike.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellMeleeCharge.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellMeleeHit.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellMultiShot.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellProjHit.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellRage.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellRegeneration.cs" />
+     <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellShieldCharge.cs" />
      <Compile Include="Assets\Scripts\Data\Tables\SkillTree\Spells\Spells\SpellUseWeapon.cs" />
      <Compile Include="Assets\Scripts\GameData\GameData.cs" />
      <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
@@ -138,7 +147,7 @@
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDWindowGrabber.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDRenderer.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
-     <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiScript.cs" />
+     <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

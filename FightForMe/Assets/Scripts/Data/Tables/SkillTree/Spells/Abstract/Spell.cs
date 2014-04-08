@@ -28,12 +28,11 @@ public abstract class Spell : WikiEntry
 	SpellCostType costType;
 
 	// TODO:
-	// - Health cost, mana cost, pct health cost, pct mana cost
 	// - Flags for AIs
 	// - Animations
 	// - Casting speed, casting type
 
-	protected Spell(Metadata metadata, SpellType spellType, SpellCostType costType)
+	protected Spell(Metadata metadata, SpellType spellType, SpellCostType costType = SpellCostType.NONE)
 		: base(metadata)
 	{
 		this.spellType = spellType;
@@ -43,6 +42,8 @@ public abstract class Spell : WikiEntry
 	public abstract void Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null);
 
 	public abstract float GetCost(CharacterManager caster);
+
+	public abstract bool CastingCondition(CharacterManager caster);
 
 	public SpellType GetSpellType() { return this.spellType; }
 	public SpellCostType GetCostType() { return this.costType; }

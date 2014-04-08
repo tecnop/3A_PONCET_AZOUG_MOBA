@@ -55,7 +55,7 @@ public class MonsterEventScript : CharacterEventScript
 
 		if (_misc.GetMonsterID() == 8)
 		{ // Special dude died, give the trophy to the killer
-			_manager.GetCombatScript().InflictBuff(killer, 16, 0);
+			_manager.GetCombatScript().InflictBuff(killer, 4, 0);
 		}
 
 		// No death animation for monsters yet
@@ -75,7 +75,7 @@ public class MonsterEventScript : CharacterEventScript
 			entity.tag == "Player" &&
 			entity.gameObject.layer != _manager.gameObject.layer)
 		{
-			Debug.Log("Monster acquired an enemy: " + entity.name);
+			Debug.Log(_manager.name + " acquired an enemy: " + entity.name);
 			_ai.SetTarget(entity);
 		}
 	}

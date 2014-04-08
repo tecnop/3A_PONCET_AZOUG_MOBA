@@ -4,7 +4,7 @@ using System.Collections;
 public class SpellExplosion : SpellArea
 {
 	public SpellExplosion()
-		: base(new Metadata("Explosion", "Expulse tous les ennemis vers l'exterieur de la zone"), SpellCostType.NONE)
+		: base(new Metadata("Explosion", "Expulse tous les ennemis vers l'exterieur de la zone"))
 	{
 
 	}
@@ -17,5 +17,10 @@ public class SpellExplosion : SpellArea
 	public override float GetCost(CharacterManager caster)
 	{
 		return 0;
+	}
+
+	public override bool CastingCondition(CharacterManager caster)
+	{
+		return true;
 	}
 }

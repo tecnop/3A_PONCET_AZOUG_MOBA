@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpellKnockback : SpellTarget
+public class SpellRegeneration : SpellTarget
 {
-	public SpellKnockback()
-		: base(new Metadata("Expulsion", "Repousse la cible sur une certaine distance"))
+	public SpellRegeneration()
+		: base(new Metadata("Regénération", "La cible récupère sa vie progressivement mais subit des dégâts plus élevés"), SpellCostType.MANA)
 	{
 
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{ // So how do we do this?
+	{ // TODO: Toggle
 		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
 	}
 

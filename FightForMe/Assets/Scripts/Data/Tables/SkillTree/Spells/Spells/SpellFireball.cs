@@ -21,4 +21,9 @@ public class SpellFireball : SpellProj
 	{
 		return 50;
 	}
+
+	public override bool CastingCondition(CharacterManager caster)
+	{
+		return true;
+	}
 }

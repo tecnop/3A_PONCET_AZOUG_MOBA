@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class SpellTarget : Spell
 {
-	protected SpellTarget(Metadata metadata, SpellCostType costType)
+	protected SpellTarget(Metadata metadata, SpellCostType costType = SpellCostType.NONE)
 		: base(metadata, SpellType.TARGET, costType)
 	{
 

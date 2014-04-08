@@ -6,7 +6,7 @@ public class SpellFireExplosion: SpellArea
 	//private Spell burn;
 
 	public SpellFireExplosion()
-		: base(new Metadata("Explosion de feu", "Inflige des dégâts aux ennemis dans la zone et les brûle"), SpellCostType.NONE)
+		: base(new Metadata("Explosion de feu", "Inflige des dégâts aux ennemis dans la zone et les brûle"))
 	{
 		//this.burn = DataTables.GetSpell(6);
 	}
@@ -19,5 +19,10 @@ public class SpellFireExplosion: SpellArea
 	public override float GetCost(CharacterManager caster)
 	{
 		return 0;
+	}
+
+	public override bool CastingCondition(CharacterManager caster)
+	{
+		return true;
 	}
 }

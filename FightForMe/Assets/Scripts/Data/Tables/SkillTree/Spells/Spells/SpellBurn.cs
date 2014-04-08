@@ -4,7 +4,7 @@ using System.Collections;
 public class SpellBurn : SpellTarget
 {
 	public SpellBurn()
-		: base(new Metadata("Brûlure", "Inflige des dégâts sur la durée à la cible"), SpellCostType.NONE)
+		: base(new Metadata("Brûlure", "Inflige des dégâts sur la durée à la cible"))
 	{
 
 	}
@@ -17,5 +17,10 @@ public class SpellBurn : SpellTarget
 	public override float GetCost(CharacterManager caster)
 	{
 		return 0;
+	}
+
+	public override bool CastingCondition(CharacterManager caster)
+	{
+		return true;
 	}
 }

@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpellKnockback : SpellTarget
+public class SpellElectricalDischarge : SpellTarget
 {
-	public SpellKnockback()
-		: base(new Metadata("Expulsion", "Repousse la cible sur une certaine distance"))
+	public SpellElectricalDischarge()
+		: base(new Metadata("Décharge électrique", "Inflige des dégâts et paralyse temporairement cible"))
 	{
 
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{ // So how do we do this?
+	{
+		inflictor.GetCombatScript().Damage(target, 75.0f);
 		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
 	}
 
