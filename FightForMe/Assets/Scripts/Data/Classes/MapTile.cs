@@ -28,7 +28,11 @@ public class MapTile
 		Vector3 diff = tile.position - this.position;
 		RaycastHit hitInfo;
 		if (Physics.Raycast(this.position + new Vector3(0, 1, 0), diff.normalized, out hitInfo, diff.magnitude, (1 << LayerMask.NameToLayer("Terrain"))))
-		{ // TODO: If the hit point is inside the tile, we're still valid
+		{ // Something is blocking the line of sight
+			if (TileManager.GetTileForPos(hitInfo.point) == tile)
+			{ // The hit point is inside the tile, we're good
+				return true;
+			}
 			return false;
 		}
 		return true;

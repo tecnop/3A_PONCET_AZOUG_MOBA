@@ -43,7 +43,7 @@ public class TileGenerator : EditorWindow
 
 		Transform temp2;
 
-		temp2 = (Transform)EditorGUILayout.ObjectField("Terrain entity", this.terrain, typeof(Transform), true);
+		temp2 = (Transform)EditorGUILayout.ObjectField("Ground entity", this.terrain, typeof(Transform), true);
 
 		if (temp2 != null && PrefabUtility.GetPrefabType(temp2) != PrefabType.Prefab)
 		{
@@ -115,7 +115,7 @@ public class TileGenerator : EditorWindow
 		TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
 
 		this.tileCount = 0;
-		
+
 		this.debugMatrix = new MapTileScript[sizeX][];
 
 		for (int i = 0; i < sizeX; i++)
