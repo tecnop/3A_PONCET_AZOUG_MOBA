@@ -24,7 +24,7 @@ public class MapTile
 	}
 
 	public bool CanSee(MapTile tile)
-	{
+	{ // TODO: Use capsule casts instead?
 		Vector3 diff = tile.position - this.position;
 		RaycastHit hitInfo;
 		if (Physics.Raycast(this.position + new Vector3(0, 1, 0), diff.normalized, out hitInfo, diff.magnitude, (1 << LayerMask.NameToLayer("Terrain"))))

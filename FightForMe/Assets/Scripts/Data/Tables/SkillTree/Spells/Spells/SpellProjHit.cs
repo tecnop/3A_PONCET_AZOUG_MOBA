@@ -3,24 +3,17 @@ using System.Collections;
 
 public class SpellProjHit : SpellTarget
 {
-	public SpellProjHit()
-		: base(new Metadata("Impact de projectile", "Inflige les dégâts du projectile de l'arme à distance équipée"), SpellCostType.NONE)
-	{
+	private float multiplier;
 
+	public SpellProjHit(float multiplier = 1.0f)
+		: base(new Metadata("Impact de projectile", "Inflige les dégâts du projectile de l'arme à distance équipée"))
+	{
+		this.multiplier = multiplier;
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
-		if (target != null)
-		{
-			target.GetCombatScript().ApplySpell(inflictor, this);
-			inflictor.GetCombatScript().Damage(target, inflictor.GetStatsScript().GetProjDamage());
-		}
-	}
-
-	public override float GetCost(CharacterManager caster)
-	{
-		return 0;
+		inflictor.GetCombatScript().Damage(target, inflictor.GetStatsScript().GetProjDamage() * multiplier);
 	}
 
 	public override bool CastingCondition(CharacterManager caster)

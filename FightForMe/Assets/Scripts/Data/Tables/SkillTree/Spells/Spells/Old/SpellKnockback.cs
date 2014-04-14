@@ -10,13 +10,9 @@ public class SpellKnockback : SpellTarget
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{ // So how do we do this?
-		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
-	}
-
-	public override float GetCost(CharacterManager caster)
 	{
-		return 0;
+		Vector3 dir = new Vector3(target.GetCharacterTransform().position.x - position.x, 0, target.GetCharacterTransform().position.z - position.z);
+		inflictor.GetCombatScript().Knockback(target, dir, 10.0f, 0.75f);
 	}
 
 	public override bool CastingCondition(CharacterManager caster)

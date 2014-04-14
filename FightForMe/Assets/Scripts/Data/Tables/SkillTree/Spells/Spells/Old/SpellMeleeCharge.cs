@@ -4,7 +4,7 @@ using System.Collections;
 public class SpellMeleeCharge : SpellTarget
 {
 	public SpellMeleeCharge()
-		: base(new Metadata("Attaque chargée", "Prépare le prochain coup pour infliger des dégâts supplémentaires"), SpellCostType.MANA)
+		: base(new Metadata("Attaque chargée", "Prépare le prochain coup pour infliger des dégâts supplémentaires"), SpellCostType.MANA, 0.0f)
 	{
 
 	}
@@ -12,11 +12,6 @@ public class SpellMeleeCharge : SpellTarget
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
 		inflictor.GetCombatScript().InflictBuff(target, 6, 15.0f);
-	}
-
-	public override float GetCost(CharacterManager caster)
-	{
-		return 0;
 	}
 
 	public override bool CastingCondition(CharacterManager caster)

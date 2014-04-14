@@ -18,6 +18,6 @@ public class DamageInstance
 	public override string ToString()
 	{
 		string inflictorName = (this.inflictor != null) ? this.inflictor.name : "<world>";
-		return inflictorName + " hit  " + this.target.name + " using " + this.spell.GetName();
+		return inflictorName + " hit " + this.target.name + " using " + this.spell.GetName();
 	}
 }

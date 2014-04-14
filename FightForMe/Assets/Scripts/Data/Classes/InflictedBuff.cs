@@ -7,6 +7,8 @@ public class InflictedBuff
 	private uint buffID;					// ID of the entry in the Buff table that this buff was created from
 	private float endTime;					// Time at which this buff will run out
 
+	// TODO: Switch to a timeLeft system to allow for periodic effects and better pause handling
+
 	// TODO: Intensity? Other %-based stats?
 
 	private CharacterManager inflictor;		// Character responsible for this buff
@@ -60,5 +62,10 @@ public class InflictedBuff
 	public CharacterManager GetInflictor()
 	{
 		return this.inflictor;
+	}
+
+	public uint GetBuffID()
+	{
+		return buffID;
 	}
 }

@@ -40,6 +40,17 @@ public class MonsterEventScript : CharacterEventScript
 		}
 	}
 
+	public override void OnKnockback(CharacterManager inflictor)
+	{
+		if (!_ai.HasAnEnemy() &&
+			inflictor.tag == "Player" &&
+			inflictor.gameObject.layer != _manager.gameObject.layer)
+		{
+			Debug.Log(_manager.name + " acquired an enemy: " + inflictor.name);
+			_ai.SetTarget(inflictor.gameObject);
+		}
+	}
+
 	public override void OnDeath(CharacterManager killer)
 	{
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
@@ -78,6 +89,11 @@ public class MonsterEventScript : CharacterEventScript
 			Debug.Log(_manager.name + " acquired an enemy: " + entity.name);
 			_ai.SetTarget(entity);
 		}
+	}
+
+	public override void OnLoseSightOfEntity(GameObject entity)
+	{ // TODO: If it was our enemy, use pathfinding to his last seen pos
+
 	}
 
 	public override void OnCollision(Collider collider)

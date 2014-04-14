@@ -60,7 +60,7 @@ public class CharacterStatsScript : MonoBehaviour
 		this.UpdateStats(true);
 	}
 
-	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+	/*void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
 	{ // Do we want this? I sure as hell don't
 		//if (stream.isWriting)
 		if (GameData.isServer)
@@ -73,7 +73,7 @@ public class CharacterStatsScript : MonoBehaviour
 			stream.Serialize(ref this.health);
 			stream.Serialize(ref this.mana);
 		}
-	}
+	}*/
 
 	public void UpdateStats(bool firstTime = false)
 	{

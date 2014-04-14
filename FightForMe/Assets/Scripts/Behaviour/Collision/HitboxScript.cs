@@ -19,15 +19,15 @@ public class HitboxScript : MonoBehaviour
 
 	void Start()
 	{
-		timeToLive = 0.2f;
 		entities = new List<Collider>();
 		if (!self)
 		{
 			self = this.gameObject;
+			this.timeToLive = 0.2f;
 		}
 	}
 
-	public void SetUp(CharacterManager inflictor, float radius, int layer, uint collisionSpellID)
+	public void SetUp(CharacterManager inflictor, float radius, int layer, uint collisionSpellID, float timeToLive, bool makeParent)
 	{
 		if (!self)
 		{
@@ -37,6 +37,11 @@ public class HitboxScript : MonoBehaviour
 		self.layer = layer;
 		this.owner = inflictor;
 		_transform.localScale *= radius;
+		this.timeToLive = timeToLive;
+		if (makeParent)
+		{
+			_transform.parent = inflictor.transform;
+		}
 
 		this.collisionSpell = DataTables.GetSpell(collisionSpellID);
 	}

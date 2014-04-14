@@ -3,14 +3,14 @@ using System.Collections;
 
 public class SpellUseWeapon : SpellTarget
 {
-	//private Spell meleeHit;
-	//private Spell projHit;
+	private uint meleeHit;
+	private uint rangedHit;
 
-	public SpellUseWeapon()
-		: base(new Metadata("Attaque", "Utilise l'arme équipée"), SpellCostType.NONE)
+	public SpellUseWeapon(uint meleeHit = 2, uint rangedHit = 3)
+		: base(new Metadata("Attaque", "Utilise l'arme équipée"))
 	{
-		//this.meleeHit = DataTables.GetSpell(2);
-		//this.projHit = DataTables.GetSpell(3);
+		this.meleeHit = meleeHit;
+		this.rangedHit = rangedHit;
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
@@ -18,26 +18,21 @@ public class SpellUseWeapon : SpellTarget
 		Weapon myWeapon = inflictor.GetInventoryScript().GetWeapon();
 		if (myWeapon == null)
 		{ // Using our fists
-			inflictor.GetCombatScript().CreateAoE(2.0f, 2); // meleeHit
+			inflictor.GetCombatScript().CreateAoE(2.0f, this.meleeHit);
 			return;
 		}
 
 		WeaponType type = myWeapon.GetWeaponType();
 		if (type == null || !type.IsRanged())
 		{
-			inflictor.GetCombatScript().CreateAoE(2.0f, 2); // meleeHit
+			inflictor.GetCombatScript().CreateAoE(2.0f, this.meleeHit);
 		}
 
 		uint proj = myWeapon.GetProjectileID();
 		if (proj != 0)
 		{
-			inflictor.GetCombatScript().CreateProjectile(proj, 3); // projHit
+			inflictor.GetCombatScript().CreateProjectile(proj, this.rangedHit);
 		}
-	}
-
-	public override float GetCost(CharacterManager caster)
-	{
-		return 0;
 	}
 
 	public override bool CastingCondition(CharacterManager caster)

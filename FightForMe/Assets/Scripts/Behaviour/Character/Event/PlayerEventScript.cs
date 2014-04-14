@@ -22,6 +22,11 @@ public class PlayerEventScript : CharacterEventScript
 		}
 	}
 
+	public override void OnKnockback(CharacterManager inflictor)
+	{
+
+	}
+
 	public override void OnDeath(CharacterManager killer)
 	{
 		// Reseting states
@@ -38,8 +43,12 @@ public class PlayerEventScript : CharacterEventScript
 		}
 
 		if (_manager.GetStatsScript().HasSpecialEffect(MiscEffect.CARRYING_TROPHY))
-		{ // TODO: Respawn the monster
-
+		{ // Respawn the monster
+			HasnorSpawnerScript spawner = FindObjectOfType<HasnorSpawnerScript>();
+			if (spawner)
+			{
+				spawner.TryRespawn();
+			}
 		}
 
 		_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
@@ -50,6 +59,11 @@ public class PlayerEventScript : CharacterEventScript
 	{
 		Debug.Log(_manager.name + " spotted " + entity.name);
 		Debug.DrawLine(_manager.GetCharacterTransform().position, entity.transform.position, Color.white, 3.0f);
+	}
+
+	public override void OnLoseSightOfEntity(GameObject entity)
+	{
+
 	}
 
 	public override void OnCollision(Collider collider)

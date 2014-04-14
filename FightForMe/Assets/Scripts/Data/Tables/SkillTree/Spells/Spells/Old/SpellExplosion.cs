@@ -14,11 +14,6 @@ public class SpellExplosion : SpellArea
 		inflictor.GetCombatScript().CreateAoE(position, Quaternion.identity, 8.0f, 9);
 	}
 
-	public override float GetCost(CharacterManager caster)
-	{
-		return 0;
-	}
-
 	public override bool CastingCondition(CharacterManager caster)
 	{
 		return true;

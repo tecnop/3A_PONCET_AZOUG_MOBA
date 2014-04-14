@@ -5,8 +5,8 @@ public enum MiscEffect
 { // Special effect are stored as flags, so try to have less than 32 of them
 	NONE,				// None
 	HEAVY_WEAPONS,		// Character may use heavy weapons and armor
-	LOSS_OF_CONTROL,	// Character cannot move anymore and is made non-kinematic
-	CARRYING_TROPHY	// Character is carrying the trophy
+	LOSS_OF_CONTROL,	// Character cannot move anymore and is made non-kinematic (also implies a movement override)
+	CARRYING_TROPHY		// Character is carrying the trophy
 }
 
 public class Effect

@@ -25,6 +25,12 @@ public class CharacterMovementScript : MonoBehaviour
 
 	private CharacterStatsScript _stats;
 
+	private Vector3 overrideDir;
+	private float overrideSpeed;
+	private float overrideDuration;
+	private float overrideTimeLeft;
+	private bool overrideFade;
+
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
@@ -35,7 +41,21 @@ public class CharacterMovementScript : MonoBehaviour
 	public void ApplyMove(Vector3 dir)
 	{ // TODO: CLEAN THIS UP
 		Vector3 actualMove = Vector3.zero;
+		Vector3 actualDir = dir;
+		float actualSpeed = _stats.GetMovementSpeed() / 100.0f;
 
+		if (overrideTimeLeft > 0)
+		{ // This system is temporarily being used by knockbacks because rigidbodies are crap, otherwise it should be used for dashes, taunts, etc
+			actualSpeed = overrideSpeed;
+			if (overrideFade)
+			{
+				actualSpeed *= (overrideTimeLeft / overrideDuration);
+			}
+			actualDir = overrideDir;
+			overrideTimeLeft -= Time.deltaTime;
+		}
+
+		#region wip
 		/*RaycastHit rayHit;
 		float speed = Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f);
 		if (!_rigidBody.SweepTest(dir.normalized, out rayHit, speed))
@@ -58,9 +78,10 @@ public class CharacterMovementScript : MonoBehaviour
 
 		//_rigidBody.AddRelativeForce(dir.normalized * (_stats.GetMovementSpeed() / 100.0f), ForceMode.Acceleration);
 		//_transform.Translate(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f));
+		#endregion
 
 		// Back to the old system for now...
-		_controller.Move(dir.normalized * Time.deltaTime * (_stats.GetMovementSpeed() / 100.0f));
+		_controller.Move(actualDir.normalized * actualSpeed * Time.deltaTime);
 		actualMove = _transform.position - _characterTransform.position;
 		// Reset our position now that we found the correct value
 		_transform.position = _characterTransform.position;
@@ -112,5 +133,19 @@ public class CharacterMovementScript : MonoBehaviour
 		}
 
 		_characterTransform.rotation = Quaternion.Euler(0, yaw, 0);
+	}
+
+	public void SetMovementOverride(Vector3 dir, float speed, float duration, bool fade)
+	{
+		this.overrideDir = dir;
+		this.overrideSpeed = speed;
+		this.overrideDuration = duration;
+		this.overrideTimeLeft = duration;
+		this.overrideFade = fade;
+	}
+
+	public bool IsMovementOverriden()
+	{
+		return (this.overrideTimeLeft > 0);
 	}
 }

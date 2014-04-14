@@ -25,7 +25,11 @@ public class CharacterVisionScript : MonoBehaviour
 		_manager = manager;
 		_transform = _manager.GetCharacterTransform();
 
-		UpdateVision(true);
+		this.curTile = null;
+
+		this.lastUpdate = 0.0f;
+
+		//UpdateVision(true);
 	}
 
 	public bool CanSee(Vector3 pos)
@@ -45,9 +49,29 @@ public class CharacterVisionScript : MonoBehaviour
 		return CanSee(character.GetCharacterTransform());
 	}
 
-	public void UpdateVision(bool firstTime = false)
+	public void AddSeenEntity(GameObject entity)
 	{
-		if (!firstTime && Time.time - lastUpdate < 0.2)
+		if (!this.entitiesInSight.Contains(entity))
+		{
+			this.entitiesInSight.Add(entity);
+			_manager.GetEventScript().OnSpotEntity(entity);
+		}
+	}
+
+	public void RemoveSeenEntity(GameObject entity)
+	{
+		if (this.entitiesInSight.Contains(entity))
+		{
+			this.entitiesInSight.Remove(entity);
+			_manager.GetEventScript().OnLoseSightOfEntity(entity);
+		}
+	}
+
+	public void UpdateVision()
+	{
+		bool firstTime = (this.lastUpdate == 0.0f);
+
+		if (!firstTime && Time.time - lastUpdate < 0.2f)
 		{ // Vision updates at most 5 times per second
 			return;
 		}
@@ -61,20 +85,20 @@ public class CharacterVisionScript : MonoBehaviour
 			Debug.LogError("ERROR: " + _manager.name + " is not on a tile!");
 			return;
 		}
-		if (newTile == curTile)
-		{ // We haven't moved from the previous tile
-			return;
-		}
 
 		if (curTile != null)
 		{
+			if (newTile == curTile)
+			{ // We haven't moved from the previous tile
+				return;
+			}
 			curTile.RemoveEntity(_manager.gameObject);
 		}
 		newTile.AddEntity(_manager.gameObject);
 
 		this.curTile = newTile;
 		this.tilesInSight = newTile.GetNeighbours();
-		
+
 		// TODO: Only check the new tiles? Would that be more costly?
 		List<GameObject> newEntities = this.curTile.ObjectsInside();
 
@@ -83,35 +107,77 @@ public class CharacterVisionScript : MonoBehaviour
 			newEntities.AddRange(tile.ObjectsInside());
 		}
 
-		if (!firstTime)
+		//if (!firstTime)
 		{
 			bool doCheck = (this.entitiesInSight != null && this.entitiesInSight.Count > 0);
 
 			foreach (GameObject obj in newEntities)
 			{
-				bool found = false;
+				if (obj != _manager.gameObject)
+				{
+					bool found = false;
 
-				if (doCheck)
-				{ // Get rid of the ones we already knew about
-					foreach (GameObject obj2 in this.entitiesInSight)
-					{
-						if (obj == obj2)
+					if (doCheck)
+					{ // Get rid of the ones we already knew about
+						foreach (GameObject obj2 in this.entitiesInSight)
 						{
-							found = true;
-							break;
+							if (obj == obj2)
+							{
+								found = true;
+								break;
+							}
 						}
 					}
-				}
 
-				if (!found)
-				{ // TODO: Tell that entity to spot us too so they don't have to run a full update
-					_manager.GetEventScript().OnSpotEntity(obj);
+					if (!found)
+					{
+						_manager.GetEventScript().OnSpotEntity(obj);
+						//Debug.Log(_manager.name + " spotted " + obj.name);
+						CharacterManager hisManager = obj.GetComponent<CharacterManager>();
+						if (hisManager != null)
+						{ // Force him to see us so he doesn't have to run a full update
+							//Debug.Log(hisManager.name + " spotted " + _manager.name + " back");
+							hisManager.GetVisionScript().AddSeenEntity(_manager.gameObject);
+						}
+					}
 				}
 			}
 		}
 
-		// TODO: Handle entities we lost sight of?
+		if (this.entitiesInSight != null)
+		{
+			List<GameObject> lostEntities = new List<GameObject>(this.entitiesInSight);
+
+			foreach (GameObject obj in this.entitiesInSight)
+			{
+				if (newEntities.Contains(obj))
+				{
+					lostEntities.Remove(obj);
+				}
+			}
+
+			foreach (GameObject obj in lostEntities)
+			{
+				CharacterManager hisManager = obj.GetComponent<CharacterManager>();
+				if (hisManager != null)
+				{ // Force him to lose us so he doesn't have to run a full update
+					hisManager.GetVisionScript().RemoveSeenEntity(_manager.gameObject);
+				}
+			}
+		}
 
 		this.entitiesInSight = newEntities;
+	}
+
+	public List<GameObject> GetEntitiesInSight()
+	{
+		if (this.entitiesInSight != null)
+		{
+			return new List<GameObject>(this.entitiesInSight);
+		}
+		else
+		{
+			return new List<GameObject>();
+		}
 	}
 }

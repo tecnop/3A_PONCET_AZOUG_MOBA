@@ -65,7 +65,11 @@ public class PlayerInputScript : CharacterInputScript
 
 			if (Input.GetAxis(axisName) > 0)
 			{
-				return ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i);
+				uint spell = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i);
+				if (_manager.GetCombatScript().CanUseSpell(spell))
+				{
+					return spell;
+				}
 			}
 		}
 

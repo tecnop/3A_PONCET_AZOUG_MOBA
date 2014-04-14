@@ -3,8 +3,8 @@ using System.Collections;
 
 public abstract class SpellArea : Spell
 {
-	protected SpellArea(Metadata metadata, SpellCostType costType = SpellCostType.NONE)
-		: base(metadata, SpellType.AREA, costType)
+	protected SpellArea(Metadata metadata, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
+		: base(metadata, SpellType.AREA, costType, spellCost)
 	{
 
 	}

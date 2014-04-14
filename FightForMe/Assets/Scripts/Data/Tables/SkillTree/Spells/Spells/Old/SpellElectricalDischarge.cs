@@ -15,11 +15,6 @@ public class SpellElectricalDischarge : SpellTarget
 		//inflictor.GetCombatScript().InflictBuff(target, 3, 5.0f);
 	}
 
-	public override float GetCost(CharacterManager caster)
-	{
-		return 0;
-	}
-
 	public override bool CastingCondition(CharacterManager caster)
 	{
 		return true;

@@ -47,17 +47,17 @@ public class CharacterCombatScript : MonoBehaviour
 		target.GetStatsScript().LoseHealth(_manager, damage);
 	}
 
-	public HitboxScript CreateAoE(Vector3 position, Quaternion angle, float radius, uint collisionSpellID)
+	public HitboxScript CreateAoE(Vector3 position, Quaternion angle, float radius, uint collisionSpellID, float duration = 0.2f, bool makeParent = false)
 	{
 		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
 		HitboxScript sphereScript = sphere.GetComponent<HitboxScript>();
-		sphereScript.SetUp(_manager, radius, _manager.GetLayer(), collisionSpellID);
+		sphereScript.SetUp(_manager, radius, _manager.GetLayer(), collisionSpellID, duration, makeParent);
 		return sphereScript;
 	}
 
 	public HitboxScript CreateAoE(float radius, uint collisionSpellID)
 	{
-		return CreateAoE(_transform.position, _transform.rotation, radius, collisionSpellID);
+		return CreateAoE(_transform.position, _transform.rotation, radius, collisionSpellID, makeParent:true);
 	}
 
 	public ProjectileScript CreateProjectile(uint projectileID, Vector3 position, Quaternion angle, uint impactSpellOverride = 0)
@@ -73,7 +73,21 @@ public class CharacterCombatScript : MonoBehaviour
 		return CreateProjectile(projectileID, _transform.position, _transform.rotation, impactSpellOverride);
 	}
 
-	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration)
+	public void RemoveBuff(uint buffID)
+	{
+		int i = 0;
+		while (i < this.buffs.Count)
+		{
+			if (this.buffs[i].GetBuffID() == buffID)
+			{
+				this.buffs.RemoveAt(i);
+				return;
+			}
+			i++;
+		}
+	}
+
+	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration = -1.0f)
 	{
 		if (DataTables.GetBuff(buffID) == null)
 		{ // DEBUG
@@ -85,7 +99,7 @@ public class CharacterCombatScript : MonoBehaviour
 		_manager.GetEventScript().OnReceiveBuff(inflictor, buffID);
 	}
 
-	public void InflictBuff(CharacterManager target, uint buffID, float duration)
+	public void InflictBuff(CharacterManager target, uint buffID, float duration = -1.0f)
 	{
 		target.GetCombatScript().ReceiveBuff(_manager, buffID, duration);
 	}
@@ -94,6 +108,13 @@ public class CharacterCombatScript : MonoBehaviour
 	{
 		DamageInstance appliedSpell = new DamageInstance(inflictor, _manager, spell);
 		this.combatLog.Add(appliedSpell);
+	}
+
+	public void Knockback(CharacterManager target, Vector3 dir, float speed, float duration)
+	{ // Total distance travelled = dir.normalized * speed * duration <= Take fading into account now
+		//InflictBuff(target, TODO, duration);
+		target.GetMovementScript().SetMovementOverride(dir, speed, duration, true);
+		target.GetEventScript().OnKnockback(_manager);
 	}
 
 	public bool CanUseSpell(uint spellID)
@@ -154,7 +175,7 @@ public class CharacterCombatScript : MonoBehaviour
 			_manager.GetStatsScript().LoseMana(spell.GetCost(_manager));
 		}
 		else if (spell.GetCostType() == SpellCostType.HEALTH)
-		{ // Don't really want to use that function actually, change it maybe?
+		{ // TODO: We don't want to emit a pain event here
 			_manager.GetStatsScript().LoseHealth(_manager, spell.GetCost(_manager));
 		}
 	}
@@ -176,7 +197,7 @@ public class CharacterCombatScript : MonoBehaviour
 			}
 
 			if (buff.GetTimeLeft() <= 0.0f)
-			{
+			{ // TODO: OnBuffExpires event
 				buffs.RemoveAt(i);
 				i--;
 				updated = true;
@@ -192,6 +213,18 @@ public class CharacterCombatScript : MonoBehaviour
 	public List<InflictedBuff> GetBuffs()
 	{
 		return this.buffs;
+	}
+
+	public bool HasBuff(uint buffID)
+	{
+		foreach (InflictedBuff buff in this.buffs)
+		{
+			if (buff.GetBuffID() == buffID)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public List<DamageInstance> GetCombatLog()

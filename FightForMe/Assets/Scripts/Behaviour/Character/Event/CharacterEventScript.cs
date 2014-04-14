@@ -5,7 +5,6 @@ using System.Collections;
  * CharacterEventScript.cs
  * 
  * Receives various events from other scripts and executes character type-specific code
- * TODO: Need more of those now
  * 
  */
 
@@ -17,7 +16,9 @@ public abstract class CharacterEventScript : MonoBehaviour
 
 	public abstract void OnPain(CharacterManager inflictor, float damage);
 	public abstract void OnReceiveBuff(CharacterManager inflictor, uint buffID);
+	public abstract void OnKnockback(CharacterManager inflictor);
 	public abstract void OnDeath(CharacterManager killer);
 	public abstract void OnSpotEntity(GameObject entity);
+	public abstract void OnLoseSightOfEntity(GameObject entity);
 	public abstract void OnCollision(Collider collider);
 }

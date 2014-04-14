@@ -6,27 +6,19 @@ public enum AIType { defensive, aggressive, roaming };
 
 public class NPCAIScript : CharacterInputScript
 {
-	[SerializeField] // Serialized for debugging
-	private Vector3 goalPosition;
-
-	[SerializeField] // Serialized for debugging
-	[Range(0.0f, 32.0f)]
-	private float approachRange;
-
-	[SerializeField] // Serialized for debugging
-	private AIType behaviour;
-
 	private Transform _transform;
 
 	private MonsterMiscDataScript _misc;
 
 	// AI-Helping variables
+	private Vector3 goalPosition;
+	private float approachRange;
+	private AIType behaviour;
 	private bool goalReached;
 	private GameObject target;
 	private CharacterManager targetManager;
 	private Transform targetTransform;
 	private Vector3 startPos;
-	//private List<uint> currentPath;
 	private Queue<Vector3> currentPath;
 	private Vector3 finalGoalPos;
 
@@ -39,6 +31,8 @@ public class NPCAIScript : CharacterInputScript
 		this.currentPath = new Queue<Vector3>();
 		_networkView = this.GetComponent<NetworkView>();
 		this.goalPosition = _transform.position;
+
+		this.approachRange = 3.0f;
 	}
 
 	public bool IsSearchingEnemy()
@@ -77,16 +71,35 @@ public class NPCAIScript : CharacterInputScript
 		}
 	}
 
-	public void SetTarget(GameObject target)
-	{
+	public void SetTarget(GameObject target, bool spread = true)
+	{ // TODO: Only the server should do that?
 		this.target = target;
 		this.targetTransform = target.transform;
 		this.targetManager = target.GetComponent<CharacterManager>();
+
+		if (spread)
+		{ // Do the same for everyone in our camp
+			List<GameObject> ents = _manager.GetVisionScript().GetEntitiesInSight();
+			foreach (GameObject ent in ents)
+			{
+				CharacterManager hisManager = ent.GetComponent<CharacterManager>();
+				if (hisManager != null && hisManager != _manager &&
+					hisManager.GetCameraScript() == null &&
+					hisManager.GetLayer() == _manager.GetLayer())
+				{
+					NPCAIScript hisAI = ((NPCAIScript)hisManager.GetInputScript());
+					if (!hisAI.HasAnEnemy())
+					{
+						hisAI.SetTarget(target, false);
+					}
+				}
+			}
+		}
 	}
 
 	public void SetGoal(Vector3 pos)
 	{
-		if (Vector3.Distance(pos, this.finalGoalPos) < 1.0f)// && this.currentPath.Count > 1)
+		if (Vector3.Distance(pos, this.finalGoalPos) < 1.0f && !_manager.GetMovementScript().IsMovementOverriden())// && this.currentPath.Count > 1)
 		{ // He hasn't moved much and we're already on our way (note: this is making straight movement a bit laggy right now)
 			return;
 		}
