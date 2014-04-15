@@ -61,7 +61,7 @@ public class CharacterCombatScript : MonoBehaviour
 	}
 
 	public ProjectileScript CreateProjectile(uint projectileID, Vector3 position, Quaternion angle, uint impactSpellOverride = 0)
-	{
+	{ // TODO: Take a position rather than an angle so we can throw projectiles directly there
 		GameObject proj = (GameObject)Instantiate(projectilePrefab, position, angle);
 		ProjectileScript projScript = proj.GetComponent<ProjectileScript>();
 		projScript.SetUp(_manager, projectileID, impactSpellOverride);

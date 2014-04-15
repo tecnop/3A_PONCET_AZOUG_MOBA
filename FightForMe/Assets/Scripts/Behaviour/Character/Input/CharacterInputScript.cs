@@ -34,11 +34,15 @@ public abstract class CharacterInputScript : MonoBehaviour
 
 			ReadGenericInput();
 
-			if (_manager.GetStatsScript().GetHealth() <= 0 ||
-				_manager.GetStatsScript().HasSpecialEffect(MiscEffect.LOSS_OF_CONTROL) ||
-				_manager.GetMovementScript().IsMovementOverriden())
+			if (_manager.GetStatsScript().GetHealth() <= 0)
 			{ // We used to still execute some stuff but I don't think we have to anymore? In fact do we even need to update anything else than generic input?
 				return;
+			}
+
+			if (_manager.GetStatsScript().HasSpecialEffect(MiscEffect.LOSS_OF_CONTROL) ||
+				_manager.GetMovementScript().IsMovementOverriden())
+			{ // Don't let him attack at all
+				newSpell = 0;
 			}
 
 			_UpdateInput(newInput, newLookPos, (int)newSpell);

@@ -54,6 +54,10 @@ public class CharacterMovementScript : MonoBehaviour
 			actualDir = overrideDir;
 			overrideTimeLeft -= Time.deltaTime;
 		}
+		else if (_manager.GetStatsScript().HasSpecialEffect(MiscEffect.LOSS_OF_CONTROL))
+		{
+			actualDir = Vector3.zero;
+		}
 
 		#region wip
 		/*RaycastHit rayHit;
@@ -108,6 +112,12 @@ public class CharacterMovementScript : MonoBehaviour
 
 	public void LookAtPosition(Vector3 pos)
 	{
+		if (_manager.GetStatsScript().HasSpecialEffect(MiscEffect.LOSS_OF_CONTROL) ||
+			IsMovementOverriden())
+		{
+			return;
+		}
+
 		Vector3 diff = pos - _characterTransform.position;
 		float yaw;
 

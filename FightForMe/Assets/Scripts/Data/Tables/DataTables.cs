@@ -83,10 +83,10 @@ public static class DataTables
 		spellTable.Add(7, new SpellGrenade());
 		spellTable.Add(8, new SpellExplosion());
 		spellTable.Add(9, new SpellKnockback());
-		spellTable.Add(10, new SpellProjShot(new Metadata("Multishot"), 4, 5));
+		spellTable.Add(10, new SpellProjShot(new Metadata("Tir multiple"), 4, 5));
 		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12));
-		spellTable.Add(12, new SpellImpact(new Metadata("Charge impact"), 15, 0, 0.0f, 30.0f, 2.0f));
-		spellTable.Add(13, new SpellToggleBuff(new Metadata("Self burn"), 3));
+		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f));
+		spellTable.Add(13, new SpellToggleBuff(new Metadata("Auto brûlure"), 3));
 
 		// Effects
 		effectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
@@ -149,7 +149,7 @@ public static class DataTables
 		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 5));
 		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
-		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw, lifeTime: 0.0f));
+		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw));
 
 		// Weapon types
 		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epee courte")));
@@ -207,6 +207,11 @@ public static class DataTables
 		return null;
 	}
 
+	public static List<Item> GetItems()
+	{
+		return new List<Item>(itemTable.Values);
+	}
+
 	public static WeaponType GetWeaponType(uint key)
 	{
 		if (weaponTypeTable.ContainsKey(key))
@@ -214,6 +219,11 @@ public static class DataTables
 			return weaponTypeTable[key];
 		}
 		return null;
+	}
+
+	public static List<WeaponType> GetWeaponTypes()
+	{
+		return new List<WeaponType>(weaponTypeTable.Values);
 	}
 
 	public static Monster GetMonster(uint key)
@@ -225,6 +235,11 @@ public static class DataTables
 		return null;
 	}
 
+	public static List<Monster> GetMonsters()
+	{
+		return new List<Monster>(monsterTable.Values);
+	}
+
 	public static ArmorSet GetArmorSet(uint key)
 	{
 		if (armorSetTable.ContainsKey(key))
@@ -232,6 +247,11 @@ public static class DataTables
 			return armorSetTable[key];
 		}
 		return null;
+	}
+
+	public static List<ArmorSet> GetArmorSets()
+	{
+		return new List<ArmorSet>(armorSetTable.Values);
 	}
 
 	public static Projectile GetProjectile(uint key)
@@ -243,6 +263,11 @@ public static class DataTables
 		return null;
 	}
 
+	public static List<Projectile> GetProjectiles()
+	{
+		return new List<Projectile>(projectileTable.Values);
+	}
+
 	public static Skill GetSkill(uint key)
 	{
 		if (skillTable.ContainsKey(key))
@@ -250,6 +275,11 @@ public static class DataTables
 			return skillTable[key];
 		}
 		return null;
+	}
+
+	public static List<Skill> GetSkills()
+	{
+		return new List<Skill>(skillTable.Values);
 	}
 
 	public static Spell GetSpell(uint key)
@@ -261,6 +291,11 @@ public static class DataTables
 		return null;
 	}
 
+	public static List<Spell> GetSpells()
+	{
+		return new List<Spell>(spellTable.Values);
+	}
+
 	public static Buff GetBuff(uint key)
 	{
 		if (buffTable.ContainsKey(key))
@@ -268,6 +303,11 @@ public static class DataTables
 			return buffTable[key];
 		}
 		return null;
+	}
+
+	public static List<Buff> GetBuffs()
+	{
+		return new List<Buff>(buffTable.Values);
 	}
 
 	public static Effect GetEffect(uint key)
