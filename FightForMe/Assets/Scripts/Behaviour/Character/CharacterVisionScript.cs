@@ -169,6 +169,14 @@ public class CharacterVisionScript : MonoBehaviour
 		this.entitiesInSight = newEntities;
 	}
 
+	void OnDestroy()
+	{ // Kind of a hack I guess
+		if (curTile != null)
+		{
+			curTile.RemoveEntity(_manager.gameObject);
+		}
+	}
+
 	public List<GameObject> GetEntitiesInSight()
 	{
 		if (this.entitiesInSight != null)

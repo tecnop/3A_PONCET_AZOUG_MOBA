@@ -30,6 +30,9 @@ public static class HUDRenderer
 	private static HUDInventory _inventory;
 	private static HUDQuickSkills _skills;
 	private static HUDSpellWindow _spells;
+	private static HUDDroppedItemWindow _droppedItem;
+
+	private static DroppedItemScript _selectedItem;
 
 	public static void Initialize()
 	{
@@ -41,11 +44,12 @@ public static class HUDRenderer
 
 		hudRoot = new HUDContainer("HUD_root", new Rect(0, 0, w, h));
 
-		new HUDBuffDisplay(new Rect(), hudRoot);
+		new HUDBuffDisplay(new Rect(0.4f *w , 0.7f * h, 0.2f * w, 0.1f * h), hudRoot);
 		new HUDBar(new Rect(0.0f, 0.8f * h, w, 0.2f * h), hudRoot);
 		_inventory = new HUDInventory(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
 		_skills = new HUDQuickSkills(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
 		_spells = new HUDSpellWindow(new Rect(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
+		_droppedItem = new HUDDroppedItemWindow(new Rect(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
 	}
 
 	public static void Render()
@@ -59,6 +63,23 @@ public static class HUDRenderer
 			GUI.Label(new Rect(0, 0, w, h), "Ping: " + Network.GetLastPing(Network.connections[0]), topRight);
 		}
 
+		if (_selectedItem != null)
+		{
+			if (Vector3.Distance(GameData.activePlayer.GetCharacterTransform().position, _selectedItem.GetTransform().position) < 5.0f)
+			{ // Draw the menu
+				_droppedItem.enabled = true;
+			}
+			else
+			{
+				_selectedItem = null;
+				_droppedItem.enabled = false;
+			}
+		}
+		else
+		{
+			_droppedItem.enabled = false;
+		}
+
 		// NOTE: This system and layout is temporary! (maybe, I don't even know anymore)
 		if (_state == HUDState.Wiki)
 		{
@@ -67,6 +88,7 @@ public static class HUDRenderer
 		else if ((_state == HUDState.Default || _state == HUDState.Leaving) && !GameData.gamePaused)
 		{
 			DrawExitButton();
+				
 
 			if (hudRoot.enabled)
 			{
@@ -116,6 +138,21 @@ public static class HUDRenderer
 	public static SpellSlot GetSlot()
 	{ // I really hope this doesn't stay that way
 		return _activeSlot;
+	}
+
+	public static void SetSelectedItem(DroppedItemScript item)
+	{
+		_selectedItem = item;
+		if (item != null)
+		{
+			Vector3 camPos = GameData.activePlayer.GetCameraScript().GetCamera().WorldToScreenPoint(item.GetTransform().position);
+			_droppedItem.SetPos(camPos.x - _droppedItem.GetFrame().width/2, Screen.height-camPos.y - _droppedItem.GetFrame().height/2);
+		}
+	}
+
+	public static DroppedItemScript GetSelectedItem()
+	{
+		return _selectedItem;
 	}
 
 	private static void DrawPauseMenu(Rect rect)

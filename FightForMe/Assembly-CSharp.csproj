@@ -132,6 +132,7 @@
      <Compile Include="Assets\Scripts\GameData\TileBuilderScript.cs" />
      <Compile Include="Assets\Scripts\GameData\TileManager.cs" />
      <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
+     <Compile Include="Assets\Scripts\Misc\Utils.cs" />
      <Compile Include="Assets\Scripts\UI\FFMStyles.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponent.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDBar.cs" />
@@ -147,6 +148,8 @@
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDContainer.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDInventory.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDQuickSkills.cs" />
+     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDDroppedItemDisplay.cs" />
+     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDDroppedItemWindow.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDSpellList.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDSpellWindow.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDWindowGrabber.cs" />

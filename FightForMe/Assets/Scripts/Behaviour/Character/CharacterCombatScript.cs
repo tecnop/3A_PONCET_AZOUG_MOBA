@@ -55,14 +55,14 @@ public class CharacterCombatScript : MonoBehaviour
 		return sphereScript;
 	}
 
-	public HitboxScript CreateAoE(float radius, uint collisionSpellID)
+	public HitboxScript CreateAoE(float radius, uint collisionSpellID, float duration = 0.2f)
 	{
-		return CreateAoE(_transform.position, _transform.rotation, radius, collisionSpellID, makeParent:true);
+		return CreateAoE(_transform.position, _transform.rotation, radius, collisionSpellID, duration: duration, makeParent: true);
 	}
 
 	public ProjectileScript CreateProjectile(uint projectileID, Vector3 position, Quaternion angle, uint impactSpellOverride = 0)
 	{
-		GameObject proj = (GameObject)Instantiate(projectilePrefab, _transform.position, _transform.rotation);
+		GameObject proj = (GameObject)Instantiate(projectilePrefab, position, angle);
 		ProjectileScript projScript = proj.GetComponent<ProjectileScript>();
 		projScript.SetUp(_manager, projectileID, impactSpellOverride);
 		return projScript;
@@ -79,12 +79,18 @@ public class CharacterCombatScript : MonoBehaviour
 		while (i < this.buffs.Count)
 		{
 			if (this.buffs[i].GetBuffID() == buffID)
-			{
+			{ // TODO: OnBuffExpires event
 				this.buffs.RemoveAt(i);
+				_manager.GetStatsScript().UpdateStats();
 				return;
 			}
 			i++;
 		}
+	}
+
+	public void RemoveBuffs()
+	{
+		this.buffs.Clear();
 	}
 
 	public void ReceiveBuff(CharacterManager inflictor, uint buffID, float duration = -1.0f)

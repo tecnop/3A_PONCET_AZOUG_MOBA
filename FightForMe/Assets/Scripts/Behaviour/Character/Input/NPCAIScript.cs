@@ -151,14 +151,9 @@ public class NPCAIScript : CharacterInputScript
 		return move.normalized;
 	}
 
-	private static Vector3 DiffNoY(Vector3 a, Vector3 b)
-	{
-		return new Vector3(a.x - b.x, 0, a.z - b.z);
-	}	
-
 	protected override Vector3 UpdateLookPosition()
 	{
-		if (DiffNoY(_transform.position, goalPosition).magnitude < 0.1f)
+		if (Utils.DiffNoY(_transform.position, goalPosition).magnitude < 0.1f)
 		{ // Don't panick alright, just look forward
 			return _transform.position + 5.0f * _transform.forward;
 		}

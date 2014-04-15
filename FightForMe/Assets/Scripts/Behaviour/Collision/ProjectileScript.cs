@@ -12,6 +12,12 @@ public class ProjectileScript : MonoBehaviour
 	[SerializeField]
 	private Rigidbody _rigidBody;
 
+	[SerializeField]
+	private ParticleSystem _particles;
+
+	[SerializeField]
+	private TrailRenderer _trail;
+
 	private Spell impactSpell;			// Spell to execute on impact
 
 	private CharacterManager owner;			// Character responsible for our actions

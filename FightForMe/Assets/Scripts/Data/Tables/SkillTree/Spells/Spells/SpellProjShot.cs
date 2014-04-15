@@ -7,22 +7,42 @@ public class SpellProjShot : SpellProj
 	private uint amount;
 	private uint impactSpellOverride;
 	private bool doThrow;
+	private float accuracy;
 
-	public SpellProjShot(Metadata metadata, uint projID, uint amount, uint impactSpellOverride = 0, bool doThrow = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
+	public SpellProjShot(Metadata metadata, uint projID, uint amount, float accuracy = 1.0f, uint impactSpellOverride = 0, bool doThrow = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
 		: base(metadata, costType, spellCost)
 	{
 		this.projID = projID;
 		this.amount = amount;
 		this.impactSpellOverride = impactSpellOverride;
 		this.doThrow = doThrow;
+		this.accuracy = accuracy;
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
-		ProjectileScript proj = inflictor.GetCombatScript().CreateProjectile(projID, impactSpellOverride);
-		if (doThrow)
+		if (amount > 1)
 		{
-			proj.ThrowAt(position);
+			Vector3 diff = position - inflictor.GetCharacterTransform().position;
+			for (uint i = 0; i < amount; i++)
+			{
+				float yaw = inflictor.GetCharacterTransform().rotation.eulerAngles.y - 7.5f * amount + 15.0f * i;
+				if (amount % 2 != 0) yaw += 7.5f;
+				Quaternion angle = Quaternion.Euler(0.0f, yaw, 0.0f);
+				ProjectileScript proj = inflictor.GetCombatScript().CreateProjectile(projID, inflictor.GetCharacterTransform().position, angle, impactSpellOverride);
+				if (doThrow)
+				{
+					proj.ThrowAt(inflictor.GetCharacterTransform().position + angle * diff);
+				}
+			}
+		}
+		else if (amount == 1)
+		{
+			ProjectileScript proj = inflictor.GetCombatScript().CreateProjectile(projID, impactSpellOverride);
+			if (doThrow)
+			{
+				proj.ThrowAt(position);
+			}
 		}
 	}
 

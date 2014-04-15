@@ -19,7 +19,7 @@ public class SpellDash : SpellTarget
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
-		Vector3 dir = new Vector3(target.GetCharacterTransform().position.x - position.x, 0, target.GetCharacterTransform().position.z - position.z);
+		Vector3 dir = new Vector3(position.x - target.GetCharacterTransform().position.x, 0, position.z - target.GetCharacterTransform().position.z);
 		if (this.brake)
 		{
 			inflictor.GetCombatScript().Knockback(target, dir, speed, duration);
@@ -27,6 +27,11 @@ public class SpellDash : SpellTarget
 		else
 		{
 			target.GetMovementScript().SetMovementOverride(dir, speed, duration, false);
+		}
+
+		if (this.impactSpell != 0)
+		{ // TODO: Variable radius?
+			target.GetCombatScript().CreateAoE(2.0f, impactSpell, brake?duration/2.0f:duration);
 		}
 	}
 

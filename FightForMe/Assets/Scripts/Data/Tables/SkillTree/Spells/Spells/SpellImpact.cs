@@ -33,7 +33,7 @@ public class SpellImpact : SpellTarget
 		}
 		if (knockBackSpeed > 0.0f && knockBackDuration > 0.0f)
 		{
-			Vector3 dir = new Vector3(target.GetCharacterTransform().position.x - position.x, 0, target.GetCharacterTransform().position.z - position.z);
+			Vector3 dir = new Vector3(position.x - target.GetCharacterTransform().position.x, 0, position.z - target.GetCharacterTransform().position.z);
 			if (pull)
 			{
 				inflictor.GetCombatScript().Knockback(target, dir, knockBackSpeed, knockBackDuration);

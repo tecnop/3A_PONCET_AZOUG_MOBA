@@ -136,7 +136,7 @@ public class CharacterMovementScript : MonoBehaviour
 	}
 
 	public void SetMovementOverride(Vector3 dir, float speed, float duration, bool fade)
-	{
+	{ // TODO: If already overriden, merge the effects? Maybe? Actually that sounds stupid
 		this.overrideDir = dir;
 		this.overrideSpeed = speed;
 		this.overrideDuration = duration;

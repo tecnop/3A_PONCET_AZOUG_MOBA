@@ -49,16 +49,21 @@ public class PlayerEventScript : CharacterEventScript
 			{
 				spawner.TryRespawn();
 			}
+			else
+			{
+				Debug.LogError("Could not respawn Hasnor!");
+			}
 		}
 
 		_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
 
+		_manager.GetCombatScript().RemoveBuffs();
 	}
 
 	public override void OnSpotEntity(GameObject entity)
 	{
-		Debug.Log(_manager.name + " spotted " + entity.name);
-		Debug.DrawLine(_manager.GetCharacterTransform().position, entity.transform.position, Color.white, 3.0f);
+		//Debug.Log(_manager.name + " spotted " + entity.name);
+		//Debug.DrawLine(_manager.GetCharacterTransform().position, entity.transform.position, Color.white, 3.0f);
 	}
 
 	public override void OnLoseSightOfEntity(GameObject entity)
@@ -67,11 +72,7 @@ public class PlayerEventScript : CharacterEventScript
 	}
 
 	public override void OnCollision(Collider collider)
-	{ // Temporary debug stuff
-		if (collider.tag == "DroppedItem")
-		{
-			DroppedItemScript item = collider.GetComponent<DroppedItemScript>();
-			item.OnPickUp(_manager.GetInventoryScript());
-		}
+	{
+
 	}
 }

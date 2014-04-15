@@ -64,12 +64,9 @@ public class DroppedItemScript : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		if (Vector3.Distance(GameData.activePlayer.GetCharacterTransform().position, _transform.position) < 5.0f)
-		{
-			PlayerMiscDataScript misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
-			OnRecycle(misc);
-		}
+		HUDRenderer.SetSelectedItem(this);
 	}
 
 	public GraphicsLoader GetGraphicsLoader() { return this._graphics; }
+	public Transform GetTransform() { return this._transform; }
 }

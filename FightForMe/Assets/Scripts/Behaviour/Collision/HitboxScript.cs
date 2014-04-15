@@ -17,6 +17,9 @@ public class HitboxScript : MonoBehaviour
 	[SerializeField]
 	private Transform _transform;
 
+	[SerializeField]
+	private ParticleSystem _particles;
+
 	void Start()
 	{
 		entities = new List<Collider>();

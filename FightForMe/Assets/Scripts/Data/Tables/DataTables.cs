@@ -5,9 +5,6 @@ using System.IO;
 
 public static class DataTables
 { // NOTE: All table IDs start at 1, 0 is used as a null value
-	// Config
-	static string pathConfig = "../Configs/main.cfg";
-
 	// Entities
 	static Dictionary<uint, Monster> monsterTable = new Dictionary<uint, Monster>();
 	static Dictionary<uint, Projectile> projectileTable = new Dictionary<uint, Projectile>();
@@ -63,7 +60,6 @@ public static class DataTables
 	public static void updateTables()
 	{
 		clearTables();
-		startParsing (pathConfig);
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
 		// 1 - Resources
 		// 2 - Spells
@@ -87,6 +83,10 @@ public static class DataTables
 		spellTable.Add(7, new SpellGrenade());
 		spellTable.Add(8, new SpellExplosion());
 		spellTable.Add(9, new SpellKnockback());
+		spellTable.Add(10, new SpellProjShot(new Metadata("Multishot"), 4, 5));
+		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12));
+		spellTable.Add(12, new SpellImpact(new Metadata("Charge impact"), 15, 0, 0.0f, 30.0f, 2.0f));
+		spellTable.Add(13, new SpellToggleBuff(new Metadata("Self burn"), 3));
 
 		// Effects
 		effectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
@@ -109,6 +109,9 @@ public static class DataTables
 		// ============= HARD-CODED REFERENCE =============
 		effectTable.Add(16, new Effect(description: "Relique", isPositive: true, misc: MiscEffect.CARRYING_TROPHY));
 		// ================================================
+		effectTable.Add(17, new Effect(description: "Tir multiple", isPositive: true, unlockedAbility: 10));
+		effectTable.Add(18, new Effect(description: "Charge", isPositive: true, unlockedAbility: 11));
+		effectTable.Add(19, new Effect(description: "Auto-Brûlure", isPositive: true, unlockedAbility: 13));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -128,8 +131,8 @@ public static class DataTables
 		skillTable.Add(3, new Skill(metadata: new Metadata(name: "Bonus de puissance"), color: SkillColor.G, effect: 4, neighbours: new uint[] { 1, 6 }));
 		skillTable.Add(4, new Skill(metadata: new Metadata(name: "Bonus d'intelligence"), color: SkillColor.B, effect: 5, neighbours: new uint[] { 1, 7 }));
 
-		skillTable.Add(5, new Skill(metadata: new Metadata(name: "Super bonus d'endurance"), color: SkillColor.R, effect: 6, neighbours: new uint[] { 2 }));
-		skillTable.Add(6, new Skill(metadata: new Metadata(name: "Super bonus de puissance"), color: SkillColor.G, effect: 7, neighbours: new uint[] { 3 }));
+		skillTable.Add(5, new Skill(metadata: new Metadata(name: "Super bonus d'endurance"), color: SkillColor.R, effect: 6, neighbours: new uint[] { 2, 13 }));
+		skillTable.Add(6, new Skill(metadata: new Metadata(name: "Super bonus de puissance"), color: SkillColor.G, effect: 7, neighbours: new uint[] { 3, 12 }));
 		skillTable.Add(7, new Skill(metadata: new Metadata(name: "Super bonus d'intelligence"), color: SkillColor.B, effect: 8, neighbours: new uint[] { 4, 10 }));
 
 		skillTable.Add(8, new Skill(metadata: new Metadata(name: "Bonus vitesse de Course"), color: SkillColor.W, effect: 9, neighbours: new uint[] { 1, 9 }));
@@ -137,6 +140,9 @@ public static class DataTables
 
 		skillTable.Add(10, new Skill(metadata: new Metadata(name: "Sort: Boule de Feu"), color: SkillColor.B, effect: 13, neighbours: new uint[] { 7, 11 }));
 		skillTable.Add(11, new Skill(metadata: new Metadata(name: "Sort: Grenade"), color: SkillColor.B, effect: 15, neighbours: new uint[] { 10 }));
+		skillTable.Add(12, new Skill(metadata: new Metadata(name: "Sort: Multi-tir"), color: SkillColor.G, effect: 17, neighbours: new uint[] { 6 }));
+		skillTable.Add(13, new Skill(metadata: new Metadata(name: "Sort: Charge"), color: SkillColor.R, effect: 18, neighbours: new uint[] { 5, 14 }));
+		skillTable.Add(14, new Skill(metadata: new Metadata(name: "Sort: Auto-Brûlure"), color: SkillColor.R, effect: 19, neighbours: new uint[] { 13 }));
 
 		// Projectiles
 		projectileTable.Add(1, new Projectile(metadata: new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
@@ -188,159 +194,8 @@ public static class DataTables
 		monsterTable.Add(7, new Monster(metadata: new Metadata(name: "Debug2"), behaviour: AIType.defensive, items: new uint[] { 11, 12 }));
 
 		// ============= HARD-CODED REFERENCE =============
-		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 5.0f, quality:Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
+		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 5.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
 		// ================================================
-	}
-
-	public static int startParsing(string pathConfig){
-		StreamReader config = File.OpenText (pathConfig);
-		//Debug.Log ("File > " + config.ReadToEnd());
-
-		Dictionary<string, string> fields = new Dictionary<string, string>();;
-
-		bool clazzFound = false,
-			skipingMode = false;
-
-		string key = "",
-				value = "",
-				clazz = "";
-
-		int curr = 0,
-			start = 0;
-		Debug.Log("Start parsing ...");
-		while (curr != -1) {
-			curr = config.Read ();
-			if (curr == '#'&& (	config.Peek() != -1 || config.Peek() != '\\')){
-				skipingMode = !skipingMode;
-				continue;
-			}else
-			if (skipingMode){
-				continue;
-			}
-
-			if (curr == '\t' || curr == '\n' || curr == '\r' || curr == ' '){
-				continue;
-			}
-
-			if (curr == '"'){
-				value = parseValue(config);
-				if(null == value) return 0;
-
-				if(key != null){
-					fields.Add(key,value);
-					key = "";
-					value = "";
-				}else{
-					Debug.Log ("Missing key for value : "+value);
-					return 0;
-				}
-				continue;
-			}
-
-			if (curr == ':'){
-				if(!clazzFound){
-					clazz = key;
-					if(clazz  == null){
-						Debug.Log ("Missing clazz");
-						return 0;
-					}
-					key = "";
-				}
-				continue;
-			}
-
-			if (curr == '{'){
-				if(!clazzFound){
-					clazzFound = true;
-					//continue;
-				} else {
-					value = parseMap(config);
-					if(key != null){
-						fields.Add(key,value);
-						key = "";
-						value = "";
-					}else{
-						Debug.Log ("Missing key for value : "+value);
-						return 0;
-					}
-				}
-				continue;
-			}
-
-			if(curr == '}'){
-				if(clazzFound){
-					instance (clazz, fields);
-					clazz = "";
-					clazzFound = false;
-					key = "";
-					value = "";
-					fields.Clear();
-				} else {
-					Debug.Log ("Missing clazz and starting '}'");
-					return 0;
-				}
-				continue;
-			}
-
-
-			key+=(char)curr;
-		}
-		Debug.Log("End of parsing ...");
-		config.Close();
-		return 1;
-
-	}
-
-	private static string parseValue(StreamReader file){
-		int curr = file.Read();
-		string value = "";
-		while (curr != '"') {
-			if(curr == -1){
-				Debug.Log ("Error in parsing, missing '\"' ending");
-				return null;
-			}
-			value+=(char)curr;
-			curr = file.Read();
-		}
-		return value;
-	}
-
-	private static string parseMap(StreamReader file){
-		int curr = file.Read(),
-			toEnd = 1;
-		string value = "";
-		while(toEnd > 0){
-
-			if(curr == -1){
-				Debug.Log ("Error in sub Map parsing, missing '}' ending");
-				return null;
-			}
-			if(curr == '{'){
-				toEnd++;
-			}
-
-			if(curr == '}'){
-				toEnd--;
-			}
-			if(toEnd > 0) // tricky tricky
-				value += (char)curr;
-
-			curr = file.Read();
-		}
-		return value;
-	}
-
-	private static void instance(string clazz, Dictionary<string, string> fields){
-		Debug.Log ("Clazz : '" + clazz + "'");
-		foreach (KeyValuePair<string, string> k in fields) {
-			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
-		}
-		/*
-		if (clazz == "monster") {
-		
-		}
-		*/
-
 	}
 
 	public static Item GetItem(uint key)
