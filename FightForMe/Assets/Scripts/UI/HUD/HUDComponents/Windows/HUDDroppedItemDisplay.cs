@@ -51,7 +51,7 @@ public class HUDDroppedItemDisplay : HUDComponent
 			HUDRenderer.GetSelectedItem().OnPickUp(_inventory);
 			HUDRenderer.SetSelectedItem(null);
 		}
-		if (item.IsWeapon())
+		if (item != null && item.IsWeapon())
 		{
 			Weapon weapon2 = _inventory.GetWeapon();
 			if (weapon2 != null)

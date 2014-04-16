@@ -242,6 +242,12 @@ public class CharacterStatsScript : MonoBehaviour
 
 			_manager.GetAnimatorScript().UpdateAttackRate();
 		}
+
+		if (!_manager.GetCameraScript())
+		{ // We're a monster I guess...
+			NPCAIScript ai = (NPCAIScript)_manager.GetInputScript();
+			ai.UpdateApproachRange();
+		}
 	}
 
 	public void ApplyRegen()

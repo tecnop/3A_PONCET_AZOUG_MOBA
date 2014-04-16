@@ -65,7 +65,11 @@ public static class DataTables
 	public static void updateTables()
 	{
 		clearTables();
-		//fillTables();
+
+		if (!GameData.secure)
+		{
+			fillTables();
+		}
 
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
 		// 1 - Resources
@@ -132,6 +136,8 @@ public static class DataTables
 
 		buffTable.Add(5, new Buff(metadata: new Metadata(name: "HP+"), effects: new uint[] { 20 }));
 
+		buffTable.Add(6, new Buff(metadata: new Metadata(name: "Banlieue"), effects: new uint[] { 9, 3 }));
+
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
 		skillTable.Add(1, new Skill(metadata: new Metadata(name: "Première compétence"), effect: 14, neighbours: new uint[] { 2, 3, 4, 8 }));
@@ -165,18 +171,20 @@ public static class DataTables
 		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epee courte")));
 		weaponTypeTable.Add(2, new WeaponType(metadata: new Metadata(name: "Marteau"), isTwoHanded: true));
 		weaponTypeTable.Add(3, new WeaponType(metadata: new Metadata(name: "Arc"), isRanged: true, isTwoHanded: true));
+		weaponTypeTable.Add(4, new WeaponType(metadata: new Metadata(name: "Arme de lancer"), isRanged: true));
 
 		// Armor sets
 		armorSetTable.Add(1, new ArmorSet(metadata: new Metadata(name: "Panoplie du Seigneur"), buffID: 1));
 		armorSetTable.Add(2, new ArmorSet(metadata: new Metadata(name: "Le Beta testeur"), buffID: 2));
+		armorSetTable.Add(3, new ArmorSet(metadata: new Metadata(name: "Le jeune de banlieue"), buffID: 6));
 
 		// Items
 		itemTable.Add(1, new Weapon(metadata: new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, attackRate: 1.0f));
-		itemTable.Add(2, new Armor(metadata: new Metadata(name: "Armure du test ultime"), slot: ArmorSlot.TORSO, setID: 2));
+		itemTable.Add(2, new Armor(metadata: new Metadata(name: "Armure du test ultime"), slot: ArmorSlot.BODY, setID: 2));
 		itemTable.Add(3, new Weapon(metadata: new Metadata(name: "La Dague"), damage: 6.66f, attackRate: 1.5f));
 		itemTable.Add(4, new Weapon(metadata: new Metadata(name: "Marteau du Seigneur"), damage: 50.0f, attackRate: 1.0f, weaponTypeID: 2));
 		itemTable.Add(5, new Weapon(metadata: new Metadata(name: "Arc du Seigneur"), attackRate: 0.5f, weaponTypeID: 3, projectileID: 1));
-		itemTable.Add(6, new Armor(metadata: new Metadata(name: "Armure du Seigneur"), slot: ArmorSlot.TORSO, setID: 1));
+		itemTable.Add(6, new Armor(metadata: new Metadata(name: "Armure du Seigneur"), slot: ArmorSlot.BODY, setID: 1));
 		itemTable.Add(7, new Armor(metadata: new Metadata(name: "Casque du Seigneur"), slot: ArmorSlot.HEAD, setID: 1));
 		itemTable.Add(8, new Armor(metadata: new Metadata(name: "Bottes du Seigneur"), slot: ArmorSlot.FEET, setID: 1));
 		itemTable.Add(9, new Weapon(metadata: new Metadata(name: "Le fouetteur d'Yggtralala"), damage: 15.0f, attackRate: 1.0f));
@@ -187,6 +195,13 @@ public static class DataTables
 		itemTable.Add(14, new Weapon(metadata: new Metadata(name: "La quat'cinq"), attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
 		itemTable.Add(15, new Weapon(metadata: new Metadata(name: "Arc biodégradable"), attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
 		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000));
+
+		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem"), damage: 35.0f, attackRate: 1.2f));
+		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites"), weaponTypeID:4, damage: 25.0f, attackRate: 1.5f));
+
+		itemTable.Add(19, new Armor(metadata: new Metadata(name: "Sweat et jeans troués"), slot: ArmorSlot.BODY, setID: 3));
+		itemTable.Add(20, new Armor(metadata: new Metadata(name: "Casquette retournée"), slot: ArmorSlot.HEAD, setID: 3));
+		itemTable.Add(21, new Armor(metadata: new Metadata(name: "Les niques"), slot: ArmorSlot.FEET, setID: 3));
 
 		// Monsters
 
@@ -206,6 +221,11 @@ public static class DataTables
 		// ============= HARD-CODED REFERENCE =============
 		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 2.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
 		// ================================================
+
+		monsterTable.Add(9, new Monster(metadata: new Metadata(name: "Jean Paul"), behaviour: AIType.defensive, items: new uint[] { 14 }));
+		monsterTable.Add(10, new Monster(metadata: new Metadata(name: "Jacky"), behaviour: AIType.aggressive, items: new uint[] { 14 }));
+		monsterTable.Add(11, new Monster(metadata: new Metadata(name: "Le jeune de banlieue"), behaviour: AIType.aggressive, items: new uint[] { 14 }));
+		monsterTable.Add(12, new Monster(metadata: new Metadata(name: "La Co"), behaviour: AIType.aggressive, items: new uint[] { 14 }));
 	}
 
 	public static void fillTables()
@@ -358,7 +378,7 @@ public static class DataTables
 		Metadata metadata = null;
 		uint recyclingXP = 100;
 		uint skillID = 0;
-		ArmorSlot slot = ArmorSlot.TORSO;
+		ArmorSlot slot = ArmorSlot.BODY;
 		uint setID = 0;
 		Stats stats = null;
 

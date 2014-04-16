@@ -31,6 +31,7 @@ public class GameMasterScript : MonoBehaviour
 		if (!GameData.wentThroughMenu)
 		{
 			GameData.gameMode = gameMode;
+			GameData.secure = true;
 		}
 
 		if (GameData.gameType == GameType.DedicatedServer)

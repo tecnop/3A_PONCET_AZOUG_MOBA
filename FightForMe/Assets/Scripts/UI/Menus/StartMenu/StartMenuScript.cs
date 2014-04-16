@@ -36,6 +36,8 @@ public class StartMenuScript : MonoBehaviour {
 		ipAddress = PlayerPrefs.GetString("ipAddress");
 		GameData.networkError = NetworkConnectionError.NoError;
 
+		GameData.secure = true;
+
 		waitingForPlayer = false;
 
 		boxMultiWidth = 250f;
@@ -77,6 +79,7 @@ public class StartMenuScript : MonoBehaviour {
 		GUILayout.BeginArea (new Rect (mainScreenLeft, (Screen.height / 6), boxMultiWidth, boxMultiHeight));
 
 		GameData.gameMode = (GameMode)GUILayout.SelectionGrid((int)GameData.gameMode, new string[] { "Suprématie", "Course à la Gloire" }, 2);
+		GameData.secure = GUILayout.Toggle(GameData.secure, "Mode sécurisé");
 
 		GUILayout.Label ("Multi");
 		

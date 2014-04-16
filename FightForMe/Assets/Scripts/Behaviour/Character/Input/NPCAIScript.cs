@@ -32,7 +32,7 @@ public class NPCAIScript : CharacterInputScript
 		_networkView = this.GetComponent<NetworkView>();
 		this.goalPosition = _transform.position;
 
-		this.approachRange = 3.0f;
+		UpdateApproachRange();
 	}
 
 	public bool IsSearchingEnemy()
@@ -43,6 +43,30 @@ public class NPCAIScript : CharacterInputScript
 	public bool HasAnEnemy()
 	{
 		return target != null;
+	}
+
+	public void UpdateApproachRange()
+	{
+		if (!_manager)
+		{
+			return;
+		}
+
+		Weapon weapon = _manager.GetInventoryScript().GetWeapon();
+		if (weapon != null)
+		{
+			WeaponType type = weapon.GetWeaponType();
+			if (type != null)
+			{
+				if (type.IsRanged())
+				{
+					this.approachRange = 15.0f;
+					return;
+				}
+			}
+		}
+
+		this.approachRange = 3.0f;
 	}
 
 	private void RunAI()

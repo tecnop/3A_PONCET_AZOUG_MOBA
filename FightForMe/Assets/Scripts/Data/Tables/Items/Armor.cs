@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum ArmorSlot { HEAD, TORSO, HANDS, LEGS, FEET };
+public enum ArmorSlot { HEAD, BODY, HANDS, FEET };
 
 public class Armor : Item
 {
@@ -13,7 +13,7 @@ public class Armor : Item
 	public Armor(Metadata metadata,
 		uint recyclingXP = 100,
 		uint buffID = 0,
-		ArmorSlot slot = ArmorSlot.TORSO,
+		ArmorSlot slot = ArmorSlot.BODY,
 		uint setID = 0,
 		Stats stats = null)
 		: base(metadata, recyclingXP, buffID, false)

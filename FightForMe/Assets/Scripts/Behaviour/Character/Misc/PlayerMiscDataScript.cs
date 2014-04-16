@@ -39,6 +39,13 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		}
 
 		Skill firstSkill = DataTables.GetSkill(1);
+
+		if (firstSkill == null)
+		{ // What the hell are you doing
+			Debug.LogError("First skill is missing, cannot initialize player skills!");
+			return;
+		}
+
 		skillPoints = 1; // Give us a point
 		availableSkills.Add(firstSkill);	// Force the first skill to be available
 		LearnSkill(firstSkill); // And learn it

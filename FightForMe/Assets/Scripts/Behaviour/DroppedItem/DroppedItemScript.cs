@@ -49,7 +49,14 @@ public class DroppedItemScript : MonoBehaviour
 			return;
 		}
 
-		_networkView.RPC("SetItemID", RPCMode.All, itemID);
+		if (GameData.isOnline)
+		{
+			_networkView.RPC("SetItemID", RPCMode.All, itemID);
+		}
+		else
+		{
+			SetItemID(itemID);
+		}
 	}
 
 	[RPC]
@@ -79,7 +86,13 @@ public class DroppedItemScript : MonoBehaviour
 
 	public void OnRecycle(PlayerMiscDataScript playerMisc)
 	{
-		playerMisc.GainExperience(DataTables.GetItem(itemID).GetRecyclingXP());
+		Item item = DataTables.GetItem(itemID);
+
+		if (item != null)
+		{
+			playerMisc.GainExperience(item.GetRecyclingXP());
+		}
+
 		if (GameData.isOnline)
 		{
 			Network.Destroy(this.gameObject);

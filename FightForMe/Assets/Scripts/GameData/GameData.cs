@@ -30,6 +30,7 @@ public static class GameData
 	public static CharacterManager otherPlayer;	 // Temporary... hopefully :/
 	public static GameType gameType;
 	public static GameMode gameMode;
+	public static bool secure;
 
 	public static bool isServer
 	{ // Should we execute server-specific code?

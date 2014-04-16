@@ -240,6 +240,9 @@ public class CharacterInventoryScript : MonoBehaviour
 					UpdateSetProgress(((Armor)item).GetSetID(), true);
 				}
 			}
+
+			// Either I'm really stupid for forgetting this or there's a reason I omitted it and this is going to break everything
+			_manager.GetStatsScript().UpdateStats();
 		}
 	}
 
