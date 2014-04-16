@@ -64,9 +64,12 @@ public class MonsterEventScript : CharacterEventScript
 
 		_inventory.DropAllItems();
 
-		if (_misc.GetMonsterID() == 8)
-		{ // Special dude died, give the trophy to the killer
-			_manager.GetCombatScript().InflictBuff(killer, 4, 0);
+		if (GameData.gameMode == GameMode.RaceForGlory)
+		{
+			if (_misc.GetMonsterID() == 8)
+			{ // Special dude died, give the trophy to the killer
+				_manager.GetCombatScript().InflictBuff(killer, 4, 0);
+			}
 		}
 
 		// No death animation for monsters yet

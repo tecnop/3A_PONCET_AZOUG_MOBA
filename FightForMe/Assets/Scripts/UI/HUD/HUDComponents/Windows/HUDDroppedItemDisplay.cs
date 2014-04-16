@@ -3,14 +3,14 @@ using System.Collections;
 
 public class HUDDroppedItemDisplay : HUDComponent
 {
-	private CharacterStatsScript _stats;
+	//private CharacterStatsScript _stats;
 	private CharacterInventoryScript _inventory;
 	private PlayerMiscDataScript _misc;
 
 	public HUDDroppedItemDisplay(Rect frame, HUDContainer parent)
 		: base("HUD_dropped_item_display", frame, parent: parent)
 	{
-		this._stats = GameData.activePlayer.GetStatsScript();
+		//this._stats = GameData.activePlayer.GetStatsScript();
 		this._inventory = GameData.activePlayer.GetInventoryScript();
 		this._misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
 	}

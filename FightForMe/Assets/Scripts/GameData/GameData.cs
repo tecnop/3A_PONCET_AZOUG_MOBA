@@ -17,12 +17,19 @@ public enum GameType
 	DedicatedServer	// Server executable
 }
 
+public enum GameMode
+{
+	KillTheLord,
+	RaceForGlory
+}
+
 public static class GameData
 {
 	public static bool gamePaused = false;
 	public static CharacterManager activePlayer;
 	public static CharacterManager otherPlayer;	 // Temporary... hopefully :/
 	public static GameType gameType;
+	public static GameMode gameMode;
 
 	public static bool isServer
 	{ // Should we execute server-specific code?

@@ -20,11 +20,19 @@ public class GameMasterScript : MonoBehaviour
 	[SerializeField]
 	private CharacterManager player2;
 
+	[SerializeField]
+	private GameMode gameMode;
+
 	private List<MonsterCampScript> monsterCamps;
 	private float lastSpawnTime;
 
 	void Start()
 	{
+		if (!GameData.wentThroughMenu)
+		{
+			GameData.gameMode = gameMode;
+		}
+
 		if (GameData.gameType == GameType.DedicatedServer)
 		{ // TODO
 			//_networkView.RPC("LinkMeToPlayer", Network.connections[0], true);

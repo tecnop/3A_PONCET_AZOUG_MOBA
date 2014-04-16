@@ -6,7 +6,8 @@ public enum MiscEffect
 	NONE,				// None
 	HEAVY_WEAPONS,		// Character may use heavy weapons and armor
 	LOSS_OF_CONTROL,	// Character cannot move anymore and is made non-kinematic (also implies a movement override)
-	CARRYING_TROPHY		// Character is carrying the trophy
+	CARRYING_TROPHY,	// Character is carrying the trophy
+	INVULNERABLE		// Self-explanatory
 }
 
 public class Effect

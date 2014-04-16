@@ -6,6 +6,14 @@ public class TrophyDepositAreaScript : MonoBehaviour
 	[SerializeField]
 	private NetworkView _networkView;
 
+	void Start()
+	{
+		if (GameData.gameMode != GameMode.RaceForGlory)
+		{
+			Destroy(this.gameObject);
+		}
+	}
+
 	void OnTriggerEnter(Collider other)
 	{
 		CharacterPhysicsScript phys = other.GetComponent<CharacterPhysicsScript>();

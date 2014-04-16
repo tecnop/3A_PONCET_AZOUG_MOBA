@@ -70,17 +70,25 @@ public class LordSpawnerScript : SpawnerScript
 		misc.SetSpawner(this);
 
 		misc.SetUpFromMonster(1); // HARD CODED REFERENCE
+
+		if (GameData.gameMode != GameMode.KillTheLord)
+		{ // You can't kill him in any other mode
+			//manager.GetCombatScript().ReceiveBuff(manager, buffGoesHere);
+		}
 	}
 
 	public override void OnSpawnedEntityDeath()
 	{
-		if (GameData.isOnline)
+		if (GameData.gameMode == GameMode.KillTheLord)
 		{
-			_networkView.RPC("GameOver", RPCMode.All);
-		}
-		else
-		{
-			GameOver();
+			if (GameData.isOnline)
+			{
+				_networkView.RPC("GameOver", RPCMode.All);
+			}
+			else
+			{
+				GameOver();
+			}
 		}
 	}
 

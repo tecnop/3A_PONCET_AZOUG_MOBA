@@ -7,7 +7,7 @@ public class SpellProjShot : SpellProj
 	private uint amount;
 	private uint impactSpellOverride;
 	private bool doThrow;
-	private float accuracy;
+	//private float accuracy;
 
 	public SpellProjShot(Metadata metadata, uint projID, uint amount, float accuracy = 1.0f, uint impactSpellOverride = 0, bool doThrow = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
 		: base(metadata, costType, spellCost)
@@ -16,7 +16,7 @@ public class SpellProjShot : SpellProj
 		this.amount = amount;
 		this.impactSpellOverride = impactSpellOverride;
 		this.doThrow = doThrow;
-		this.accuracy = accuracy;
+		//this.accuracy = accuracy;
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
@@ -37,7 +37,7 @@ public class SpellProjShot : SpellProj
 			}
 		}
 		else if (amount == 1)
-		{
+		{ // The above code works too but is more complicated
 			ProjectileScript proj = inflictor.GetCombatScript().CreateProjectile(projID, impactSpellOverride);
 			if (doThrow)
 			{
