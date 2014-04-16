@@ -5,68 +5,68 @@ using System.IO;
 
 public static class DataTables
 { // NOTE: All table IDs start at 1, 0 is used as a null value
-
+	
 	// Parsing params.
 	static string configPath = "../Configs/main.cfg";
 	static string currentLang = "fr";
-
+	
 	// Entities
 	static Dictionary<uint, Monster> monsterTable = new Dictionary<uint, Monster>();
 	static Dictionary<uint, Projectile> projectileTable = new Dictionary<uint, Projectile>();
-
+	
 	// Items
 	static Dictionary<uint, Item> itemTable = new Dictionary<uint, Item>();
 	static Dictionary<uint, WeaponType> weaponTypeTable = new Dictionary<uint, WeaponType>();
 	static Dictionary<uint, ArmorSet> armorSetTable = new Dictionary<uint, ArmorSet>();
-
+	
 	// Skill Tree
 	static Dictionary<uint, Skill> skillTable = new Dictionary<uint, Skill>();
-
+	
 	// Spells
 	static Dictionary<uint, Spell> spellTable = new Dictionary<uint, Spell>();
-
+	
 	// Buffs
 	static Dictionary<uint, Effect> effectTable = new Dictionary<uint, Effect>();
 	static Dictionary<uint, Buff> buffTable = new Dictionary<uint, Buff>();
-
+	
 	// Resources
 	static Dictionary<string, GameObject> modelTable = new Dictionary<string, GameObject>();
-
+	
 	private static void clearTables()
 	{
 		monsterTable.Clear();
 		projectileTable.Clear();
-
+		
 		itemTable.Clear();
 		weaponTypeTable.Clear();
 		armorSetTable.Clear();
-
+		
 		skillTable.Clear();
-
+		
 		spellTable.Clear();
-
+		
 		effectTable.Clear();
 		buffTable.Clear();
-
+		
 		// Not clearing resource tables for now
 		//modelTable.Clear();
 	}
-
+	
 	public static void LoadModels(GameObject[] models)
 	{
 		modelTable.Clear(); // Temporary
-
+		
 		foreach (GameObject obj in models)
 		{
 			modelTable.Add(obj.name, obj);
 		}
 	}
-
+	
 	public static void updateTables()
 	{
 		clearTables();
 		//fillTables();
-
+		
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
 		// 1 - Resources
 		// 2 - Spells
@@ -77,7 +77,7 @@ public static class DataTables
 		// 7 - Weapon types, armor sets
 		// 8 - Items
 		// 9 - Monsters
-
+		
 		// Spells
 		// ============= HARD-CODED REFERENCES =============
 		spellTable.Add(1, new SpellUseWeapon());
@@ -94,7 +94,7 @@ public static class DataTables
 		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12));
 		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f));
 		spellTable.Add(13, new SpellToggleBuff(new Metadata("Auto brûlure"), 3));
-
+		
 		// Effects
 		effectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
 		effectTable.Add(2, new Effect(description: "Capacité: Boule de feu", isPositive: true, unlockedAbility: 1));
@@ -119,54 +119,54 @@ public static class DataTables
 		effectTable.Add(17, new Effect(description: "Tir multiple", isPositive: true, unlockedAbility: 10));
 		effectTable.Add(18, new Effect(description: "Charge", isPositive: true, unlockedAbility: 11));
 		effectTable.Add(19, new Effect(description: "Auto-Brûlure", isPositive: true, unlockedAbility: 13));
-
+		
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
-
+		
 		buffTable.Add(2, new Buff(metadata: new Metadata(name: "Testeur"), effects: new uint[] { 11 }));
-
+		
 		buffTable.Add(3, new Buff(metadata: new Metadata(name: "Brûlure"), effects: new uint[] { 12 }));
-
+		
 		buffTable.Add(4, new Buff(metadata: new Metadata(name: "Relique"), effects: new uint[] { 16 }));
-
+		
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
 		skillTable.Add(1, new Skill(metadata: new Metadata(name: "Première compétence"), effect: 14, neighbours: new uint[] { 2, 3, 4, 8 }));
 		// ================================================
-
+		
 		skillTable.Add(2, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
 		skillTable.Add(3, new Skill(metadata: new Metadata(name: "Bonus de puissance"), color: SkillColor.G, effect: 4, neighbours: new uint[] { 1, 6 }));
 		skillTable.Add(4, new Skill(metadata: new Metadata(name: "Bonus d'intelligence"), color: SkillColor.B, effect: 5, neighbours: new uint[] { 1, 7 }));
-
+		
 		skillTable.Add(5, new Skill(metadata: new Metadata(name: "Super bonus d'endurance"), color: SkillColor.R, effect: 6, neighbours: new uint[] { 2, 13 }));
 		skillTable.Add(6, new Skill(metadata: new Metadata(name: "Super bonus de puissance"), color: SkillColor.G, effect: 7, neighbours: new uint[] { 3, 12 }));
 		skillTable.Add(7, new Skill(metadata: new Metadata(name: "Super bonus d'intelligence"), color: SkillColor.B, effect: 8, neighbours: new uint[] { 4, 10 }));
-
+		
 		skillTable.Add(8, new Skill(metadata: new Metadata(name: "Bonus vitesse de Course"), color: SkillColor.W, effect: 9, neighbours: new uint[] { 1, 9 }));
 		skillTable.Add(9, new Skill(metadata: new Metadata(name: "Super bonus vit. de Course"), color: SkillColor.W, effect: 10, neighbours: new uint[] { 8 }));
-
+		
 		skillTable.Add(10, new Skill(metadata: new Metadata(name: "Sort: Boule de Feu"), color: SkillColor.B, effect: 13, neighbours: new uint[] { 7, 11 }));
 		skillTable.Add(11, new Skill(metadata: new Metadata(name: "Sort: Grenade"), color: SkillColor.B, effect: 15, neighbours: new uint[] { 10 }));
 		skillTable.Add(12, new Skill(metadata: new Metadata(name: "Sort: Multi-tir"), color: SkillColor.G, effect: 17, neighbours: new uint[] { 6 }));
 		skillTable.Add(13, new Skill(metadata: new Metadata(name: "Sort: Charge"), color: SkillColor.R, effect: 18, neighbours: new uint[] { 5, 14 }));
 		skillTable.Add(14, new Skill(metadata: new Metadata(name: "Sort: Auto-Brûlure"), color: SkillColor.R, effect: 19, neighbours: new uint[] { 13 }));
-
+		
 		// Projectiles
 		projectileTable.Add(1, new Projectile(metadata: new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 5));
 		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw));
-
+		
 		// Weapon types
 		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epee courte")));
 		weaponTypeTable.Add(2, new WeaponType(metadata: new Metadata(name: "Marteau"), isTwoHanded: true));
 		weaponTypeTable.Add(3, new WeaponType(metadata: new Metadata(name: "Arc"), isRanged: true, isTwoHanded: true));
-
+		
 		// Armor sets
 		armorSetTable.Add(1, new ArmorSet(metadata: new Metadata(name: "Panoplie du Seigneur"), buffID: 1));
 		armorSetTable.Add(2, new ArmorSet(metadata: new Metadata(name: "Le Beta testeur"), buffID: 2));
-
+		
 		// Items
 		itemTable.Add(1, new Weapon(metadata: new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, attackRate: 1.0f));
 		itemTable.Add(2, new Armor(metadata: new Metadata(name: "Armure du test ultime"), slot: ArmorSlot.TORSO, setID: 2));
@@ -184,37 +184,47 @@ public static class DataTables
 		itemTable.Add(14, new Weapon(metadata: new Metadata(name: "La quat'cinq"), attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
 		itemTable.Add(15, new Weapon(metadata: new Metadata(name: "Arc biodégradable"), attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
 		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000));
-
+		
 		// Monsters
-
+		
 		// ============= HARD-CODED REFERENCE =============
 		monsterTable.Add(1, new Monster(metadata: new Metadata(name: "Lord"), behaviour: AIType.defensive, items: new uint[] { 4, 5, 6, 7, 8 }));
 		// ================================================
-
+		
 		monsterTable.Add(2, new Monster(metadata: new Metadata(name: "Zombie", modelPath: "Cylinder"), behaviour: AIType.defensive, items: new uint[] { 9 }));
 		monsterTable.Add(3, new Monster(metadata: new Metadata(name: "Ratus"), behaviour: AIType.defensive, items: new uint[] { 13 }));
 		monsterTable.Add(4, new Monster(metadata: new Metadata(name: "Archet"), behaviour: AIType.defensive, items: new uint[] { 15 }));
 		monsterTable.Add(5, new Monster(metadata: new Metadata(name: "Snaille'p"), behaviour: AIType.defensive, items: new uint[] { 14 }));
-
+		
 		// Debug Monsters
 		monsterTable.Add(6, new Monster(metadata: new Metadata(name: "Debug1"), behaviour: AIType.defensive, items: new uint[] { 2, 10 }));
 		monsterTable.Add(7, new Monster(metadata: new Metadata(name: "Debug2"), behaviour: AIType.defensive, items: new uint[] { 11, 12 }));
-
+		
 		// ============= HARD-CODED REFERENCE =============
 		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 5.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
 		// ================================================
 	}
-
+	
 	public static void fillTables(){
 		FJsonParser parser = FJsonParser.Instance ();
 		parser.parseFile (configPath);
 		foreach(Clazz ns in parser.getResults()){
 			if(ns.getName() == "monster"){
 				pushMonster(ns.getFields());
-			} else
-			if (ns.getName() == "effect"){
+			} 
+			else if (ns.getName() == "effect"){
 				pushEffect(ns.getFields());
-			} else {
+			} 
+			else if (ns.getName() == "weapon"){
+				pushWeapon(ns.getFields());
+			} 
+			else if (ns.getName() == "armor"){
+				pushArmor(ns.getFields());
+			}
+			else if (ns.getName() == "projectile"){
+				pushProjectile(ns.getFields());
+			}
+			else {
 				Debug.LogWarning("Nothing found for parsed class '" + ns.getName() + "'");
 			}
 		}
@@ -227,6 +237,7 @@ public static class DataTables
 			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
 			
 		}
+		
 		/* expected fields */
 		uint id = 0;
 		Metadata metadata = null;
@@ -252,6 +263,166 @@ public static class DataTables
 		monsterTable.Add (id, new Monster (metadata, behaviour, items, buffs));
 	}
 	
+	private static void pushWeapon(Dictionary<string, string> fields){
+		Debug.Log ("Clazz : 'Weapon'");
+		foreach (KeyValuePair<string, string> k in fields) {
+			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
+			
+		}
+		
+		/* expected fields */
+		uint id = 0;
+		Metadata metadata = null;
+		
+		uint recyclingXP = 100;
+		uint skillID = 0;
+		uint weaponTypeID = 0;
+		float damage = 0.0f;
+		float attackRate = 1.0f;
+		uint projectileID = 0;
+		string effectPath = null;
+		string attackSoundPath = null;
+		
+		
+		
+		id = uint.Parse(fields["id"]);
+		
+		if(fields.ContainsKey("Metadata")){
+			metadata = getMetadata(fields["Metadata"]);
+		}
+		
+		if(fields.ContainsKey("skillID")){
+			skillID = uint.Parse(fields["skillID"]);
+		}
+		if(fields.ContainsKey("weaponTypeID")){
+			weaponTypeID = uint.Parse(fields["weaponTypeID"]);
+		}
+		if(fields.ContainsKey("recyclingXP")){
+			recyclingXP = uint.Parse(fields["recyclingXP"]);
+		}
+		
+		if(fields.ContainsKey("damage")){
+			damage = float.Parse(fields["damage"]);
+		}
+		if(fields.ContainsKey("attackRate")){
+			attackRate = float.Parse(fields["attackRate"]);
+		}
+		
+		if(fields.ContainsKey("projectileID")){
+			projectileID = uint.Parse(fields["projectileID"]);
+		}
+		/* Coming soon !
+		fields.TryGetValue ("effectPath", out effectPath);
+		fields.TryGetValue ("attackSoundPath", out attackSoundPath);
+		*/
+		itemTable.Add (id, new Weapon (metadata, recyclingXP, skillID, weaponTypeID,damage,attackRate,projectileID,effectPath,attackSoundPath));
+	}
+	
+	private static void pushArmor(Dictionary<string, string> fields){
+		Debug.Log ("Clazz : 'Armor'");
+		foreach (KeyValuePair<string, string> k in fields) {
+			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
+			
+		}
+		
+		/* expected fields */
+		uint id = 0;
+		Metadata metadata = null;
+		uint recyclingXP = 100;
+		uint skillID = 0;
+		ArmorSlot slot = ArmorSlot.TORSO;
+		uint setID = 0;
+		Stats stats = null;
+		
+		id = uint.Parse(fields["id"]);
+		
+		if(fields.ContainsKey("Metadata")){
+			metadata = getMetadata(fields["Metadata"]);
+		}
+		
+		if(fields.ContainsKey("recyclingXP")){
+			recyclingXP = uint.Parse(fields["recyclingXP"]);
+		}
+		
+		if(fields.ContainsKey("skillID")){
+			skillID = uint.Parse(fields["skillID"]);
+		}
+		
+		if(fields.ContainsKey("slot")){
+			slot = (ArmorSlot)int.Parse(fields["slot"]);
+		}
+		
+		if(fields.ContainsKey("setID")){
+			setID = uint.Parse(fields["setID"]);
+		}
+		
+		if(fields.ContainsKey("stats")){
+			stats = stringToStats(fields["stats"]);
+		}
+		
+		itemTable.Add (id, new Armor(metadata, recyclingXP, skillID, slot ,setID ,stats ));
+	}
+
+	private static void pushProjectile(Dictionary<string, string> fields){
+		Debug.Log ("Clazz : 'Armor'");
+		foreach (KeyValuePair<string, string> k in fields) {
+			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
+			
+		}
+		
+		/* expected fields */
+		uint id = 0;
+		Metadata metadata = null;
+
+		string effectPath = null;
+		string impactEffectPath = null;
+		float damage = 0.0f;
+		float speed = 1.0f;
+		uint impactAbility = 0;
+		Vector3 hitboxSize = new Vector3();
+		float range = 0;
+		float lifeTime = 0;
+
+		// Coming soon !
+		ProjectileTrajectory trajectory = ProjectileTrajectory.Straight;
+		ProjectileCollisionType collision = ProjectileCollisionType.Everything;
+		
+		id = uint.Parse(fields["id"]);
+
+		if(fields.ContainsKey("Metadata")){
+			metadata = getMetadata(fields["Metadata"]);
+		}
+
+		fields.TryGetValue("effectPath", out effectPath);
+		fields.TryGetValue("impactEffectPath", out impactEffectPath);
+
+		if(fields.ContainsKey("damage")){
+			damage = float.Parse(fields["damage"]);
+		}
+		
+		if(fields.ContainsKey("speed")){
+			speed = float.Parse(fields["speed"]);
+		}
+
+		if(fields.ContainsKey("impactAbility")){
+			impactAbility = uint.Parse(fields["impactAbility"]);
+		}
+
+		if(fields.ContainsKey("hitboxSize")){
+			hitboxSize = stringToVector3(fields["hitboxSize"]);
+		}
+
+		if(fields.ContainsKey("range")){
+			range = float.Parse(fields["range"]);
+		}
+
+		if(fields.ContainsKey("lifeTime")){
+			lifeTime = uint.Parse(fields["lifeTime"]);
+		}
+		
+		projectileTable.Add (id, new Projectile(metadata, effectPath, impactEffectPath, damage ,speed ,impactAbility ,hitboxSize, range, lifeTime));
+	}
+
 	private static void pushEffect(Dictionary<string, string> fields){
 		Debug.Log ("Clazz : 'Effect'");
 		foreach (KeyValuePair<string, string> k in fields) {
@@ -283,7 +454,7 @@ public static class DataTables
 		
 		
 		id = uint.Parse(fields["id"]);
-
+		
 		/* Useless
 		if(fields.ContainsKey("Metadata")){
 			metadata = getMetadata(fields["Metadata"]);
@@ -361,7 +532,7 @@ public static class DataTables
 			miscParm = ...
 		}
 		*/
-
+		
 		effectTable.Add (id, new Effect(description, isPositive, flatHP, pctHP, flatMP, pctMP, flatHPRegen, pctHPRegen, flatMPRegen, pctMPRegen, flatMS, pctMS, bonusDamage, bonusAtkSpd, bonusProjDamage, stats, unlockedAbility, misc, miscParm));
 	}
 	
@@ -431,6 +602,16 @@ public static class DataTables
 		
 	}
 
+	private static Vector3 stringToVector3(string pattern){
+		string[] values = pattern.Split (',');
+		if (values.Length != 3) {
+			return new Vector3();
+		}
+		
+		// Puis. , Endu. , Int.
+		return new Vector3(float.Parse(values[0]),float.Parse(values[1]),float.Parse(values[2]));
+	}
+	
 	public static Item GetItem(uint key)
 	{
 		if (itemTable.ContainsKey(key))
@@ -439,12 +620,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<Item> GetItems()
 	{
 		return new List<Item>(itemTable.Values);
 	}
-
+	
 	public static WeaponType GetWeaponType(uint key)
 	{
 		if (weaponTypeTable.ContainsKey(key))
@@ -453,12 +634,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<WeaponType> GetWeaponTypes()
 	{
 		return new List<WeaponType>(weaponTypeTable.Values);
 	}
-
+	
 	public static Monster GetMonster(uint key)
 	{
 		if (monsterTable.ContainsKey(key))
@@ -467,12 +648,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<Monster> GetMonsters()
 	{
 		return new List<Monster>(monsterTable.Values);
 	}
-
+	
 	public static ArmorSet GetArmorSet(uint key)
 	{
 		if (armorSetTable.ContainsKey(key))
@@ -481,12 +662,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<ArmorSet> GetArmorSets()
 	{
 		return new List<ArmorSet>(armorSetTable.Values);
 	}
-
+	
 	public static Projectile GetProjectile(uint key)
 	{
 		if (projectileTable.ContainsKey(key))
@@ -495,12 +676,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<Projectile> GetProjectiles()
 	{
 		return new List<Projectile>(projectileTable.Values);
 	}
-
+	
 	public static Skill GetSkill(uint key)
 	{
 		if (skillTable.ContainsKey(key))
@@ -509,12 +690,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<Skill> GetSkills()
 	{
 		return new List<Skill>(skillTable.Values);
 	}
-
+	
 	public static Spell GetSpell(uint key)
 	{
 		if (spellTable.ContainsKey(key))
@@ -523,12 +704,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<Spell> GetSpells()
 	{
 		return new List<Spell>(spellTable.Values);
 	}
-
+	
 	public static Buff GetBuff(uint key)
 	{
 		if (buffTable.ContainsKey(key))
@@ -537,12 +718,12 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static List<Buff> GetBuffs()
 	{
 		return new List<Buff>(buffTable.Values);
 	}
-
+	
 	public static Effect GetEffect(uint key)
 	{
 		if (effectTable.ContainsKey(key))
@@ -551,7 +732,7 @@ public static class DataTables
 		}
 		return null;
 	}
-
+	
 	public static GameObject GetModel(string name)
 	{
 		if (name != null && modelTable.ContainsKey(name))
