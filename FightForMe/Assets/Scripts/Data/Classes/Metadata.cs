@@ -5,16 +5,15 @@ public enum Quality // It describes quality using rarity adjectives because cons
 {
 	JUNK,		// Gray
 	COMMON,		// White
-	UNCOMMON,	// Green
-	RARE,		// Blue
-	EPIC,		// Purple
-	UNIQUE		// Orange
+	RARE,		// Purple
+	EPIC,		// Orange
+	UNIQUE		// Red and black
 }
 
 public class Metadata
 {
 	private string name;			// Entry name
-	private string description;	// Quite short, generally stats and such
+	private string description;		// Quite short, generally stats and such
 	private string description2;	// May be longer and contain less important information such as lore, jokes, tips...
 	private GameModel model;		// Game model associated with this entry
 	private string iconPath;		// Path to the picture associated with this entry
@@ -31,14 +30,14 @@ public class Metadata
 		this.name = name;
 		this.description = description;
 		this.description2 = description2;
-		if (modelPath != null)
+		//if (modelPath != null)
 		{
 			this.model = new GameModel(modelPath, scale);
 		}
-		else
+		/*else
 		{
 			this.model = null;
-		}
+		}*/
 		this.iconPath = iconPath;
 		this.quality = quality;
 	}

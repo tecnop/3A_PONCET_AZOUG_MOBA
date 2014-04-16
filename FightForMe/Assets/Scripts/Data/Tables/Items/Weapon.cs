@@ -14,14 +14,14 @@ public class Weapon : Item
 
 	public Weapon(Metadata metadata,
 		uint recyclingXP = 100,
-		uint skillID = 0,
+		uint buffID = 0,
 		uint weaponTypeID = 0,
 		float damage = 0.0f,
 		float attackRate = 1.0f,
 		uint projectileID = 0,
 		string effectPath = null,
 		string attackSoundPath = null)
-		: base(metadata, recyclingXP, skillID, true)
+		: base(metadata, recyclingXP, buffID, true)
 	{
 		this.weaponTypeID = weaponTypeID;
 		this.damage = damage;

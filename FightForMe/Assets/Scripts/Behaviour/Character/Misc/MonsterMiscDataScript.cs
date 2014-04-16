@@ -79,5 +79,10 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 
 		_manager.GetGraphicsLoader().LoadModel(monster.GetModel());
 		//_manager.GetCharacterTransform().localScale *= monster.GetScale();
+
+		if (monster.GetModel() != null)
+		{
+			_manager.GetAnimatorScript().transform.position += new Vector3(0.0f, monster.GetModel().GetScale() - 1.0f, 0.0f);
+		}
 	}
 }

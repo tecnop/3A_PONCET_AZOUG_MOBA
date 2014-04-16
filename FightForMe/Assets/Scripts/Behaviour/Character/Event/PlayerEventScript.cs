@@ -58,17 +58,31 @@ public class PlayerEventScript : CharacterEventScript
 		_manager.GetMiscDataScript().GetSpawner().OnSpawnedEntityDeath();
 
 		_manager.GetCombatScript().RemoveBuffs();
+		_manager.GetMovementScript().SetMovementOverride(Vector3.zero, 0.0f, 0, false);
 	}
 
 	public override void OnSpotEntity(GameObject entity)
 	{
-		//Debug.Log(_manager.name + " spotted " + entity.name);
-		//Debug.DrawLine(_manager.GetCharacterTransform().position, entity.transform.position, Color.white, 3.0f);
+		if (_manager == GameData.activePlayer)
+		{
+			CharacterManager hisManager = entity.GetComponent<CharacterManager>();
+			if (hisManager != null)
+			{
+				hisManager.GetGraphicsLoader().gameObject.SetActive(true);
+			}
+		}
 	}
 
 	public override void OnLoseSightOfEntity(GameObject entity)
 	{
-
+		if (_manager == GameData.activePlayer)
+		{
+			CharacterManager hisManager = entity.GetComponent<CharacterManager>();
+			if (hisManager != null)
+			{
+				hisManager.GetGraphicsLoader().gameObject.SetActive(false);
+			}
+		}
 	}
 
 	public override void OnCollision(Collider collider)

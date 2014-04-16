@@ -146,6 +146,18 @@ public class CharacterStatsScript : MonoBehaviour
 			}
 		}
 
+		if (weapon != null)
+		{ // Looks like I forgot to do this?
+			Buff buff = weapon.GetBuff();
+			if (buff != null)
+			{
+				foreach (uint effect in buff.GetEffects())
+				{
+					effects.Add(DataTables.GetEffect(effect));
+				}
+			}
+		}
+
 		if (_manager.GetCameraScript())
 		{ // THIS IS A TERRIBLE WAY TO CHECK IF WE'RE A PLAYER
 			List<Skill> unlockedSkills = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetUnlockedSkills();

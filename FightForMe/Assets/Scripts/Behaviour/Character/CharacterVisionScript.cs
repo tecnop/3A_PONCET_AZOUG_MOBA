@@ -158,6 +158,7 @@ public class CharacterVisionScript : MonoBehaviour
 
 			foreach (GameObject obj in lostEntities)
 			{
+				_manager.GetEventScript().OnLoseSightOfEntity(obj);
 				CharacterManager hisManager = obj.GetComponent<CharacterManager>();
 				if (hisManager != null)
 				{ // Force him to lose us so he doesn't have to run a full update

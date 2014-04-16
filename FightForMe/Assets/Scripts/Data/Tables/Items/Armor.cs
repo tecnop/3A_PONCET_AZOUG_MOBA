@@ -12,11 +12,11 @@ public class Armor : Item
 
 	public Armor(Metadata metadata,
 		uint recyclingXP = 100,
-		uint skillID = 0,
+		uint buffID = 0,
 		ArmorSlot slot = ArmorSlot.TORSO,
 		uint setID = 0,
 		Stats stats = null)
-		: base(metadata, recyclingXP, skillID, false)
+		: base(metadata, recyclingXP, buffID, false)
 	{
 		this.slot = slot;
 		this.setID = setID;

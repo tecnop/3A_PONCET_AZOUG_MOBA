@@ -35,7 +35,12 @@ public abstract class WikiEntry
 		return this.GetDesc() + "\n\n" + metadata.GetDesc2();
 	}
 
-	public GameObject GetModel()
+	public GameModel GetModel()
+	{
+		return metadata.GetModel();
+	}
+
+	/*public GameObject GetModel()
 	{
 		GameModel model = metadata.GetModel();
 		if (model != null)
@@ -53,7 +58,7 @@ public abstract class WikiEntry
 			return model.GetModelPath();
 		}
 		return null;
-	}
+	}*/
 
 	public string GetIcon()
 	{

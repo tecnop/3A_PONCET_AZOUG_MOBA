@@ -59,6 +59,7 @@ public class CharacterManager : MonoBehaviour
 		// THIS ORDER IS IMPORTANT (TO AN EXTENT)
 		if (_camera != null && isLocal)
 		{
+			_graphics.gameObject.SetActive(true);
 			_camera.Initialize(this);
 		}
 		_inventory.Initialize(this);

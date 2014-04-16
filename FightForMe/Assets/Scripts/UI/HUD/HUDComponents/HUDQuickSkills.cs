@@ -27,7 +27,7 @@ public class HUDQuickSkills : HUDComponent
 		{
 			if (GUI.Button(new Rect(0.0f, 40.0f * i, w, 40.0f), skill.GetName()))
 			{
-				_misc.LearnSkill(skill);
+				_misc.LearnSkill(DataTables.GetSkillID(skill));
 			}
 			i++;
 		}
