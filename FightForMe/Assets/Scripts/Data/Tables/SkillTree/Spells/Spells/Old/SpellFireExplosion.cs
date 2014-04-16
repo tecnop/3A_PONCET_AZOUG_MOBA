@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpellFireExplosion: SpellArea
+public class SpellFireExplosion : SpellArea
 {
 	//private Spell burn;
 
@@ -13,7 +13,7 @@ public class SpellFireExplosion: SpellArea
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null)
 	{
-		inflictor.GetCombatScript().CreateAoE(position, Quaternion.identity, 4.0f, 6); // burn
+		inflictor.GetCombatScript().CreateAoE(position, Quaternion.identity, 4.0f, 6, particles: true); // burn
 	}
 
 	public override bool CastingCondition(CharacterManager caster)

@@ -11,7 +11,7 @@ public class SpellExplosion : SpellArea
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null)
 	{
-		inflictor.GetCombatScript().CreateAoE(position, Quaternion.identity, 8.0f, 9);
+		inflictor.GetCombatScript().CreateAoE(position, Quaternion.identity, 8.0f, 9, particles: true);
 	}
 
 	public override bool CastingCondition(CharacterManager caster)

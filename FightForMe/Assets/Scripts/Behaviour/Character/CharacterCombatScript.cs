@@ -47,17 +47,17 @@ public class CharacterCombatScript : MonoBehaviour
 		target.GetStatsScript().LoseHealth(_manager, damage);
 	}
 
-	public HitboxScript CreateAoE(Vector3 position, Quaternion angle, float radius, uint collisionSpellID, float duration = 0.2f, bool makeParent = false)
+	public HitboxScript CreateAoE(Vector3 position, Quaternion angle, float radius, uint collisionSpellID, float duration = 0.2f, bool makeParent = false, bool particles = false)
 	{
 		GameObject sphere = (GameObject)Instantiate(damageSpherePrefab, position, angle);
 		HitboxScript sphereScript = sphere.GetComponent<HitboxScript>();
-		sphereScript.SetUp(_manager, radius, _manager.GetLayer(), collisionSpellID, duration, makeParent);
+		sphereScript.SetUp(_manager, radius, _manager.GetLayer(), collisionSpellID, duration, makeParent, particles);
 		return sphereScript;
 	}
 
-	public HitboxScript CreateAoE(float radius, uint collisionSpellID, float duration = 0.2f)
+	public HitboxScript CreateAoE(float radius, uint collisionSpellID, float duration = 0.2f, bool particles = false)
 	{
-		return CreateAoE(_transform.position, _transform.rotation, radius, collisionSpellID, duration: duration, makeParent: true);
+		return CreateAoE(_transform.position, _transform.rotation, radius, collisionSpellID, duration: duration, makeParent: true, particles: particles);
 	}
 
 	public ProjectileScript CreateProjectile(uint projectileID, Vector3 position, Quaternion angle, uint impactSpellOverride = 0)

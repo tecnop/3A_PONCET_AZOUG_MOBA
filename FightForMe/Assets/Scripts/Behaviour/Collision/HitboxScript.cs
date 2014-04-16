@@ -30,7 +30,7 @@ public class HitboxScript : MonoBehaviour
 		}
 	}
 
-	public void SetUp(CharacterManager inflictor, float radius, int layer, uint collisionSpellID, float timeToLive, bool makeParent)
+	public void SetUp(CharacterManager inflictor, float radius, int layer, uint collisionSpellID, float timeToLive, bool makeParent, bool particles = false)
 	{
 		if (!self)
 		{
@@ -44,6 +44,11 @@ public class HitboxScript : MonoBehaviour
 		if (makeParent)
 		{
 			_transform.parent = inflictor.transform;
+		}
+
+		if (particles)
+		{
+			_particles.Play();
 		}
 
 		this.collisionSpell = DataTables.GetSpell(collisionSpellID);

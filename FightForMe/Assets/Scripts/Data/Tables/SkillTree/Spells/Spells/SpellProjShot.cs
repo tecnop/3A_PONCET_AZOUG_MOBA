@@ -47,7 +47,19 @@ public class SpellProjShot : SpellProj
 	}
 
 	public override bool CastingCondition(CharacterManager caster)
-	{ // TODO: Bow only
-		return true;
+	{ // Projectile weapons only
+		Weapon weapon = caster.GetInventoryScript().GetWeapon();
+		if (weapon != null)
+		{
+			WeaponType type = weapon.GetWeaponType();
+			if (type != null)
+			{
+				if (type.IsRanged())
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
