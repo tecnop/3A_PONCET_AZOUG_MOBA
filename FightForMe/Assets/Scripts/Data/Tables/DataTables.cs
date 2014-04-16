@@ -93,7 +93,7 @@ public static class DataTables
 		spellTable.Add(10, new SpellProjShot(new Metadata("Tir multiple"), 4, 5));
 		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12));
 		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f));
-		spellTable.Add(13, new SpellToggleBuff(new Metadata("Auto brûlure"), 3));
+		spellTable.Add(13, new SpellToggleBuff(new Metadata("Régénération"), 5));
 
 		// Effects
 		effectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
@@ -118,7 +118,8 @@ public static class DataTables
 		// ================================================
 		effectTable.Add(17, new Effect(description: "Tir multiple", isPositive: true, unlockedAbility: 10));
 		effectTable.Add(18, new Effect(description: "Charge", isPositive: true, unlockedAbility: 11));
-		effectTable.Add(19, new Effect(description: "Auto-Brûlure", isPositive: true, unlockedAbility: 13));
+		effectTable.Add(19, new Effect(description: "Régénération", isPositive: true, unlockedAbility: 13));
+		effectTable.Add(20, new Effect(description: "Régénération", isPositive: true, pctHPRegen: 0.02f, bonusDamage: -0.75f, bonusProjDamage: -0.75f));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -128,6 +129,8 @@ public static class DataTables
 		buffTable.Add(3, new Buff(metadata: new Metadata(name: "Brûlure"), effects: new uint[] { 12 }));
 
 		buffTable.Add(4, new Buff(metadata: new Metadata(name: "Relique"), effects: new uint[] { 16 }));
+
+		buffTable.Add(5, new Buff(metadata: new Metadata(name: "HP+"), effects: new uint[] { 20 }));
 
 		// Skills
 		// ============= HARD-CODED REFERENCE =============

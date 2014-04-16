@@ -132,13 +132,13 @@ public class CharacterCombatScript : MonoBehaviour
 			return false;
 		}
 
-		if (!GameData.isServer)
+		if (_manager != GameData.activePlayer)
 		{ // ;_;
 			return true;
 		}
 
 		if (!_manager.GetCameraScript())
-		{ // A monster or another client... TEMPORARY :<
+		{ // A monster... TEMPORARY :<
 			return true;
 		}
 

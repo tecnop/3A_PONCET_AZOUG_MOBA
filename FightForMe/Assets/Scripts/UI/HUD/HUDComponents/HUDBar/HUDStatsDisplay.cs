@@ -5,10 +5,13 @@ public class HUDStatsDisplay : HUDComponent
 {
 	private bool _advancedStats;
 
+	private CharacterStatsScript _stats;
+
 	public HUDStatsDisplay(Rect frame, HUDContainer parent)
 		: base("HUD_stats_display", frame, parent:parent)
 	{
 		_advancedStats = false;
+		_stats = GameData.activePlayer.GetStatsScript();
 	}
 
 	public override void Render()
@@ -24,9 +27,9 @@ public class HUDStatsDisplay : HUDComponent
 			_advancedStats = !_advancedStats;
 		}
 
-		if (!_advancedStats)
+		if (_advancedStats) // Flipping it for now
 		{ // Main stats
-			Stats stats = GameData.activePlayer.GetStatsScript().GetStats();
+			Stats stats = _stats.GetStats();
 			string statsStr = "Endurance: " + stats.GetStrength() +
 				"\nPuissance: " + stats.GetAgility() +
 				"\nIntelligence: " + stats.GetIntelligence();
@@ -35,9 +38,10 @@ public class HUDStatsDisplay : HUDComponent
 		}
 		else
 		{ // Misc stats
-			string statsStr = "Dégâts: " + GameData.activePlayer.GetStatsScript().GetDamage() +
-				"\n" + GameData.activePlayer.GetStatsScript().GetAttackRate() + " attaque(s)/s" +
-				"\nVitesse: " + GameData.activePlayer.GetStatsScript().GetMovementSpeed() + " unités/s";
+			string statsStr = "Dégâts: " + _stats.GetDamage() +
+				"\nDégâts à distance: " + _stats.GetProjDamage() +
+				"\n" + _stats.GetAttackRate() + " attaque(s)/s" +
+				"\nVitesse: " + _stats.GetMovementSpeed() + " unités/s";
 
 			GUI.Label(localRect, statsStr, FFMStyles.centeredText);
 		}
