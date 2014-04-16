@@ -85,11 +85,12 @@ public class NPCAIScript : CharacterInputScript
 				CharacterManager hisManager = ent.GetComponent<CharacterManager>();
 				if (hisManager != null && hisManager != _manager &&
 					hisManager.GetCameraScript() == null &&
-					hisManager.GetLayer() == _manager.GetLayer())
+					hisManager.GetLayer() == _manager.GetLayer() &&
+					Vector3.Distance(_transform.position, hisManager.GetCharacterTransform().position) < 15.0f)
 				{
 					NPCAIScript hisAI = ((NPCAIScript)hisManager.GetInputScript());
 					if (!hisAI.HasAnEnemy())
-					{
+					{ // Maybe it should spread again actually?
 						hisAI.SetTarget(target, false);
 					}
 				}

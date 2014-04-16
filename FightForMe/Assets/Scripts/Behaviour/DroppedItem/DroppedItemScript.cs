@@ -12,6 +12,9 @@ public class DroppedItemScript : MonoBehaviour
 	[SerializeField]
 	private GraphicsLoader _graphics;
 
+	[SerializeField]
+	private NetworkView _networkView;
+
 	// Index of the entry in the item table this entity represents
 	private uint itemID
 	{
@@ -30,23 +33,48 @@ public class DroppedItemScript : MonoBehaviour
 		return itemID;
 	}
 
-	public void SetItemID(uint itemID)
-	{
-		this.itemID = itemID;
+	[RPC]
+	private void _UpdateItemID(int itemID)
+	{ // Server only
+		if (itemID == 0)
+		{ // No conflict found, he simply took our item, we have no reason to be here anymore
+			if (GameData.isOnline)
+			{
+				Network.Destroy(this.gameObject);
+			}
+			else
+			{
+				Destroy(this.gameObject);
+			}
+			return;
+		}
+
+		_networkView.RPC("SetItemID", RPCMode.All, itemID);
 	}
 
-	// Add an "OnClick()" function that displays a menu allowing the user to pick up or recycle the item
+	[RPC]
+	private void SetItemID(int itemID)
+	{
+		this.itemID = (uint)itemID;
+	}
+
+	public void UpdateItemID(uint itemID)
+	{
+		if (GameData.isOnline)
+		{
+			_networkView.RPC("_UpdateItemID", RPCMode.Server, (int)itemID);
+		}
+		else
+		{
+			this._UpdateItemID((int)itemID);
+		}
+	}
+
 	public void OnPickUp(CharacterInventoryScript characterInventory)
 	{
 		uint conflictingItem = characterInventory.PickUpItem(this.itemID);
 
-		if (conflictingItem == 0)
-		{ // No conflict found, he simply took our item, we have no reason to be here anymore
-			Destroy(this.gameObject);
-			return;
-		}
-
-		this.itemID = conflictingItem;
+		UpdateItemID(conflictingItem);
 	}
 
 	public void OnRecycle(PlayerMiscDataScript playerMisc)

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEditorInternal;
 using System.Collections;
+//using UnityEditorInternal;
 
 /*
  * CharacterAnimatorScript.cs
@@ -16,10 +16,10 @@ public class CharacterAnimatorScript : MonoBehaviour
 	[SerializeField]
 	private Animator _animator;
 
-	[SerializeField]
+	/*[SerializeField]
 	private AnimatorController _controller;
 
-	private State attackState;
+	private State attackState;*/
 
 	private bool paused;
 	private float savedSpeed;
@@ -30,7 +30,7 @@ public class CharacterAnimatorScript : MonoBehaviour
 
 		//_controller = _animator.runtimeAnimatorController as AnimatorController;
 
-		int i = 0;
+		/*int i = 0;
 		while (i < _controller.GetLayer(1).stateMachine.stateCount)
 		{
 			State state = _controller.GetLayer(1).stateMachine.GetState(i);
@@ -45,7 +45,7 @@ public class CharacterAnimatorScript : MonoBehaviour
 		if (this.attackState == null)
 		{
 			Debug.LogError("ERROR: Could not find attack state on entity " + _manager.name + "!");
-		}
+		}*/
 	}
 
 	public Animator GetAnimator()
@@ -73,12 +73,13 @@ public class CharacterAnimatorScript : MonoBehaviour
 
 	public void UpdateAttackRate()
 	{
-		this.attackState.speed = _manager.GetStatsScript().GetAttackRate();
+		//this.attackState.speed = _manager.GetStatsScript().GetAttackRate();
 	}
 
 	public void StartAttack()
 	{
 		_manager.GetCharacterAnimator().SetInteger("currentSpell", (int)_manager.GetInputScript().GetCurrentSpell());
+		_animator.speed = _manager.GetStatsScript().GetAttackRate();
 	}
 
 	public void DoAttack()
@@ -88,6 +89,7 @@ public class CharacterAnimatorScript : MonoBehaviour
 
 	public void EndAttack()
 	{ // NOTE: This is not always executed because animations blend into each other
+		_animator.speed = 1.0f;
 	}
 
 	public void UseAbility()

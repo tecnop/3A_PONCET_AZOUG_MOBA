@@ -81,9 +81,12 @@ public class GameMasterScript : MonoBehaviour
 
 	void Update()
 	{
-		if (Time.time - lastSpawnTime > 120.0f)
-		{ // There is probably a better way to run such a simple timer...
-			SpawnCamps();
+		if (GameData.isServer)
+		{
+			if (Time.time - lastSpawnTime > 120.0f)
+			{ // There is probably a better way to run such a simple timer...
+				SpawnCamps();
+			}
 		}
 	}
 

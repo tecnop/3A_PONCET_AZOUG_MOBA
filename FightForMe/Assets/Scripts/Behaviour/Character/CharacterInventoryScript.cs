@@ -14,6 +14,9 @@ public class CharacterInventoryScript : MonoBehaviour
 	[SerializeField]
 	private GameObject _droppedItemPrefab;
 
+	[SerializeField]
+	private NetworkView _networkView;
+
 	private CharacterManager _manager;
 
 	private Transform _transform;
@@ -109,14 +112,14 @@ public class CharacterInventoryScript : MonoBehaviour
 
 		DroppedItemScript droppedItemScript = droppedItem.GetComponent<DroppedItemScript>();
 
-		Item item = DataTables.GetItem((uint)this.items[(int)index]);
+		Item item = DataTables.GetItem(this.items[(int)index]);
 
 		if (!item.IsWeapon())
 		{ // TODO: This is not pretty. Make this pretty.
 			UpdateSetProgress(((Armor)item).GetSetID(), false);
 		}
 
-		droppedItemScript.SetItemID((uint)this.items[(int)index]);
+		droppedItemScript.UpdateItemID(this.items[(int)index]);
 		this.items.RemoveAt((int)index);
 
 		droppedItemScript.GetGraphicsLoader().LoadModel(item.GetModel());
@@ -132,6 +135,28 @@ public class CharacterInventoryScript : MonoBehaviour
 		{
 			DropItem(0);
 		}
+	}
+
+	[RPC]
+	private void UpdateItem(int item, bool remove)
+	{
+		if (remove)
+		{
+			if (this.items.Contains((uint)item))
+			{
+				this.items.Remove((uint)item);
+			}
+			else
+			{
+				Debug.LogError("Tried to remove item " + item + " from " + _manager.name + " but he doesn't have it!");
+			}
+		}
+		else
+		{
+			this.items.Add((uint)item);
+		}
+
+		_manager.GetStatsScript().UpdateStats();
 	}
 
 	public uint PickUpItem(uint item)
@@ -177,10 +202,20 @@ public class CharacterInventoryScript : MonoBehaviour
 
 			this.items.Remove(conflictingItem);
 			Debug.Log(_manager.name + " lost item " + conflictingItem + ": " + DataTables.GetItem(conflictingItem).GetName());
+
+			if (GameData.isOnline)
+			{
+				_networkView.RPC("UpdateItem", RPCMode.Others, (int)conflictingItem, true);
+			}
 		}
 
 		this.items.Add(item);
 		Debug.Log(_manager.name + " gained item " + item + ": " + DataTables.GetItem(item).GetName());
+
+		if (GameData.isOnline)
+		{
+			_networkView.RPC("UpdateItem", RPCMode.Others, (int)item, false);
+		}
 
 		if (!newItem.IsWeapon())
 		{

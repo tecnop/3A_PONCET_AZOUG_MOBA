@@ -135,7 +135,6 @@
      <Compile Include="Assets\Scripts\GameData\TileManager.cs" />
      <Compile Include="Assets\Scripts\Misc\Pathfinding.cs" />
      <Compile Include="Assets\Scripts\Misc\Utils.cs" />
-     <Compile Include="Assets\Scripts\UI\FFMStyles.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponent.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDBar.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDHealthBar.cs" />
@@ -158,6 +157,8 @@
      <Compile Include="Assets\Scripts\UI\HUD\HUDRenderer.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiManager.cs" />
+     <Compile Include="Assets\Scripts\UI\Misc\FFMStyles.cs" />
+     <Compile Include="Assets\Scripts\UI\Misc\MetadataDisplayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -44,21 +44,21 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		LearnSkill(firstSkill); // And learn it
 	}
 
-	public void LearnSkill(Skill skill)
+	private bool LearnSkill(Skill skill)
 	{
 		if (skill == null)
 		{ // Wat
-			return;
+			return false;
 		}
 
 		if (skillPoints == 0)
 		{ // Not yet!
-			return;
+			return false;
 		}
 
 		if (!availableSkills.Contains(skill))
 		{ // Can't learn it!
-			return;
+			return false;
 		}
 
 		unlockedSkills.Add(skill);
@@ -81,11 +81,26 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		{
 			AssignSpellToFreeSlot(skill.GetEffect().GetUnlockedAbility());
 		}
+
+		return true;
+	}
+
+	[RPC]
+	public void _LearnSkill(int skillID)
+	{
+		unlockedSkills.Add(DataTables.GetSkill((uint)skillID));
+		_manager.GetStatsScript().UpdateStats();
 	}
 
 	public void LearnSkill(uint skillID)
 	{
-		LearnSkill(DataTables.GetSkill(skillID));
+		if (LearnSkill(DataTables.GetSkill(skillID)))
+		{
+			if (GameData.isOnline)
+			{
+				_networkView.RPC("_LearnSkill", RPCMode.Others, (int)skillID);
+			}
+		}
 	}
 
 	public List<Skill> GetUnlockedSkills()

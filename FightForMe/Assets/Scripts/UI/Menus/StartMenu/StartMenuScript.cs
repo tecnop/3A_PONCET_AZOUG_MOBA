@@ -5,7 +5,10 @@ using System.Text.RegularExpressions; //<- Regexp ! hehehe
 public class StartMenuScript : MonoBehaviour {
 	
 	[SerializeField]
-	string _MainSceneName;
+	private string _mode1Scene;
+
+	[SerializeField]
+	private string _mode2Scene;
 	
 	private Animator planeAnimator;
 
@@ -73,12 +76,14 @@ public class StartMenuScript : MonoBehaviour {
 
 		GUILayout.BeginArea (new Rect (mainScreenLeft, (Screen.height / 6), boxMultiWidth, boxMultiHeight));
 
+		GameData.gameMode = (GameMode)GUILayout.SelectionGrid((int)GameData.gameMode, new string[] { "Suprématie", "Course à la Gloire" }, 2);
+
 		GUILayout.Label ("Multi");
 		
 		if (GUILayout.Button("Héberger")) {
 			gameType = GameType.ListenServer;
-			waitingForPlayer = true;
-			//planeAnimator.SetBool("launchGame", true);
+			//waitingForPlayer = true;
+			planeAnimator.SetBool("launchGame", true);
 		}
 		
 		if(GUILayout.Button("Rejoindre")) {
@@ -135,7 +140,14 @@ public class StartMenuScript : MonoBehaviour {
 	{
 		GameData.wentThroughMenu = true;
 		GameData.gameType = gameType;
-		Application.LoadLevel (_MainSceneName);
+		if (GameData.gameMode == GameMode.KillTheLord)
+		{
+			Application.LoadLevel(_mode1Scene);
+		}
+		else if (GameData.gameMode == GameMode.RaceForGlory)
+		{
+			Application.LoadLevel(_mode2Scene);
+		}
 	}
 	
 	void quit()
