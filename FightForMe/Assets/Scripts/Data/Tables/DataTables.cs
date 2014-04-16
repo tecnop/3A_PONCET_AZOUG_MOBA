@@ -5,6 +5,11 @@ using System.IO;
 
 public static class DataTables
 { // NOTE: All table IDs start at 1, 0 is used as a null value
+
+	// Parsing params.
+	static string configPath = "../Configs/main.cfg";
+	static string currentLang = "fr";
+
 	// Entities
 	static Dictionary<uint, Monster> monsterTable = new Dictionary<uint, Monster>();
 	static Dictionary<uint, Projectile> projectileTable = new Dictionary<uint, Projectile>();
@@ -60,6 +65,8 @@ public static class DataTables
 	public static void updateTables()
 	{
 		clearTables();
+		//fillTables();
+
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
 		// 1 - Resources
 		// 2 - Spells
@@ -196,6 +203,232 @@ public static class DataTables
 		// ============= HARD-CODED REFERENCE =============
 		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 5.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
 		// ================================================
+	}
+
+	public static void fillTables(){
+		FJsonParser parser = FJsonParser.Instance ();
+		parser.parseFile (configPath);
+		foreach(Clazz ns in parser.getResults()){
+			if(ns.getName() == "monster"){
+				pushMonster(ns.getFields());
+			} else
+			if (ns.getName() == "effect"){
+				pushEffect(ns.getFields());
+			} else {
+				Debug.LogWarning("Nothing found for parsed class '" + ns.getName() + "'");
+			}
+		}
+		
+	}
+	
+	private static void pushMonster(Dictionary<string, string> fields){
+		Debug.Log ("Clazz : 'Monster'");
+		foreach (KeyValuePair<string, string> k in fields) {
+			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
+			
+		}
+		/* expected fields */
+		uint id = 0;
+		Metadata metadata = null;
+		AIType behaviour = AIType.defensive;
+		uint[] items = null;
+		uint[] buffs = null;
+		
+		id = uint.Parse(fields["id"]);
+		
+		if(fields.ContainsKey("Metadata")){
+			metadata = getMetadata(fields["Metadata"]);
+		}
+		if(fields.ContainsKey("behaviour")){
+			behaviour = (AIType)int.Parse(fields["behaviour"]);
+		}
+		if(fields.ContainsKey("items")){
+			items = stringToUintArray(fields["items"]);
+		}
+		if(fields.ContainsKey("buffs")){
+			buffs = stringToUintArray(fields["buffs"]);
+		}
+		
+		monsterTable.Add (id, new Monster (metadata, behaviour, items, buffs));
+	}
+	
+	private static void pushEffect(Dictionary<string, string> fields){
+		Debug.Log ("Clazz : 'Effect'");
+		foreach (KeyValuePair<string, string> k in fields) {
+			Debug.Log ("Key : '" + k.Key + "' Value : '" + k.Value + "'");
+			
+		}
+		/* expected fields */
+		uint id = 0;
+		Metadata metadata = null;
+		string description = ""; // Helper for the effect, not the metadata description
+		bool isPositive = true;
+		float flatHP = 0.0f;
+		float pctHP = 0.0f;
+		float flatMP = 0.0f;
+		float pctMP = 0.0f;
+		float flatHPRegen = 0.0f;
+		float pctHPRegen = 0.0f;
+		float flatMPRegen = 0.0f;
+		float pctMPRegen = 0.0f;
+		float flatMS = 0.0f;
+		float pctMS = 0.0f;
+		float bonusDamage = 0.0f;
+		float bonusAtkSpd = 0.0f;
+		float bonusProjDamage = 0.0f;
+		Stats stats = null;
+		uint unlockedAbility = 0;
+		MiscEffect misc = MiscEffect.NONE;
+		float miscParm = 0.0f;
+		
+		
+		id = uint.Parse(fields["id"]);
+
+		/* Useless
+		if(fields.ContainsKey("Metadata")){
+			metadata = getMetadata(fields["Metadata"]);
+		}
+		*/
+		
+		fields.TryGetValue ("description", out description);
+		
+		if(fields.ContainsKey("isPositive")){
+			isPositive = int.Parse(fields["isPositive"]) == 0 ? false : true;
+		}
+		if(fields.ContainsKey("flatHP")){
+			flatHP = float.Parse(fields["flatHP"]);
+		}
+		
+		if(fields.ContainsKey("pctHP")){
+			pctHP = float.Parse(fields["pctHP"]);
+		}
+		
+		if(fields.ContainsKey("flatMP")){
+			flatMP = float.Parse(fields["flatMP"]);
+		}
+		
+		if(fields.ContainsKey("pctMP")){
+			pctMP = float.Parse(fields["pctMP"]);
+		}
+		
+		if(fields.ContainsKey("flatHPRegen")){
+			flatHPRegen = float.Parse(fields["flatHPRegen"]);
+		}
+		
+		if(fields.ContainsKey("pctHPRegen")){
+			pctHPRegen = float.Parse(fields["pctHPRegen"]);
+		}
+		
+		if(fields.ContainsKey("flatMPRegen")){
+			flatMPRegen = float.Parse(fields["flatMPRegen"]);
+		}
+		
+		if(fields.ContainsKey("pctMPRegen")){
+			pctMPRegen = float.Parse(fields["pctMPRegen"]);
+		}
+		
+		if(fields.ContainsKey("flatMS")){
+			flatMS = float.Parse(fields["flatMS"]);
+		}
+		
+		if(fields.ContainsKey("pctMS")){
+			pctMS = float.Parse(fields["pctMS"]);
+		}
+		
+		if(fields.ContainsKey("bonusDamage")){
+			bonusDamage = float.Parse(fields["bonusDamage"]);
+		}
+		
+		if(fields.ContainsKey("bonusAtkSpd")){
+			bonusAtkSpd = float.Parse(fields["bonusAtkSpd"]);
+		}
+		
+		if(fields.ContainsKey("bonusProjDamage")){
+			bonusProjDamage = float.Parse(fields["bonusProjDamage"]);
+		}
+		
+		if(fields.ContainsKey("stats")){
+			stats = stringToStats(fields["stats"]);
+		}
+		/* // Coming soon !
+		if(fields.ContainsKey("unlockedAbility")){ 
+
+		}
+		if(fields.ContainsKey("misc")){
+
+		}
+		if(fields.ContainsKey("miscParm")){
+			miscParm = ...
+		}
+		*/
+
+		effectTable.Add (id, new Effect(description, isPositive, flatHP, pctHP, flatMP, pctMP, flatHPRegen, pctHPRegen, flatMPRegen, pctMPRegen, flatMS, pctMS, bonusDamage, bonusAtkSpd, bonusProjDamage, stats, unlockedAbility, misc, miscParm));
+	}
+	
+	private static Metadata getMetadata(string pattern){
+		/* Expected fields */
+		string name = null;
+		string description = null;
+		string description2 = null;
+		string modelPath = null;
+		float scale = 1.0f;
+		string iconPath = null;
+		Quality quality = Quality.COMMON;
+		
+		
+		
+		FJsonParser parser = FJsonParser.Instance ();
+		parser.parseString (pattern);
+		Dictionary<string, string> fields = null;
+		Clazz defaultLang = null;
+		foreach(Clazz c in parser.getResults()){
+			if(null == defaultLang)
+				defaultLang = c;
+			if(c.getName() == currentLang)
+				fields = c.getFields();
+		}
+		if (null == fields)
+			fields = defaultLang.getFields ();
+		
+		fields.TryGetValue ("name", out name);
+		fields.TryGetValue ("description", out description);
+		fields.TryGetValue ("description2", out description2);
+		fields.TryGetValue ("modelPath", out modelPath);
+		fields.TryGetValue ("iconPath", out iconPath);
+		
+		if(fields.ContainsKey("scale")){
+			scale = float.Parse(fields["scale"]);
+		}
+		
+		if(fields.ContainsKey("quality")){
+			quality = (Quality)int.Parse(fields["quality"]);
+		}
+		
+		return new Metadata (name, description, description2, modelPath,  scale, iconPath, quality);
+	}
+	
+	private static uint[] stringToUintArray(string pattern){
+		string[] values = pattern.Split (',');
+		uint[] res = new uint[values.Length];
+		int i = 0;
+		foreach(string s in values){
+			res[i] = uint.Parse(s);
+			i++;
+		}
+		
+		return res;
+		
+	}
+	
+	private static Stats stringToStats(string pattern){
+		string[] values = pattern.Split (',');
+		if (values.Length != 3) {
+			return null;
+		}
+		
+		// Puis. , Endu. , Int.
+		return new Stats(uint.Parse(values[0]),uint.Parse(values[1]),uint.Parse(values[2]));
+		
 	}
 
 	public static Item GetItem(uint key)
