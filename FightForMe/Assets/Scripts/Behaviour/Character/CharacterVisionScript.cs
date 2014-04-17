@@ -82,7 +82,7 @@ public class CharacterVisionScript : MonoBehaviour
 
 		if (newTile == null)
 		{ // Use that to make projectiles disappear maybe?
-			Debug.LogError("ERROR: " + _manager.name + " is not on a tile!");
+			Debug.LogWarning(_manager.name + " is not on a tile! His coordinates are " + _transform.position);
 			return;
 		}
 

@@ -60,7 +60,15 @@ public class NPCAIScript : CharacterInputScript
 			{
 				if (type.IsRanged())
 				{
-					this.approachRange = 15.0f;
+					Projectile proj = weapon.GetProjectile();
+					if (proj != null)
+					{
+						this.approachRange = proj.GetSpeed() / 3.0f;
+					}
+					else
+					{ // Well... it's still a ranged weapon so...
+						this.approachRange = 15.0f;
+					}
 					return;
 				}
 			}

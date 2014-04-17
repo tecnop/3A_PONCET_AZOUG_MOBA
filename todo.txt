@@ -1,0 +1,53 @@
+Amélioration de l'ItemCreator pour supporter la création de sorts, compétences, etc.
+
+Implémentation graphique de l'arbre des compétences
+
+Gestion d'armes jumelles (une dans chaque main)
+
+Wiki in-game à la Civilization (structure déjà présente)
+
+Génération automatique de texte descriptif des stats d'un objet, sort, etc (système de parsing de tag en réalisation)
+
+Création des modèles, amélioration des animations
+
+Recréation de la première carte
+
+Création d'une minimap non-intégrée à l'HUD (une carte consultable in-game, présentant uniquement la position du joueur)
+
+Gestion de la recherche de partie
+
+Ajout d'entrées dans la configuration par défaut des tables de données
+
+Gestion du transfert de la configuration actuelle des tables de données en mode non-sécurisé
+
+Résolution du problème de vitesse d'animation variable
+
+Implémentation graphique du brouillard de guerre
+
+Assouplissement de la structure pour permettre de réduire le nombre d'entrées codées en dur
+
+Reécriture des anciens sorts avec le nouveau framework
+
+Création d'une fenêtre d'inventaire
+
+Gestion d'info-bulles lorsque la souris passe sur un buff, un monstre, etc.
+
+Affichage de barres de vie, d'état et du nom des autres entités
+
+Réorganisation du rectangle affichant les statistiques pour permettre d'avoir toutes les stats à l'écran en même temps
+
+Amélioration de l'IA des monstres pour rendre leur mouvement plus naturel et gérer la perte de vision de l'ennemi
+
+Mise en place des parties contre une IA
+
+Meilleur gestion de la reconnexion (resynchronisation de tous les scripts)
+
+Amélioration de la gestion du scale sur les monstres
+
+La porte de l'antre de Hasnor doit se fermer lorsqu'un joueur y rentre, Hasnor ne devrait pas pouvoir sortir
+
+Bloquer les clics de souris sur l'interface (empêcher les intéractions avec le jeu)
+
+Petit bug de vision: un ennemi de la deuxième map n'est pas correctement affecté à une tile de la map (à vérifier)
+
+Résolution des petits problèmes d'interfaces (emplacements de compétences à taille fixe, etc)

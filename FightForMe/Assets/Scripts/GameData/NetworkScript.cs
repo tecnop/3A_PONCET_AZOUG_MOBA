@@ -49,6 +49,8 @@ public class NetworkScript : MonoBehaviour
 
 	void OnPlayerConnected(NetworkPlayer player)
 	{
+		_networkView.RPC("VerifyGameMode", player, (int)GameData.gameMode);
+
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			PauseGame(false);
@@ -82,6 +84,16 @@ public class NetworkScript : MonoBehaviour
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			PauseGame(false);
+		}
+	}
+
+	[RPC]
+	private void VerifyGameMode(int gameMode)
+	{
+		if (GameData.gameMode != (GameMode)gameMode)
+		{ // Whoops!
+			GameData.networkError = NetworkConnectionError.IncorrectParameters; // Kind of a hack?
+			Network.Disconnect();
 		}
 	}
 

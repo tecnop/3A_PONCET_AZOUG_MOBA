@@ -57,6 +57,11 @@ public abstract class CharacterInputScript : MonoBehaviour
 	[RPC]
 	private void _UpdateInput(Vector3 dirInput, Vector3 lookPos, int spell)
 	{ // Put in a single function for lighter bandwidth usage
+		if (!_manager)
+		{ // I'm still not sure why this happens
+			return;
+		}
+
 		this.directionalInput = dirInput;
 		this.lookPosition = lookPos;
 		this.currentSpell = (uint)spell;

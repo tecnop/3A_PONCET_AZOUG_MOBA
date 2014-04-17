@@ -124,6 +124,7 @@ public static class DataTables
 		effectTable.Add(18, new Effect(description: "Charge", isPositive: true, unlockedAbility: 11));
 		effectTable.Add(19, new Effect(description: "Régénération", isPositive: true, unlockedAbility: 13));
 		effectTable.Add(20, new Effect(description: "Régénération", isPositive: true, pctHPRegen: 0.02f, bonusDamage: -0.75f, bonusProjDamage: -0.75f));
+		effectTable.Add(21, new Effect(description: "Invincible", isPositive: true, misc: MiscEffect.INVULNERABLE));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -137,6 +138,10 @@ public static class DataTables
 		buffTable.Add(5, new Buff(metadata: new Metadata(name: "HP+"), effects: new uint[] { 20 }));
 
 		buffTable.Add(6, new Buff(metadata: new Metadata(name: "Banlieue"), effects: new uint[] { 9, 3 }));
+
+		// ============= HARD-CODED REFERENCE =============
+		buffTable.Add(7, new Buff(metadata: new Metadata(name: "Invincible"), effects: new uint[] { 21 }));
+		// ================================================
 
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
@@ -197,11 +202,11 @@ public static class DataTables
 		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000));
 
 		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem"), damage: 35.0f, attackRate: 1.2f));
-		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites"), weaponTypeID:4, damage: 25.0f, attackRate: 1.5f));
+		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites"), weaponTypeID: 4, damage: 25.0f, attackRate: 1.5f));
 
-		itemTable.Add(19, new Armor(metadata: new Metadata(name: "Sweat et jeans troués"), slot: ArmorSlot.BODY, setID: 3));
-		itemTable.Add(20, new Armor(metadata: new Metadata(name: "Casquette retournée"), slot: ArmorSlot.HEAD, setID: 3));
-		itemTable.Add(21, new Armor(metadata: new Metadata(name: "Les niques"), slot: ArmorSlot.FEET, setID: 3));
+		itemTable.Add(19, new Armor(metadata: new Metadata(name: "Sweat et jeans troués"), slot: ArmorSlot.BODY, setID: 3, stats: new Stats(5, 10, 0)));
+		itemTable.Add(20, new Armor(metadata: new Metadata(name: "Casquette retournée"), slot: ArmorSlot.HEAD, setID: 3, stats: new Stats(5, 10, 0)));
+		itemTable.Add(21, new Armor(metadata: new Metadata(name: "Les niques"), slot: ArmorSlot.FEET, setID: 3, stats: new Stats(5, 10, 0)));
 
 		// Monsters
 
@@ -210,7 +215,7 @@ public static class DataTables
 		// ================================================
 
 		monsterTable.Add(2, new Monster(metadata: new Metadata(name: "Zombie", modelPath: "Cylinder"), behaviour: AIType.defensive, items: new uint[] { 9 }));
-		monsterTable.Add(3, new Monster(metadata: new Metadata(name: "Ratus"), behaviour: AIType.defensive, items: new uint[] { 13 }));
+		monsterTable.Add(3, new Monster(metadata: new Metadata(name: "Ratus", scale: 0.5f), behaviour: AIType.defensive, items: new uint[] { 13 }));
 		monsterTable.Add(4, new Monster(metadata: new Metadata(name: "Archet"), behaviour: AIType.defensive, items: new uint[] { 15 }));
 		monsterTable.Add(5, new Monster(metadata: new Metadata(name: "Snaille'p"), behaviour: AIType.defensive, items: new uint[] { 14 }));
 
@@ -222,10 +227,12 @@ public static class DataTables
 		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 2.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
 		// ================================================
 
-		monsterTable.Add(9, new Monster(metadata: new Metadata(name: "Jean Paul"), behaviour: AIType.defensive, items: new uint[] { 14 }));
-		monsterTable.Add(10, new Monster(metadata: new Metadata(name: "Jacky"), behaviour: AIType.aggressive, items: new uint[] { 14 }));
-		monsterTable.Add(11, new Monster(metadata: new Metadata(name: "Le jeune de banlieue"), behaviour: AIType.aggressive, items: new uint[] { 14 }));
-		monsterTable.Add(12, new Monster(metadata: new Metadata(name: "La Co"), behaviour: AIType.aggressive, items: new uint[] { 14 }));
+		monsterTable.Add(9, new Monster(metadata: new Metadata(name: "Jean Paul"), behaviour: AIType.defensive, items: new uint[] { 17 }));
+		monsterTable.Add(10, new Monster(metadata: new Metadata(name: "Jacky"), behaviour: AIType.aggressive, items: new uint[] { 19, 20, 21 }));
+
+		monsterTable.Add(11, new Monster(metadata: new Metadata(name: "Le veau doux"), behaviour: AIType.aggressive, items: new uint[] { 18 }));
+
+		monsterTable.Add(12, new Monster(metadata: new Metadata(name: "Un monstre")));
 	}
 
 	public static void fillTables()
@@ -314,7 +321,7 @@ public static class DataTables
 		Metadata metadata = null;
 
 		uint recyclingXP = 100;
-		uint skillID = 0;
+		uint buffID = 0;
 		uint weaponTypeID = 0;
 		float damage = 0.0f;
 		float attackRate = 1.0f;
@@ -331,9 +338,9 @@ public static class DataTables
 			metadata = getMetadata(fields["Metadata"]);
 		}
 
-		if (fields.ContainsKey("skillID"))
+		if (fields.ContainsKey("buffID"))
 		{
-			skillID = uint.Parse(fields["skillID"]);
+			buffID = uint.Parse(fields["buffID"]);
 		}
 		if (fields.ContainsKey("weaponTypeID"))
 		{
@@ -361,7 +368,7 @@ public static class DataTables
 		fields.TryGetValue ("effectPath", out effectPath);
 		fields.TryGetValue ("attackSoundPath", out attackSoundPath);
 		*/
-		itemTable.Add(id, new Weapon(metadata, recyclingXP, skillID, weaponTypeID, damage, attackRate, projectileID, effectPath, attackSoundPath));
+		itemTable.Add(id, new Weapon(metadata, recyclingXP, buffID, weaponTypeID, damage, attackRate, projectileID, effectPath, attackSoundPath));
 	}
 
 	private static void pushArmor(Dictionary<string, string> fields)
@@ -377,7 +384,7 @@ public static class DataTables
 		uint id = 0;
 		Metadata metadata = null;
 		uint recyclingXP = 100;
-		uint skillID = 0;
+		uint buffID = 0;
 		ArmorSlot slot = ArmorSlot.BODY;
 		uint setID = 0;
 		Stats stats = null;
@@ -394,9 +401,9 @@ public static class DataTables
 			recyclingXP = uint.Parse(fields["recyclingXP"]);
 		}
 
-		if (fields.ContainsKey("skillID"))
+		if (fields.ContainsKey("buffID"))
 		{
-			skillID = uint.Parse(fields["skillID"]);
+			buffID = uint.Parse(fields["buffID"]);
 		}
 
 		if (fields.ContainsKey("slot"))
@@ -414,7 +421,7 @@ public static class DataTables
 			stats = stringToStats(fields["stats"]);
 		}
 
-		itemTable.Add(id, new Armor(metadata, recyclingXP, skillID, slot, setID, stats));
+		itemTable.Add(id, new Armor(metadata, recyclingXP, buffID, slot, setID, stats));
 	}
 
 	private static void pushProjectile(Dictionary<string, string> fields)
@@ -483,7 +490,7 @@ public static class DataTables
 			lifeTime = uint.Parse(fields["lifeTime"]);
 		}
 
-		projectileTable.Add(id, new Projectile(metadata, effectPath, impactEffectPath, damage, speed, impactAbility, hitboxSize, range, lifeTime));
+		projectileTable.Add(id, new Projectile(metadata, effectPath, impactEffectPath, damage, speed, impactAbility, hitboxSize, range, lifeTime, trajectory, collision));
 	}
 
 	private static void pushEffect(Dictionary<string, string> fields)
@@ -496,7 +503,6 @@ public static class DataTables
 		}
 		/* expected fields */
 		uint id = 0;
-		Metadata metadata = null;
 		string description = ""; // Helper for the effect, not the metadata description
 		bool isPositive = true;
 		float flatHP = 0.0f;

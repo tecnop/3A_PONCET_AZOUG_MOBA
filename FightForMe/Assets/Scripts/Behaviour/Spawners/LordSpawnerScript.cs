@@ -73,7 +73,7 @@ public class LordSpawnerScript : SpawnerScript
 
 		if (GameData.gameMode != GameMode.KillTheLord)
 		{ // You can't kill him in any other mode
-			//manager.GetCombatScript().ReceiveBuff(manager, buffGoesHere);
+			manager.GetCombatScript().ReceiveBuff(manager, 7);
 		}
 	}
 

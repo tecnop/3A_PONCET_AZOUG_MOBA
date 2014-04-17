@@ -1,16 +1,26 @@
+ItemCreator, Configs/: Thomas P.
+
 Depuis FightForMe/Assets/:
 
 Animations: Thomas P.
+Editor: Thomas A.
 Imports: Thomas P.
-Materials: Thomas P.
+Materials: Thomas P., détails par Thomas A.
 Models: Thomas A.
 Prefabs: Thomas A.
 
 Scenes/:
-	PathfindingTest: Thomas A.
-	startMenu: Thomas P.
-	GameplayTest: Thomas P., détails par Thomas A.
+	startMenu: Thomas P., mise à jour par Thomas A.
+	Test/: Thomas P. et Thomas A.
+	Gamemode1/: Thomas P., détails par Thomas A.
+	Gamemode2/: Thomas A.
 
 Scripts/:
-	Thomas P. : Réalisation du dossier UI/Menus/StartMenu, des prototypes de Data/Tables, mise à jour de Behaviour/Character/CharacterAnimatorScript.cs, remplissage de Data/Tables/DataTables.cs
+	Thomas P. :
+		UI/Menus/StartMenu/StartMenuScript.cs: Première version, légèrement modifiée depuis
+		Data/Tables: Prototypes
+		Behaviour/Character/CharacterAnimatorScript.cs: Mise à jour
+		Data/Tables/DataTables.cs: Remplissage, parsing
+		Data/Classes/Parser/: Création et mise à jour
+
 	Thomas A. : Le reste
