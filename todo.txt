@@ -51,3 +51,5 @@ Bloquer les clics de souris sur l'interface (empêcher les intéractions avec le j
 Petit bug de vision: un ennemi de la deuxième map n'est pas correctement affecté à une tile de la map (à vérifier)
 
 Résolution des petits problèmes d'interfaces (emplacements de compétences à taille fixe, etc)
+
+Passage de la map de vision en ScriptableObject

@@ -162,6 +162,11 @@ public class CharacterCombatScript : MonoBehaviour
 			}
 		}
 
+		if (!spell.CastingCondition(_manager))
+		{ // We don't meet some specific criteria
+			return false;
+		}
+
 		return true;
 	}
 

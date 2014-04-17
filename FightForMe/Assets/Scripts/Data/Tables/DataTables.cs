@@ -94,7 +94,7 @@ public static class DataTables
 		spellTable.Add(7, new SpellGrenade());
 		spellTable.Add(8, new SpellExplosion());
 		spellTable.Add(9, new SpellKnockback());
-		spellTable.Add(10, new SpellProjShot(new Metadata("Tir multiple"), 4, 5));
+		spellTable.Add(10, new SpellProjShot(new Metadata("Tir multiple"), 4, 5, impactSpellOverride: 3));
 		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12));
 		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f));
 		spellTable.Add(13, new SpellToggleBuff(new Metadata("Régénération"), 5));
@@ -163,7 +163,7 @@ public static class DataTables
 		skillTable.Add(11, new Skill(metadata: new Metadata(name: "Sort: Grenade"), color: SkillColor.B, effect: 15, neighbours: new uint[] { 10 }));
 		skillTable.Add(12, new Skill(metadata: new Metadata(name: "Sort: Multi-tir"), color: SkillColor.G, effect: 17, neighbours: new uint[] { 6 }));
 		skillTable.Add(13, new Skill(metadata: new Metadata(name: "Sort: Charge"), color: SkillColor.R, effect: 18, neighbours: new uint[] { 5, 14 }));
-		skillTable.Add(14, new Skill(metadata: new Metadata(name: "Sort: Auto-Brûlure"), color: SkillColor.R, effect: 19, neighbours: new uint[] { 13 }));
+		skillTable.Add(14, new Skill(metadata: new Metadata(name: "Sort: Régénération"), color: SkillColor.R, effect: 19, neighbours: new uint[] { 13 }));
 
 		// Projectiles
 		projectileTable.Add(1, new Projectile(metadata: new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
