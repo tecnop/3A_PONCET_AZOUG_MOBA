@@ -26,11 +26,13 @@ public class NetworkScript : MonoBehaviour
 
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{
+			GameData.pauseMessage = PauseMessage.SERVER_INITIALIZING;
 			Network.InitializeSecurity();
-			Network.InitializeServer((int)GameData.expectedConnections, 6600, Network.HavePublicAddress());
+			Network.InitializeServer((int)GameData.expectedConnections, 6600, !Network.HavePublicAddress());
 		}
 		else if (GameData.gameType == GameType.Client)
 		{
+			GameData.pauseMessage = PauseMessage.CLIENT_CONNECT;
 			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600); // 127.0.0.1
 		}
 		else
@@ -61,6 +63,7 @@ public class NetworkScript : MonoBehaviour
 	{
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
+			GameData.pauseMessage = PauseMessage.LOST_CLIENT;
 			PauseGame(true);
 		}
 	}
@@ -70,11 +73,22 @@ public class NetworkScript : MonoBehaviour
 		GameData.networkError = error;
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{ // Force NAT off maybe? So far it's the only thing that's been an issue for the server
-			Network.InitializeServer((int)GameData.expectedConnections, 6600, Network.HavePublicAddress());
+			GameData.pauseMessage = PauseMessage.SERVER_FAILURE;
+			Network.InitializeServer((int)GameData.expectedConnections, 6600, false);
 		}
 		else if (GameData.gameType == GameType.Client)
 		{
 			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
+		}
+	}
+
+	void OnServerInitialized()
+	{ // Make sure it resets the display if an error occured before
+		GameData.networkError = NetworkConnectionError.NoError;
+		GameData.pauseMessage = PauseMessage.SERVER_WAITING;
+		if (Network.connections.Length == GameData.expectedConnections)
+		{
+			PauseGame(false);
 		}
 	}
 
@@ -92,7 +106,7 @@ public class NetworkScript : MonoBehaviour
 	{
 		if (GameData.gameMode != (GameMode)gameMode)
 		{ // Whoops!
-			GameData.networkError = NetworkConnectionError.IncorrectParameters; // Kind of a hack?
+			GameData.pauseMessage = PauseMessage.INCORRECT_GAMEMODE;
 			Network.Disconnect();
 		}
 	}
@@ -102,10 +116,12 @@ public class NetworkScript : MonoBehaviour
 		if (info == NetworkDisconnection.LostConnection)
 		{ // Timed out, try to reconnect
 			PauseGame(true);
+			GameData.pauseMessage = PauseMessage.CLIENT_RECONNECT;
 			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
 		}
 		else
 		{ // Left or the server shut down... give him the option to leave
+			GameData.pauseMessage = PauseMessage.CLIENT_DROP;
 			PauseGame(true);
 		}
 	}
@@ -113,6 +129,7 @@ public class NetworkScript : MonoBehaviour
 	//[RPC]
 	private void PauseGame(bool state)
 	{ // This does not need to be RPC because everyone should execute it when needed
+		if (!state) GameData.pauseMessage = PauseMessage.DEFAULT; // Reset it
 		GameData.gamePaused = state;
 	}
 }

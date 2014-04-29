@@ -12,10 +12,7 @@ public enum HUDMenu
 
 public enum HUDState
 {
-	Default,
-	Won,		// FOR NOW: Player 1 won
-	Lost,		// FOR NOW: Player 2 won
-	Leaving,	// Asking for confirmation to leave
+	Default,	// Showing the HUD
 	Wiki		// Showing the wiki
 }
 
@@ -33,6 +30,8 @@ public static class HUDRenderer
 	private static HUDDroppedItemWindow _droppedItem;
 
 	private static DroppedItemScript _selectedItem;
+
+	private static bool isLeaving;
 
 	public static void Initialize()
 	{
@@ -85,19 +84,18 @@ public static class HUDRenderer
 		{
 			WikiManager.DrawWiki();
 		}
-		else if ((_state == HUDState.Default || _state == HUDState.Leaving) && !GameData.gamePaused)
+		else if (GameData.gamePaused)
+		{
+			DrawPauseMenu(new Rect(0.25f * w, 0.25f * h, 0.5f * w, 0.5f * h));
+		}
+		else
 		{
 			DrawExitButton();
 				
-
 			if (hudRoot.enabled)
 			{
 				hudRoot.Render();
 			}
-		}
-		else
-		{
-			DrawPauseMenu(new Rect(0.25f * w, 0.25f * h, 0.5f * w, 0.5f * h));
 		}
 	}
 
@@ -167,26 +165,72 @@ public static class HUDRenderer
 
 		// Background
 		GUI.Box(localRect, GUIContent.none);
+		
+		string message = "???";
 
-		if (_state == HUDState.Won)
+		if (GameData.gamePaused)
 		{
-			GUI.Box(localRect, "Le joueur 1 a gagné!", FFMStyles.centeredText);
-		}
-		else if (_state == HUDState.Lost)
-		{
-			GUI.Box(localRect, "Le joueur 2 a gagné!", FFMStyles.centeredText);
-		}
-		else if (GameData.gamePaused)
-		{
-			if (GameData.networkError != NetworkConnectionError.NoError)
+			if (GameData.pauseMessage == PauseMessage.PLAYER1_VICTORY)
 			{
-				GUI.Box(localRect, "En attente de connexion...\n\nErreur: " + GameData.networkError.ToString(), FFMStyles.centeredText);
+				message = "Le joueur 1 a gagné!";
 			}
-			else
+			else if (GameData.pauseMessage == PauseMessage.PLAYER2_VICTORY)
 			{
-				GUI.Box(localRect, "En attente de connexion...", FFMStyles.centeredText);
+				message = "Le joueur 2 a gagné!";
+			}
+			else if (GameData.pauseMessage == PauseMessage.CLIENT_CONNECT)
+			{
+				if (GameData.networkError != NetworkConnectionError.NoError)
+				{
+					message = "Tentative de connexion au serveur...\n\nErreur: " + GameData.networkError.ToString();
+				}
+				else
+				{
+					message = "Tentative de connexion au serveur...";
+				}
+			}
+			else if (GameData.pauseMessage == PauseMessage.CLIENT_RECONNECT)
+			{
+				if (GameData.networkError != NetworkConnectionError.NoError)
+				{
+					message = "La connexion au serveur a été perdue.\n\nReconnexion en cours...\n\nErreur: " + GameData.networkError.ToString();
+				}
+				else
+				{
+					message = "La connexion au serveur a été perdue.\n\nReconnexion en cours...";
+				}
+			}
+			else if (GameData.pauseMessage == PauseMessage.CLIENT_DROP)
+			{
+				message = "Le serveur s'est déconnecté.";
+			}
+			else if (GameData.pauseMessage == PauseMessage.CLIENT_KICK)
+			{ // Never gonna happen! Why am I even doing this
+				message = "Vous avez été exclu(e) de la partie.";
+			}
+			else if (GameData.pauseMessage == PauseMessage.SERVER_INITIALIZING)
+			{
+				message = "Mise en place du serveur...";
+			}
+			else if (GameData.pauseMessage == PauseMessage.SERVER_WAITING)
+			{
+				message = "En attente d'un autre joueur...";
+			}
+			else if (GameData.pauseMessage == PauseMessage.SERVER_FAILURE)
+			{
+				message = "L'initialisation du serveur a échoué.\n\nSi ce message apparait pour plus de 5 secondes, vérifiez votre connexion à un réseau et relancez le jeu.";
+			}
+			else if (GameData.pauseMessage == PauseMessage.CLIENT_WAITING)
+			{
+				message = "En attente d'autres joueurs...";
+			}
+			else if (GameData.pauseMessage == PauseMessage.LOST_CLIENT)
+			{
+				message = "En attente de la reconnexion d'un ou plusieurs joueur(s)...";
 			}
 		}
+
+		GUI.Box(localRect, message, FFMStyles.centeredText_wrapped);
 
 		if (GUI.Button(new Rect(0.4f * w, 0.8f * h, 0.2f * w, 0.2f * h), "Quitter"))
 		{
@@ -200,10 +244,10 @@ public static class HUDRenderer
 	{
 		if (GUI.Button(new Rect(0, 0, 100, 20), "Quitter"))
 		{
-			SetState(HUDState.Leaving);
+			isLeaving = true;
 		}
 
-		if (_state == HUDState.Leaving)
+		if (isLeaving)
 		{
 			if (GUI.Button(new Rect(0, 20, 100, 20), "Confirmer"))
 			{
@@ -211,7 +255,7 @@ public static class HUDRenderer
 			}
 			if (GUI.Button(new Rect(100, 20, 100, 20), "Annuler"))
 			{
-				SetState(HUDState.Default);
+				isLeaving = false;
 			}
 		}
 	}

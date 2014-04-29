@@ -12,7 +12,7 @@ public class SpellToggleBuff : SpellTarget
 	}
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
-	{
+	{ // TODO: Somehow consume the specified resource over the duration of the buff
 		if (target.GetCombatScript().HasBuff(buffID))
 		{
 			target.GetCombatScript().RemoveBuff(buffID);

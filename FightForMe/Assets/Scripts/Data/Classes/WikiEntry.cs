@@ -15,9 +15,51 @@ public abstract class WikiEntry
 		metadata.SetDesc(newDesc);
 	}
 
+	private string ReadTag(string tag, CharacterManager manager)
+	{
+		Debug.Log(tag);
+		return tag;
+	}
+
 	public string ParseDescription(CharacterManager manager)
 	{ // TODO: Parses the item's short description and replace character-related tags with the required values
-		return metadata.GetDesc();
+		string desc = metadata.GetDesc();
+		string output = "";
+
+		if (desc == null)
+		{
+			return null;
+		}
+
+		int pos = 0; // Last validated position
+		for (int i = 0; i < desc.Length; i++)
+		{
+			if (desc[i] == '<')
+			{
+				output += desc.Substring(pos, i - pos + 1);
+				pos = i;
+
+				int j = i;
+				while (j < desc.Length)
+				{
+					if (desc[j] == '>')
+					{
+						output += ReadTag(desc.Substring(pos, j - i + 1), manager);
+						pos = j + 1;
+						break;
+					}
+					j++;
+				}
+				if (desc[j] != '>')
+				{ // Error: this tag is never closed
+					return "PARSING ERROR";
+				}
+			}
+		}
+
+		output += desc.Substring(pos, desc.Length - pos);
+
+		return output;
 	}
 
 	public string GetName()

@@ -22,5 +22,13 @@ public class TileBuilderScript : MonoBehaviour
 		TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
 
 		TileManager.BuildNeighbours();
+
+		// Don't need us anymore once we're done
+		Destroy(this.gameObject);
+	}
+
+	void OnGUI()
+	{
+		GUI.Label(new Rect(0.0f, 0.0f, Screen.width, Screen.height), "Loading : " + TileManager.generationProgress * 100 + "%", FFMStyles.centeredText);
 	}
 }

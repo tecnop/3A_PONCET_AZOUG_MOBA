@@ -21,6 +21,17 @@ public class SpellProjShot : SpellProj
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
+		uint projID = this.projID;
+
+		if (projID == 0)
+		{ // Use our weapon's projectile
+			Weapon weapon = inflictor.GetInventoryScript().GetWeapon();
+			if (weapon != null)
+			{
+				projID = weapon.GetProjectileID();
+			}
+		}
+
 		if (amount > 1)
 		{
 			Vector3 diff = position - inflictor.GetCharacterTransform().position;
@@ -47,19 +58,23 @@ public class SpellProjShot : SpellProj
 	}
 
 	public override bool CastingCondition(CharacterManager caster)
-	{ // Projectile weapons only
-		Weapon weapon = caster.GetInventoryScript().GetWeapon();
-		if (weapon != null)
-		{
-			WeaponType type = weapon.GetWeaponType();
-			if (type != null)
+	{
+		if (this.projID == 0)
+		{ // Projectile weapons only
+			Weapon weapon = caster.GetInventoryScript().GetWeapon();
+			if (weapon != null)
 			{
-				if (type.IsRanged())
-				{
-					return true;
+				WeaponType type = weapon.GetWeaponType();
+				if (type != null)
+				{ // I'm checking this rather than if we have a projectile
+					if (type.IsRanged())
+					{
+						return true;
+					}
 				}
 			}
+			return false;
 		}
-		return false;
+		return true;
 	}
 }

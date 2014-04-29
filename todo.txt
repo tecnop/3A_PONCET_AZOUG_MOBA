@@ -53,3 +53,5 @@ Petit bug de vision: un ennemi de la deuxième map n'est pas correctement affecté
 Résolution des petits problèmes d'interfaces (emplacements de compétences à taille fixe, etc)
 
 Passage de la map de vision en ScriptableObject
+
+Résoudre le bug lié à la synchronisation des entités avant qu'elles ne soient instantiées

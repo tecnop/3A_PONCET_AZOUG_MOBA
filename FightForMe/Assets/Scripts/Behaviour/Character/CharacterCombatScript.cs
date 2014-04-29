@@ -147,14 +147,14 @@ public class CharacterCombatScript : MonoBehaviour
 			return false;
 		}
 
-		if (spell.GetCostType() == SpellCostType.MANA)
+		if (spell.GetCostType() == SpellCostType.MANA || spell.GetCostType() == SpellCostType.PCTMANA)
 		{
 			if (_manager.GetStatsScript().GetMana() < spell.GetCost(_manager))
 			{
 				return false;
 			}
 		}
-		else if (spell.GetCostType() == SpellCostType.HEALTH)
+		else if (spell.GetCostType() == SpellCostType.HEALTH || spell.GetCostType() == SpellCostType.PCTHEALTH)
 		{
 			if (_manager.GetStatsScript().GetHealth() < spell.GetCost(_manager))
 			{
@@ -181,11 +181,11 @@ public class CharacterCombatScript : MonoBehaviour
 
 		spell.Execute(_manager, _manager.GetInputScript().GetLookPosition(), _manager);
 
-		if (spell.GetCostType() == SpellCostType.MANA)
+		if (spell.GetCostType() == SpellCostType.MANA || spell.GetCostType() == SpellCostType.PCTMANA)
 		{
 			_manager.GetStatsScript().LoseMana(spell.GetCost(_manager));
 		}
-		else if (spell.GetCostType() == SpellCostType.HEALTH)
+		else if (spell.GetCostType() == SpellCostType.HEALTH || spell.GetCostType() == SpellCostType.PCTHEALTH)
 		{ // TODO: We don't want to emit a pain event here
 			_manager.GetStatsScript().LoseHealth(_manager, spell.GetCost(_manager));
 		}

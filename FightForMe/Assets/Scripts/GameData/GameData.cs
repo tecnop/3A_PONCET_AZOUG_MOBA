@@ -23,6 +23,24 @@ public enum GameMode
 	RaceForGlory
 }
 
+public enum PauseMessage
+{
+	DEFAULT,			// Game is paused
+	CLIENT_CONNECT,		// Attempting to connect to a server
+	CLIENT_RECONNECT,	// Attempting to reconnect to a server after we lost connection
+	CLIENT_WAITING,		// Waiting for more clients to join
+	LOST_CLIENT,		// Waiting for a client to reconnect
+	SERVER_INITIALIZING,// Setting up server
+	SERVER_WAITING,		// Waiting for a client to connect to us
+	SERVER_WAITING2,	// Waiting for a client to reconnect to us
+	CLIENT_DROP,		// Server has shutdown
+	CLIENT_KICK,		// Client was kicked
+	SERVER_FAILURE,		// Server failed to start
+	PLAYER1_VICTORY,	// Player 1 won
+	PLAYER2_VICTORY,	// Player 2 won
+	INCORRECT_GAMEMODE	// Game mode doesn't match the server's
+}
+
 public static class GameData
 {
 	public static bool gamePaused = false;
@@ -30,7 +48,7 @@ public static class GameData
 	public static CharacterManager otherPlayer;	 // Temporary... hopefully :/
 	public static GameType gameType;
 	public static GameMode gameMode;
-	public static bool secure;
+	public static bool secure; // Is the game running the default config?
 
 	public static bool isServer
 	{ // Should we execute server-specific code?
@@ -69,4 +87,5 @@ public static class GameData
 	public static bool wentThroughMenu; // Did the game go through the main menu?
 
 	public static NetworkConnectionError networkError; // Last connection error we got
+	public static PauseMessage pauseMessage;
 }

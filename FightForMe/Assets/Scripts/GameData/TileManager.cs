@@ -6,6 +6,16 @@ public static class TileManager
 {
 	private static List<List<MapTile>> tiles;
 
+	private static float _generationProgress;
+
+	public static float generationProgress
+	{
+		get
+		{
+			return _generationProgress;
+		}
+	}
+
 	private static float tileSpacing = 1.0f;
 
 	private static Vector3 firstPos;
@@ -100,6 +110,8 @@ public static class TileManager
 			}
 		}
 
+		_generationProgress = 0.0f;
+
 		for (int _i = 0; _i < tiles.Count; _i++)
 		{
 			for (int _j = 0; _j < tiles[_i].Count; _j++)
@@ -117,6 +129,8 @@ public static class TileManager
 					startingJ = 0;
 				}
 			}
+
+			_generationProgress += 1.0f / tiles.Count;
 		}
 	}
 }

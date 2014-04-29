@@ -38,15 +38,11 @@ public class TrophyDepositAreaScript : MonoBehaviour
 	{ // Copy pasted from LordSpawnerScript for now
 		if (this.gameObject.layer == LayerMask.NameToLayer("Team1Objective"))
 		{ // Player 1 won
-			Debug.Log("Player 1 won!");
-			//GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Won);
-			HUDRenderer.SetState(HUDState.Won);
+			GameData.pauseMessage = PauseMessage.PLAYER1_VICTORY;
 		}
 		else if (this.gameObject.layer == LayerMask.NameToLayer("Team2Objective"))
 		{ // Player 2 won
-			Debug.Log("Player 2 won!");
-			//GameData.activePlayer.GetCameraScript().GetHUDScript().SetState(HUDState.Lost);
-			HUDRenderer.SetState(HUDState.Lost);
+			GameData.pauseMessage = PauseMessage.PLAYER2_VICTORY;
 		}
 
 		GameData.gamePaused = true;
