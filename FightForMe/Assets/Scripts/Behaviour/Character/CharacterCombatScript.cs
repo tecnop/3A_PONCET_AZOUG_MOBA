@@ -100,9 +100,18 @@ public class CharacterCombatScript : MonoBehaviour
 			return;
 		}
 
+		if (this.buffs == null)
+		{
+			this.buffs = new List<InflictedBuff>();
+		}
+
 		this.buffs.Add(new InflictedBuff(buffID, duration, inflictor));
-		_manager.GetStatsScript().UpdateStats();
-		_manager.GetEventScript().OnReceiveBuff(inflictor, buffID);
+
+		if (_manager)
+		{
+			_manager.GetStatsScript().UpdateStats();
+			_manager.GetEventScript().OnReceiveBuff(inflictor, buffID);
+		}
 	}
 
 	public void InflictBuff(CharacterManager target, uint buffID, float duration = -1.0f)

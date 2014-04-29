@@ -179,6 +179,7 @@ public static class DataTables
 		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw));
+		projectileTable.Add(6, new Projectile(metadata: new Metadata(name: "Couteau de lancer"), damage: 7.5f, speed: 75.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 
 		// Weapon types
 		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epee courte")));
@@ -210,7 +211,7 @@ public static class DataTables
 		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000));
 
 		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem"), damage: 35.0f, attackRate: 1.2f));
-		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites"), weaponTypeID: 4, damage: 25.0f, attackRate: 1.5f));
+		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites"), weaponTypeID: 4, damage: 25.0f, attackRate: 1.5f, projectileID: 6));
 
 		itemTable.Add(19, new Armor(metadata: new Metadata(name: "Sweat et jeans troués"), slot: ArmorSlot.BODY, setID: 3, stats: new Stats(5, 10, 0)));
 		itemTable.Add(20, new Armor(metadata: new Metadata(name: "Casquette retournée"), slot: ArmorSlot.HEAD, setID: 3, stats: new Stats(5, 10, 0)));

@@ -11,6 +11,13 @@ public class TileBuilderScript : MonoBehaviour
 
 	void Start()
 	{ // Build the tile map
+
+		if (!GameData.wentThroughMenu)
+		{ // Just don't bother, we're debugging and this system no longer needs testing
+			Destroy(this.gameObject);
+			return;
+		}
+
 		float terrainSizeX = 10.0f * terrain.localScale.x;
 		float terrainSizeZ = 10.0f * terrain.localScale.z;
 

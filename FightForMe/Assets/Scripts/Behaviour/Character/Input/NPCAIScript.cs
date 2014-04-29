@@ -15,9 +15,7 @@ public class NPCAIScript : CharacterInputScript
 	private float approachRange;
 	private AIType behaviour;
 	private bool goalReached;
-	private GameObject target;
-	private CharacterManager targetManager;
-	private Transform targetTransform;
+	private CharacterManager target;
 	private Vector3 startPos;
 	private Queue<Vector3> currentPath;
 	private Vector3 finalGoalPos;
@@ -43,6 +41,17 @@ public class NPCAIScript : CharacterInputScript
 	public bool HasAnEnemy()
 	{
 		return target != null;
+	}
+
+	public void AcknowledgeTarget(CharacterManager target)
+	{ // Notice the guy and attack him if we have nothing better to do
+		if (!HasAnEnemy() &&
+			target.tag == "Player" &&
+			target.GetLayer() != _manager.GetLayer())
+		{
+			Debug.Log(_manager.name + " acquired an enemy: " + target.name);
+			SetTarget(target);
+		}
 	}
 
 	public void UpdateApproachRange()
@@ -77,37 +86,9 @@ public class NPCAIScript : CharacterInputScript
 		this.approachRange = 3.0f;
 	}
 
-	private void RunAI()
-	{
-		if (target)
-		{
-			if (targetManager && targetManager.GetStatsScript().GetHealth() <= 0)
-			{ // He died
-				target = null;
-				SetGoal(this.startPos);
-			}
-			else
-			{
-				SetGoal(targetTransform.position);
-			}
-		}
-		else
-		{
-			if (this.behaviour == AIType.roaming)
-			{ // TODO: Get to a random node
-			}
-			else
-			{
-				SetGoal(this.startPos);
-			}
-		}
-	}
-
-	public void SetTarget(GameObject target, bool spread = true)
+	public void SetTarget(CharacterManager target, bool spread = true)
 	{ // TODO: Only the server should do that?
 		this.target = target;
-		this.targetTransform = target.transform;
-		this.targetManager = target.GetComponent<CharacterManager>();
 
 		if (spread)
 		{ // Do the same for everyone in our camp
@@ -119,7 +100,7 @@ public class NPCAIScript : CharacterInputScript
 					hisManager.GetCameraScript() == null &&
 					hisManager.GetLayer() == _manager.GetLayer() &&
 					Vector3.Distance(_transform.position, hisManager.GetCharacterTransform().position) < 15.0f)
-				{
+				{ // Those tests are a bit awkward
 					NPCAIScript hisAI = ((NPCAIScript)hisManager.GetInputScript());
 					if (!hisAI.HasAnEnemy())
 					{ // Maybe it should spread again actually?
@@ -127,6 +108,15 @@ public class NPCAIScript : CharacterInputScript
 					}
 				}
 			}
+		}
+	}
+
+	public void SetTarget(GameObject target, bool spread = true)
+	{
+		CharacterManager hisManager = target.GetComponent<CharacterManager>();
+		if (hisManager != null)
+		{
+			SetTarget(hisManager, spread);
 		}
 	}
 
@@ -146,6 +136,32 @@ public class NPCAIScript : CharacterInputScript
 		{
 			this.currentPath = new Queue<Vector3>(path.corners);
 			this.goalPosition = this.currentPath.Dequeue();
+		}
+	}
+
+	private void RunAI()
+	{
+		if (target)
+		{
+			if (target.GetStatsScript().GetHealth() <= 0)
+			{ // He died
+				target = null;
+				SetGoal(this.startPos);
+			}
+			else
+			{
+				SetGoal(target.GetCharacterTransform().position);
+			}
+		}
+		else
+		{
+			if (this.behaviour == AIType.roaming)
+			{ // TODO: Get to a random node
+			}
+			else
+			{
+				SetGoal(this.startPos);
+			}
 		}
 	}
 
@@ -203,7 +219,7 @@ public class NPCAIScript : CharacterInputScript
 			return 0;
 		}
 
-		if (target && goalReached && Vector3.Distance(_transform.position, targetTransform.position) <= approachRange * 1.1f)
+		if (target && goalReached && Vector3.Distance(_transform.position, target.GetCharacterTransform().position) <= approachRange * 1.1f)
 		{ // Simple attack rule
 			return 1;
 		}

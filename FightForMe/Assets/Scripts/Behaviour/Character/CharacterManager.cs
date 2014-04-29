@@ -53,6 +53,8 @@ public class CharacterManager : MonoBehaviour
 
 	private float _savedAnimatorSpeed;
 
+	private bool _initialized = false;
+
 	void Start()
 	{
 		// Link all the serialized scripts to us and initialize them
@@ -75,6 +77,8 @@ public class CharacterManager : MonoBehaviour
 		_movement.Initialize(this);
 		_input.Initialize(this);
 		_physics.Initialize(this);
+
+		_initialized = true;
 	}
 
 	void Update()
@@ -115,6 +119,47 @@ public class CharacterManager : MonoBehaviour
 	{
 		_movement.ConfirmMove();
 	}*/
+
+	void OnGUI()
+	{
+		if (!_initialized || !_animator.gameObject.activeSelf)
+		{
+			return;
+		}
+
+		Vector3 screenPos = GameData.activePlayer.GetCameraScript().GetCamera().WorldToScreenPoint(_transform.position + new Vector3(0,4,0));
+
+		float w = 100, h = 50;
+
+		GUI.BeginGroup(new Rect(screenPos.x - w/2.0f, Screen.height - screenPos.y - h/2.0f, w, h));
+
+		GUI.Label(new Rect(0, 0, w, 0.75f * h), this.name, FFMStyles.centeredText);
+
+		float curHealth = _stats.GetHealth();
+		float maxHealth = _stats.GetMaxHealth();
+
+		// Background
+		GUI.Box(new Rect(0, 0.75f * h, w, 0.25f * h), GUIContent.none);
+
+		if (curHealth > 1)
+		{ // Bar
+			if (_stats.HasSpecialEffect(MiscEffect.INVULNERABLE))
+			{ // Kinda temporary
+				GUIStyle style = new GUIStyle();
+
+				style.normal.background = new Texture2D(1, 1);
+				style.normal.background.SetPixel(0, 0, Color.yellow);
+
+				GUI.Box(new Rect(0.0f, 0.75f * h, (curHealth / maxHealth) * w, 0.25f * h), GUIContent.none, style);
+			}
+			else
+			{
+				GUI.Box(new Rect(0.0f, 0.75f * h, (curHealth / maxHealth) * w, 0.25f * h), GUIContent.none);
+			}
+		}
+
+		GUI.EndGroup();
+	}
 
 	public void MakeLocal() { this.isLocal = true; }
 	public bool IsLocal() { return isLocal; }

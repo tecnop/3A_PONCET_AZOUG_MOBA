@@ -108,6 +108,24 @@ public class DroppedItemScript : MonoBehaviour
 		HUDRenderer.SetSelectedItem(this);
 	}
 
+	void OnGUI()
+	{
+		Item item = DataTables.GetItem(this.itemID); // Don't do this every frame please
+		if (item != null)
+		{
+			Vector3 screenPos = GameData.activePlayer.GetCameraScript().GetCamera().WorldToScreenPoint(_transform.position + new Vector3(0, 3, 0));
+
+			float w = 150, h = 100;
+
+			GUI.BeginGroup(new Rect(screenPos.x - w / 2.0f, Screen.height - screenPos.y - h / 2.0f, w, h));
+			string name = item.GetName();
+
+			GUI.Label(new Rect(0, 0, w, h), name, FFMStyles.centeredText_wrapped);
+
+			GUI.EndGroup();
+		}
+	}
+
 	public GraphicsLoader GetGraphicsLoader() { return this._graphics; }
 	public Transform GetTransform() { return this._transform; }
 }
