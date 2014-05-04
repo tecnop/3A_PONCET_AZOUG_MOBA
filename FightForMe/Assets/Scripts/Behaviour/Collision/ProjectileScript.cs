@@ -99,7 +99,7 @@ public class ProjectileScript : MonoBehaviour
 	}
 
 	public void ThrowAt(Vector3 pos)
-	{ // Pretend we're facing it already
+	{ // TODO: Make this a part of the projectile set up
 		_rigidBody.useGravity = true;
 		float flightDuration = this.timeToLive * 0.95f; // Maybe? I don't think this will be used much anyway
 		if (flightDuration == 0)

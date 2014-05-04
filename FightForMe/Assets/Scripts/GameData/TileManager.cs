@@ -44,7 +44,8 @@ public static class TileManager
 		{ // Erm... We haven't even been initialized, just do something
 			if (globalTile == null)
 			{
-				globalTile = new MapTile(Vector3.zero);
+				globalTile = ScriptableObject.CreateInstance<MapTile>();
+				globalTile.Initialize(Vector3.zero, Vector2.zero);
 			}
 			return globalTile;
 		}
@@ -72,31 +73,55 @@ public static class TileManager
 		}
 	}
 
+	public static void SetTiles(List<List<MapTile>> newTiles, Vector3 startPos)
+	{
+		tiles = newTiles;
+
+		firstPos = startPos;
+	}
+
 	public static void GenerateTiles(Vector3 startPos, int countX, int countZ, float spacing)
 	{
+		ClearTiles();
+
 		tiles = new List<List<MapTile>>();
 
 		tileSpacing = spacing;
+
+		firstPos = startPos;
 
 		for (int i = 0; i < countX; i++)
 		{
 			List<MapTile> curRow = new List<MapTile>();
 
-			float x = startPos.x + tileSpacing * i;
+			float x = startPos.x + tileSpacing * (i + 0.5f);
 
 			for (int j = 0; j < countZ; j++)
 			{
-				float z = startPos.z + tileSpacing * j;
+				float z = startPos.z + tileSpacing * (j + 0.5f);
 
-				curRow.Add(new MapTile(new Vector3(x, 0, z)));
+				MapTile tile = ScriptableObject.CreateInstance<MapTile>();
+				tile.Initialize(new Vector3(x, 0, z), new Vector2(spacing, spacing));
+
+				curRow.Add(tile);
 			}
 
 			tiles.Add(curRow);
 		}
+	}
 
-		if (tiles.Count > 0 && tiles[0].Count > 0)
+	public static void ClearTiles()
+	{
+		if (tiles != null)
 		{
-			firstPos = tiles[0][0].position;
+			for (int i = 0; i < tiles.Count; i++)
+			{
+				for (int j = 0; j < tiles[i].Count; j++)
+				{
+					ScriptableObject.DestroyImmediate(tiles[i][0]);
+				}
+			}
+			tiles = null;
 		}
 	}
 
@@ -132,5 +157,10 @@ public static class TileManager
 
 			_generationProgress += 1.0f / tiles.Count;
 		}
+	}
+
+	public static void ExportTilesToBuilder(TileBuilderScript builder)
+	{
+		builder.SetTiles(tiles);
 	}
 }

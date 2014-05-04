@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class MapTile
+//[System.Serializable]
+public class MapTile : ScriptableObject
 {
 	private Vector3 _position;			// Position of the tile on the map
 	public Vector3 position
@@ -13,14 +14,34 @@ public class MapTile
 		}
 	}
 
+	private Vector2 _size;				// Size of the tile on the floor
+	public Vector2 size
+	{
+		get
+		{
+			return _size;
+		}
+	}
+
 	private List<MapTile> _neighbours;	// Neighbours of this tile
 	private List<GameObject> _objects;	// Objects currently in this tile
 
-	public MapTile(Vector3 position)
+	private TileEntityScript tileEntity;// Entity meant to represent us in the editor
+
+	public void Initialize(Vector3 position, Vector2 size)
 	{
 		this._position = position;
+		this._size = size;
 		this._neighbours = new List<MapTile>();
 		this._objects = new List<GameObject>();
+		this.tileEntity = null;
+
+		//this.hideFlags = HideFlags.NotEditable;
+	}
+
+	public void SetEntity(TileEntityScript tileEntity)
+	{ // This is now unnecessary, keeping it temporarily just in case
+		this.tileEntity = tileEntity;
 	}
 
 	public bool CanSee(MapTile tile)

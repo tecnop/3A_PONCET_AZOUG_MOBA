@@ -3,14 +3,35 @@ using System.Collections;
 
 public static class FFMStyles
 {
+	private static bool _loaded = false;
+
+	private static GUIStyle _defaultText;
+
 	public static GUIStyle defaultText
 	{
 		get
 		{
-			GUIStyle style = new GUIStyle();
-			style.wordWrap = false;
-			style.normal.textColor = Color.white;
-			return style;
+			return _defaultText;
+		}
+	}
+
+	private static GUIStyle _centeredText;
+
+	public static GUIStyle centeredText
+	{
+		get
+		{
+			return _centeredText;
+		}
+	}
+
+	private static GUIStyle _centeredText_wrapped;
+
+	public static GUIStyle centeredText_wrapped
+	{
+		get
+		{
+			return _centeredText_wrapped;
 		}
 	}
 
@@ -23,19 +44,24 @@ public static class FFMStyles
 		return style;
 	}
 
-	public static GUIStyle centeredText
-	{ // TODO: Create this once and for all instead of re-executing the function every time
-		get
+	public static void Load()
+	{
+		if (_loaded)
 		{
-			return Text();
+			return;
 		}
+
+		_loaded = true;
+
+		_defaultText = new GUIStyle();
+		_defaultText.wordWrap = false;
+		_defaultText.normal.textColor = Color.white;
+
+		_centeredText = new GUIStyle(_defaultText);
+		_centeredText.alignment = TextAnchor.MiddleCenter;
+
+		_centeredText_wrapped = new GUIStyle(_centeredText);
+		_centeredText_wrapped.wordWrap = true;
 	}
 
-	public static GUIStyle centeredText_wrapped
-	{
-		get
-		{
-			return Text(wordWrap: true);
-		}
-	}
 }

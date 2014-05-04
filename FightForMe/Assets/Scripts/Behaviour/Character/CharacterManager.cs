@@ -122,7 +122,7 @@ public class CharacterManager : MonoBehaviour
 
 	void OnGUI()
 	{
-		if (!_initialized || !_animator.gameObject.activeSelf)
+		if (!_initialized || !_graphics.gameObject.activeSelf)
 		{
 			return;
 		}
@@ -149,6 +149,7 @@ public class CharacterManager : MonoBehaviour
 
 				style.normal.background = new Texture2D(1, 1);
 				style.normal.background.SetPixel(0, 0, Color.yellow);
+				style.normal.background.Apply();
 
 				GUI.Box(new Rect(0.0f, 0.75f * h, (curHealth / maxHealth) * w, 0.25f * h), GUIContent.none, style);
 			}

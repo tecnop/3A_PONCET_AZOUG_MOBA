@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class MapTileScript : MonoBehaviour
-{
-	//[SerializeField]
+public class TileEntityScript : MonoBehaviour
+{ // Simple entity meant to represent vision tiles in the editor
 	private MapTile tile;
+
+	// This doesn't actually reflect transform data
+	private Vector3 pos;
+	private Vector3 size;
 
 	void Start()
 	{
@@ -18,10 +21,13 @@ public class MapTileScript : MonoBehaviour
 	public void SetTile(MapTile tile)
 	{
 		this.tile = tile;
+		this.size = new Vector3(tile.size.x, 5.0f, tile.size.y);
+		this.pos = tile.position + (this.size.y / 2.0f) * Vector3.up;
 	}
 
 	void OnDrawGizmosSelected()
 	{
+		Gizmos.DrawCube(this.pos, this.size);
 		foreach (MapTile other in tile.GetNeighbours())
 		{
 			Gizmos.DrawLine(tile.position, other.position);

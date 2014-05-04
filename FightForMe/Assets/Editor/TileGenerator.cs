@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 
 public class TileGenerator : EditorWindow
@@ -10,9 +11,10 @@ public class TileGenerator : EditorWindow
 	private GameObject tilePrefab;
 	private Transform terrain;
 	private Transform tiles;
+	private TileBuilderScript tileBuilder;
 	private float tileSpacing = 3.0f;
 
-	private MapTileScript[][] debugMatrix;
+	private List<TileEntityScript> debugTiles;
 	private int tileCount;
 
 	private TileGenerator()
@@ -36,7 +38,7 @@ public class TileGenerator : EditorWindow
 
 		temp = (GameObject)EditorGUILayout.ObjectField("Tile prefab", this.tilePrefab, typeof(GameObject), false);
 
-		if (temp != null && temp.GetComponent<MapTileScript>() != null)
+		if (temp != null && temp.GetComponent<TileEntityScript>() != null)
 		{
 			this.tilePrefab = temp;
 		}
@@ -57,48 +59,63 @@ public class TileGenerator : EditorWindow
 			this.tiles = temp2;
 		}
 
+		TileBuilderScript temp3;
+
+		temp3 = (TileBuilderScript)EditorGUILayout.ObjectField("Tile builder", this.tileBuilder, typeof(TileBuilderScript), true);
+
+		if (temp3 != null && PrefabUtility.GetPrefabType(temp3) != PrefabType.Prefab)
+		{
+			this.tileBuilder = temp3;
+		}
+		
 		GUILayout.Space(10);
 
-		if (this.tiles != null)
+		if (this.tileCount > 0)
 		{
-			int count;
-			if (this.tiles.childCount > 0)
+			if (this.tiles != null)
 			{
-				count = this.tiles.childCount;
-			}
-			else
-			{
-				count = this.tileCount;
-			}
-			if (count > 0)
-			{ // Restore buttons here
-				if (GUILayout.Button("Build neighbours"))
+				if (this.debugTiles != null && this.debugTiles.Count > 0)
 				{
-					TileManager.BuildNeighbours();
+					if (GUILayout.Button("Hide Editor tiles"))
+					{
+						HideEditorTiles();
+					}
 				}
-				if (GUILayout.Button("Clear all " + count + " tiles"))
+				else
 				{
-					DestroyTiles();
+					if (GUILayout.Button("Enable Editor tiles"))
+					{
+						DisplayEditorTiles();
+					}
 				}
 			}
-			else if (this.tilePrefab != null && this.terrain != null)
+			if (GUILayout.Button("Build neighbours"))
 			{
-				this.tileSpacing = EditorGUILayout.FloatField("Spacing", this.tileSpacing);
-				if (GUILayout.Button("Generate"))
-				{
-					DoGenerate();
-				}
+				TileManager.BuildNeighbours();
+			}
+			if (GUILayout.Button("Clear all " + this.tileCount + " tiles"))
+			{
+				DestroyTiles();
+			}
+		}
+		else if (this.tilePrefab != null && this.terrain != null && this.tileBuilder != null)
+		{
+			this.tileSpacing = EditorGUILayout.FloatField("Spacing", this.tileSpacing);
+			if (GUILayout.Button("Generate"))
+			{
+				DoGenerate();
 			}
 		}
 	}
 
-	private MapTileScript SpawnDebugTile(MapTile tile)
+	private TileEntityScript SpawnEditorTile(MapTile tile)
 	{
 		GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(tilePrefab);
 		obj.transform.position = tile.position;
 		obj.transform.parent = this.tiles;
-		MapTileScript script = obj.GetComponent<MapTileScript>();
+		TileEntityScript script = obj.GetComponent<TileEntityScript>();
 		script.SetTile(tile);
+		tile.SetEntity(script);
 		return script;
 	}
 
@@ -109,37 +126,79 @@ public class TileGenerator : EditorWindow
 
 		Vector3 startPos = new Vector3(-0.5f * terrainSizeX, 0, -0.5f * terrainSizeZ);
 
-		int sizeX = Mathf.FloorToInt(terrainSizeX / tileSpacing);
-		int sizeZ = Mathf.FloorToInt(terrainSizeZ / tileSpacing);
+		int sizeX = Mathf.CeilToInt(terrainSizeX / tileSpacing);
+		int sizeZ = Mathf.CeilToInt(terrainSizeZ / tileSpacing);
+
+		this.tileCount = sizeX * sizeZ;
 
 		TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
 
-		this.tileCount = 0;
+		TileManager.ExportTilesToBuilder(this.tileBuilder);
+	}
 
-		this.debugMatrix = new MapTileScript[sizeX][];
+	private void DisplayEditorTiles()
+	{
+		this.debugTiles = new List<TileEntityScript>();
 
-		for (int i = 0; i < sizeX; i++)
+		int i = 0;
+		do
 		{
-			this.debugMatrix[i] = new MapTileScript[sizeZ];
-
-			for (int j = 0; j < sizeZ; j++)
+			int j = 0;
+			MapTile tile = TileManager.GetTile(i, j);
+			while (tile != null)
 			{
-				this.debugMatrix[i][j] = SpawnDebugTile(TileManager.GetTile(i, j));
+				if (tile != null)
+				{
+					this.debugTiles.Add(SpawnEditorTile(tile));
+				}
 
-				this.tileCount++;
+				tile = TileManager.GetTile(i, ++j);
 			}
+
+			i++;
+
+		} while (TileManager.GetTile(i, 0) != null); // Awkward
+	}
+
+	private void HideEditorTiles()
+	{
+		int length = this.debugTiles.Count;
+		int i;
+		for (i = 0; i < length; i++)
+		{
+			DestroyImmediate(this.debugTiles[i].gameObject);
 		}
+
+		this.debugTiles = null;
+
+		i = 0;
+		do
+		{
+			int j = 0;
+			MapTile tile = TileManager.GetTile(i, j);
+			while (tile != null)
+			{
+				if (tile != null)
+				{
+					tile.SetEntity(null);
+				}
+
+				tile = TileManager.GetTile(i, ++j);
+			}
+
+			i++;
+
+		} while (TileManager.GetTile(i, 0) != null); // Awkward
 	}
 
 	private void DestroyTiles()
 	{
-		int length = this.tiles.childCount;
-		for (int i = 0; i < length; i++)
+		if (this.debugTiles != null)
 		{
-			DestroyImmediate(this.tiles.GetChild(0).gameObject);
+			HideEditorTiles();
 		}
 
-		this.debugMatrix = null;
+		TileManager.ClearTiles();
 
 		this.tileCount = 0;
 	}

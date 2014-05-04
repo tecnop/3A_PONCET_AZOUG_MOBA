@@ -18,37 +18,22 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnPain(CharacterManager inflictor, float damage)
 	{
-		_manager.GetCharacterAnimator().SetBool("onPain", true);
-
-		if (!_ai.HasAnEnemy() &&
-			inflictor.tag == "Player" &&
-			inflictor.gameObject.layer != _manager.gameObject.layer)
+		if (damage > 0)
 		{
-			Debug.Log(_manager.name + " acquired an enemy: " + inflictor.name);
-			_ai.SetTarget(inflictor.gameObject);
+			_manager.GetCharacterAnimator().SetBool("onPain", true);
 		}
+
+		_ai.AcknowledgeTarget(inflictor);
 	}
 
 	public override void OnReceiveBuff(CharacterManager inflictor, uint buffID)
 	{
-		if (!_ai.HasAnEnemy() &&
-			inflictor.tag == "Player" &&
-			inflictor.gameObject.layer != _manager.gameObject.layer)
-		{
-			Debug.Log(_manager.name + " acquired an enemy: " + inflictor.name);
-			_ai.SetTarget(inflictor.gameObject);
-		}
+		_ai.AcknowledgeTarget(inflictor);
 	}
 
 	public override void OnKnockback(CharacterManager inflictor)
 	{
-		if (!_ai.HasAnEnemy() &&
-			inflictor.tag == "Player" &&
-			inflictor.gameObject.layer != _manager.gameObject.layer)
-		{
-			Debug.Log(_manager.name + " acquired an enemy: " + inflictor.name);
-			_ai.SetTarget(inflictor.gameObject);
-		}
+		_ai.AcknowledgeTarget(inflictor);
 	}
 
 	public override void OnDeath(CharacterManager killer)
@@ -85,18 +70,26 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnSpotEntity(GameObject entity)
 	{
-		if (_ai.IsSearchingEnemy() &&
-			entity.tag == "Player" &&
-			entity.gameObject.layer != _manager.gameObject.layer)
+		CharacterManager enemy = _ai.GetEnemy();
+
+		if (enemy && enemy.gameObject == entity)
+		{ // Regained sight of our target
+			_ai.GainSightOfTarget();
+		}
+		else if (_ai.IsSearchingEnemy())
 		{
-			Debug.Log(_manager.name + " acquired an enemy: " + entity.name);
-			_ai.SetTarget(entity);
+			_ai.AcknowledgeTarget(entity);
 		}
 	}
 
 	public override void OnLoseSightOfEntity(GameObject entity)
-	{ // TODO: If it was our enemy, use pathfinding to his last seen pos
+	{
+		CharacterManager enemy = _ai.GetEnemy();
 
+		if (enemy && enemy.gameObject == entity)
+		{ // oh noooooo
+			_ai.LoseSightOfTarget();
+		}
 	}
 
 	public override void OnCollision(Collider collider)

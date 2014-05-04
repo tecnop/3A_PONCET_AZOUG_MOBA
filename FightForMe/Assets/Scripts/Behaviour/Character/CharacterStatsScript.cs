@@ -335,7 +335,7 @@ public class CharacterStatsScript : MonoBehaviour
 
 		if (HasSpecialEffect(MiscEffect.INVULNERABLE))
 		{ // Nope nope
-			return;
+			amount = 0;
 		}
 
 		health -= amount;

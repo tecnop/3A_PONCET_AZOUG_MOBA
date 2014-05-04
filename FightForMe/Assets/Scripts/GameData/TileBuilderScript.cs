@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TileBuilderScript : MonoBehaviour
 {
@@ -9,29 +10,43 @@ public class TileBuilderScript : MonoBehaviour
 	[SerializeField]
 	private float tileSpacing = 3.0f;
 
+	[SerializeField]
+	private List<List<MapTile>> tiles;
+
 	void Start()
 	{ // Build the tile map
-
-		if (!GameData.wentThroughMenu)
-		{ // Just don't bother, we're debugging and this system no longer needs testing
-			Destroy(this.gameObject);
-			return;
-		}
-
 		float terrainSizeX = 10.0f * terrain.localScale.x;
 		float terrainSizeZ = 10.0f * terrain.localScale.z;
 
-		int sizeX = Mathf.FloorToInt(terrainSizeX / tileSpacing);
-		int sizeZ = Mathf.FloorToInt(terrainSizeZ / tileSpacing);
+		int sizeX = Mathf.CeilToInt(terrainSizeX / tileSpacing);
+		int sizeZ = Mathf.CeilToInt(terrainSizeZ / tileSpacing);
 
 		Vector3 startPos = new Vector3(-0.5f * terrainSizeX, 0, -0.5f * terrainSizeZ);
 
-		TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
+		if (tiles != null && tiles.Count > 0)
+		{ // Tiles have been generated already
+			TileManager.SetTiles(tiles, startPos);
+		}
+		else
+		{ // Do it right now
+			if (!GameData.wentThroughMenu)
+			{ // Just don't bother, we're debugging and this system no longer needs testing
+				Destroy(this.gameObject);
+				return;
+			}
 
-		TileManager.BuildNeighbours();
+			TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
+
+			TileManager.BuildNeighbours();
+		}
 
 		// Don't need us anymore once we're done
 		Destroy(this.gameObject);
+	}
+
+	public void SetTiles(List<List<MapTile>> tiles)
+	{
+		this.tiles = tiles;
 	}
 
 	void OnGUI()

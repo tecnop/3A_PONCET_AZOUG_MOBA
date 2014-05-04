@@ -38,6 +38,8 @@ public static class HUDRenderer
 		float w = Screen.width;
 		float h = Screen.height;
 
+		FFMStyles.Load();
+
 		_state = HUDState.Default;
 		_activeSlot = SpellSlot.NUM_SLOTS;
 
@@ -251,6 +253,7 @@ public static class HUDRenderer
 		{
 			if (GUI.Button(new Rect(0, 20, 100, 20), "Confirmer"))
 			{
+				isLeaving = false;
 				BackToMainMenu();
 			}
 			if (GUI.Button(new Rect(100, 20, 100, 20), "Annuler"))

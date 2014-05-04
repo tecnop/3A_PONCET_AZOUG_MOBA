@@ -11,7 +11,10 @@ public class PlayerEventScript : CharacterEventScript
 
 	public override void OnPain(CharacterManager inflictor, float damage)
 	{
-		_manager.GetCharacterAnimator().SetBool("onPain", true);
+		if (damage > 0)
+		{
+			_manager.GetCharacterAnimator().SetBool("onPain", true);
+		}
 	}
 
 	public override void OnReceiveBuff(CharacterManager inflictor, uint buffID)

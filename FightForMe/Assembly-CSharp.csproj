@@ -77,7 +77,7 @@
      <Compile Include="Assets\Scripts\Behaviour\Spawners\PlayerSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\SpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\TeamEntitySpawnerScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Terrain\MapTileScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Terrain\TileEntityScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Terrain\TrophyDepositAreaScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Terrain\WayPointScript.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\DamageInstance.cs" />

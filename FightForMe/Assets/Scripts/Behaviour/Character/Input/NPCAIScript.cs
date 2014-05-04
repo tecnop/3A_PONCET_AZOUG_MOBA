@@ -19,6 +19,8 @@ public class NPCAIScript : CharacterInputScript
 	private Vector3 startPos;
 	private Queue<Vector3> currentPath;
 	private Vector3 finalGoalPos;
+	private bool targetLost;
+	private float searchTime;
 
 	public override void Initialize(CharacterManager manager)
 	{
@@ -43,6 +45,25 @@ public class NPCAIScript : CharacterInputScript
 		return target != null;
 	}
 
+	public CharacterManager GetEnemy()
+	{
+		return target;
+	}
+
+	public void GainSightOfTarget()
+	{
+		this.targetLost = false;
+		this.searchTime = 0;
+
+		// In case some of them gave up
+		SpreadTargetToCamp(this.target);
+	}
+
+	public void LoseSightOfTarget()
+	{
+		this.targetLost = true;
+	}
+
 	public void AcknowledgeTarget(CharacterManager target)
 	{ // Notice the guy and attack him if we have nothing better to do
 		if (!HasAnEnemy() &&
@@ -51,6 +72,25 @@ public class NPCAIScript : CharacterInputScript
 		{
 			Debug.Log(_manager.name + " acquired an enemy: " + target.name);
 			SetTarget(target);
+		}
+		else if (HasAnEnemy() && target == this.target)
+		{ // Update the known position
+			SetGoal(target.GetCharacterTransform().position);
+		}
+	}
+
+	public void AcknowledgeTarget(GameObject target)
+	{ // Notice the guy and attack him if we have nothing better to do
+		if (!HasAnEnemy() &&
+			target.tag == "Player" &&
+			target.layer != _manager.GetLayer())
+		{
+			Debug.Log(_manager.name + " acquired an enemy: " + target.name);
+			SetTarget(target);
+		}
+		else if (HasAnEnemy() && target == this.target.gameObject)
+		{ // Update the known position
+			SetGoal(this.target.GetCharacterTransform().position);
 		}
 	}
 
@@ -86,28 +126,35 @@ public class NPCAIScript : CharacterInputScript
 		this.approachRange = 3.0f;
 	}
 
+	public void SpreadTargetToCamp(CharacterManager target)
+	{
+		List<GameObject> ents = _manager.GetVisionScript().GetEntitiesInSight();
+		foreach (GameObject ent in ents)
+		{
+			CharacterManager hisManager = ent.GetComponent<CharacterManager>();
+			if (hisManager != null && hisManager != _manager &&
+				hisManager.GetCameraScript() == null &&
+				hisManager.GetLayer() == _manager.GetLayer() &&
+				Vector3.Distance(_transform.position, hisManager.GetCharacterTransform().position) < 15.0f)
+			{ // Those tests are a bit awkward
+				NPCAIScript hisAI = ((NPCAIScript)hisManager.GetInputScript());
+				if (!hisAI.HasAnEnemy())
+				{ // Maybe it should spread again actually?
+					hisAI.SetTarget(target, false);
+				}
+			}
+		}
+	}
+
 	public void SetTarget(CharacterManager target, bool spread = true)
 	{ // TODO: Only the server should do that?
 		this.target = target;
+		this.targetLost = false;
+		this.searchTime = 0;
 
 		if (spread)
 		{ // Do the same for everyone in our camp
-			List<GameObject> ents = _manager.GetVisionScript().GetEntitiesInSight();
-			foreach (GameObject ent in ents)
-			{
-				CharacterManager hisManager = ent.GetComponent<CharacterManager>();
-				if (hisManager != null && hisManager != _manager &&
-					hisManager.GetCameraScript() == null &&
-					hisManager.GetLayer() == _manager.GetLayer() &&
-					Vector3.Distance(_transform.position, hisManager.GetCharacterTransform().position) < 15.0f)
-				{ // Those tests are a bit awkward
-					NPCAIScript hisAI = ((NPCAIScript)hisManager.GetInputScript());
-					if (!hisAI.HasAnEnemy())
-					{ // Maybe it should spread again actually?
-						hisAI.SetTarget(target, false);
-					}
-				}
-			}
+			SpreadTargetToCamp(target);
 		}
 	}
 
@@ -122,7 +169,7 @@ public class NPCAIScript : CharacterInputScript
 
 	public void SetGoal(Vector3 pos)
 	{
-		if (Vector3.Distance(pos, this.finalGoalPos) < 1.0f && !_manager.GetMovementScript().IsMovementOverriden())// && this.currentPath.Count > 1)
+		if (Vector3.Distance(pos, this.finalGoalPos) < 0.5f && !_manager.GetMovementScript().IsMovementOverriden())// && this.currentPath.Count > 1)
 		{ // He hasn't moved much and we're already on our way (note: this is making straight movement a bit laggy right now)
 			return;
 		}
@@ -148,7 +195,7 @@ public class NPCAIScript : CharacterInputScript
 				target = null;
 				SetGoal(this.startPos);
 			}
-			else
+			else if (!targetLost)
 			{
 				SetGoal(target.GetCharacterTransform().position);
 			}
@@ -170,7 +217,27 @@ public class NPCAIScript : CharacterInputScript
 		RunAI();
 
 		if (this.goalReached)
-		{ // This is never true, is it?
+		{
+			if (target && targetLost)
+			{
+				if (searchTime > 0)
+				{
+					if (Time.time > searchTime)
+					{
+						Debug.Log(_manager.name + " gave up on searching for " + target.name);
+						target = null;
+						searchTime = 0;
+					}
+					else
+					{ // Look around?
+
+					}
+				}
+				else
+				{
+					searchTime = Time.time + 3.0f;
+				}
+			}
 			return Vector3.zero;
 		}
 
@@ -219,7 +286,7 @@ public class NPCAIScript : CharacterInputScript
 			return 0;
 		}
 
-		if (target && goalReached && Vector3.Distance(_transform.position, target.GetCharacterTransform().position) <= approachRange * 1.1f)
+		if (target && !targetLost && goalReached && Vector3.Distance(_transform.position, target.GetCharacterTransform().position) <= approachRange * 1.1f)
 		{ // Simple attack rule
 			return 1;
 		}
