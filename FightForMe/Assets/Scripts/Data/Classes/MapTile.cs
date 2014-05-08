@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-//[System.Serializable]
+[System.Serializable]
 public class MapTile : ScriptableObject
 {
+	[SerializeField]
 	private Vector3 _position;			// Position of the tile on the map
 	public Vector3 position
 	{
@@ -14,6 +15,7 @@ public class MapTile : ScriptableObject
 		}
 	}
 
+	[SerializeField]
 	private Vector2 _size;				// Size of the tile on the floor
 	public Vector2 size
 	{
@@ -23,26 +25,29 @@ public class MapTile : ScriptableObject
 		}
 	}
 
+	[SerializeField]
 	private List<MapTile> _neighbours;	// Neighbours of this tile
+
+	[SerializeField] // Mostly for debugging I guess but why not
 	private List<GameObject> _objects;	// Objects currently in this tile
 
-	private TileEntityScript tileEntity;// Entity meant to represent us in the editor
+	//private TileEntityScript tileEntity;// Entity meant to represent us in the editor
 
-	public void Initialize(Vector3 position, Vector2 size)
+	public void SetUp(int index, Vector3 position, Vector2 size)
 	{
+		this.name = "Map tile " + index;
+
 		this._position = position;
 		this._size = size;
 		this._neighbours = new List<MapTile>();
 		this._objects = new List<GameObject>();
-		this.tileEntity = null;
-
-		//this.hideFlags = HideFlags.NotEditable;
+		//this.tileEntity = null;
 	}
 
-	public void SetEntity(TileEntityScript tileEntity)
+	/*public void SetEntity(TileEntityScript tileEntity)
 	{ // This is now unnecessary, keeping it temporarily just in case
 		this.tileEntity = tileEntity;
-	}
+	}*/
 
 	public bool CanSee(MapTile tile)
 	{ // TODO: Use capsule casts instead?

@@ -5,16 +5,51 @@ using System.Collections.Generic;
 public class TileBuilderScript : MonoBehaviour
 {
 	[SerializeField]
-	private Transform terrain;
+	private Transform terrain;			// Ground entity
 
 	[SerializeField]
-	private float tileSpacing = 3.0f;
+	private float tileSpacing = 3.0f;	// Distance between each tile if we are to generate grid
 
 	[SerializeField]
-	private List<List<MapTile>> tiles;
+	private MapGrid grid;				// Pre-generated grid
 
 	void Start()
 	{ // Build the tile map
+		if (grid != null)
+		{ // Tiles have been generated already
+			LoadGrid();
+		}
+		else
+		{ // Do it right now
+			if (!GameData.wentThroughMenu)
+			{ // Just don't bother, we're debugging and this system no longer needs testing; create a global tile so everyone can see each other
+				float terrainSizeX = 10.0f * terrain.localScale.x;
+				float terrainSizeZ = 10.0f * terrain.localScale.z;
+				Vector3 startPos = Vector3.zero;
+				TileManager.GenerateTiles(startPos, 1, 1, 2.0f * Mathf.Max(terrainSizeX, terrainSizeZ));
+				Destroy(this.gameObject);
+				return;
+			}
+
+			Generate();
+		}
+
+		// Don't need us anymore once we're done
+		Destroy(this.gameObject);
+	}
+
+	public void SetGrid(MapGrid tiles)
+	{
+		this.grid = tiles;
+	}
+
+	public void LoadGrid()
+	{
+		TileManager.SetGrid(this.grid);
+	}
+
+	public void Generate(bool buildNeighbours = true)
+	{
 		float terrainSizeX = 10.0f * terrain.localScale.x;
 		float terrainSizeZ = 10.0f * terrain.localScale.z;
 
@@ -23,30 +58,12 @@ public class TileBuilderScript : MonoBehaviour
 
 		Vector3 startPos = new Vector3(-0.5f * terrainSizeX, 0, -0.5f * terrainSizeZ);
 
-		if (tiles != null && tiles.Count > 0)
-		{ // Tiles have been generated already
-			TileManager.SetTiles(tiles, startPos);
-		}
-		else
-		{ // Do it right now
-			if (!GameData.wentThroughMenu)
-			{ // Just don't bother, we're debugging and this system no longer needs testing
-				Destroy(this.gameObject);
-				return;
-			}
+		TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
 
-			TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
-
+		if (buildNeighbours)
+		{
 			TileManager.BuildNeighbours();
 		}
-
-		// Don't need us anymore once we're done
-		Destroy(this.gameObject);
-	}
-
-	public void SetTiles(List<List<MapTile>> tiles)
-	{
-		this.tiles = tiles;
 	}
 
 	void OnGUI()

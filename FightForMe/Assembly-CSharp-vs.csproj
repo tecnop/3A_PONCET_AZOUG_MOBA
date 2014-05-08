@@ -84,6 +84,8 @@
      <Compile Include="Assets\Scripts\Data\Classes\Effect.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\GameModel.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\InflictedBuff.cs" />
+     <Compile Include="Assets\Scripts\Data\Classes\MapGrid.cs" />
+     <Compile Include="Assets\Scripts\Data\Classes\MapRow.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\MapTile.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\Metadata.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\Parser\Clazz.cs" />

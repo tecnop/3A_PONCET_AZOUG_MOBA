@@ -9,13 +9,13 @@ public class TileGenerator : EditorWindow
 
 	// Options
 	private GameObject tilePrefab;
-	private Transform terrain;
 	private Transform tiles;
 	private TileBuilderScript tileBuilder;
 	private float tileSpacing = 3.0f;
 
 	private List<TileEntityScript> debugTiles;
-	private int tileCount;
+
+	private static GUIStyle titleStyle;
 
 	private TileGenerator()
 	{
@@ -29,76 +29,87 @@ public class TileGenerator : EditorWindow
 			_tileGen = (TileGenerator)CreateInstance("TileGenerator");
 		}
 
+		titleStyle = new GUIStyle();
+		titleStyle.alignment = TextAnchor.MiddleCenter;
+		titleStyle.fontStyle = FontStyle.Bold;
+
 		_tileGen.Show();
 	}
 
 	void OnGUI()
 	{
-		GameObject temp;
-
-		temp = (GameObject)EditorGUILayout.ObjectField("Tile prefab", this.tilePrefab, typeof(GameObject), false);
-
-		if (temp != null && temp.GetComponent<TileEntityScript>() != null)
-		{
-			this.tilePrefab = temp;
+		if (titleStyle == null)
+		{ // Script has been reloaded (this causes an error because of recursive GUI drawing but whatever)
+			Debug.LogWarning("TileGenerator has been reloaded while the window was active (you may ignore the following error)");
+			this.Close();
+			return;
 		}
 
-		Transform temp2;
+		GUILayout.Label("Generation", titleStyle);
 
-		temp2 = (Transform)EditorGUILayout.ObjectField("Ground entity", this.terrain, typeof(Transform), true);
-
-		if (temp2 != null && PrefabUtility.GetPrefabType(temp2) != PrefabType.Prefab)
-		{
-			this.terrain = temp2;
-		}
-
-		temp2 = (Transform)EditorGUILayout.ObjectField("Tiles parent", this.tiles, typeof(Transform), true);
-
-		if (temp2 != null && PrefabUtility.GetPrefabType(temp2) != PrefabType.Prefab)
-		{
-			this.tiles = temp2;
-		}
-
-		TileBuilderScript temp3;
-
-		temp3 = (TileBuilderScript)EditorGUILayout.ObjectField("Tile builder", this.tileBuilder, typeof(TileBuilderScript), true);
+		TileBuilderScript temp3 = (TileBuilderScript)EditorGUILayout.ObjectField("Tile builder", this.tileBuilder, typeof(TileBuilderScript), true);
 
 		if (temp3 != null && PrefabUtility.GetPrefabType(temp3) != PrefabType.Prefab)
 		{
 			this.tileBuilder = temp3;
+
+			if (TileManager.GridSize() == -1)
+			{
+				this.tileBuilder.LoadGrid();
+			}
 		}
 		
 		GUILayout.Space(10);
 
-		if (this.tileCount > 0)
+		if (TileManager.GridSize() > 0)
 		{
-			if (this.tiles != null)
-			{
-				if (this.debugTiles != null && this.debugTiles.Count > 0)
-				{
-					if (GUILayout.Button("Hide Editor tiles"))
-					{
-						HideEditorTiles();
-					}
-				}
-				else
-				{
-					if (GUILayout.Button("Enable Editor tiles"))
-					{
-						DisplayEditorTiles();
-					}
-				}
-			}
 			if (GUILayout.Button("Build neighbours"))
 			{
 				TileManager.BuildNeighbours();
 			}
-			if (GUILayout.Button("Clear all " + this.tileCount + " tiles"))
+			if (GUILayout.Button("Clear all " + TileManager.GridSize() + " tiles"))
 			{
 				DestroyTiles();
 			}
+
+			GUILayout.Space(10);
+
+			//EditorGUILayout.Separator();
+
+			GUILayout.Space(10);
+
+			GUILayout.Label("Debugging", titleStyle);
+
+			GameObject temp = (GameObject)EditorGUILayout.ObjectField("Tile prefab", this.tilePrefab, typeof(GameObject), false);
+
+			if (temp != null && temp.GetComponent<TileEntityScript>() != null)
+			{
+				this.tilePrefab = temp;
+			}
+
+			Transform temp2 = (Transform)EditorGUILayout.ObjectField("Tiles parent", this.tiles, typeof(Transform), true);
+
+			if (temp2 != null && PrefabUtility.GetPrefabType(temp2) != PrefabType.Prefab)
+			{
+				this.tiles = temp2;
+			}
+
+			if (this.debugTiles != null && this.debugTiles.Count > 0)
+			{
+				if (GUILayout.Button("Hide Editor tiles"))
+				{
+					HideEditorTiles();
+				}
+			}
+			else if (this.tilePrefab != null)
+			{
+				if (GUILayout.Button("Enable Editor tiles"))
+				{
+					DisplayEditorTiles();
+				}
+			}
 		}
-		else if (this.tilePrefab != null && this.terrain != null && this.tileBuilder != null)
+		else if (this.tileBuilder != null)
 		{
 			this.tileSpacing = EditorGUILayout.FloatField("Spacing", this.tileSpacing);
 			if (GUILayout.Button("Generate"))
@@ -106,6 +117,8 @@ public class TileGenerator : EditorWindow
 				DoGenerate();
 			}
 		}
+
+		// TODO: EditorGUI.ProgressBar
 	}
 
 	private TileEntityScript SpawnEditorTile(MapTile tile)
@@ -115,25 +128,15 @@ public class TileGenerator : EditorWindow
 		obj.transform.parent = this.tiles;
 		TileEntityScript script = obj.GetComponent<TileEntityScript>();
 		script.SetTile(tile);
-		tile.SetEntity(script);
+		//tile.SetEntity(script);
 		return script;
 	}
 
 	private void DoGenerate()
 	{
-		float terrainSizeX = 10.0f * this.terrain.localScale.x;
-		float terrainSizeZ = 10.0f * this.terrain.localScale.z;
+		tileBuilder.Generate(false);
 
-		Vector3 startPos = new Vector3(-0.5f * terrainSizeX, 0, -0.5f * terrainSizeZ);
-
-		int sizeX = Mathf.CeilToInt(terrainSizeX / tileSpacing);
-		int sizeZ = Mathf.CeilToInt(terrainSizeZ / tileSpacing);
-
-		this.tileCount = sizeX * sizeZ;
-
-		TileManager.GenerateTiles(startPos, sizeX, sizeZ, tileSpacing);
-
-		TileManager.ExportTilesToBuilder(this.tileBuilder);
+		TileManager.ExportGridToBuilder(this.tileBuilder);
 	}
 
 	private void DisplayEditorTiles()
@@ -171,7 +174,7 @@ public class TileGenerator : EditorWindow
 
 		this.debugTiles = null;
 
-		i = 0;
+		/*i = 0;
 		do
 		{
 			int j = 0;
@@ -188,7 +191,7 @@ public class TileGenerator : EditorWindow
 
 			i++;
 
-		} while (TileManager.GetTile(i, 0) != null); // Awkward
+		} while (TileManager.GetTile(i, 0) != null); // Awkward*/
 	}
 
 	private void DestroyTiles()
@@ -200,6 +203,6 @@ public class TileGenerator : EditorWindow
 
 		TileManager.ClearTiles();
 
-		this.tileCount = 0;
+		TileManager.ExportGridToBuilder(this.tileBuilder);
 	}
 }
