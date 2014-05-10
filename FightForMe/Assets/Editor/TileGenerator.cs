@@ -53,7 +53,7 @@ public class TileGenerator : EditorWindow
 		{
 			this.tileBuilder = temp3;
 
-			if (TileManager.GridSize() == -1)
+			if (TileManager.GridSize() == -1 && this.tileBuilder.HasGrid())
 			{
 				this.tileBuilder.LoadGrid();
 			}

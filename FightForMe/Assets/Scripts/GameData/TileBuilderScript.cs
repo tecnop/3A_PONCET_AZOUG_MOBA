@@ -18,6 +18,8 @@ public class TileBuilderScript : MonoBehaviour
 		if (grid != null)
 		{ // Tiles have been generated already
 			LoadGrid();
+
+			TileManager.BakeNeighbours();
 		}
 		else
 		{ // Do it right now
@@ -32,6 +34,8 @@ public class TileBuilderScript : MonoBehaviour
 			}
 
 			Generate();
+
+			TileManager.BakeNeighbours();
 		}
 
 		// Don't need us anymore once we're done
@@ -41,6 +45,11 @@ public class TileBuilderScript : MonoBehaviour
 	public void SetGrid(MapGrid tiles)
 	{
 		this.grid = tiles;
+	}
+
+	public bool HasGrid()
+	{
+		return this.grid != null;
 	}
 
 	public void LoadGrid()

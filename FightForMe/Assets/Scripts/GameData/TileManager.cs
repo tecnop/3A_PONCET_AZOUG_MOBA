@@ -25,6 +25,18 @@ public static class TileManager
 		return null;
 	}
 
+	public static MapTile GetTileForIndex(int index)
+	{
+		if (grid != null)
+		{
+			int l = grid.RowCount();
+			int x = (index-1) / l;
+			int y = (index-1) % l;
+			return grid.GetTile(x, y);
+		}
+		return null;
+	}
+
 	public static MapTile GetTile(int x, int y)
 	{
 		if (grid != null)
@@ -114,9 +126,21 @@ public static class TileManager
 		}
 	}
 
+	public static void BakeNeighbours()
+	{
+		for (int i = 0; i < grid.RowCount(); i++)
+		{
+			for (int j = 0; j < grid.RowSize(i); j++)
+			{
+				grid.GetTile(i, j).BakeNeighbours();
+			}
+		}
+	}
+
 	public static void ExportGridToBuilder(TileBuilderScript builder)
 	{
 		builder.SetGrid(grid);
+		UnityEditor.EditorUtility.SetDirty(builder);
 	}
 
 	public static int GridSize()

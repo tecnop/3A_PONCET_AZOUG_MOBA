@@ -26,10 +26,16 @@ public class MapTile : ScriptableObject
 	}
 
 	[SerializeField]
-	private List<MapTile> _neighbours;	// Neighbours of this tile
+	private List<MapTile> neighbours;	// Neighbours of this tile
+
+	[SerializeField]
+	private List<int> neighbourIndexes;	// Indexes of the neighbours of this tile
 
 	[SerializeField] // Mostly for debugging I guess but why not
-	private List<GameObject> _objects;	// Objects currently in this tile
+	private List<GameObject> objects;	// Objects currently in this tile
+
+	[SerializeField]
+	private int index; // Starts at 1
 
 	//private TileEntityScript tileEntity;// Entity meant to represent us in the editor
 
@@ -37,10 +43,12 @@ public class MapTile : ScriptableObject
 	{
 		this.name = "Map tile " + index;
 
+		this.index = index;
 		this._position = position;
 		this._size = size;
-		this._neighbours = new List<MapTile>();
-		this._objects = new List<GameObject>();
+		this.neighbours = new List<MapTile>();
+		this.objects = new List<GameObject>();
+		this.neighbourIndexes = new List<int>();
 		//this.tileEntity = null;
 	}
 
@@ -68,16 +76,30 @@ public class MapTile : ScriptableObject
 	{
 		if (this.CanSee(other) && other.CanSee(this))
 		{
-			this._neighbours.Add(other);
-			other._neighbours.Add(this);
+			//this.neighbours.Add(other);
+			//other.neighbours.Add(this);
+			this.neighbourIndexes.Add(other.index);
+			other.neighbourIndexes.Add(this.index);
+		}
+	}
+
+	public void BakeNeighbours()
+	{
+		foreach (int index in this.neighbourIndexes)
+		{
+			MapTile neighbour = TileManager.GetTileForIndex(index);
+			if (neighbour)
+			{
+				this.neighbours.Add(neighbour);
+			}
 		}
 	}
 
 	public bool RemoveEntity(GameObject entity)
 	{
-		if (this._objects.Contains(entity))
+		if (this.objects.Contains(entity))
 		{
-			this._objects.Remove(entity);
+			this.objects.Remove(entity);
 			return true;
 		}
 		return false;
@@ -85,9 +107,9 @@ public class MapTile : ScriptableObject
 
 	public bool AddEntity(GameObject entity)
 	{
-		if (!this._objects.Contains(entity))
+		if (!this.objects.Contains(entity))
 		{
-			this._objects.Add(entity);
+			this.objects.Add(entity);
 			return true;
 		}
 		return false;
@@ -95,16 +117,16 @@ public class MapTile : ScriptableObject
 
 	public void ClearNeighbours()
 	{
-		this._neighbours.Clear();
+		this.neighbours.Clear();
 	}
 
 	public List<MapTile> GetNeighbours()
 	{
-		return new List<MapTile>(this._neighbours);
+		return new List<MapTile>(this.neighbours);
 	}
 
 	public List<GameObject> ObjectsInside()
 	{
-		return new List<GameObject>(this._objects);
+		return new List<GameObject>(this.objects);
 	}
 }
