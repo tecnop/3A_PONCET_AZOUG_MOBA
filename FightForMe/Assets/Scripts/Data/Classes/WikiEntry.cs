@@ -111,4 +111,14 @@ public abstract class WikiEntry
 	{
 		return metadata.GetQuality();
 	}
+
+	public void DrawDataWindow(float width, float height)
+	{ // Small data window rendered using GUI functions. Width and height will generally be around 400 (to be determined later)
+		GUI.Label(new Rect(0.0f, 0.0f, width, height), "Entry " + GetName() + " does not have a data window display function", FFMStyles.centeredText_wrapped);
+	}
+
+	public void DrawWikiPage(float width, float height)
+	{ // Large window rendered using GUI functions. Covers roughly 64% of the screen (80% in each dimension)
+		GUI.Label(new Rect(0.0f, 0.0f, width, height), "Entry " + GetName() + " does not have a wiki page display function", FFMStyles.centeredText_wrapped);
+	}
 }

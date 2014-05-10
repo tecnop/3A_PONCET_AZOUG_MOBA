@@ -24,18 +24,18 @@ public class HUDDroppedItemDisplay : HUDComponent
 		GUI.BeginGroup(frame);
 
 		Rect itemView = new Rect(0.0f, 0.0f, w, 0.8f * h);
-		localRect = new Rect(0.0f, 0.0f, w, 0.8f * h);
 
 		GUI.BeginGroup(itemView);
 
 		uint itemID = HUDRenderer.GetSelectedItem().GetItemID();
 		Item item = DataTables.GetItem(itemID);
 		if (item != null)
-		{ // TODO: DataView
-			GUI.Label(localRect, item.GetName(), FFMStyles.centeredText);
+		{
+			item.DrawDataWindow(itemView.width, itemView.height);
 		}
 		else
 		{
+			localRect = new Rect(0.0f, 0.0f, w, 0.8f * h);
 			GUI.Label(localRect, "<Unknown item>", FFMStyles.centeredText);
 		}
 

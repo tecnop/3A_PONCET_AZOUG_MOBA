@@ -33,4 +33,9 @@ public abstract class Item : WikiEntry
 	{
 		return this.isWeapon;
 	}
+
+	new public void DrawDataWindow(float width, float height)
+	{ // Default placeholder or something
+		GUI.Label(new Rect(0.0f, 0.0f, width, height), this.GetName(), FFMStyles.centeredText_wrapped);
+	}
 }
