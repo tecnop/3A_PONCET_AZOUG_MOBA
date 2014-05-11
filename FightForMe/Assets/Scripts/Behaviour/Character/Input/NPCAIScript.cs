@@ -29,7 +29,6 @@ public class NPCAIScript : CharacterInputScript
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 		this.startPos = _misc.GetSpawnPos();
 		this.currentPath = new Queue<Vector3>();
-		_networkView = this.GetComponent<NetworkView>();
 		this.goalPosition = _transform.position;
 
 		UpdateApproachRange();

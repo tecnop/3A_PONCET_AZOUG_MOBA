@@ -8,7 +8,15 @@ public class Armor : Item
 	private ArmorSlot slot;		// Inventory slot this armor fits in
 	private uint setID;			// Armor set this item is a part of (0 means none)
 
-	Stats stats;				// Stats granted by this piece of armor
+	private Stats stats;		// Stats granted by this piece of armor
+
+	public static string[] slotNames
+	{
+		get
+		{
+			return new string[] { "Tête", "Corps", "Mains", "Pieds" };
+		}
+	}
 
 	public Armor(Metadata metadata,
 		uint recyclingXP = 100,
@@ -35,4 +43,12 @@ public class Armor : Item
 	public ArmorSlot GetSlot() { return this.slot; }
 	public uint GetSetID() { return this.setID; }
 	public Stats GetStats() { return this.stats; }
+
+	public override void DrawDataWindow(float width, float height)
+	{ // TODO: this.GetIcon()
+		GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), this.GetName(), FFMStyles.title);
+		GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Emplacement: " + Armor.slotNames[(int)this.slot], FFMStyles.centeredText_wrapped);
+
+		GUI.Label(new Rect(0.0f, height / 3.0f, width, 2.0f * height / 3.0f), this.ParseDescription(GameData.activePlayer), FFMStyles.Text(alignment: TextAnchor.MiddleLeft, leftPadding: 2, wordWrap: true));
+	}
 }

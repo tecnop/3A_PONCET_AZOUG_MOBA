@@ -35,6 +35,16 @@ public static class FFMStyles
 		}
 	}
 
+	private static GUIStyle _title;
+
+	public static GUIStyle title
+	{
+		get
+		{
+			return _title;
+		}
+	}
+
 	public static GUIStyle Text(TextAnchor alignment = TextAnchor.MiddleCenter, int leftPadding = 0, int rightPadding = 0, int topPadding = 0, int bottomPadding = 0, bool wordWrap = false)
 	{
 		GUIStyle style = new GUIStyle(defaultText);
@@ -62,6 +72,9 @@ public static class FFMStyles
 
 		_centeredText_wrapped = new GUIStyle(_centeredText);
 		_centeredText_wrapped.wordWrap = true;
+
+		_title = new GUIStyle(_centeredText_wrapped);
+		_title.fontStyle = FontStyle.Bold;
 	}
 
 }

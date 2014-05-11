@@ -69,7 +69,7 @@ public class HUDDroppedItemDisplay : HUDComponent
 				}
 			}
 		}
-		if (GUI.Button(new Rect(0.7f * w, 0.0f, 0.3f * w, 0.2f * h), "Recycler"))
+		if (GUI.Button(new Rect(0.7f * w, 0.0f, 0.3f * w, 0.2f * h), "Recycler\n("+item.GetRecyclingXP()+" XP)"))
 		{
 			HUDRenderer.GetSelectedItem().OnRecycle(_misc);
 			HUDRenderer.SetSelectedItem(null);

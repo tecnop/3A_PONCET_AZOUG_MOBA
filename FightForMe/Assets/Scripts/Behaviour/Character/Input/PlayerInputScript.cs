@@ -21,7 +21,6 @@ public class PlayerInputScript : CharacterInputScript
 			_camera = _cameraScript.GetCamera();
 		}
 
-		_networkView = this.GetComponent<NetworkView>();
 		_playerTransform = _manager.GetCharacterTransform();
 		hasLockedCamera = true;
 	}

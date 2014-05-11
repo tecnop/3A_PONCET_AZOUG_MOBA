@@ -11,6 +11,8 @@ using System.Collections;
 public abstract class CharacterInputScript : MonoBehaviour
 {
 	protected CharacterManager _manager;
+
+	[SerializeField]
 	protected NetworkView _networkView;
 
 	private Vector3 directionalInput;
