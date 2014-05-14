@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum MiscEffect
 { // Special effect are stored as flags, so try to have less than 32 of them
@@ -31,8 +32,8 @@ public class Effect
 	private MiscEffect misc;		// Any other boolean effect that comes with this effect
 	private float miscParm;			// Parameter for the misc value (if applicable)
 
-	public Effect(string description,
-		bool isPositive,
+	public Effect(bool isPositive,
+		string description = null,
 		float flatHP = 0.0f,
 		float pctHP = 0.0f,
 		float flatMP = 0.0f,
@@ -51,7 +52,6 @@ public class Effect
 		MiscEffect misc = MiscEffect.NONE,
 		float miscParm = 0.0f)
 	{
-		this.description = description;
 		this.isPositive = isPositive;
 
 		this.flatHP = flatHP;
@@ -78,6 +78,115 @@ public class Effect
 		this.unlockedAbility = unlockedAbility;
 		this.misc = misc;
 		this.miscParm = miscParm;
+
+		// This must stay at the end!
+		if (description != null)
+		{
+			this.description = description;
+		}
+		else
+		{
+			this.description = BuildDescription();
+		}
+	}
+
+	private string BuildDescription()
+	{
+		List<string> list = new List<string>();
+
+		if (this.flatHP != 0.0f)
+		{
+			string temp = this.flatHP < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " les points de vie de l'utilisateur de " + Mathf.Abs(this.flatHP));
+		}
+		if (this.pctHP != 0.0f)
+		{
+			string temp = this.pctHP < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " les points de vie de l'utilisateur de <maxhealth " + Mathf.Abs(this.pctHP)+ ">");
+		}
+		if (this.flatMP != 0.0f)
+		{
+			string temp = this.flatMP < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " les points de mana de l'utilisateur de " + Mathf.Abs(this.flatMP));
+		}
+		if (this.pctMP != 0.0f)
+		{
+			string temp = this.pctMP < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " les points de mana de l'utilisateur de <maxmana " + Mathf.Abs(this.pctMP) + ">");
+		}
+		if (this.flatHPRegen != 0.0f)
+		{
+			string temp = this.flatHPRegen < 0 ? "Fait perdre" : "Rend";
+			list.Add(temp + " à l'utilisateur " + Mathf.Abs(this.flatHPRegen) + " points de vie par seconde");
+		}
+		if (this.pctHPRegen != 0.0f)
+		{
+			string temp = this.pctHPRegen < 0 ? "Fait perdre" : "Rend";
+			list.Add(temp + " à l'utilisateur <maxhealth " + Mathf.Abs(this.pctHPRegen)+ "> par seconde");
+		}
+		if (this.flatMPRegen != 0.0f)
+		{
+			string temp = this.flatMPRegen < 0 ? "Fait perdre" : "Rend";
+			list.Add(temp + " à l'utilisateur " + Mathf.Abs(this.flatMPRegen) + " points de mana par seconde");
+		}
+		if (this.pctMPRegen != 0.0f)
+		{
+			string temp = this.pctMPRegen < 0 ? "Fait perdre" : "Rend";
+			list.Add(temp + " à l'utilisateur <maxmana " + Mathf.Abs(this.pctMPRegen) + "> par seconde");
+		}
+		if (this.flatMS != 0.0f)
+		{
+			string temp = this.flatMS < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " la vitesse de déplacement de l'utilisateur de " + Mathf.Abs(this.flatMS));
+		}
+		if (this.pctMS != 0.0f)
+		{
+			string temp = this.pctMS < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " la vitesse de déplacement de l'utilisateur de <movespeed " + Mathf.Abs(this.pctMS) + ">");
+		}
+		if (this.bonusDamage != 0.0f)
+		{
+			string temp = this.bonusDamage < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " les dégâts de l'utilisateur de <dmg " + Mathf.Abs(this.bonusDamage) + ">");
+		}
+		if (this.bonusAtkSpd != 0.0f)
+		{ // FIXME: I don't remember how this one works
+			string temp = this.bonusAtkSpd < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " la vitesse d'attaque de l'utilisateur de " + Mathf.Abs(this.bonusAtkSpd) * 100 + "%");
+		}
+		if (this.bonusProjDamage != 0.0f)
+		{
+			string temp = this.bonusProjDamage < 0 ? "Réduit" : "Augmente";
+			list.Add(temp + " les dégâts des projectiles de l'utilisateur de <projdmg " + Mathf.Abs(this.bonusProjDamage) + ">");
+		}
+		if (this.stats != null)
+		{
+			if (this.stats.GetStrength() != 0)
+			{
+				string temp = this.stats.GetStrength() < 0 ? "Réduit" : "Augmente";
+				list.Add(temp + " l'endurance de l'utilisateur de " + Mathf.Abs(this.stats.GetStrength()));
+			}
+			if (this.stats.GetAgility() != 0)
+			{
+				string temp = this.stats.GetAgility() < 0 ? "Réduit" : "Augmente";
+				list.Add(temp + " la puissance de l'utilisateur de " + Mathf.Abs(this.stats.GetAgility()));
+			}
+			if (this.stats.GetIntelligence() != 0)
+			{
+				string temp = this.stats.GetIntelligence() < 0 ? "Réduit" : "Augmente";
+				list.Add(temp + " l'intelligence de l'utilisateur de " + Mathf.Abs(this.stats.GetIntelligence()));
+			}
+		}
+		if (this.unlockedAbility != 0)
+		{
+			list.Add("Débloque le sort: " + DataTables.GetSpell(this.unlockedAbility).GetName());
+		}
+		if (this.misc != MiscEffect.NONE)
+		{ // TODO
+			list.Add(this.misc.ToString());
+		}
+
+		return string.Join("\n", list.ToArray());
 	}
 
 	public string GetDescription() { return this.description; }

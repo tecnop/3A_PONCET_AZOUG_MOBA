@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Buff : WikiEntry
 {
-	private List<uint> effects;		// List of effects this buff inflicts (also used for description) (type: uint)
+	private List<uint> effects;		// List of effects this buff inflicts (also used for description)
 
 	public Buff(Metadata metadata,
 		uint[] effects = null)
@@ -19,20 +19,32 @@ public class Buff : WikiEntry
 			this.effects = new List<uint>(effects);
 		}
 
-		// Set our short description to list our effects (note: this is the short description in WikiEntry, the one passed as parameter goes to description2)
-		string description = "";
+		// DEBUG
+		metadata.SetDesc(BuildDescription());
+	}
+
+	protected override string BuildDescription()
+	{
+		if (this.effects == null) return null;
+
+		List<string> descriptions = new List<string>();
 		foreach (uint effectID in this.effects)
 		{
 			Effect effect = DataTables.GetEffect(effectID);
-			string color = (effect.IsPositive() ? "<green>" : "<red>");
-			description += color + effect.GetDescription() + "\n";
+			//string color = (effect.IsPositive() ? "<green>" : "<red>");
+			descriptions.Add(/*color + */effect.GetDescription());
 		}
 
-		this.EditDesc(description);
+		return string.Join("\n", descriptions.ToArray());
 	}
 
 	public List<uint> GetEffects()
 	{
 		return effects;
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{ // Testing!
+		GUI.Label(new Rect(0.0f, 0.0f, width, height), this.GetDesc(), FFMStyles.centeredText_wrapped);
 	}
 }

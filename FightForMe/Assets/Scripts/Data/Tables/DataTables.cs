@@ -103,36 +103,34 @@ public static class DataTables
 		spellTable.Add(10, new SpellProjShot(new Metadata("Tir multiple"), 0, 5, impactSpellOverride: 3, costType: SpellCostType.MANA, spellCost: 30.0f));
 		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12, costType: SpellCostType.HEALTH, spellCost: 40.0f));
 		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f));
-		spellTable.Add(13, new SpellToggleBuff(new Metadata("Régénération", description: "Augmente la <test 1.5> puissance mais <val 2.3> inflige des dégâts sur la durée"), 5, costType: SpellCostType.PCTHEALTH, spellCost: 0.1f));
-
-		spellTable[13].ParseDescription(null);
+		spellTable.Add(13, new SpellToggleBuff(new Metadata("Régénération"), 5, costType: SpellCostType.PCTHEALTH, spellCost: 0.1f));
 
 		// Effects
-		effectTable.Add(1, new Effect(description: "Stats du seigneur", isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
-		effectTable.Add(2, new Effect(description: "Capacité: Boule de feu", isPositive: true, unlockedAbility: 1));
-		effectTable.Add(3, new Effect(description: "Endurance", isPositive: true, stats: new Stats(strength: 10)));
-		effectTable.Add(4, new Effect(description: "Puissance", isPositive: true, stats: new Stats(agility: 10)));
-		effectTable.Add(5, new Effect(description: "Intelligence", isPositive: true, stats: new Stats(intelligence: 10)));
-		effectTable.Add(6, new Effect(description: "Endurance+", isPositive: true, stats: new Stats(strength: 30)));
-		effectTable.Add(7, new Effect(description: "Puissance+", isPositive: true, stats: new Stats(agility: 30)));
-		effectTable.Add(8, new Effect(description: "Intelligence+", isPositive: true, stats: new Stats(intelligence: 30)));
-		effectTable.Add(9, new Effect(description: "Vitesse de Course", isPositive: true, flatMS: 350.0f));
-		effectTable.Add(10, new Effect(description: "Vitesse de Course+", isPositive: true, flatMS: 350.0f));
-		effectTable.Add(11, new Effect(description: "Super Debug", isPositive: true, stats: new Stats(200, 200, 200), bonusDamage: 1000.0f, bonusProjDamage: 1000.0f));
-		effectTable.Add(12, new Effect(description: "Brûlure", isPositive: false, pctHPRegen: -0.05f));
-		effectTable.Add(13, new Effect(description: "Boule de Feu", isPositive: true, unlockedAbility: 4));
+		effectTable.Add(1, new Effect(isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
+		effectTable.Add(2, new Effect(isPositive: true, unlockedAbility: 1));
+		effectTable.Add(3, new Effect(isPositive: true, stats: new Stats(strength: 10)));
+		effectTable.Add(4, new Effect(isPositive: true, stats: new Stats(agility: 10)));
+		effectTable.Add(5, new Effect(isPositive: true, stats: new Stats(intelligence: 10)));
+		effectTable.Add(6, new Effect(isPositive: true, stats: new Stats(strength: 30)));
+		effectTable.Add(7, new Effect(isPositive: true, stats: new Stats(agility: 30)));
+		effectTable.Add(8, new Effect(isPositive: true, stats: new Stats(intelligence: 30)));
+		effectTable.Add(9, new Effect(isPositive: true, flatMS: 350.0f));
+		effectTable.Add(10, new Effect(isPositive: true, flatMS: 350.0f));
+		effectTable.Add(11, new Effect(isPositive: true, stats: new Stats(200, 200, 200), bonusDamage: 1000.0f, bonusProjDamage: 1000.0f));
+		effectTable.Add(12, new Effect(isPositive: false, pctHPRegen: -0.05f));
+		effectTable.Add(13, new Effect(isPositive: true, unlockedAbility: 4));
 		// ============= HARD-CODED REFERENCE =============
 		effectTable.Add(14, new Effect(description: "Attaque", isPositive: true, unlockedAbility: 1));
 		// ================================================
-		effectTable.Add(15, new Effect(description: "Grenade", isPositive: true, unlockedAbility: 7));
+		effectTable.Add(15, new Effect(isPositive: true, unlockedAbility: 7));
 		// ============= HARD-CODED REFERENCE =============
 		effectTable.Add(16, new Effect(description: "Relique", isPositive: true, misc: MiscEffect.CARRYING_TROPHY));
 		// ================================================
-		effectTable.Add(17, new Effect(description: "Tir multiple", isPositive: true, unlockedAbility: 10));
-		effectTable.Add(18, new Effect(description: "Charge", isPositive: true, unlockedAbility: 11));
-		effectTable.Add(19, new Effect(description: "Régénération", isPositive: true, unlockedAbility: 13));
-		effectTable.Add(20, new Effect(description: "Régénération", isPositive: true, pctHPRegen: 0.05f, bonusDamage: -0.75f, bonusProjDamage: -0.75f));
-		effectTable.Add(21, new Effect(description: "Invincible", isPositive: true, misc: MiscEffect.INVULNERABLE));
+		effectTable.Add(17, new Effect(isPositive: true, unlockedAbility: 10));
+		effectTable.Add(18, new Effect(isPositive: true, unlockedAbility: 11));
+		effectTable.Add(19, new Effect(isPositive: true, unlockedAbility: 13));
+		effectTable.Add(20, new Effect(isPositive: true, pctHPRegen: 0.05f, bonusDamage: -0.75f, bonusProjDamage: -0.75f));
+		effectTable.Add(21, new Effect(isPositive: true, misc: MiscEffect.INVULNERABLE));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -628,7 +626,7 @@ public static class DataTables
 		}
 		*/
 
-		effectTable.Add(id, new Effect(description, isPositive, flatHP, pctHP, flatMP, pctMP, flatHPRegen, pctHPRegen, flatMPRegen, pctMPRegen, flatMS, pctMS, bonusDamage, bonusAtkSpd, bonusProjDamage, stats, unlockedAbility, misc, miscParm));
+		effectTable.Add(id, new Effect(isPositive, description, flatHP, pctHP, flatMP, pctMP, flatHPRegen, pctHPRegen, flatMPRegen, pctMPRegen, flatMS, pctMS, bonusDamage, bonusAtkSpd, bonusProjDamage, stats, unlockedAbility, misc, miscParm));
 	}
 
 	private static Metadata getMetadata(string pattern)
