@@ -45,12 +45,13 @@ public static class FFMStyles
 		}
 	}
 
-	public static GUIStyle Text(TextAnchor alignment = TextAnchor.MiddleCenter, int leftPadding = 0, int rightPadding = 0, int topPadding = 0, int bottomPadding = 0, bool wordWrap = false)
+	public static GUIStyle Text(TextAnchor alignment = TextAnchor.MiddleCenter, int leftPadding = 0, int rightPadding = 0, int topPadding = 0, int bottomPadding = 0, bool wordWrap = false, Color color = new Color())
 	{
 		GUIStyle style = new GUIStyle(defaultText);
 		style.alignment = alignment;
 		style.padding = new RectOffset(leftPadding, rightPadding, topPadding, bottomPadding);
 		style.wordWrap = wordWrap;
+		style.normal.textColor = color;
 		return style;
 	}
 

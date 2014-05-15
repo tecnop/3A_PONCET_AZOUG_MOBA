@@ -45,6 +45,13 @@ public class Buff : WikiEntry
 
 	public override void DrawWikiPage(float width, float height)
 	{ // Testing!
+		/*foreach (uint effectID in this.effects)
+		{ // TODO: We can't do that yet because this text has not been parsed; allow us to parse any text for tags, and store them somewhere to avoid reparsing it every frame
+			Effect effect = DataTables.GetEffect(effectID);
+			Color color = (effect.IsPositive() ? Color.green : Color.red);
+			GUIStyle style = FFMStyles.Text(wordWrap:true, color:color);
+			GUILayout.Label(effect.GetDescription(), style);
+		}*/
 		GUI.Label(new Rect(0.0f, 0.0f, width, height), this.GetDesc(), FFMStyles.centeredText_wrapped);
 	}
 }

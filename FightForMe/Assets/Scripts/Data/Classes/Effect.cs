@@ -102,7 +102,7 @@ public class Effect
 		if (this.pctHP != 0.0f)
 		{
 			string temp = this.pctHP < 0 ? "Réduit" : "Augmente";
-			list.Add(temp + " les points de vie de l'utilisateur de <maxhealth " + Mathf.Abs(this.pctHP)+ ">");
+			list.Add(temp + " les points de vie de l'utilisateur de <maxhealth " + Mathf.Abs(this.pctHP)+ " />");
 		}
 		if (this.flatMP != 0.0f)
 		{
@@ -112,7 +112,7 @@ public class Effect
 		if (this.pctMP != 0.0f)
 		{
 			string temp = this.pctMP < 0 ? "Réduit" : "Augmente";
-			list.Add(temp + " les points de mana de l'utilisateur de <maxmana " + Mathf.Abs(this.pctMP) + ">");
+			list.Add(temp + " les points de mana de l'utilisateur de <maxmana " + Mathf.Abs(this.pctMP) + " />");
 		}
 		if (this.flatHPRegen != 0.0f)
 		{
@@ -142,12 +142,12 @@ public class Effect
 		if (this.pctMS != 0.0f)
 		{
 			string temp = this.pctMS < 0 ? "Réduit" : "Augmente";
-			list.Add(temp + " la vitesse de déplacement de l'utilisateur de <movespeed " + Mathf.Abs(this.pctMS) + ">");
+			list.Add(temp + " la vitesse de déplacement de l'utilisateur de <movespeed " + Mathf.Abs(this.pctMS) + " />");
 		}
 		if (this.bonusDamage != 0.0f)
 		{
 			string temp = this.bonusDamage < 0 ? "Réduit" : "Augmente";
-			list.Add(temp + " les dégâts de l'utilisateur de <dmg " + Mathf.Abs(this.bonusDamage) + ">");
+			list.Add(temp + " les dégâts de l'utilisateur de <dmg " + Mathf.Abs(this.bonusDamage) + " />");
 		}
 		if (this.bonusAtkSpd != 0.0f)
 		{ // FIXME: I don't remember how this one works
@@ -157,7 +157,7 @@ public class Effect
 		if (this.bonusProjDamage != 0.0f)
 		{
 			string temp = this.bonusProjDamage < 0 ? "Réduit" : "Augmente";
-			list.Add(temp + " les dégâts des projectiles de l'utilisateur de <projdmg " + Mathf.Abs(this.bonusProjDamage) + ">");
+			list.Add(temp + " les dégâts des projectiles de l'utilisateur de <projdmg " + Mathf.Abs(this.bonusProjDamage) + " />");
 		}
 		if (this.stats != null)
 		{

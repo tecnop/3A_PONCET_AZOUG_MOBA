@@ -28,9 +28,18 @@ public abstract class WikiEntry
 
 		string result = null;
 
-		if (parts.Length == 2)
+		if (parts.Length == 2 || parts.Length == 3)
 		{
 			string name = parts[0];
+			bool shortVersion = false;
+
+			if (parts.Length == 3)
+			{
+				if (parts[2].Equals("/"))
+				{ // Not very informative but meh
+					shortVersion = true;
+				}
+			}
 
 			float value;
 
@@ -101,7 +110,11 @@ public abstract class WikiEntry
 
 			string desc = (value * 100).ToString();
 
-			if (name.Equals("health"))
+			if (shortVersion && result == null)
+			{ // FIXME: If it's not a recognized tag? Probably won't happen but...
+				desc += "%";
+			}
+			else if (name.Equals("health"))
 			{
 				desc += "% de ses points de vie actuels";
 			}
