@@ -13,15 +13,15 @@ public enum Quality // It describes quality using rarity adjectives because cons
 public class Metadata
 {
 	private string name;			// Entry name
-	private string description;		// Quite short, generally stats and such
-	private string description2;	// May be longer and contain less important information such as lore, jokes, tips...
+	private string description;		// Quite short, generally an overview of stats and such
+	private string lore;			// May be longer and contain less gameplay-related information such as lore, jokes, tips...
 	private GameModel model;		// Game model associated with this entry
 	private string iconPath;		// Path to the picture associated with this entry
 	private Quality quality;		// Quality level of the associated object, changes the color of the title
 
 	public Metadata(string name,
 		string description = null,
-		string description2 = null,
+		string lore = null,
 		string modelPath = null,
 		float scale = 1.0f,
 		string iconPath = null,
@@ -29,7 +29,7 @@ public class Metadata
 	{
 		this.name = name;
 		this.description = description;
-		this.description2 = description2;
+		this.lore = lore;
 		//if (modelPath != null)
 		{
 			this.model = new GameModel(modelPath, scale);
@@ -52,9 +52,9 @@ public class Metadata
 		return this.description;
 	}
 
-	public string GetDesc2()
+	public string GetLore()
 	{
-		return this.description2;
+		return this.lore;
 	}
 
 	public void SetDesc(string newDesc)

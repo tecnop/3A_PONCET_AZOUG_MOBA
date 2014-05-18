@@ -93,6 +93,20 @@ public class PlayerInputScript : CharacterInputScript
 		return Input.mousePosition;
 	}
 
+	public bool MouseIsInRect(Rect rect)
+	{ // FIXME
+		Vector3 pos = GetMousePos();
+		Vector2 actualPos = new Vector2(pos.x, Screen.height - pos.y);
+
+		if (actualPos.x > rect.xMin && actualPos.x < rect.xMax &&
+			actualPos.y > rect.yMin && actualPos.y < rect.yMax)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	public bool HasLockedCamera()
 	{
 		return this.hasLockedCamera;

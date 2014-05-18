@@ -4,13 +4,15 @@ using System.Collections;
 public class HUDSpellSlot : HUDComponent
 {
 	private PlayerMiscDataScript _misc;
+	private PlayerInputScript _input;
 
 	private SpellSlot slot;
 
 	public HUDSpellSlot(Rect frame, HUDContainer parent, SpellSlot slot)
-		: base("HUD_spell_slot"+(int)slot, frame, parent:parent)
+		: base("HUD_spell_slot" + (int)slot, frame, parent: parent)
 	{
 		this._misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
+		this._input = (PlayerInputScript)GameData.activePlayer.GetInputScript();
 		this.slot = slot;
 	}
 
@@ -43,8 +45,12 @@ public class HUDSpellSlot : HUDComponent
 		else
 		{ // We have a spell attached
 			Spell spell = DataTables.GetSpell(boundSpell);
-
 			name = spell.GetName();
+
+			if (_input.MouseIsInRect(this.GetAbsoluteRect()))
+			{
+				HUDRenderer.SetDataViewObject(spell);
+			}
 		}
 
 		if (GUI.Button(localRect, GUIContent.none))

@@ -87,7 +87,7 @@ public class CharacterInventoryScript : MonoBehaviour
 			this.setProgress[setID] == set.GetSize())
 		{
 			this.completedSets.Add(set);
-			Debug.Log(_manager.name + " has completed set " + setID);
+			//Debug.Log(_manager.name + " has completed set " + setID);
 		}
 		else if (this.completedSets.Contains(set))
 		{

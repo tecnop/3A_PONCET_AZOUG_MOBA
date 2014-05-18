@@ -4,11 +4,13 @@ using System.Collections;
 public class HUDBuffDisplay : HUDComponent
 {
 	private CharacterCombatScript _combat;
+	private PlayerInputScript _input;
 
 	public HUDBuffDisplay(Rect frame, HUDContainer parent)
 		: base("HUD_buff_display", frame, parent:parent)
 	{
 		_combat = GameData.activePlayer.GetCombatScript();
+		_input = (PlayerInputScript)GameData.activePlayer.GetInputScript();
 	}
 
 	public override void Render()
@@ -28,10 +30,17 @@ public class HUDBuffDisplay : HUDComponent
 
 		foreach(InflictedBuff buff in _combat.GetBuffs())
 		{
-			GUI.Box(new Rect(x, y, size, size), GUIContent.none);
-			GUI.Label(new Rect(x, y, size, size), buff.GetName(), style);
+			Rect buffRect = new Rect(x, y, size, size);
+			Vector2 absPos = this.GetAbsolutePos() + new Vector2(buffRect.x, buffRect.y);
+			Rect absBuffRect = new Rect(absPos.x, absPos.y, buffRect.width, buffRect.height);
 
-			// TODO: Allow the mouse to hover over the buff to see its description
+			GUI.Box(buffRect, GUIContent.none);
+			GUI.Label(buffRect, buff.GetName(), style);
+
+			if (_input.MouseIsInRect(absBuffRect))
+			{
+				HUDRenderer.SetDataViewObject(DataTables.GetBuff(buff.GetBuffID()));
+			}
 
 			x += size;
 

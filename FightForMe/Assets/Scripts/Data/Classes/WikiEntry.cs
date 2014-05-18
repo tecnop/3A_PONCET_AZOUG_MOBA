@@ -10,10 +10,10 @@ public abstract class WikiEntry
 	{
 		this.metadata = metadata;
 
-		if (metadata.GetDesc() == null)
+		/*if (metadata.GetDesc() == null)
 		{ // Build an automatic one
 			metadata.SetDesc(BuildDescription());
-		}
+		}*/
 	}
 
 	/*protected void EditDesc(string newDesc)
@@ -21,7 +21,7 @@ public abstract class WikiEntry
 		metadata.SetDesc(newDesc);
 	}*/
 
-	private string ReadTag(string tag, CharacterManager manager)
+	private static string ReadTag(string tag, CharacterManager manager)
 	{
 		string strippedTag = tag.Substring(1, tag.Length - 2);
 		string[] parts = strippedTag.Split(' ');
@@ -180,43 +180,42 @@ public abstract class WikiEntry
 		return result;
 	}
 
-	public string ParseDescription(CharacterManager manager)
+	public static string ParseText(string text, CharacterManager activePlayer)
 	{
-		string desc = metadata.GetDesc();
 		List<string> output = new List<string>();
 
-		if (desc == null)
+		if (text == null)
 		{
 			return null;
 		}
 
 		int pos = 0; // Last validated position
-		for (int i = 0; i < desc.Length; i++)
+		for (int i = 0; i < text.Length; i++)
 		{
-			if (desc[i] == '<')
+			if (text[i] == '<')
 			{
-				output.Add(desc.Substring(pos, i - pos));
+				output.Add(text.Substring(pos, i - pos));
 				pos = i;
 
 				int j = i;
-				while (j < desc.Length)
+				while (j < text.Length)
 				{
-					if (desc[j] == '>')
+					if (text[j] == '>')
 					{
-						output.Add(ReadTag(desc.Substring(pos, j - i + 1), manager));
+						output.Add(ReadTag(text.Substring(pos, j - i + 1), activePlayer));
 						pos = j + 1;
 						break;
 					}
 					j++;
 				}
-				if (desc[j] != '>')
-				{ // Error: this tag is never closed
+				if (j >= text.Length)
+				{ // This tag is never closed
 					return "PARSING ERROR: A tag is never closed";
 				}
 			}
 		}
 
-		output.Add(desc.Substring(pos, desc.Length - pos));
+		output.Add(text.Substring(pos, text.Length - pos));
 
 		return string.Join("", output.ToArray());
 	}
@@ -228,12 +227,12 @@ public abstract class WikiEntry
 
 	public string GetDesc()
 	{
-		return this.ParseDescription(null);
+		return WikiEntry.ParseText(metadata.GetDesc(), null);
 	}
 
-	public string GetLongDesc()
+	public string GetLore()
 	{
-		return this.GetDesc() + "\n\n" + metadata.GetDesc2();
+		return metadata.GetLore();
 	}
 
 	public GameModel GetModel()
@@ -271,18 +270,38 @@ public abstract class WikiEntry
 		return metadata.GetQuality();
 	}
 
-	protected virtual string BuildDescription()
-	{
-		return "<Description manquante>";
-	}
-
 	public virtual void DrawDataWindow(float width, float height)
 	{ // Small data window rendered using GUI functions. Width and height will generally be around 400 (to be determined later)
-		GUI.Label(new Rect(0.0f, 0.0f, width, height), "Entry " + GetName() + " does not have a data window display function", FFMStyles.centeredText_wrapped);
+		if (this.GetName() != null)
+		{
+			GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), false));
+		}
+
+		// TODO: Icon
+
+		if (this.GetDesc() != null)
+		{ // Parse the description? It's costly and not really necessary
+			GUI.Label(new Rect(0.0f, height / 3.0f, width, 2.0f * height / 3.0f), this.GetDesc(), FFMStyles.Text(alignment: TextAnchor.MiddleLeft, leftPadding: 2, wordWrap: true));
+		}
 	}
 
 	public virtual void DrawWikiPage(float width, float height)
 	{ // Large window rendered using GUI functions. Covers roughly 64% of the screen (80% in each dimension)
-		GUI.Label(new Rect(0.0f, 0.0f, width, height), "Entry " + GetName() + " does not have a wiki page display function", FFMStyles.centeredText_wrapped);
+		if (this.GetName() != null)
+		{
+			GUI.Label(new Rect(0.0f, 0.0f, width, 0.15f * height), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), true));
+		}
+
+		// TODO: Icon
+
+		if (this.GetDesc() != null)
+		{ // Parse the description? It's costly and not really necessary
+			GUI.Label(new Rect(0.0f, 0.2f * height, width, 0.3f * height), this.GetDesc(), FFMStyles.textBlock);
+		}
+
+		if (this.GetLore() != null)
+		{
+			GUI.Label(new Rect(0.0f, 0.55f * height, width, 0.4f * height), this.GetLore(), FFMStyles.loreBlock);
+		}
 	}
 }

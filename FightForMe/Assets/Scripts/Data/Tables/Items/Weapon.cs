@@ -43,13 +43,16 @@ public class Weapon : Item
 
 	public override void DrawDataWindow(float width, float height)
 	{ // TODO: this.GetIcon()
-		GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), this.GetName(), FFMStyles.title);
+		base.DrawDataWindow(width, height);
 
 		if (this.weaponTypeID != 0)
 		{
 			GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Type: " + this.GetWeaponType().GetName(), FFMStyles.centeredText_wrapped);
 		}
+	}
 
-		GUI.Label(new Rect(0.0f, height / 3.0f, width, 2.0f * height / 3.0f), this.ParseDescription(GameData.activePlayer), FFMStyles.Text(alignment: TextAnchor.MiddleLeft, leftPadding: 2, wordWrap: true));
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
 	}
 }

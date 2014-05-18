@@ -129,8 +129,9 @@ public static class DataTables
 		effectTable.Add(17, new Effect(isPositive: true, unlockedAbility: 10));
 		effectTable.Add(18, new Effect(isPositive: true, unlockedAbility: 11));
 		effectTable.Add(19, new Effect(isPositive: true, unlockedAbility: 13));
-		effectTable.Add(20, new Effect(isPositive: true, pctHPRegen: 0.05f, bonusDamage: -0.75f, bonusProjDamage: -0.75f));
+		effectTable.Add(20, new Effect(isPositive: true, pctHPRegen: 0.05f));
 		effectTable.Add(21, new Effect(isPositive: true, misc: MiscEffect.INVULNERABLE));
+		effectTable.Add(22, new Effect(isPositive: false, bonusDamage: -0.75f, bonusProjDamage: -0.75f));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -141,7 +142,7 @@ public static class DataTables
 
 		buffTable.Add(4, new Buff(metadata: new Metadata(name: "Relique"), effects: new uint[] { 16 }));
 
-		buffTable.Add(5, new Buff(metadata: new Metadata(name: "HP+"), effects: new uint[] { 20 }));
+		buffTable.Add(5, new Buff(metadata: new Metadata(name: "HP+"), effects: new uint[] { 20, 22 }));
 
 		buffTable.Add(6, new Buff(metadata: new Metadata(name: "Banlieue"), effects: new uint[] { 9, 3 }));
 

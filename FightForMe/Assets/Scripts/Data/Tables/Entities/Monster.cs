@@ -30,4 +30,14 @@ public class Monster : WikiEntry
 	public AIType GetBehaviour() { return this.behaviour; }
 	public List<uint> GetItems() { return this.items; }
 	public List<uint> GetBuffs() { return this.buffs; }
+
+	public override void DrawDataWindow(float width, float height)
+	{
+		base.DrawDataWindow(width, height);
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
+	}
 }

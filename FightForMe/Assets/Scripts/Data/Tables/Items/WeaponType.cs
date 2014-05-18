@@ -29,4 +29,14 @@ public class WeaponType : WikiEntry
 	public string GetAttackAnim() { return this.attackAnimPath; }
 	public bool IsRanged() { return this.isRanged; }
 	public bool IsTwoHanded() { return this.isTwoHanded; }
+
+	public override void DrawDataWindow(float width, float height)
+	{
+		base.DrawDataWindow(width, height);
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
+	}
 }

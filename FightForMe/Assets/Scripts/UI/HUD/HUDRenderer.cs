@@ -28,6 +28,7 @@ public static class HUDRenderer
 	private static HUDQuickSkills _skills;
 	private static HUDSpellWindow _spells;
 	private static HUDDroppedItemWindow _droppedItem;
+	private static HUDDataView _dataView;
 
 	private static DroppedItemScript _selectedItem;
 
@@ -51,6 +52,7 @@ public static class HUDRenderer
 		_skills = new HUDQuickSkills(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
 		_spells = new HUDSpellWindow(new Rect(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
 		_droppedItem = new HUDDroppedItemWindow(new Rect(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
+		_dataView = new HUDDataView(new Rect(0.0f, 0.4f * h, 0.35f * w, 0.3f * h), hudRoot);
 	}
 
 	public static void Render()
@@ -96,11 +98,18 @@ public static class HUDRenderer
 
 			DrawWikiButton();
 
+			_dataView.SetObject(null); // TEMPORARY
+
 			if (hudRoot.enabled)
 			{
 				hudRoot.Render();
 			}
 		}
+	}
+
+	public static void SetDataViewObject(WikiEntry obj)
+	{
+		_dataView.SetObject(obj);
 	}
 
 	private static void BackToMainMenu()

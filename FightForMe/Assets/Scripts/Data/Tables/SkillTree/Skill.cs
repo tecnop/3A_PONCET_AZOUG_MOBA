@@ -58,4 +58,52 @@ public class Skill : WikiEntry
 		}
 		return res;
 	}
+
+	public override void DrawDataWindow(float width, float height)
+	{
+		if (this.GetName() != null)
+		{
+			GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), false));
+		}
+
+		if (this.color == SkillColor.R)
+		{
+			GUIStyle style = new GUIStyle(FFMStyles.centeredText_wrapped);
+			style.normal.textColor = Color.red;
+			GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Endurance", style);
+		}
+		else if (this.color == SkillColor.G)
+		{
+			GUIStyle style = new GUIStyle(FFMStyles.centeredText_wrapped);
+			style.normal.textColor = Color.green;
+			GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Puissance", style);
+		}
+		else if (this.color == SkillColor.B)
+		{
+			GUIStyle style = new GUIStyle(FFMStyles.centeredText_wrapped);
+			style.normal.textColor = Color.blue;
+			GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Intelligence", style);
+		}
+		else
+		{
+			GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Hybride", FFMStyles.centeredText_wrapped);
+		}
+
+		Effect effect = DataTables.GetEffect(this.effect);
+		if (effect != null)
+		{ // Colour it? Not sure if it's a good idea
+			GUI.Label(new Rect(0.0f, height / 3.0f, width, height / 3.0f), WikiEntry.ParseText(effect.GetDescription(), GameData.activePlayer), FFMStyles.centeredText_wrapped);
+
+			Spell unlockedSpell = DataTables.GetSpell(effect.GetUnlockedAbility());
+			if (unlockedSpell != null && unlockedSpell.GetDesc() != null)
+			{
+				GUI.Label(new Rect(0.0f, 2.0f * height / 3.0f, width, height / 3.0f), unlockedSpell.GetName() + ": " + WikiEntry.ParseText(unlockedSpell.GetDesc(), GameData.activePlayer), FFMStyles.centeredText_wrapped);
+			}
+		}
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
+	}
 }

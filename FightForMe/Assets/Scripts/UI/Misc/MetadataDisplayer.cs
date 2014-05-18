@@ -23,7 +23,7 @@ public static class MetadataDisplayer
 
 		string name = data.GetName();
 
-		string desc = data.GetDesc();
+		string text = data.GetDesc();
 
 		GUI.EndGroup();*/
 	}

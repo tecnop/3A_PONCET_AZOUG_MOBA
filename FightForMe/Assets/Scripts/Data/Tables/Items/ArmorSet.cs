@@ -36,4 +36,14 @@ public class ArmorSet : WikiEntry
 	{
 		return this.setSize;
 	}
+
+	public override void DrawDataWindow(float width, float height)
+	{
+		base.DrawDataWindow(width, height);
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
+	}
 }

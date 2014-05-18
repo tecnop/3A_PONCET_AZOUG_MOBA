@@ -45,10 +45,14 @@ public class Armor : Item
 	public Stats GetStats() { return this.stats; }
 
 	public override void DrawDataWindow(float width, float height)
-	{ // TODO: this.GetIcon()
-		GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), this.GetName(), FFMStyles.title);
-		GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Emplacement: " + Armor.slotNames[(int)this.slot], FFMStyles.centeredText_wrapped);
+	{
+		base.DrawDataWindow(width, height);
 
-		GUI.Label(new Rect(0.0f, height / 3.0f, width, 2.0f * height / 3.0f), this.ParseDescription(GameData.activePlayer), FFMStyles.Text(alignment: TextAnchor.MiddleLeft, leftPadding: 2, wordWrap: true));
+		GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Emplacement: " + Armor.slotNames[(int)this.slot], FFMStyles.centeredText_wrapped);
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
 	}
 }

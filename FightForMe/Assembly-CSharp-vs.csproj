@@ -150,6 +150,7 @@
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBar\HUDXPBar.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDBuffDisplay.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDContainer.cs" />
+     <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDDataView.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDInventory.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\HUDQuickSkills.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDDroppedItemDisplay.cs" />

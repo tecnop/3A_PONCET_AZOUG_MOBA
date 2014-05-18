@@ -18,24 +18,6 @@ public class Buff : WikiEntry
 		{
 			this.effects = new List<uint>(effects);
 		}
-
-		// DEBUG
-		metadata.SetDesc(BuildDescription());
-	}
-
-	protected override string BuildDescription()
-	{
-		if (this.effects == null) return null;
-
-		List<string> descriptions = new List<string>();
-		foreach (uint effectID in this.effects)
-		{
-			Effect effect = DataTables.GetEffect(effectID);
-			//string color = (effect.IsPositive() ? "<green>" : "<red>");
-			descriptions.Add(/*color + */effect.GetDescription());
-		}
-
-		return string.Join("\n", descriptions.ToArray());
 	}
 
 	public List<uint> GetEffects()
@@ -43,15 +25,29 @@ public class Buff : WikiEntry
 		return effects;
 	}
 
-	public override void DrawWikiPage(float width, float height)
-	{ // Testing!
-		/*foreach (uint effectID in this.effects)
-		{ // TODO: We can't do that yet because this text has not been parsed; allow us to parse any text for tags, and store them somewhere to avoid reparsing it every frame
+	public override void DrawDataWindow(float width, float height)
+	{ // Special one, don't draw the parent version
+		GUILayout.BeginArea(new Rect(0.0f, 0.0f, width, height));
+		foreach (uint effectID in this.effects)
+		{
 			Effect effect = DataTables.GetEffect(effectID);
-			Color color = (effect.IsPositive() ? Color.green : Color.red);
-			GUIStyle style = FFMStyles.Text(wordWrap:true, color:color);
-			GUILayout.Label(effect.GetDescription(), style);
-		}*/
-		GUI.Label(new Rect(0.0f, 0.0f, width, height), this.GetDesc(), FFMStyles.centeredText_wrapped);
+			GUILayout.Label(WikiEntry.ParseText(effect.GetDescription(), null), (effect.IsPositive() ? FFMStyles.positive : FFMStyles.negative));
+		}
+		GUILayout.EndArea();
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
+
+		// TODO: List of spells and weapons that apply this
+
+		GUILayout.BeginArea(new Rect(0.0f, 0.5f * height, width, 0.5f * height));
+		foreach (uint effectID in this.effects)
+		{
+			Effect effect = DataTables.GetEffect(effectID);
+			GUILayout.Label(WikiEntry.ParseText(effect.GetDescription(), null), (effect.IsPositive() ? FFMStyles.positive : FFMStyles.negative));
+		}
+		GUILayout.EndArea();
 	}
 }

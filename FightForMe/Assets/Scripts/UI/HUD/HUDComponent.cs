@@ -27,6 +27,25 @@ public abstract class HUDComponent
 	public string GetName() { return this.name; }
 	public Rect GetFrame() { return this.frame; }
 
+	public Vector2 GetAbsolutePos()
+	{
+		Vector2 myPos = new Vector2(this.frame.x, this.frame.y);
+
+		if (parent != null)
+		{
+			myPos += parent.GetAbsolutePos();
+		}
+
+		return myPos;
+	}
+
+	public Rect GetAbsoluteRect()
+	{
+		Vector2 pos = GetAbsolutePos();
+
+		return new Rect(pos.x, pos.y, frame.width, frame.height);
+	}
+
 	internal void SetPos(float x, float y)
 	{
 		if (x < 0)

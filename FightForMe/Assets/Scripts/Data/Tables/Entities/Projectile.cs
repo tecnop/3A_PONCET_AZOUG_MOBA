@@ -63,4 +63,14 @@ public class Projectile : WikiEntry
 	public float GetLifeTime() { return this.lifeTime; }
 	public ProjectileTrajectory GetTrajectory() { return this.trajectory; }
 	public ProjectileCollisionType GetCollisionType() { return this.collision; }
+
+	public override void DrawDataWindow(float width, float height)
+	{
+		base.DrawDataWindow(width, height);
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
+	}
 }
