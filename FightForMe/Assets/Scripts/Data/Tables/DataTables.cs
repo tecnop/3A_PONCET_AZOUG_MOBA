@@ -181,10 +181,12 @@ public static class DataTables
 		projectileTable.Add(6, new Projectile(metadata: new Metadata(name: "Couteau de lancer"), damage: 7.5f, speed: 75.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 
 		// Weapon types
-		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epee courte")));
-		weaponTypeTable.Add(2, new WeaponType(metadata: new Metadata(name: "Marteau"), isTwoHanded: true));
-		weaponTypeTable.Add(3, new WeaponType(metadata: new Metadata(name: "Arc"), isRanged: true, isTwoHanded: true));
+		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epée courte"), isTwoHanded: false));
+		weaponTypeTable.Add(2, new WeaponType(metadata: new Metadata(name: "Marteau")));
+		weaponTypeTable.Add(3, new WeaponType(metadata: new Metadata(name: "Arc"), isRanged: true));
 		weaponTypeTable.Add(4, new WeaponType(metadata: new Metadata(name: "Arme de lancer"), isRanged: true));
+		weaponTypeTable.Add(5, new WeaponType(metadata: new Metadata(name: "Epée longue")));
+		weaponTypeTable.Add(6, new WeaponType(metadata: new Metadata(name: "Debug"), isTwoHanded: false));
 
 		// Armor sets
 		armorSetTable.Add(1, new ArmorSet(metadata: new Metadata(name: "Panoplie du Seigneur"), buffID: 1));
@@ -192,9 +194,9 @@ public static class DataTables
 		armorSetTable.Add(3, new ArmorSet(metadata: new Metadata(name: "Le jeune de banlieue"), buffID: 6));
 
 		// Items
-		itemTable.Add(1, new Weapon(metadata: new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, attackRate: 1.0f));
+		itemTable.Add(1, new Weapon(metadata: new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, attackRate: 1.0f, weaponTypeID: 5));
 		itemTable.Add(2, new Armor(metadata: new Metadata(name: "Armure du test ultime"), slot: ArmorSlot.BODY, setID: 2));
-		itemTable.Add(3, new Weapon(metadata: new Metadata(name: "La Dague"), damage: 6.66f, attackRate: 1.5f));
+		itemTable.Add(3, new Weapon(metadata: new Metadata(name: "La Dague"), damage: 6.66f, attackRate: 1.5f, weaponTypeID: 1));
 		itemTable.Add(4, new Weapon(metadata: new Metadata(name: "Marteau du Seigneur"), damage: 50.0f, attackRate: 1.0f, weaponTypeID: 2));
 		itemTable.Add(5, new Weapon(metadata: new Metadata(name: "Arc du Seigneur"), attackRate: 0.5f, weaponTypeID: 3, projectileID: 1));
 		itemTable.Add(6, new Armor(metadata: new Metadata(name: "Armure du Seigneur"), slot: ArmorSlot.BODY, setID: 1));
@@ -204,12 +206,12 @@ public static class DataTables
 		itemTable.Add(10, new Armor(metadata: new Metadata(name: "Casque du super debug"), slot: ArmorSlot.HEAD, setID: 2));
 		itemTable.Add(11, new Armor(metadata: new Metadata(name: "Gants de l'incroyable fix"), slot: ArmorSlot.HANDS, setID: 2));
 		itemTable.Add(12, new Armor(metadata: new Metadata(name: "Bottes de l'interminable alpha"), slot: ArmorSlot.FEET, setID: 2));
-		itemTable.Add(13, new Weapon(metadata: new Metadata(name: "Croc de la Téci"), damage: 6.0f, attackRate: 2.0f));
+		itemTable.Add(13, new Weapon(metadata: new Metadata(name: "Croc de la Téci"), damage: 6.0f, attackRate: 2.0f, weaponTypeID: 1));
 		itemTable.Add(14, new Weapon(metadata: new Metadata(name: "La quat'cinq"), attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
 		itemTable.Add(15, new Weapon(metadata: new Metadata(name: "Arc biodégradable"), attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
-		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000));
+		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000, weaponTypeID: 6));
 
-		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem"), damage: 35.0f, attackRate: 1.2f));
+		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem"), damage: 35.0f, attackRate: 1.2f, weaponTypeID: 2));
 		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites"), weaponTypeID: 4, damage: 25.0f, attackRate: 1.5f, projectileID: 6));
 
 		itemTable.Add(19, new Armor(metadata: new Metadata(name: "Sweat et jeans troués"), slot: ArmorSlot.BODY, setID: 3, stats: new Stats(5, 10, 0)));

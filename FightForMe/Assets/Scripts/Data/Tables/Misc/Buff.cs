@@ -6,6 +6,14 @@ public class Buff : WikiEntry
 {
 	private List<uint> effects;		// List of effects this buff inflicts (also used for description)
 
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.BUFFS;
+		}
+	}
+
 	public Buff(Metadata metadata,
 		uint[] effects = null)
 		: base(metadata)
@@ -26,8 +34,10 @@ public class Buff : WikiEntry
 	}
 
 	public override void DrawDataWindow(float width, float height)
-	{ // Special one, don't draw the parent version
-		GUILayout.BeginArea(new Rect(0.0f, 0.0f, width, height));
+	{
+		base.DrawDataWindow(width, height);
+
+		GUILayout.BeginArea(new Rect(0.0f, 0.45f * height, width, 0.55f * height));
 		foreach (uint effectID in this.effects)
 		{
 			Effect effect = DataTables.GetEffect(effectID);

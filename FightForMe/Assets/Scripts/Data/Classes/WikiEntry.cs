@@ -6,6 +6,14 @@ public abstract class WikiEntry
 { // Each class that extends this class may have an associated entry in the game's wiki
 	private Metadata metadata;
 
+	public virtual WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.NONE;
+		}
+	}
+
 	protected WikiEntry(Metadata metadata)
 	{
 		this.metadata = metadata;
@@ -272,16 +280,23 @@ public abstract class WikiEntry
 
 	public virtual void DrawDataWindow(float width, float height)
 	{ // Small data window rendered using GUI functions. Width and height will generally be around 400 (to be determined later)
+		if (GUI.Button(new Rect(0.0f, 0.0f, 20.0f, 20.0f), "?"))
+		{
+			HUDRenderer.SetState(HUDState.Wiki);
+			WikiManager.SetEntry(this);
+		}
+
 		if (this.GetName() != null)
 		{
-			GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), false));
+			GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 5.0f), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), false));
 		}
 
 		// TODO: Icon
 
+		//GUI.Box(new Rect(0.0f, height / 5.0f, width, height / 4.0f), GUIContent.none);
 		if (this.GetDesc() != null)
 		{ // Parse the description? It's costly and not really necessary
-			GUI.Label(new Rect(0.0f, height / 3.0f, width, 2.0f * height / 3.0f), this.GetDesc(), FFMStyles.Text(alignment: TextAnchor.MiddleLeft, leftPadding: 2, wordWrap: true));
+			GUI.Label(new Rect(10.0f, height / 5.0f, width, height / 4.0f), this.GetDesc());
 		}
 	}
 

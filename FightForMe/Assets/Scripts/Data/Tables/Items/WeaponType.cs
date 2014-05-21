@@ -9,6 +9,14 @@ public class WeaponType : WikiEntry
 	private bool isRanged;			// If true, the weapon should not attempt to hit melee-ranged enemies
 	private bool isTwoHanded;		// If true, the weapon may not be used with another weapon
 
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.WEAPON_TYPES;
+		}
+	}
+
 	public WeaponType(Metadata metadata,
 		string hitBoxPath = null,
 		string idleAnimPath = null,

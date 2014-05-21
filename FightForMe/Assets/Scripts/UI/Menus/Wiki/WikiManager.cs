@@ -84,6 +84,49 @@ public static class WikiManager
 		}
 	}
 
+	public static string NameForCategory(WikiCategory category)
+	{
+		if (category == WikiCategory.NONE)
+		{
+			return "Accueil";
+		}
+		if (category == WikiCategory.MONSTERS)
+		{
+			return "Monstres";
+		}
+		if (category == WikiCategory.ITEMS)
+		{
+			return "Objets";
+		}
+		if (category == WikiCategory.WEAPON_TYPES)
+		{
+
+			return "Types d'armes";
+		}
+		if (category == WikiCategory.ARMOR_SETS)
+		{
+			return "Panoplies";
+		}
+		if (category == WikiCategory.SKILLS)
+		{
+			return "Compétences";
+		}
+		if (category == WikiCategory.SPELLS)
+		{
+			return "Sorts";
+		}
+		if (category == WikiCategory.BUFFS)
+		{
+			return "Buffs";
+		}
+		if (category == WikiCategory.PROJECTILES)
+		{
+			return "Projectiles";
+		}
+
+		return null;
+	}
+
 	private static void SetCategory(WikiCategory category)
 	{
 		currentCategory = category;
@@ -117,13 +160,36 @@ public static class WikiManager
 				displayedEntries.Add(projectile);
 	}
 
+	public static void SetEntry(WikiEntry entry)
+	{
+		HUDRenderer.SetState(HUDState.Wiki); // In case it hasn't been done yet!
+		SetCategory(entry.category);
+		currentEntry = entry;
+	}
+
+	public static void DrawReference(WikiEntry target, float x, float y, float width, float height = 20.0f, bool dataView = false)
+	{
+		if (GUI.Button(new Rect(x, y, width, height), target.GetName()))
+		{
+			SetEntry(target);
+		}
+	}
+
+	public static void DrawReferenceInLayout(WikiEntry target, bool dataView = false)
+	{
+		if (GUILayout.Button(target.GetName()))
+		{
+			SetEntry(target);
+		}
+	}
+
 	private static void DrawTabs(float width, float height)
 	{ // Draw a tab for each category
 		float tabWidth = width / (float)WikiCategory.NUM_CATEGORIES;
 
 		for (WikiCategory category = WikiCategory.NONE; category < WikiCategory.NUM_CATEGORIES; category++)
 		{
-			if (GUI.Button(new Rect(tabWidth * (float)category, 0.0f, tabWidth, height), category.ToString()))
+			if (GUI.Button(new Rect(tabWidth * (float)category, 0.0f, tabWidth, height), NameForCategory(category)))
 			{
 				SetCategory(category);
 			}

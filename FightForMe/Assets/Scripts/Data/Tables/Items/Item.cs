@@ -33,4 +33,27 @@ public abstract class Item : WikiEntry
 	{
 		return this.isWeapon;
 	}
+
+	public override void DrawDataWindow(float width, float height)
+	{
+		base.DrawDataWindow(width, height);
+
+		if (this.buffID != 0)
+		{
+			GUI.BeginGroup(new Rect(0.0f, height - 40.0f, width, 20.0f));
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Applique l'effet");
+			WikiManager.DrawReferenceInLayout(this.GetBuff());
+			GUILayout.Label("au porteur");
+			GUILayout.EndHorizontal();
+			GUI.EndGroup();
+		}
+
+		GUI.Label(new Rect(0.7f * width, height - 20.0f, 0.3f * width, 20.0f), "Recyclage: " + this.recyclingXP + " XP", FFMStyles.centeredText_wrapped);
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
+	}
 }

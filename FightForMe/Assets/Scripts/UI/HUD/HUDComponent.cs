@@ -69,5 +69,38 @@ public abstract class HUDComponent
 		this.frame = new Rect(x, y, frame.width, frame.height);
 	}
 
+	internal void SetPos(Vector2 pos)
+	{
+		SetPos(pos.x, pos.y);
+	}
+
+	internal void SetEdgePos(float x, float y)
+	{
+		if (x < 0)
+		{
+			x = 0;
+		}
+		else if (x + frame.width > Screen.width)
+		{
+			x -= frame.width;
+		}
+
+		if (y < 0)
+		{
+			y = 0;
+		}
+		else if (y + frame.height > Screen.height)
+		{
+			y -= frame.height;
+		}
+
+		this.frame = new Rect(x, y, frame.width, frame.height);
+	}
+
+	internal void SetEdgePos(Vector2 pos)
+	{
+		SetEdgePos(pos.x, pos.y);
+	}
+
 	public HUDContainer GetParent() { return this.parent; }
 }

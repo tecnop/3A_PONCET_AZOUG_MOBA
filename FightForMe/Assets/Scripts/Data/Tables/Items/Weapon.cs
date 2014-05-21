@@ -12,6 +12,14 @@ public class Weapon : Item
 	private uint weaponTypeID;			// ID of the entry in the weapon type table this weapon matches
 	private uint projectileID;			// ID of the entry in the projectile table this weapon should shoot when swung
 
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.ITEMS;
+		}
+	}
+
 	public Weapon(Metadata metadata,
 		uint recyclingXP = 100,
 		uint buffID = 0,
@@ -47,12 +55,49 @@ public class Weapon : Item
 
 		if (this.weaponTypeID != 0)
 		{
-			GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Type: " + this.GetWeaponType().GetName(), FFMStyles.centeredText_wrapped);
+			GUI.BeginGroup(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f));
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Type:");
+			WikiManager.DrawReferenceInLayout(DataTables.GetWeaponType(this.weaponTypeID));
+			GUILayout.EndHorizontal();
+			GUI.EndGroup();
 		}
+
+		if (this.projectileID != 0)
+		{
+			GUI.BeginGroup(new Rect(2.0f * width / 3.0f, height / 5.0f, width / 3.0f, 2.0f * height / 5.0f));
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Tire:");
+			WikiManager.DrawReferenceInLayout(DataTables.GetProjectile(this.projectileID));
+			GUILayout.EndHorizontal();
+			GUI.EndGroup();
+		}
+
+		GUI.Label(new Rect(10.0f,  0.45f * height, width - 20.0f, 0.55f * height - 40.0f), "Inflige " + this.damage + " dégâts " + this.attackRate + " fois par seconde");
 	}
 
 	public override void DrawWikiPage(float width, float height)
 	{
 		base.DrawWikiPage(width, height);
+
+		/*if (this.weaponTypeID != 0)
+		{
+			GUI.BeginGroup(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f));
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Type:");
+			WikiManager.DrawReferenceInLayout(DataTables.GetWeaponType(this.weaponTypeID));
+			GUILayout.EndHorizontal();
+			GUI.EndGroup();
+		}*/
+
+		if (this.projectileID != 0)
+		{
+			GUI.BeginGroup(new Rect(10.0f, 50.0f, width / 3.0f, height / 3.0f));
+			GUILayout.BeginVertical();
+			GUILayout.Label("Tire:", FFMStyles.centeredText);
+			WikiManager.DrawReferenceInLayout(DataTables.GetProjectile(this.projectileID));
+			GUILayout.EndVertical();
+			GUI.EndGroup();
+		}
 	}
 }

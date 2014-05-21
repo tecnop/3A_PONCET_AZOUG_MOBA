@@ -8,6 +8,14 @@ public class Monster : WikiEntry
 	private List<uint> items;	// Indexes of entries from the weapon table that this monster is carrying
 	private List<uint> buffs;	// Indexes of entries from the buff table that this monster has by default
 
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.MONSTERS;
+		}
+	}
+
 	public Monster(Metadata metadata,
 		AIType behaviour = AIType.defensive,
 		uint[] items = null,

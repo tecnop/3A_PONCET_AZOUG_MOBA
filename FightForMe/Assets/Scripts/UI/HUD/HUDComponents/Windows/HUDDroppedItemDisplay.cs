@@ -55,21 +55,21 @@ public class HUDDroppedItemDisplay : HUDComponent
 		{
 			Weapon weapon2 = _inventory.GetWeapon();
 			if (weapon2 != null)
-			{
+			{ // Don't allow equipping something in left hand if we have nothing in right hand
 				WeaponType type1 = weapon2.GetWeaponType();
 				WeaponType type2 = ((Weapon)item).GetWeaponType();
 				if (type1 != null && !type1.IsTwoHanded() &&
 					type2 != null && !type2.IsTwoHanded())
 				{ // Our current weapon is not two handed and neither is the one on the floor
-					if (GUI.Button(new Rect(0.35f * w, 0.0f, 0.3f * w, 0.2f * h), "Equiper en main gauche"))
-					{
+					/*if (GUI.Button(new Rect(0.35f * w, 0.0f, 0.3f * w, 0.2f * h), "Equiper en main gauche"))
+					{ // Removed until it's properly implemented
 						//HUDRenderer.GetSelectedItem().OnPickUp(_inventory);
 						//HUDRenderer.SetSelectedItem(null);
-					}
+					}*/
 				}
 			}
 		}
-		if (GUI.Button(new Rect(0.7f * w, 0.0f, 0.3f * w, 0.2f * h), "Recycler\n("+item.GetRecyclingXP()+" XP)"))
+		if (GUI.Button(new Rect(0.7f * w, 0.0f, 0.3f * w, 0.2f * h), "Recycler"))
 		{
 			HUDRenderer.GetSelectedItem().OnRecycle(_misc);
 			HUDRenderer.SetSelectedItem(null);

@@ -94,9 +94,8 @@ public class PlayerInputScript : CharacterInputScript
 	}
 
 	public bool MouseIsInRect(Rect rect)
-	{ // FIXME
-		Vector3 pos = GetMousePos();
-		Vector2 actualPos = new Vector2(pos.x, Screen.height - pos.y);
+	{
+		Vector2 actualPos = Utils.MousePosToScreenPos(GetMousePos());
 
 		if (actualPos.x > rect.xMin && actualPos.x < rect.xMax &&
 			actualPos.y > rect.yMin && actualPos.y < rect.yMax)

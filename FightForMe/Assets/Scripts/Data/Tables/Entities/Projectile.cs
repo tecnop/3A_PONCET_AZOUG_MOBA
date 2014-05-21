@@ -20,6 +20,14 @@ public class Projectile : WikiEntry
 	private ProjectileTrajectory trajectory;	// Trajectory type (note: with "Throw", range is used as the distance to travel and lifeTime as the time to spend in the air)
 	private ProjectileCollisionType collision;	// Things we want to collide with
 
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.PROJECTILES;
+		}
+	}
+
 	public Projectile(Metadata metadata,
 		string effectPath = null,
 		string impactEffectPath = null,

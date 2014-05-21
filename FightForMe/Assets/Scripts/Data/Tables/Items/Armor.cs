@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum ArmorSlot { HEAD, BODY, HANDS, FEET };
 
@@ -9,6 +10,14 @@ public class Armor : Item
 	private uint setID;			// Armor set this item is a part of (0 means none)
 
 	private Stats stats;		// Stats granted by this piece of armor
+
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.ITEMS;
+		}
+	}
 
 	public static string[] slotNames
 	{
@@ -48,7 +57,25 @@ public class Armor : Item
 	{
 		base.DrawDataWindow(width, height);
 
-		GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 3.0f), "Emplacement: " + Armor.slotNames[(int)this.slot], FFMStyles.centeredText_wrapped);
+		GUI.Label(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f), "Emplacement: " + Armor.slotNames[(int)this.slot], FFMStyles.centeredText_wrapped);
+
+		if (this.setID != 0)
+		{
+			GUI.BeginGroup(new Rect(2.0f * width / 3.0f, height / 5.0f, width / 3.0f, 2.0f * height / 5.0f));
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Panoplie:");
+			WikiManager.DrawReferenceInLayout(DataTables.GetArmorSet(this.setID));
+			GUILayout.EndHorizontal();
+			GUI.EndGroup();
+		}
+
+		// TODO: Bake this
+		List<string> list = new List<string>();
+		if (stats.GetStrength() != 0) list.Add(stats.GetStrength() + " à l'endurance");
+		if (stats.GetAgility() != 0) list.Add(stats.GetAgility() + " à la puissance");
+		if (stats.GetIntelligence() != 0) list.Add(stats.GetIntelligence() + " à l'intelligence");
+
+		GUI.Label(new Rect(10.0f, 0.45f * height, width - 20.0f, 0.55f * height - 40.0f), string.Join(", ", list.ToArray()));
 	}
 
 	public override void DrawWikiPage(float width, float height)

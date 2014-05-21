@@ -30,6 +30,14 @@ public abstract class Spell : WikiEntry
 	private SpellCostType costType;
 	private float spellCost;
 
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.SPELLS;
+		}
+	}
+
 	// TODO:
 	// - Flags for AIs
 	// - Animations

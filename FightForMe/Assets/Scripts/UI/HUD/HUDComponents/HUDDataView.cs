@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class HUDDataView : HUDComponent
-{ // TODO: Allow to reposition it easily
+{
 
 	private WikiEntry currentObject;
 
@@ -25,6 +25,8 @@ public class HUDDataView : HUDComponent
 
 		if (currentObject != null)
 		{
+			this.SetEdgePos(Utils.MousePosToScreenPos(Input.mousePosition));
+
 			GUI.Box(frame, GUIContent.none);
 
 			GUI.BeginGroup(frame);

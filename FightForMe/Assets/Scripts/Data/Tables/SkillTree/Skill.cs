@@ -20,6 +20,14 @@ public class Skill : WikiEntry
 	// TODO: Position in the tree
 	private List<uint> neighbours;	// List of skills this skill is connected to (type: uint)
 
+	public override WikiCategory category
+	{
+		get
+		{
+			return WikiCategory.SKILLS;
+		}
+	}
+
 	public Skill(Metadata metadata,
 		SkillColor color = SkillColor.W,
 		uint effect = 0,
