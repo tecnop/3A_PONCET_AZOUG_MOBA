@@ -27,9 +27,9 @@ public class HUDQuickSkills : HUDComponent
 		uint i = 0;
 		foreach (Skill skill in skills)
 		{
-			Rect skillRect = new Rect(0.0f, 40.0f * i, w, 40.0f);
+			Rect skillRect = SRect.Make(0.0f, 40.0f * i, w, 40.0f, "quick_skills_skill" + i);
 			Vector2 absPos = this.GetAbsolutePos() + new Vector2(skillRect.x, skillRect.y);
-			Rect absSkillRect = new Rect(absPos.x, absPos.y, skillRect.width, skillRect.height);
+			Rect absSkillRect = SRect.Make(absPos.x, absPos.y, skillRect.width, skillRect.height, "quick_skills_skill" + i + "_abs");
 
 			if (GUI.Button(skillRect, skill.GetName()))
 			{
@@ -42,7 +42,7 @@ public class HUDQuickSkills : HUDComponent
 			i++;
 		}
 
-		if (GUI.Button(new Rect(0.25f * w, 0.9f * h, 0.5f * w, 0.1f * h), "Fermer"))
+		if (GUI.Button(SRect.Make(0.25f * w, 0.9f * h, 0.5f * w, 0.1f * h, "quick_skills_close"), "Fermer"))
 		{ // Exit button
 			this.enabled = false;
 		}

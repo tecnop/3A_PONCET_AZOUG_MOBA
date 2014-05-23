@@ -46,6 +46,8 @@ public class CharacterStatsScript : MonoBehaviour
 
 	private int specialEffects;	// Special effect flags
 
+	private List<Buff> itemBuffs;
+
 	private CharacterInventoryScript _inventory;
 	private CharacterCombatScript _combat;
 
@@ -56,6 +58,7 @@ public class CharacterStatsScript : MonoBehaviour
 		_combat = _manager.GetCombatScript();
 
 		knownSpells = new List<uint>();
+		itemBuffs = new List<Buff>();
 
 		this.UpdateStats(true);
 	}
@@ -111,6 +114,7 @@ public class CharacterStatsScript : MonoBehaviour
 		this.stats = Stats.Base;		// Do we need that anymore? Why not define it here?
 		this.knownSpells.Clear();
 		this.specialEffects = 0;
+		this.itemBuffs = new List<Buff>();
 
 		// Get all currently applied effects
 		List<InflictedBuff> buffList = new List<InflictedBuff>(_combat.GetBuffs());
@@ -125,6 +129,7 @@ public class CharacterStatsScript : MonoBehaviour
 			Buff buff = armor.GetBuff();
 			if (buff != null)
 			{
+				this.itemBuffs.Add(buff);
 				foreach (uint effect in buff.GetEffects())
 				{
 					effects.Add(DataTables.GetEffect(effect));
@@ -139,6 +144,7 @@ public class CharacterStatsScript : MonoBehaviour
 			Buff buff = set.GetBuff();
 			if (buff != null)
 			{
+				this.itemBuffs.Add(buff);
 				foreach (uint effect in buff.GetEffects())
 				{
 					effects.Add(DataTables.GetEffect(effect));
@@ -151,6 +157,7 @@ public class CharacterStatsScript : MonoBehaviour
 			Buff buff = weapon.GetBuff();
 			if (buff != null)
 			{
+				this.itemBuffs.Add(buff);
 				foreach (uint effect in buff.GetEffects())
 				{
 					effects.Add(DataTables.GetEffect(effect));
@@ -379,4 +386,5 @@ public class CharacterStatsScript : MonoBehaviour
 	public List<uint> GetKnownSpells() { return this.knownSpells; }
 	//public int GetSpecialEffects() { return this.specialEffects; }
 	public bool HasSpecialEffect(MiscEffect effect) { return (this.specialEffects & (1 << ((int)effect - 1))) != 0; }
+	public List<Buff> GetItemBuffs() { return this.itemBuffs; }
 }

@@ -43,7 +43,7 @@ public abstract class HUDComponent
 	{
 		Vector2 pos = GetAbsolutePos();
 
-		return new Rect(pos.x, pos.y, frame.width, frame.height);
+		return SRect.Make(pos.x, pos.y, frame.width, frame.height);
 	}
 
 	internal void SetPos(float x, float y)
@@ -66,7 +66,7 @@ public abstract class HUDComponent
 			y = Screen.height - frame.height;
 		}
 
-		this.frame = new Rect(x, y, frame.width, frame.height);
+		this.frame = SRect.Make(x, y, frame.width, frame.height);
 	}
 
 	internal void SetPos(Vector2 pos)
@@ -94,7 +94,7 @@ public abstract class HUDComponent
 			y -= frame.height;
 		}
 
-		this.frame = new Rect(x, y, frame.width, frame.height);
+		this.frame = SRect.Make(x, y, frame.width, frame.height);
 	}
 
 	internal void SetEdgePos(Vector2 pos)

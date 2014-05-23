@@ -76,9 +76,12 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 		_manager.name = monster.GetName();
 		((NPCAIScript)_manager.GetInputScript()).SetBehaviour(monster.GetBehaviour());
 		_manager.GetInventoryScript().SetItems(monster.GetItems());
+		foreach (uint buffID in monster.GetBuffs())
+		{
+			_manager.GetCombatScript().ReceiveBuff(_manager, buffID);
+		}
 
 		_manager.GetGraphicsLoader().LoadModel(monster.GetModel());
-		//_manager.GetCharacterTransform().localScale *= monster.GetScale();
 
 		if (monster.GetModel() != null)
 		{

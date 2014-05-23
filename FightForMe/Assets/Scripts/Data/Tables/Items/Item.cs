@@ -40,7 +40,7 @@ public abstract class Item : WikiEntry
 
 		if (this.buffID != 0)
 		{
-			GUI.BeginGroup(new Rect(0.0f, height - 40.0f, width, 20.0f));
+			GUI.BeginGroup(SRect.Make(0.0f, height - 40.0f, width, 20.0f), "data_window_item_buff");
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Applique l'effet");
 			WikiManager.DrawReferenceInLayout(this.GetBuff());
@@ -49,7 +49,7 @@ public abstract class Item : WikiEntry
 			GUI.EndGroup();
 		}
 
-		GUI.Label(new Rect(0.7f * width, height - 20.0f, 0.3f * width, 20.0f), "Recyclage: " + this.recyclingXP + " XP", FFMStyles.centeredText_wrapped);
+		GUI.Label(SRect.Make(0.7f * width, height - 20.0f, 0.3f * width, 20.0f, "data_window_item_recycle"), "Recyclage: " + this.recyclingXP + " XP", FFMStyles.centeredText_wrapped);
 	}
 
 	public override void DrawWikiPage(float width, float height)

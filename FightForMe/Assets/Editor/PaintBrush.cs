@@ -7,6 +7,10 @@ public class PaintBrush : EditorWindow
 {
 	private static PaintBrush _brush;
 
+	private GameObject ground;
+	private Vector3 pos;
+	private float scale;
+
 	// Options
 	private GameObject prefab;
 	private Transform parent;
@@ -25,9 +29,13 @@ public class PaintBrush : EditorWindow
 			_brush = (PaintBrush)CreateInstance("PaintBrush");
 		}
 
+		_brush.ground = GameObject.FindGameObjectWithTag("Ground");
+		_brush.pos = _brush.ground.transform.position;
+		_brush.scale = 7.5f * Mathf.Max(_brush.ground.transform.localScale.x, _brush.ground.transform.localScale.z);
+
 		SceneView.onSceneGUIDelegate = _brush.SceneUpdate;
 
-		SceneView.lastActiveSceneView.LookAt(Vector3.zero, Quaternion.Euler(60.0f, 0.0f, 0.0f), 250.0f, true, false);
+		SceneView.lastActiveSceneView.LookAt(_brush.pos, Quaternion.Euler(60.0f, 0.0f, 0.0f), _brush.scale, true, false);
 
 		_brush.Show();
 	}
@@ -135,7 +143,7 @@ public class PaintBrush : EditorWindow
 		}
 		else*/
 		{ // Default, hopefully the whole map
-			//scene.LookAt(Vector3.zero, Quaternion.Euler(60.0f, 0.0f, 0.0f), 250.0f, true, false);
+			scene.LookAt(_brush.pos, Quaternion.Euler(60.0f, 0.0f, 0.0f), scale, true, false);
 		}
 
 		if (!this.prefab || !e.isMouse)

@@ -37,7 +37,7 @@ public class Buff : WikiEntry
 	{
 		base.DrawDataWindow(width, height);
 
-		GUILayout.BeginArea(new Rect(0.0f, 0.45f * height, width, 0.55f * height));
+		GUILayout.BeginArea(SRect.Make(0.0f, 0.45f * height, width, 0.55f * height, "data_window_buff_effects"));
 		foreach (uint effectID in this.effects)
 		{
 			Effect effect = DataTables.GetEffect(effectID);
@@ -52,7 +52,7 @@ public class Buff : WikiEntry
 
 		// TODO: List of spells and weapons that apply this
 
-		GUILayout.BeginArea(new Rect(0.0f, 0.5f * height, width, 0.5f * height));
+		GUILayout.BeginArea(SRect.Make(0.0f, 0.5f * height, width, 0.5f * height, "wiki_buff_effects"));
 		foreach (uint effectID in this.effects)
 		{
 			Effect effect = DataTables.GetEffect(effectID);

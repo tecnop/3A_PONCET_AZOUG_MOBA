@@ -50,12 +50,12 @@ public class Weapon : Item
 	public Projectile GetProjectile() { return DataTables.GetProjectile(this.projectileID); }
 
 	public override void DrawDataWindow(float width, float height)
-	{ // TODO: this.GetIcon()
+	{
 		base.DrawDataWindow(width, height);
 
 		if (this.weaponTypeID != 0)
 		{
-			GUI.BeginGroup(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f));
+			GUI.BeginGroup(SRect.Make(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f, "data_window_weapon_type"));
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Type:");
 			WikiManager.DrawReferenceInLayout(DataTables.GetWeaponType(this.weaponTypeID));
@@ -65,7 +65,7 @@ public class Weapon : Item
 
 		if (this.projectileID != 0)
 		{
-			GUI.BeginGroup(new Rect(2.0f * width / 3.0f, height / 5.0f, width / 3.0f, 2.0f * height / 5.0f));
+			GUI.BeginGroup(SRect.Make(2.0f * width / 3.0f, height / 5.0f, width / 3.0f, 2.0f * height / 5.0f, "data_window_weapon_proj"));
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Tire:");
 			WikiManager.DrawReferenceInLayout(DataTables.GetProjectile(this.projectileID));
@@ -73,7 +73,7 @@ public class Weapon : Item
 			GUI.EndGroup();
 		}
 
-		GUI.Label(new Rect(10.0f,  0.45f * height, width - 20.0f, 0.55f * height - 40.0f), "Inflige " + this.damage + " dégâts " + this.attackRate + " fois par seconde");
+		GUI.Label(SRect.Make(10.0f, 0.45f * height, width - 20.0f, 0.55f * height - 40.0f, "data_window_weapon_stats"), "Inflige " + this.damage + " dégâts " + this.attackRate + " fois par seconde");
 	}
 
 	public override void DrawWikiPage(float width, float height)
@@ -82,7 +82,7 @@ public class Weapon : Item
 
 		/*if (this.weaponTypeID != 0)
 		{
-			GUI.BeginGroup(new Rect(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f));
+			GUI.BeginGroup(SRect.Make(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f, "wiki_weapon_type"));
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Type:");
 			WikiManager.DrawReferenceInLayout(DataTables.GetWeaponType(this.weaponTypeID));
@@ -92,7 +92,7 @@ public class Weapon : Item
 
 		if (this.projectileID != 0)
 		{
-			GUI.BeginGroup(new Rect(10.0f, 50.0f, width / 3.0f, height / 3.0f));
+			GUI.BeginGroup(SRect.Make(10.0f, 50.0f, width / 3.0f, height / 3.0f, "wiki_weapon_proj"));
 			GUILayout.BeginVertical();
 			GUILayout.Label("Tire:", FFMStyles.centeredText);
 			WikiManager.DrawReferenceInLayout(DataTables.GetProjectile(this.projectileID));

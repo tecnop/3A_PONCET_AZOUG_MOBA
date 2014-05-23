@@ -75,8 +75,8 @@ public class TileBuilderScript : MonoBehaviour
 		}
 	}
 
-	void OnGUI()
+	/*void OnGUI()
 	{
 		GUI.Label(new Rect(0.0f, 0.0f, Screen.width, Screen.height), "Loading : " + TileManager.generationProgress * 100 + "%", FFMStyles.centeredText);
-	}
+	}*/
 }

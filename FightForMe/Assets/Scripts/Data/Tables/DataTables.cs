@@ -69,6 +69,7 @@ public static class DataTables
 		if (!GameData.secure)
 		{
 			fillTables();
+			return;
 		}
 
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
@@ -132,6 +133,7 @@ public static class DataTables
 		effectTable.Add(20, new Effect(isPositive: true, pctHPRegen: 0.05f));
 		effectTable.Add(21, new Effect(isPositive: true, misc: MiscEffect.INVULNERABLE));
 		effectTable.Add(22, new Effect(isPositive: false, bonusDamage: -0.75f, bonusProjDamage: -0.75f));
+		effectTable.Add(23, new Effect(isPositive: true, flatHP: 1500, stats: new Stats(50, 50, 50)));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -149,6 +151,8 @@ public static class DataTables
 		// ============= HARD-CODED REFERENCE =============
 		buffTable.Add(7, new Buff(metadata: new Metadata(name: "Invincible"), effects: new uint[] { 21 }));
 		// ================================================
+
+		buffTable.Add(8, new Buff(metadata: new Metadata(name: "Hasnor"), effects: new uint[] { 23 }));
 
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
@@ -234,7 +238,7 @@ public static class DataTables
 		monsterTable.Add(7, new Monster(metadata: new Metadata(name: "Debug2"), behaviour: AIType.defensive, items: new uint[] { 11, 12 }));
 
 		// ============= HARD-CODED REFERENCE =============
-		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 2.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, items: new uint[] { 4, 5, 6, 7, 8 }));
+		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 2.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, buffs: new uint[] { 8 }));
 		// ================================================
 
 		monsterTable.Add(9, new Monster(metadata: new Metadata(name: "Jean Paul"), behaviour: AIType.defensive, items: new uint[] { 17 }));
@@ -246,7 +250,7 @@ public static class DataTables
 	}
 
 	public static void fillTables()
-	{
+	{ // TODO: Rework this to allow us to send the file's content to clients as a string
 		FJsonParser parser = FJsonParser.Instance();
 		parser.parseFile(configPath);
 		foreach (Clazz ns in parser.getResults())

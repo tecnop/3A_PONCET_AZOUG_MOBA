@@ -137,6 +137,7 @@ public class TileGenerator : EditorWindow
 		tileBuilder.Generate(false);
 
 		TileManager.ExportGridToBuilder(this.tileBuilder);
+		EditorUtility.SetDirty(this.tileBuilder);
 	}
 
 	private void DisplayEditorTiles()
@@ -204,5 +205,6 @@ public class TileGenerator : EditorWindow
 		TileManager.ClearTiles();
 
 		TileManager.ExportGridToBuilder(this.tileBuilder);
+		EditorUtility.SetDirty(this.tileBuilder);
 	}
 }

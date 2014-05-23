@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class HUDMenuButtons : HUDComponent
 {
 	public HUDMenuButtons(Rect frame, HUDContainer parent)
-		: base("HUD_menu_buttons", frame, parent:parent)
+		: base("HUD_menu_buttons", frame, parent: parent)
 	{
 
 	}
@@ -17,8 +17,8 @@ public class HUDMenuButtons : HUDComponent
 
 		GUI.BeginGroup(frame);
 
-		Rect inventoryRect = new Rect(0.0f, 0.0f, w, 0.5f * h);
-		Rect skillsRect = new Rect(0.0f, 0.5f * h, w, 0.5f * h);
+		Rect inventoryRect = SRect.Make(0.0f, 0.0f, w, 0.5f * h, "buttons_inventory");
+		Rect skillsRect = SRect.Make(0.0f, 0.5f * h, w, 0.5f * h, "buttons_skills");
 
 		if (GUI.Button(inventoryRect, "Inventaire"))
 		{

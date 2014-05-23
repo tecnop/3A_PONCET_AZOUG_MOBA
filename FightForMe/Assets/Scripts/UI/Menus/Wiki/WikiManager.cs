@@ -30,32 +30,32 @@ public static class WikiManager
 		int w = Screen.width;
 		int h = Screen.height;
 
-		Rect wikiRect = new Rect(0.05f * w, 0.05f * h, 0.9f * w, 0.9f * h);
+		Rect wikiRect = SRect.Make(0.05f * w, 0.05f * h, 0.9f * w, 0.9f * h, "wiki_frame");
 
 		GUI.BeginGroup(wikiRect);
 
 		DrawWindow(wikiRect.width, wikiRect.height);
 
-		Rect tabsRect = new Rect(0.0f, 0.05f * wikiRect.height, wikiRect.width, 0.15f * wikiRect.height);
+		Rect tabsRect = SRect.Make(0.0f, 0.05f * wikiRect.height, wikiRect.width, 0.15f * wikiRect.height, "wiki_tabs");
 		GUI.BeginGroup(tabsRect);
 		DrawTabs(wikiRect.width, 0.15f * wikiRect.height);
 		GUI.EndGroup();
 
 		if (currentCategory == WikiCategory.NONE)
 		{
-			Rect mainRect = new Rect(0.0f, 0.2f * wikiRect.height, wikiRect.width, 0.8f * wikiRect.height);
+			Rect mainRect = SRect.Make(0.0f, 0.2f * wikiRect.height, wikiRect.width, 0.8f * wikiRect.height, "wiki_main");
 			GUI.BeginGroup(mainRect);
 			DrawMainWikiPage(wikiRect.width, 0.8f * wikiRect.height);
 			GUI.EndGroup();
 		}
 		else
 		{
-			Rect entriesRect = new Rect(0.0f, 0.2f * wikiRect.height, 0.2f * wikiRect.width, 0.9f * wikiRect.height);
+			Rect entriesRect = SRect.Make(0.0f, 0.2f * wikiRect.height, 0.2f * wikiRect.width, 0.9f * wikiRect.height, "wiki_entries");
 			GUI.BeginGroup(entriesRect);
 			DrawCategoryEntries(0.2f * wikiRect.width, 0.9f * wikiRect.height);
 			GUI.EndGroup();
 
-			Rect entryRect = new Rect(0.2f * wikiRect.width, 0.2f * wikiRect.height, 0.8f * wikiRect.width, 0.8f * wikiRect.height);
+			Rect entryRect = SRect.Make(0.2f * wikiRect.width, 0.2f * wikiRect.height, 0.8f * wikiRect.width, 0.8f * wikiRect.height, "wiki_entry");
 			GUI.BeginGroup(entryRect);
 			if (currentEntry != null)
 			{
@@ -73,12 +73,14 @@ public static class WikiManager
 
 	private static void DrawWindow(float width, float height)
 	{// Main Window
-		GUI.Box(new Rect(0.0f, 0.0f, width, height), GUIContent.none);
+		GUI.Box(SRect.Make(0.0f, 0.0f, width, height, "wiki_window"), GUIContent.none);
 
-		GUI.Box(new Rect(0.0f, 0.0f, width, 0.05f * height), GUIContent.none);
-		GUI.Label(new Rect(0.0f, 0.0f, width, 0.05f * height), "Wiki", FFMStyles.centeredText);
+		Rect top = SRect.Make(0.0f, 0.0f, width, 0.05f * height, "wiki_top");
 
-		if (GUI.Button(new Rect(width - 60, 0.0f, 60, 20), "Fermer"))
+		GUI.Box(top, GUIContent.none);
+		GUI.Label(top, "Wiki", FFMStyles.centeredText);
+
+		if (GUI.Button(SRect.Make(width - 60, 0.0f, 60, 20, "wiki_close"), "Fermer"))
 		{
 			HUDRenderer.SetState(HUDState.Default);
 		}
@@ -169,7 +171,7 @@ public static class WikiManager
 
 	public static void DrawReference(WikiEntry target, float x, float y, float width, float height = 20.0f, bool dataView = false)
 	{
-		if (GUI.Button(new Rect(x, y, width, height), target.GetName()))
+		if (GUI.Button(SRect.Make(x, y, width, height), target.GetName()))
 		{
 			SetEntry(target);
 		}
@@ -189,7 +191,7 @@ public static class WikiManager
 
 		for (WikiCategory category = WikiCategory.NONE; category < WikiCategory.NUM_CATEGORIES; category++)
 		{
-			if (GUI.Button(new Rect(tabWidth * (float)category, 0.0f, tabWidth, height), NameForCategory(category)))
+			if (GUI.Button(SRect.Make(tabWidth * (float)category, 0.0f, tabWidth, height, "wiki_tab" + (int)category), NameForCategory(category)))
 			{
 				SetCategory(category);
 			}
@@ -203,7 +205,7 @@ public static class WikiManager
 			for (int i = 0; i < displayedEntries.Count; i++)
 			{
 				WikiEntry entry = displayedEntries[i];
-				if (GUI.Button(new Rect(0.0f, 20.0f * i, width, 20.0f), entry.GetName()))
+				if (GUI.Button(SRect.Make(0.0f, 20.0f * i, width, 20.0f, "wiki_entry" + i), entry.GetName()))
 				{
 					currentEntry = entry;
 				}
@@ -211,25 +213,27 @@ public static class WikiManager
 		}
 		else
 		{ // Display something maybe?
-			GUI.Label(new Rect(0.0f, 0.0f, width, height), "Aucune entrée", FFMStyles.centeredText);
+			GUI.Label(SRect.Make(0.0f, 0.0f, width, height), "Aucune entrée", FFMStyles.centeredText);
 		}
 	}
 
 	private static void DrawMainWikiPage(float width, float height)
 	{ // No category selected, this is basically a welcome screen
-		GUI.Box(new Rect(0.0f, 0.0f, width, height), GUIContent.none);
-		GUI.Label(new Rect(0.0f, 0.0f, width, height), "Bienvenue dans l'encyclopédie FightForMe!", FFMStyles.centeredText);
+		Rect rect = SRect.Make(0.0f, 0.0f, width, height);
+		GUI.Box(rect, GUIContent.none);
+		GUI.Label(rect, "Bienvenue dans l'encyclopédie FightForMe!", FFMStyles.centeredText);
 	}
 
 	private static void DrawWikiCategory(float width, float height)
 	{ // Category selected but no entry yet, here we describe what the current category is about
-		GUI.Box(new Rect(0.0f, 0.0f, width, height), GUIContent.none);
-		GUI.Label(new Rect(0.0f, 0.0f, width, height), "Category (" + currentCategory.ToString() + ")", FFMStyles.centeredText);
+		Rect rect = SRect.Make(0.0f, 0.0f, width, height);
+		GUI.Box(rect, GUIContent.none);
+		GUI.Label(rect, "Category (" + currentCategory.ToString() + ")", FFMStyles.centeredText);
 	}
 
 	private static void DrawWikiEntry(float width, float height)
 	{ // Entry selected (which implies a category), we'll display a category-specific page and fill it with the entry's data
-		GUI.Box(new Rect(0.0f, 0.0f, width, height), GUIContent.none);
+		GUI.Box(SRect.Make(0.0f, 0.0f, width, height), GUIContent.none);
 		currentEntry.DrawWikiPage(width, height);
 	}
 }

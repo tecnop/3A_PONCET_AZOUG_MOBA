@@ -8,7 +8,7 @@ public class HUDStatsDisplay : HUDComponent
 	private CharacterStatsScript _stats;
 
 	public HUDStatsDisplay(Rect frame, HUDContainer parent)
-		: base("HUD_stats_display", frame, parent:parent)
+		: base("HUD_stats_display", frame, parent: parent)
 	{
 		_advancedStats = false;
 		_stats = GameData.activePlayer.GetStatsScript();
@@ -18,7 +18,7 @@ public class HUDStatsDisplay : HUDComponent
 	{ // This needs some work, will do for now
 		float w = frame.width;
 		float h = frame.height;
-		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "stats_local");
 
 		GUI.BeginGroup(frame);
 

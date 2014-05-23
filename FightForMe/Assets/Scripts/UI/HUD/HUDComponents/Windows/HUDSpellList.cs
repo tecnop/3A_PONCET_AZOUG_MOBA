@@ -17,7 +17,7 @@ public class HUDSpellList : HUDComponent
 	{
 		float w = frame.width;
 		float h = frame.height;
-		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "spell_list_local");
 
 		GUI.BeginGroup(frame);
 
@@ -29,7 +29,7 @@ public class HUDSpellList : HUDComponent
 		style.wordWrap = true;
 
 		// First block
-		Rect firstRect = new Rect(x, y, size, size);
+		Rect firstRect = SRect.Make(x, y, size, size);
 		if (GUI.Button(firstRect, GUIContent.none))
 		{ // Clear it
 			_misc.AssignSpellToSlot(0, HUDRenderer.GetSlot());
@@ -50,7 +50,7 @@ public class HUDSpellList : HUDComponent
 
 		foreach (uint spellID in _stats.GetKnownSpells())
 		{
-			Rect rect = new Rect(x, y, size, size);
+			Rect rect = SRect.Make(x, y, size, size);
 			Spell spell = DataTables.GetSpell(spellID);
 
 			if (GUI.Button(rect, GUIContent.none))

@@ -248,26 +248,6 @@ public abstract class WikiEntry
 		return metadata.GetModel();
 	}
 
-	/*public GameObject GetModel()
-	{
-		GameModel model = metadata.GetModel();
-		if (model != null)
-		{
-			return model.GetModel();
-		}
-		return null;
-	}
-
-	public string GetModelPath()
-	{ // Shouldn't be needed anymore, oh well
-		GameModel model = metadata.GetModel();
-		if (model != null)
-		{
-			return model.GetModelPath();
-		}
-		return null;
-	}*/
-
 	public string GetIcon()
 	{
 		return metadata.GetIcon();
@@ -280,7 +260,7 @@ public abstract class WikiEntry
 
 	public virtual void DrawDataWindow(float width, float height)
 	{ // Small data window rendered using GUI functions. Width and height will generally be around 400 (to be determined later)
-		if (GUI.Button(new Rect(0.0f, 0.0f, 20.0f, 20.0f), "?"))
+		if (GUI.Button(SRect.Make(0.0f, 0.0f, 20.0f, 20.0f, "data_window_help"), "?"))
 		{
 			HUDRenderer.SetState(HUDState.Wiki);
 			WikiManager.SetEntry(this);
@@ -288,15 +268,15 @@ public abstract class WikiEntry
 
 		if (this.GetName() != null)
 		{
-			GUI.Label(new Rect(width / 3.0f, 0.0f, width / 3.0f, height / 5.0f), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), false));
+			GUI.Label(SRect.Make(width / 3.0f, 0.0f, width / 3.0f, height / 5.0f, "data_window_name"), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), false));
 		}
 
 		// TODO: Icon
 
-		//GUI.Box(new Rect(0.0f, height / 5.0f, width, height / 4.0f), GUIContent.none);
+		//GUI.Box(SRect.Make(0.0f, height / 5.0f, width, height / 4.0f), GUIContent.none);
 		if (this.GetDesc() != null)
 		{ // Parse the description? It's costly and not really necessary
-			GUI.Label(new Rect(10.0f, height / 5.0f, width, height / 4.0f), this.GetDesc());
+			GUI.Label(SRect.Make(10.0f, height / 5.0f, width, height / 4.0f, "data_window_desc"), this.GetDesc());
 		}
 	}
 
@@ -304,19 +284,19 @@ public abstract class WikiEntry
 	{ // Large window rendered using GUI functions. Covers roughly 64% of the screen (80% in each dimension)
 		if (this.GetName() != null)
 		{
-			GUI.Label(new Rect(0.0f, 0.0f, width, 0.15f * height), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), true));
+			GUI.Label(SRect.Make(0.0f, 0.0f, width, 0.15f * height, "wiki_name"), this.GetName(), FFMStyles.StyleForQuality(this.GetQuality(), true));
 		}
 
 		// TODO: Icon
 
 		if (this.GetDesc() != null)
 		{ // Parse the description? It's costly and not really necessary
-			GUI.Label(new Rect(0.0f, 0.2f * height, width, 0.3f * height), this.GetDesc(), FFMStyles.textBlock);
+			GUI.Label(SRect.Make(0.0f, 0.2f * height, width, 0.3f * height, "wiki_desc"), this.GetDesc(), FFMStyles.textBlock);
 		}
 
 		if (this.GetLore() != null)
 		{
-			GUI.Label(new Rect(0.0f, 0.55f * height, width, 0.4f * height), this.GetLore(), FFMStyles.loreBlock);
+			GUI.Label(SRect.Make(0.0f, 0.55f * height, width, 0.4f * height, "wiki_lore"), this.GetLore(), FFMStyles.loreBlock);
 		}
 	}
 }

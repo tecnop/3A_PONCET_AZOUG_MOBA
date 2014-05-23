@@ -84,6 +84,7 @@
      <Compile Include="Assets\Scripts\Behaviour\Terrain\WayPointScript.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\DamageInstance.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\Effect.cs" />
+     <Compile Include="Assets\Scripts\Data\Classes\FFMSounds.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\GameModel.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\InflictedBuff.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\MapGrid.cs" />
@@ -164,6 +165,7 @@
      <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiManager.cs" />
      <Compile Include="Assets\Scripts\UI\Misc\FFMStyles.cs" />
      <Compile Include="Assets\Scripts\UI\Misc\MetadataDisplayer.cs" />
+     <Compile Include="Assets\Scripts\UI\Misc\SRect.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

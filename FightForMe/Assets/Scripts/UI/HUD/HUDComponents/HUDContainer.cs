@@ -28,7 +28,7 @@ public class HUDContainer : HUDComponent
 
 		if (drawBackground)
 		{ // This is terrible
-			GUI.Box(new Rect(0, 0, frame.width, frame.height), GUIContent.none);
+			GUI.Box(SRect.Make(0, 0, frame.width, frame.height), GUIContent.none);
 		}
 
 		foreach (HUDComponent child in this.children)

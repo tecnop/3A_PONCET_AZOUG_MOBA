@@ -16,6 +16,9 @@ public class CharacterAnimatorScript : MonoBehaviour
 	[SerializeField]
 	private Animator _animator;
 
+	[SerializeField]
+	private AudioSource _audio;
+
 	/*[SerializeField]
 	private AnimatorController _controller;
 
@@ -88,7 +91,7 @@ public class CharacterAnimatorScript : MonoBehaviour
 	}
 
 	public void EndAttack()
-	{ // NOTE: This is not always executed because animations blend into each other
+	{ // FIXME: This is not always executed because animations blend into each other
 		_animator.speed = 1.0f;
 	}
 

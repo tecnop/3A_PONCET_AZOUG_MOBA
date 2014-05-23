@@ -25,9 +25,9 @@ public class HUDInventory : HUDComponent
 		uint i = 0;
 		foreach (Item item in items)
 		{
-			Rect itemRect = new Rect(0.0f, 40.0f * i, w, 40.0f);
+			Rect itemRect = SRect.Make(0.0f, 40.0f * i, w, 40.0f, "inventory_item" + i);
 			Vector2 absPos = this.GetAbsolutePos() + new Vector2(itemRect.x, itemRect.y);
-			Rect absItemRect = new Rect(absPos.x, absPos.y, itemRect.width, itemRect.height);
+			Rect absItemRect = SRect.Make(absPos.x, absPos.y, itemRect.width, itemRect.height, "inventory_item" + i + "_abs");
 
 			if (GUI.Button(itemRect, item.GetName()))
 			{
@@ -40,7 +40,7 @@ public class HUDInventory : HUDComponent
 			i++;
 		}
 
-		if (GUI.Button(new Rect(0.25f * w, 0.9f * h, 0.5f * w, 0.1f * h), "Fermer"))
+		if (GUI.Button(SRect.Make(0.25f * w, 0.9f * h, 0.5f * w, 0.1f * h, "inventory_close"), "Fermer"))
 		{ // Exit button
 			this.enabled = false;
 		}

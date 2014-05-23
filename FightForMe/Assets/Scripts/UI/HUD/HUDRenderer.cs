@@ -44,15 +44,15 @@ public static class HUDRenderer
 		_state = HUDState.Default;
 		_activeSlot = SpellSlot.NUM_SLOTS;
 
-		hudRoot = new HUDContainer("HUD_root", new Rect(0, 0, w, h));
+		hudRoot = new HUDContainer("HUD_root", SRect.Make(0, 0, w, h));
 
-		new HUDBuffDisplay(new Rect(0.4f * w, 0.7f * h, 0.2f * w, 0.1f * h), hudRoot);
-		new HUDBar(new Rect(0.0f, 0.8f * h, w, 0.2f * h), hudRoot);
-		_inventory = new HUDInventory(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
-		_skills = new HUDQuickSkills(new Rect(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
-		_spells = new HUDSpellWindow(new Rect(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
-		_droppedItem = new HUDDroppedItemWindow(new Rect(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
-		_dataView = new HUDDataView(new Rect(0.0f, 0.4f * h, 0.35f * w, 0.3f * h), hudRoot);
+		new HUDBuffDisplay(SRect.Make(0.4f * w, 0.7f * h, 0.2f * w, 0.1f * h), hudRoot);
+		new HUDBar(SRect.Make(0.0f, 0.8f * h, w, 0.2f * h), hudRoot);
+		_inventory = new HUDInventory(SRect.Make(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
+		_skills = new HUDQuickSkills(SRect.Make(0.75f * w, 0.2f * h, 0.25f * w, 0.6f * h), hudRoot);
+		_spells = new HUDSpellWindow(SRect.Make(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
+		_droppedItem = new HUDDroppedItemWindow(SRect.Make(0.3f * w, 0.5f * h, 0.4f * w, 0.3f * h), hudRoot);
+		_dataView = new HUDDataView(SRect.Make(0.0f, 0.4f * h, 0.35f * w, 0.3f * h), hudRoot);
 	}
 
 	public static void Render()
@@ -63,7 +63,7 @@ public static class HUDRenderer
 		if (GameData.gameType == GameType.ListenServer && Network.connections.Length > 0)
 		{ // TEMPORARY
 			GUIStyle topRight = FFMStyles.Text(TextAnchor.UpperRight);
-			GUI.Label(new Rect(0, 0, w, h), "Ping: " + Network.GetLastPing(Network.connections[0]), topRight);
+			GUI.Label(SRect.screen, "Ping: " + Network.GetLastPing(Network.connections[0]), topRight);
 		}
 
 		if (_selectedItem != null)
@@ -90,7 +90,7 @@ public static class HUDRenderer
 		}
 		else if (GameData.gamePaused)
 		{
-			DrawPauseMenu(new Rect(0.25f * w, 0.25f * h, 0.5f * w, 0.5f * h));
+			DrawPauseMenu(SRect.Make(0.25f * w, 0.25f * h, 0.5f * w, 0.5f * h, "pause_window"));
 		}
 		else
 		{
@@ -170,7 +170,7 @@ public static class HUDRenderer
 	{ // Game is paused for whatever reason
 		float w = rect.width;
 		float h = rect.height;
-		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "pause_menu");
 
 		GUI.BeginGroup(rect);
 
@@ -245,7 +245,7 @@ public static class HUDRenderer
 
 		GUI.Box(localRect, message, FFMStyles.centeredText_wrapped);
 
-		if (GUI.Button(new Rect(0.4f * w, 0.8f * h, 0.2f * w, 0.2f * h), "Quitter"))
+		if (GUI.Button(SRect.Make(0.4f * w, 0.8f * h, 0.2f * w, 0.2f * h, "pause_exit"), "Quitter"))
 		{
 			BackToMainMenu();
 		}
@@ -255,19 +255,19 @@ public static class HUDRenderer
 
 	private static void DrawExitButton()
 	{
-		if (GUI.Button(new Rect(0, 0, 100, 20), "Quitter"))
+		if (GUI.Button(SRect.Make(0, 0, 100, 20, "exit"), "Quitter"))
 		{
 			isLeaving = true;
 		}
 
 		if (isLeaving)
 		{
-			if (GUI.Button(new Rect(0, 20, 100, 20), "Confirmer"))
+			if (GUI.Button(SRect.Make(0, 20, 100, 20, "exit_confirm"), "Confirmer"))
 			{
 				isLeaving = false;
 				BackToMainMenu();
 			}
-			if (GUI.Button(new Rect(100, 20, 100, 20), "Annuler"))
+			if (GUI.Button(SRect.Make(100, 20, 100, 20, "exit_cancel"), "Annuler"))
 			{
 				isLeaving = false;
 			}
@@ -276,7 +276,7 @@ public static class HUDRenderer
 
 	private static void DrawWikiButton()
 	{
-		if (GUI.Button(new Rect(Screen.width / 2 - 30, 0, 60, 20), "Aide"))
+		if (GUI.Button(SRect.Make(Screen.width / 2 - 30, 0, 60, 20, "help"), "Aide"))
 		{
 			SetState(HUDState.Wiki);
 		}

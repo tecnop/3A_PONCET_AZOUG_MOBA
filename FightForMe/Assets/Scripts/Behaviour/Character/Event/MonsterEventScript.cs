@@ -28,7 +28,10 @@ public class MonsterEventScript : CharacterEventScript
 
 	public override void OnReceiveBuff(CharacterManager inflictor, uint buffID)
 	{
-		_ai.AcknowledgeTarget(inflictor);
+		if (_ai != null)
+		{
+			_ai.AcknowledgeTarget(inflictor);
+		}
 	}
 
 	public override void OnKnockback(CharacterManager inflictor)

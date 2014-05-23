@@ -140,7 +140,6 @@ public static class TileManager
 	public static void ExportGridToBuilder(TileBuilderScript builder)
 	{
 		builder.SetGrid(grid);
-		UnityEditor.EditorUtility.SetDirty(builder);
 	}
 
 	public static int GridSize()

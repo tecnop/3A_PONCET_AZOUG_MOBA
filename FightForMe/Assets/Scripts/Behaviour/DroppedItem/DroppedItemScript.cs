@@ -117,10 +117,10 @@ public class DroppedItemScript : MonoBehaviour
 
 			float w = 150, h = 100;
 
-			GUI.BeginGroup(new Rect(screenPos.x - w / 2.0f, Screen.height - screenPos.y - h / 2.0f, w, h));
+			GUI.BeginGroup(SRect.Make(screenPos.x - w / 2.0f, Screen.height - screenPos.y - h / 2.0f, w, h));
 			string name = item.GetName();
 
-			GUI.Label(new Rect(0, 0, w, h), name, FFMStyles.centeredText_wrapped);
+			GUI.Label(SRect.Make(0, 0, w, h, "dropped_item_name"), name, FFMStyles.centeredText_wrapped);
 
 			GUI.EndGroup();
 		}

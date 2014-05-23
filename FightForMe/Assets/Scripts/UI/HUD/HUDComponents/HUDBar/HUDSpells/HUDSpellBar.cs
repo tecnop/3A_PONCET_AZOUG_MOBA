@@ -20,7 +20,7 @@ public class HUDSpellBar : HUDContainer
 
 		for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
 		{
-			new HUDSpellSlot(new Rect(x, y, size, size), this, i);
+			new HUDSpellSlot(SRect.Make(x, y, size, size), this, i);
 			x += size+minOffset;
 		}
 	}

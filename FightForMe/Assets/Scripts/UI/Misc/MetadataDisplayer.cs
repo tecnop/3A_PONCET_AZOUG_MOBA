@@ -7,7 +7,7 @@ public static class MetadataDisplayer
 	{
 		/*float w = frame.width;
 		float h = frame.height;
-		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, h);
 
 		GUI.BeginGroup(frame);
 

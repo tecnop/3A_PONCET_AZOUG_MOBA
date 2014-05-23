@@ -19,11 +19,11 @@ public class HUDDroppedItemDisplay : HUDComponent
 	{
 		float w = frame.width;
 		float h = frame.height;
-		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "dropped_item_local");
 
 		GUI.BeginGroup(frame);
 
-		Rect itemView = new Rect(0.0f, 0.0f, w, 0.8f * h);
+		Rect itemView = SRect.Make(0.0f, 0.0f, w, 0.8f * h, "dropped_item_view");
 
 		GUI.BeginGroup(itemView);
 
@@ -35,18 +35,18 @@ public class HUDDroppedItemDisplay : HUDComponent
 		}
 		else
 		{
-			localRect = new Rect(0.0f, 0.0f, w, 0.8f * h);
+			localRect = SRect.Make(0.0f, 0.0f, w, 0.8f * h, "dropped_item_view_local");
 			GUI.Label(localRect, "<Unknown item>", FFMStyles.centeredText);
 		}
 
 		GUI.EndGroup();
 
-		Rect buttons = new Rect(0.0f, 0.8f * h, w, 0.2f * h);
-		localRect = new Rect(0.0f, 0.0f, w, 0.2f * h);
+		Rect buttons = SRect.Make(0.0f, 0.8f * h, w, 0.2f * h, "dropped_item_buttons");
+		localRect = SRect.Make(0.0f, 0.0f, w, 0.2f * h, "dropped_item_buttons_local");
 
 		GUI.BeginGroup(buttons);
 
-		if (GUI.Button(new Rect(0.0f, 0.0f, 0.3f * w, 0.2f * h), "Equiper"))
+		if (GUI.Button(SRect.Make(0.0f, 0.0f, 0.3f * w, 0.2f * h, "dropped_item_buttons_equip"), "Equiper"))
 		{
 			HUDRenderer.GetSelectedItem().OnPickUp(_inventory);
 			HUDRenderer.SetSelectedItem(null);
@@ -61,7 +61,7 @@ public class HUDDroppedItemDisplay : HUDComponent
 				if (type1 != null && !type1.IsTwoHanded() &&
 					type2 != null && !type2.IsTwoHanded())
 				{ // Our current weapon is not two handed and neither is the one on the floor
-					/*if (GUI.Button(new Rect(0.35f * w, 0.0f, 0.3f * w, 0.2f * h), "Equiper en main gauche"))
+					/*if (GUI.Button(SRect.Make(0.35f * w, 0.0f, 0.3f * w, 0.2f * h, "dropped_item_buttons_equip2"), "Equiper en main gauche"))
 					{ // Removed until it's properly implemented
 						//HUDRenderer.GetSelectedItem().OnPickUp(_inventory);
 						//HUDRenderer.SetSelectedItem(null);
@@ -69,7 +69,7 @@ public class HUDDroppedItemDisplay : HUDComponent
 				}
 			}
 		}
-		if (GUI.Button(new Rect(0.7f * w, 0.0f, 0.3f * w, 0.2f * h), "Recycler"))
+		if (GUI.Button(SRect.Make(0.7f * w, 0.0f, 0.3f * w, 0.2f * h, "dropped_item_buttons_recycle"), "Recycler"))
 		{
 			HUDRenderer.GetSelectedItem().OnRecycle(_misc);
 			HUDRenderer.SetSelectedItem(null);

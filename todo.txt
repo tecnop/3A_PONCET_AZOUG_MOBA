@@ -1,59 +1,62 @@
-Amélioration de l'ItemCreator pour supporter la création de sorts, compétences, etc.
+( ) = A faire, (/) = En cours, (X) = Résolu
 
-Implémentation graphique de l'arbre des compétences
 
-Gestion d'armes jumelles (une dans chaque main)
+( ) Amélioration de l'ItemCreator pour supporter la création de sorts, compétences, etc.
 
-Wiki in-game à la Civilization (structure déjà présente)
+( ) Implémentation graphique de l'arbre des compétences
 
-Génération automatique de texte descriptif des stats d'un objet, sort, etc (système de parsing de tag en réalisation)
+( ) Gestion d'armes jumelles (une dans chaque main)
 
-Création des modèles, amélioration des animations
+(/) Wiki in-game à la Civilization
 
-Recréation de la première carte
+(X) Génération automatique de texte descriptif des stats d'un objet, sort, etc
 
-Création d'une minimap non-intégrée à l'HUD (une carte consultable in-game, présentant uniquement la position du joueur)
+( ) Création des modèles, amélioration des animations
 
-Gestion de la recherche de partie
+(/) Recréation de la première carte
 
-Ajout d'entrées dans la configuration par défaut des tables de données
+( ) Création d'une minimap non-intégrée à l'HUD (une carte consultable in-game, présentant uniquement la position du joueur)
 
-Gestion du transfert de la configuration actuelle des tables de données en mode non-sécurisé
+( ) Gestion de la recherche de partie
 
-Résolution du problème de vitesse d'animation variable
+( ) Ajout d'entrées dans la configuration par défaut des tables de données
 
-Implémentation graphique du brouillard de guerre
+( ) Gestion du transfert de la configuration actuelle des tables de données en mode non-sécurisé
 
-Assouplissement de la structure pour permettre de réduire le nombre d'entrées codées en dur
+( ) Résolution du problème de vitesse d'animation variable
 
-Reécriture des anciens sorts avec le nouveau framework
+( ) Implémentation graphique du brouillard de guerre
 
-Création d'une fenêtre d'inventaire
+( ) Assouplissement de la structure pour permettre de réduire le nombre d'entrées codées en dur
 
-Gestion d'info-bulles lorsque la souris passe sur un buff, un monstre, etc.
+(X) Reécriture des anciens sorts avec le nouveau framework
 
-Affichage de barres de vie, d'état et du nom des autres entités
+( ) Création d'une fenêtre d'inventaire
 
-Réorganisation du rectangle affichant les statistiques pour permettre d'avoir toutes les stats à l'écran en même temps
+(X) Gestion d'info-bulles lorsque la souris passe sur un buff, un monstre, etc.
 
-Amélioration de l'IA des monstres pour rendre leur mouvement plus naturel et gérer la perte de vision de l'ennemi
+(X) Affichage de barres de vie, d'état et du nom des autres entités
 
-Mise en place des parties contre une IA
+( ) Réorganisation du rectangle affichant les statistiques pour permettre d'avoir toutes les stats à l'écran en même temps
 
-Meilleur gestion de la reconnexion (resynchronisation de tous les scripts)
+(X) Amélioration de l'IA des monstres pour rendre leur mouvement plus naturel et gérer la perte de vision de l'ennemi
 
-Amélioration de la gestion du scale sur les monstres
+( ) Mise en place des parties contre une IA
 
-La porte de l'antre de Hasnor doit se fermer lorsqu'un joueur y rentre, Hasnor ne devrait pas pouvoir sortir
+( ) Meilleure gestion de la reconnexion (resynchronisation de tous les scripts)
 
-Bloquer les clics de souris sur l'interface (empêcher les intéractions avec le jeu)
+(?) Amélioration de la gestion du scale sur les monstres
 
-Petit bug de vision: un ennemi de la deuxième map n'est pas correctement affecté à une tile de la map (à vérifier)
+( ) La porte de l'antre de Hasnor doit se fermer lorsqu'un joueur y rentre, Hasnor ne devrait pas pouvoir sortir
 
-Résolution des petits problèmes d'interfaces (emplacements de compétences à taille fixe, etc)
+( ) Bloquer les clics de souris sur l'interface (empêcher les intéractions avec le jeu)
 
-Passage de la map de vision en ScriptableObject
+(X) Petit bug de vision: un ennemi de la deuxième map n'est pas correctement affecté à une tile de la map
 
-Résoudre le bug lié à la synchronisation des entités avant qu'elles ne soient instantiées
+( ) Résolution des petits problèmes d'interfaces (emplacements de compétences à taille fixe, etc)
 
-Résoudre le problème de destruction des entités visibles
+(X) Passage de la map de vision en ScriptableObject
+
+( ) Résoudre le bug lié à la synchronisation des entités avant qu'elles ne soient instantiées
+
+( ) Résoudre le problème de destruction des entités visibles

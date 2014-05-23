@@ -176,14 +176,14 @@ public class CharacterVisionScript : MonoBehaviour
 		{
 			curTile.RemoveEntity(_manager.gameObject);
 
-			/*foreach (GameObject obj in entitiesInSight)
-			{ // FIXME
+			foreach (GameObject obj in entitiesInSight)
+			{
 				CharacterManager hisManager = obj.GetComponent<CharacterManager>();
-				if (hisManager != null)
+				if (hisManager != null && hisManager != _manager)
 				{ // Remove us from his targets to avoid pointer errors
 					hisManager.GetVisionScript().RemoveSeenEntity(_manager.gameObject);
 				}
-			}*/
+			}
 		}
 	}
 

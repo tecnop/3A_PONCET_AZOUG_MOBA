@@ -131,18 +131,19 @@ public class CharacterManager : MonoBehaviour
 
 		float w = 100, h = 50;
 
-		GUI.BeginGroup(new Rect(screenPos.x - w/2.0f, Screen.height - screenPos.y - h/2.0f, w, h));
+		GUI.BeginGroup(SRect.Make(screenPos.x - w/2.0f, Screen.height - screenPos.y - h/2.0f, w, h));
 
-		GUI.Label(new Rect(0, 0, w, 0.75f * h), this.name, FFMStyles.centeredText);
+		GUI.Label(SRect.Make(0, 0, w, 0.75f * h, "character_name"), this.name, FFMStyles.centeredText);
 
 		float curHealth = _stats.GetHealth();
 		float maxHealth = _stats.GetMaxHealth();
 
 		// Background
-		GUI.Box(new Rect(0, 0.75f * h, w, 0.25f * h), GUIContent.none);
+		GUI.Box(SRect.Make(0, 0.75f * h, w, 0.25f * h, "character_bar"), GUIContent.none);
 
 		if (curHealth > 1)
 		{ // Bar
+			Rect rect = SRect.Make(0.0f, 0.75f * h, (curHealth / maxHealth) * w, 0.25f * h);
 			if (_stats.HasSpecialEffect(MiscEffect.INVULNERABLE))
 			{ // Kinda temporary
 				GUIStyle style = new GUIStyle();
@@ -151,11 +152,11 @@ public class CharacterManager : MonoBehaviour
 				style.normal.background.SetPixel(0, 0, Color.yellow);
 				style.normal.background.Apply();
 
-				GUI.Box(new Rect(0.0f, 0.75f * h, (curHealth / maxHealth) * w, 0.25f * h), GUIContent.none, style);
+				GUI.Box(rect, GUIContent.none, style);
 			}
 			else
 			{
-				GUI.Box(new Rect(0.0f, 0.75f * h, (curHealth / maxHealth) * w, 0.25f * h), GUIContent.none);
+				GUI.Box(rect, GUIContent.none);
 			}
 		}
 

@@ -13,7 +13,7 @@ public class HUDManaBar : HUDComponent
 	{
 		float w = frame.width;
 		float h = frame.height;
-		Rect localRect = new Rect(0.0f, 0.0f, w, h);
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "mana_bar_local");
 
 		GUI.BeginGroup(frame);
 
@@ -25,7 +25,7 @@ public class HUDManaBar : HUDComponent
 
 		if (curMana > 1)
 		{ // Bar
-			GUI.Box(new Rect(0.0f, 0.0f, (curMana / maxMana) * w, h), GUIContent.none);
+			GUI.Box(SRect.Make(0.0f, 0.0f, (curMana / maxMana) * w, h), GUIContent.none);
 		}
 
 		// Text
