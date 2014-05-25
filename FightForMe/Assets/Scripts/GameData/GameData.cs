@@ -24,7 +24,7 @@ public enum GameMode
 }
 
 public enum PauseMessage
-{
+{ // I just realized I didn't use the same case here as other enums. Whatever I'm lazy
 	DEFAULT,			// Game is paused
 	CLIENT_CONNECT,		// Attempting to connect to a server
 	CLIENT_RECONNECT,	// Attempting to reconnect to a server after we lost connection
@@ -38,7 +38,9 @@ public enum PauseMessage
 	SERVER_FAILURE,		// Server failed to start
 	PLAYER1_VICTORY,	// Player 1 won
 	PLAYER2_VICTORY,	// Player 2 won
-	INCORRECT_GAMEMODE	// Game mode doesn't match the server's
+	INCORRECT_GAMEMODE,	// Game mode doesn't match the server's
+	INCORRECT_SECURITY,	// Security level doesn't match the server's
+	WAITING_FOR_CONFIG	// Waiting for the server to send us his data tables
 }
 
 public static class GameData

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  * NetworkScript.cs
@@ -17,12 +18,16 @@ public class NetworkScript : MonoBehaviour
 	[SerializeField]
 	private NetworkView _networkView;
 
+	private List<NetworkedEntityScript> networkedEntities;
+
 	void Start()
 	{
 		if (!GameData.wentThroughMenu)
 		{
 			GameData.gameType = gameType;
 		}
+
+		networkedEntities = new List<NetworkedEntityScript>();
 
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{
@@ -49,9 +54,27 @@ public class NetworkScript : MonoBehaviour
 		}
 	}
 
+	public void AddNetworkedEntity(NetworkedEntityScript entity)
+	{
+		this.networkedEntities.Add(entity);
+	}
+
+	public void SynchronizeEntities(NetworkPlayer client)
+	{
+		//foreach (NetworkedEntityScript entity in this.networkedEntities)
+		{
+
+		}
+	}
+
 	void OnPlayerConnected(NetworkPlayer player)
 	{
-		_networkView.RPC("VerifyGameMode", player, (int)GameData.gameMode);
+		_networkView.RPC("VerifyGameMode", player, (int)GameData.gameMode, GameData.secure);
+
+		if (!GameData.secure)
+		{
+			_networkView.RPC("SetDataTablesConfig", player, DataTables.GetConfigString());
+		}
 
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
@@ -72,8 +95,10 @@ public class NetworkScript : MonoBehaviour
 	{ // Just keep retrying...
 		GameData.networkError = error;
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
-		{ // Force NAT off maybe? So far it's the only thing that's been an issue for the server
+		{
 			GameData.pauseMessage = PauseMessage.SERVER_FAILURE;
+
+			// DEBUG: Force NAT off so I can work offline
 			Network.InitializeServer((int)GameData.expectedConnections, 6600, false);
 		}
 		else if (GameData.gameType == GameType.Client)
@@ -95,19 +120,45 @@ public class NetworkScript : MonoBehaviour
 	void OnConnectedToServer()
 	{ // Connected!
 		GameData.networkError = NetworkConnectionError.NoError;
-		if (Network.connections.Length == GameData.expectedConnections)
-		{
-			PauseGame(false);
+		if (GameData.secure)
+		{ // Connect instantly
+			if (Network.connections.Length == GameData.expectedConnections)
+			{
+				PauseGame(false);
+			}
+		}
+		else
+		{ // We want to wait for the data tables
+			GameData.pauseMessage = PauseMessage.WAITING_FOR_CONFIG;
 		}
 	}
 
 	[RPC]
-	private void VerifyGameMode(int gameMode)
+	private void VerifyGameMode(int gameMode, bool secure)
 	{
 		if (GameData.gameMode != (GameMode)gameMode)
 		{ // Whoops!
 			GameData.pauseMessage = PauseMessage.INCORRECT_GAMEMODE;
 			Network.Disconnect();
+		}
+		else if (GameData.secure != secure)
+		{
+			GameData.pauseMessage = PauseMessage.INCORRECT_SECURITY;
+			Network.Disconnect();
+		}
+	}
+
+	[RPC]
+	private void SetDataTablesConfig(string configString)
+	{
+		if (!GameData.secure)
+		{ // Small security measure
+			DataTables.SetConfigString(configString);
+
+			if (Network.connections.Length == GameData.expectedConnections)
+			{ // We're ready
+				PauseGame(false);
+			}
 		}
 	}
 
@@ -121,7 +172,10 @@ public class NetworkScript : MonoBehaviour
 		}
 		else
 		{ // Left or the server shut down... give him the option to leave
-			GameData.pauseMessage = PauseMessage.CLIENT_DROP;
+			if (GameData.pauseMessage == PauseMessage.DEFAULT)
+			{ // Eeeeeh seems good
+				GameData.pauseMessage = PauseMessage.CLIENT_DROP;
+			}
 			PauseGame(true);
 		}
 	}

@@ -10,6 +10,8 @@ public static class DataTables
 	static string configPath = "../Configs/main.cfg";
 	static string currentLang = "fr";
 
+	static string configContents;
+
 	// Entities
 	static Dictionary<uint, Monster> monsterTable = new Dictionary<uint, Monster>();
 	static Dictionary<uint, Projectile> projectileTable = new Dictionary<uint, Projectile>();
@@ -68,7 +70,10 @@ public static class DataTables
 
 		if (!GameData.secure)
 		{
-			fillTables();
+			if (GameData.isServer)
+			{ // Clients will wait for the server to send it
+				fillTables();
+			}
 			return;
 		}
 
@@ -249,10 +254,44 @@ public static class DataTables
 		monsterTable.Add(12, new Monster(metadata: new Metadata(name: "Un monstre")));
 	}
 
+	public static void SendConfigStringToNewClient(NetworkPlayer client)
+	{
+
+	}
+
 	public static void fillTables()
-	{ // TODO: Rework this to allow us to send the file's content to clients as a string
+	{ // Parse the tables from a local file
+		StreamReader config = File.OpenText(configPath);
+		configContents = config.ReadToEnd();
+		config.Close();
+
+		ParseConfigString();
+	}
+
+	public static void SetConfigString(string configString)
+	{ // TODO: Link this to an RPC
+		configContents = configString;
+
+		ParseConfigString();
+	}
+
+	public static string GetConfigString()
+	{
+		return configContents;
+	}
+
+	private static void ParseConfigString()
+	{ // Changing a few things to allow transfer of the file's contents to clients
 		FJsonParser parser = FJsonParser.Instance();
-		parser.parseFile(configPath);
+		//parser.parseFile(configPath);
+		parser.parseString(configContents);
+
+		if (parser.getResults().Count == 0)
+		{ // We didn't get anything, maybe the file is invalid; be safe and drop it, don't send it to clients
+			configContents = null;
+			return;
+		}
+
 		foreach (Clazz ns in parser.getResults())
 		{
 			if (ns.getName() == "monster")
@@ -280,7 +319,6 @@ public static class DataTables
 				Debug.LogWarning("Nothing found for parsed class '" + ns.getName() + "'");
 			}
 		}
-
 	}
 
 	private static void pushMonster(Dictionary<string, string> fields)

@@ -241,6 +241,18 @@ public static class HUDRenderer
 			{
 				message = "En attente de la reconnexion d'un ou plusieurs joueur(s)...";
 			}
+			else if (GameData.pauseMessage == PauseMessage.INCORRECT_GAMEMODE)
+			{
+				message = "Le mode choisi ne correspond pas à celui du serveur";
+			}
+			else if (GameData.pauseMessage == PauseMessage.INCORRECT_SECURITY)
+			{
+				message = "Le niveau de sécurité choisi ne correspond pas à celui du serveur";
+			}
+			else if (GameData.pauseMessage == PauseMessage.WAITING_FOR_CONFIG)
+			{
+				message = "Récupération des informations du serveur...";
+			}
 		}
 
 		GUI.Box(localRect, message, FFMStyles.centeredText_wrapped);

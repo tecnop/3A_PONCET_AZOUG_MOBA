@@ -8,7 +8,7 @@ public static class SRect
 
 	public static Rect Make(float x, float y, float width, float height, string name = null, bool update = false)
 	{
-		if (false && !update && name != null && stored.ContainsKey(name))
+		if (!update && name != null && stored.ContainsKey(name))
 		{
 			return stored[name];
 		}

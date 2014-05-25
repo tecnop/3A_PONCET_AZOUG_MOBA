@@ -23,7 +23,7 @@ public class TileBuilderScript : MonoBehaviour
 		}
 		else
 		{ // Do it right now
-			if (!GameData.wentThroughMenu)
+			//if (!GameData.wentThroughMenu)
 			{ // Just don't bother, we're debugging and this system no longer needs testing; create a global tile so everyone can see each other
 				float terrainSizeX = 10.0f * terrain.localScale.x;
 				float terrainSizeZ = 10.0f * terrain.localScale.z;

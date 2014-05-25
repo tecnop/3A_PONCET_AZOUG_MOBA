@@ -86,7 +86,7 @@ public class StartMenuScript : MonoBehaviour
 		GameData.gameMode = (GameMode)GUILayout.SelectionGrid((int)GameData.gameMode, new string[] { "Suprématie", "Course à la Gloire" }, 2);
 		GameData.secure = GUILayout.Toggle(GameData.secure, "Mode sécurisé"); // Doesn't look so good
 
-		if (GameData.secure)
+		//if (GameData.secure)
 		{
 			GUILayout.Label("Multi");
 
