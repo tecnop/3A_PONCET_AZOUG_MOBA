@@ -49,7 +49,7 @@ public class CharacterPhysicsScript : MonoBehaviour
 	{
 		if (GameData.isOnline)
 		{
-			_networkView.RPC("_SetLayer", RPCMode.All, layer);
+			_networkView.RPC("_SetLayer", RPCMode.AllBuffered, layer);
 		}
 		else
 		{

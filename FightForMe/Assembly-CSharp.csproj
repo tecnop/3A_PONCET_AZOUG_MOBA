@@ -135,6 +135,7 @@
      <Compile Include="Assets\Scripts\GameData\GameData.cs" />
      <Compile Include="Assets\Scripts\GameData\GameMasterScript.cs" />
      <Compile Include="Assets\Scripts\GameData\InstantiateManagerScript.cs" />
+     <Compile Include="Assets\Scripts\GameData\LoadingValidatorScript.cs" />
      <Compile Include="Assets\Scripts\GameData\NetworkScript.cs" />
      <Compile Include="Assets\Scripts\GameData\TileBuilderScript.cs" />
      <Compile Include="Assets\Scripts\GameData\TileManager.cs" />
@@ -161,6 +162,7 @@
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDSpellWindow.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDWindowGrabber.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDRenderer.cs" />
+     <Compile Include="Assets\Scripts\UI\Menus\StartMenu\LobbyScript.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiManager.cs" />
      <Compile Include="Assets\Scripts\UI\Misc\FFMStyles.cs" />

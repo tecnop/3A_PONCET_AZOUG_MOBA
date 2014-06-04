@@ -13,77 +13,43 @@ using System.Collections.Generic;
 public class NetworkScript : MonoBehaviour
 {
 	[SerializeField]
-	private GameType gameType;
-
-	[SerializeField]
 	private NetworkView _networkView;
 
-	private List<NetworkedEntityScript> networkedEntities;
+	private Dictionary<NetworkPlayer, bool> loadedList; // For servers
+
+	private bool isLoaded; // For clients
 
 	void Start()
 	{
 		if (!GameData.wentThroughMenu)
 		{
-			GameData.gameType = gameType;
+			GameData.gameType = GameType.Local;
 		}
 
-		networkedEntities = new List<NetworkedEntityScript>();
-
-		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
+		if (GameData.gameType == GameType.Local)
 		{
-			GameData.pauseMessage = PauseMessage.SERVER_INITIALIZING;
-			Network.InitializeSecurity();
-			Network.InitializeServer((int)GameData.expectedConnections, 6600, !Network.HavePublicAddress());
-		}
-		else if (GameData.gameType == GameType.Client)
-		{
-			GameData.pauseMessage = PauseMessage.CLIENT_CONNECT;
-			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600); // 127.0.0.1
-		}
-		else
-		{ // No network... delete us?
+			Destroy(this.gameObject);
+			return;
 		}
 
-		if (GameData.gameType != GameType.Local)
-		{ // Pause until everyone's connected
-			PauseGame(true);
-		}
-		else if (GameData.gamePaused)
-		{
-			PauseGame(false);
-		}
-	}
+		isLoaded = false;
 
-	public void AddNetworkedEntity(NetworkedEntityScript entity)
-	{
-		this.networkedEntities.Add(entity);
-	}
+		loadedList = new Dictionary<NetworkPlayer, bool>();
 
-	public void SynchronizeEntities(NetworkPlayer client)
-	{
-		//foreach (NetworkedEntityScript entity in this.networkedEntities)
-		{
-
-		}
+		GameData.pauseMessage = PauseMessage.LOADING;
+		// Pause until everyone's connected
+		PauseGame(true);
 	}
 
 	void OnPlayerConnected(NetworkPlayer player)
-	{
-		_networkView.RPC("VerifyGameMode", player, (int)GameData.gameMode, GameData.secure);
-
-		if (!GameData.secure)
-		{
-			_networkView.RPC("SetDataTablesConfig", player, DataTables.GetConfigString());
-		}
-
-		if (Network.connections.Length == GameData.expectedConnections)
-		{
-			PauseGame(false);
-		}
+	{ // Make sure it's someone we want, also tell him he's late
+		loadedList[player] = false;
+		_networkView.RPC("VerifyGameData", player, (int)GameData.gameMode, GameData.secure);
 	}
 
 	void OnPlayerDisconnected(NetworkPlayer player)
 	{
+		loadedList[player] = false;
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			GameData.pauseMessage = PauseMessage.LOST_CLIENT;
@@ -91,50 +57,40 @@ public class NetworkScript : MonoBehaviour
 		}
 	}
 
-	void OnFailedToConnect(NetworkConnectionError error)
-	{ // Just keep retrying...
-		GameData.networkError = error;
-		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
-		{
-			GameData.pauseMessage = PauseMessage.SERVER_FAILURE;
+	public void ValidateLoading()
+	{
+		if (GameData.isServer)
+		{ // Tell them to load
 
-			// DEBUG: Force NAT off so I can work offline
-			Network.InitializeServer((int)GameData.expectedConnections, 6600, false);
-		}
-		else if (GameData.gameType == GameType.Client)
-		{
-			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
-		}
-	}
-
-	void OnServerInitialized()
-	{ // Make sure it resets the display if an error occured before
-		GameData.networkError = NetworkConnectionError.NoError;
-		GameData.pauseMessage = PauseMessage.SERVER_WAITING;
-		if (Network.connections.Length == GameData.expectedConnections)
-		{
-			PauseGame(false);
-		}
-	}
-
-	void OnConnectedToServer()
-	{ // Connected!
-		GameData.networkError = NetworkConnectionError.NoError;
-		if (GameData.secure)
-		{ // Connect instantly
-			if (Network.connections.Length == GameData.expectedConnections)
-			{
-				PauseGame(false);
-			}
 		}
 		else
-		{ // We want to wait for the data tables
-			GameData.pauseMessage = PauseMessage.WAITING_FOR_CONFIG;
+		{
+			_networkView.RPC("OnPlayerLoaded", RPCMode.Server, Network.player);
 		}
 	}
 
 	[RPC]
-	private void VerifyGameMode(int gameMode, bool secure)
+	void OnPlayerLoaded(NetworkPlayer player)
+	{ // Little extra utility function called after a player has connected and has fully loaded the game
+		if (Network.connections.Length == GameData.expectedConnections)
+		{
+			int i = 0;
+			while (i < Network.connections.Length)
+			{
+				if (!loadedList[Network.connections[i]])
+				{
+					return;
+				}
+				i++;
+			}
+
+			// Everyone's ready!
+			PauseGame(false);
+		}
+	}
+
+	[RPC]
+	private void VerifyGameData(int gameMode, bool secure)
 	{
 		if (GameData.gameMode != (GameMode)gameMode)
 		{ // Whoops!

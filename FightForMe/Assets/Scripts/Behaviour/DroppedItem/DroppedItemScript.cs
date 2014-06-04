@@ -40,7 +40,7 @@ public class DroppedItemScript : MonoBehaviour
 		{ // No conflict found, he simply took our item, we have no reason to be here anymore
 			if (GameData.isOnline)
 			{
-				Network.Destroy(this.gameObject);
+				_networkView.RPC("KillMe", RPCMode.Server);
 			}
 			else
 			{
@@ -51,7 +51,7 @@ public class DroppedItemScript : MonoBehaviour
 
 		if (GameData.isOnline)
 		{
-			_networkView.RPC("SetItemID", RPCMode.All, itemID);
+			_networkView.RPC("SetItemID", RPCMode.AllBuffered, itemID);
 		}
 		else
 		{
@@ -95,12 +95,25 @@ public class DroppedItemScript : MonoBehaviour
 
 		if (GameData.isOnline)
 		{
-			Network.Destroy(this.gameObject);
+			_networkView.RPC("KillMe", RPCMode.Server);
 		}
 		else
 		{
 			Destroy(this.gameObject);
 		}
+	}
+
+	[RPC]
+	private void KillMe()
+	{
+		_networkView.RPC("DoKill", RPCMode.AllBuffered);
+	}
+
+	[RPC]
+	private void DoKill()
+	{
+		//Network.Destroy(this.gameObject);
+		Destroy(this.gameObject);
 	}
 
 	void OnMouseDown()

@@ -105,7 +105,7 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		{
 			if (GameData.isOnline)
 			{
-				_networkView.RPC("_LearnSkill", RPCMode.Others, (int)skillID);
+				_networkView.RPC("_LearnSkill", RPCMode.OthersBuffered, (int)skillID);
 			}
 		}
 	}

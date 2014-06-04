@@ -23,7 +23,7 @@ public class TrophyDepositAreaScript : MonoBehaviour
 			{
 				if (GameData.isOnline)
 				{
-					_networkView.RPC("GameOver", RPCMode.All);
+					_networkView.RPC("GameOver", RPCMode.AllBuffered);
 				}
 				else
 				{

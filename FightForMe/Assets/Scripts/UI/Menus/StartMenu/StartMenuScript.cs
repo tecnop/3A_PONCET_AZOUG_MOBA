@@ -4,13 +4,6 @@ using System.Text.RegularExpressions; //<- Regexp ! hehehe
 
 public class StartMenuScript : MonoBehaviour
 {
-
-	[SerializeField]
-	private string _mode1Scene;
-
-	[SerializeField]
-	private string _mode2Scene;
-
 	private Animator planeAnimator;
 
 	private bool waitingForPlayer;
@@ -158,14 +151,7 @@ public class StartMenuScript : MonoBehaviour
 	{
 		GameData.wentThroughMenu = true;
 		GameData.gameType = gameType;
-		if (GameData.gameMode == GameMode.KillTheLord)
-		{
-			Application.LoadLevel(_mode1Scene);
-		}
-		else if (GameData.gameMode == GameMode.RaceForGlory)
-		{
-			Application.LoadLevel(_mode2Scene);
-		}
+		Application.LoadLevel("Lobby");
 	}
 
 	void quit()

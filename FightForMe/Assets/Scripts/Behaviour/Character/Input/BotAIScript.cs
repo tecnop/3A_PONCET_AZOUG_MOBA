@@ -8,7 +8,7 @@ public class BotAIScript : CharacterInputScript
 
 	private Queue<Vector3> currentPath;
 	private Vector3 goalPosition;
-	private Vector3 finalGoalPos;
+	//private Vector3 finalGoalPos;
 
 	public override void Initialize(CharacterManager manager)
 	{
@@ -18,7 +18,7 @@ public class BotAIScript : CharacterInputScript
 
 	private void SetGoal(Vector3 pos)
 	{
-		this.finalGoalPos = pos;
+		//this.finalGoalPos = pos;
 		NavMeshPath path = new NavMeshPath();
 
 		if (NavMesh.CalculatePath(_transform.position, pos, (1 << NavMesh.GetNavMeshLayerFromName("Default")), path))

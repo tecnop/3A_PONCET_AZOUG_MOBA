@@ -191,17 +191,6 @@ public static class HUDRenderer
 			{
 				message = "Le joueur 2 a gagné!";
 			}
-			else if (GameData.pauseMessage == PauseMessage.CLIENT_CONNECT)
-			{
-				if (GameData.networkError != NetworkConnectionError.NoError)
-				{
-					message = "Tentative de connexion au serveur...\n\nErreur: " + GameData.networkError.ToString();
-				}
-				else
-				{
-					message = "Tentative de connexion au serveur...";
-				}
-			}
 			else if (GameData.pauseMessage == PauseMessage.CLIENT_RECONNECT)
 			{
 				if (GameData.networkError != NetworkConnectionError.NoError)
@@ -217,25 +206,9 @@ public static class HUDRenderer
 			{
 				message = "Le serveur s'est déconnecté.";
 			}
-			else if (GameData.pauseMessage == PauseMessage.CLIENT_KICK)
-			{ // Never gonna happen! Why am I even doing this
-				message = "Vous avez été exclu(e) de la partie.";
-			}
-			else if (GameData.pauseMessage == PauseMessage.SERVER_INITIALIZING)
-			{
-				message = "Mise en place du serveur...";
-			}
 			else if (GameData.pauseMessage == PauseMessage.SERVER_WAITING)
 			{
 				message = "En attente d'un autre joueur...";
-			}
-			else if (GameData.pauseMessage == PauseMessage.SERVER_FAILURE)
-			{
-				message = "L'initialisation du serveur a échoué.\n\nSi ce message apparait pour plus de 5 secondes, vérifiez votre connexion à un réseau et relancez le jeu.";
-			}
-			else if (GameData.pauseMessage == PauseMessage.CLIENT_WAITING)
-			{
-				message = "En attente d'autres joueurs...";
 			}
 			else if (GameData.pauseMessage == PauseMessage.LOST_CLIENT)
 			{
@@ -248,10 +221,6 @@ public static class HUDRenderer
 			else if (GameData.pauseMessage == PauseMessage.INCORRECT_SECURITY)
 			{
 				message = "Le niveau de sécurité choisi ne correspond pas à celui du serveur";
-			}
-			else if (GameData.pauseMessage == PauseMessage.WAITING_FOR_CONFIG)
-			{
-				message = "Récupération des informations du serveur...";
 			}
 		}
 

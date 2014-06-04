@@ -205,7 +205,7 @@ public class CharacterInventoryScript : MonoBehaviour
 
 			if (GameData.isOnline)
 			{
-				_networkView.RPC("UpdateItem", RPCMode.Others, (int)conflictingItem, true);
+				_networkView.RPC("UpdateItem", RPCMode.OthersBuffered, (int)conflictingItem, true);
 			}
 		}
 
@@ -214,7 +214,7 @@ public class CharacterInventoryScript : MonoBehaviour
 
 		if (GameData.isOnline)
 		{
-			_networkView.RPC("UpdateItem", RPCMode.Others, (int)item, false);
+			_networkView.RPC("UpdateItem", RPCMode.OthersBuffered, (int)item, false);
 		}
 
 		if (!newItem.IsWeapon())
@@ -247,7 +247,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	}
 
 	public Weapon GetWeapon()
-	{ // NOTE: If we implement dual-wielding, this should be affected // TODO: We implemented dual-wielding, now affect this please
+	{ // NOTE: If we implement dual-wielding, this should be affected // TODO: We implemented dual-wielding, now affect this please // FIXME: I don't know what I'm doing anymore
 		int i = 0;
 
 		while (i < this.items.Count)
@@ -285,7 +285,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	}
 
 	public List<Armor> GetAllArmor()
-	{ // Return type: Armor
+	{
 		int i = 0;
 		List<Armor> res = new List<Armor>();
 
@@ -305,7 +305,7 @@ public class CharacterInventoryScript : MonoBehaviour
 	}
 
 	public List<Item> GetItems()
-	{ // Return type: Item
+	{
 		int i = 0;
 		List<Item> res = new List<Item>(this.items.Count);
 

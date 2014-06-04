@@ -33,9 +33,9 @@ public class TileBuilderScript : MonoBehaviour
 				return;
 			}
 
-			Generate();
+			/*Generate();
 
-			TileManager.BakeNeighbours();
+			TileManager.BakeNeighbours();*/
 		}
 
 		// Don't need us anymore once we're done

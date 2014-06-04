@@ -6,13 +6,21 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 	private uint monsterID;
 
 	private uint pendingSetup = 0;
+	private bool hax = false; // Terrible terrible
 
 	public override void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
 		if (pendingSetup != 0)
 		{
-			SetUpFromMonster(pendingSetup);
+			if (hax)
+			{
+				DoSetUp((int)pendingSetup);
+			}
+			else
+			{
+				SetUpFromMonster(pendingSetup);
+			}
 		}
 	}
 
@@ -46,7 +54,7 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 
 		if (GameData.isOnline)
 		{
-			_networkView.RPC("DoSetUp", RPCMode.All, (int)monsterID);
+			_networkView.RPC("DoSetUp", RPCMode.AllBuffered, (int)monsterID);
 		}
 		else
 		{
@@ -64,6 +72,13 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 		if (monster == null)
 		{ // Hmmm...
 			Debug.LogWarning("Tried to setup unknown monster " + monsterID + " on entity " + _manager.name);
+			return;
+		}
+
+		if (!_manager)
+		{ // Ew.
+			pendingSetup = (uint)monsterID;
+			hax = true;
 			return;
 		}
 

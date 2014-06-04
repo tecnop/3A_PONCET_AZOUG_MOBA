@@ -7,6 +7,9 @@ public class MonsterEventScript : CharacterEventScript
 	private MonsterMiscDataScript _misc;
 	private CharacterInventoryScript _inventory;
 
+	[SerializeField]
+	private NetworkView _networkView;
+
 	public override void Initialize(CharacterManager manager)
 	{
 		//base.Initialize(manager);
@@ -63,12 +66,25 @@ public class MonsterEventScript : CharacterEventScript
 		// No death animation for monsters yet
 		if (GameData.isOnline)
 		{
-			Network.Destroy(_manager.gameObject);
+			_networkView.RPC("KillMe", RPCMode.Server);
 		}
 		else
 		{
 			Destroy(_manager.gameObject);
 		}
+	}
+
+	[RPC]
+	private void KillMe()
+	{
+		_networkView.RPC("DoKill", RPCMode.AllBuffered);
+	}
+
+	[RPC]
+	private void DoKill()
+	{
+		//Network.Destroy(this.gameObject);
+		Destroy(this.gameObject);
 	}
 
 	public override void OnSpotEntity(GameObject entity)

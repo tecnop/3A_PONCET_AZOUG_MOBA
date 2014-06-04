@@ -26,21 +26,30 @@ public enum GameMode
 public enum PauseMessage
 { // I just realized I didn't use the same case here as other enums. Whatever I'm lazy
 	DEFAULT,			// Game is paused
-	CLIENT_CONNECT,		// Attempting to connect to a server
+	LOADING,			// Waiting for other players to load
 	CLIENT_RECONNECT,	// Attempting to reconnect to a server after we lost connection
-	CLIENT_WAITING,		// Waiting for more clients to join
 	LOST_CLIENT,		// Waiting for a client to reconnect
-	SERVER_INITIALIZING,// Setting up server
-	SERVER_WAITING,		// Waiting for a client to connect to us
-	SERVER_WAITING2,	// Waiting for a client to reconnect to us
+	SERVER_WAITING,		// Waiting for a client to reconnect to us
 	CLIENT_DROP,		// Server has shutdown
-	CLIENT_KICK,		// Client was kicked
-	SERVER_FAILURE,		// Server failed to start
 	PLAYER1_VICTORY,	// Player 1 won
 	PLAYER2_VICTORY,	// Player 2 won
 	INCORRECT_GAMEMODE,	// Game mode doesn't match the server's
-	INCORRECT_SECURITY,	// Security level doesn't match the server's
-	WAITING_FOR_CONFIG	// Waiting for the server to send us his data tables
+	INCORRECT_SECURITY	// Security level doesn't match the server's
+}
+
+public enum LobbyMessage
+{
+	GAME_DATA,			// Displaying the game data until the client is ready
+	CLIENT_CONNECT,		// Attempting to connect to a server
+	CLIENT_RECONNECT,	// Attempting to reconnect to a server
+	CLIENT_WAITING,		// Waiting for more clients to join
+	SERVER_INITIALIZING,// Setting up server
+	SERVER_WAITING,		// Waiting for a client to connect to us
+	CLIENT_KICK,		// Client was kicked
+	CLIENT_DROP,		// Server has shutdown
+	SERVER_FAILURE,		// Server failed to start
+	READY,				// Waiting for other clients to confirm
+	WAITING_FOR_DATA	// Waiting for the server to send us the config file
 }
 
 public static class GameData

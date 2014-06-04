@@ -83,7 +83,7 @@ public class LordSpawnerScript : SpawnerScript
 		{
 			if (GameData.isOnline)
 			{
-				_networkView.RPC("GameOver", RPCMode.All);
+				_networkView.RPC("GameOver", RPCMode.AllBuffered);
 			}
 			else
 			{
