@@ -54,8 +54,6 @@ public class GameMasterScript : MonoBehaviour
 			LinkMeToPlayer(false); // TEMPORARY
 		}
 
-		DataTables.updateTables();
-
 		if (!GameData.isServer)
 		{ // We won't be needed anymore
 			//Destroy(this.gameObject);

@@ -8,7 +8,10 @@ public class LoadingValidatorScript : MonoBehaviour
 
 	void Start()
 	{
-		_network.ValidateLoading();
+		if (GameData.isOnline)
+		{
+			_network.ValidateLoading();
+		}
 		Destroy(this.gameObject);
 	}
 }

@@ -81,7 +81,7 @@ public class StartMenuScript : MonoBehaviour
 
 		//if (GameData.secure)
 		{
-			GUILayout.Label("Multi");
+			GUILayout.Label("Multijoueur");
 
 			if (GUILayout.Button("Héberger"))
 			{
@@ -109,12 +109,18 @@ public class StartMenuScript : MonoBehaviour
 
 		GUILayout.BeginArea(new Rect(mainScreenLeft, (float)(Screen.height / 2.5f), boxQuitWidth, boxQuitHeight));
 
-		GUILayout.Label("Mono");
+		GUILayout.Label("Un joueur");
 
-		if (GUILayout.Button("Jouer"))
+		if (GUILayout.Button("Partie contre une IA"))
 		{
 			gameType = GameType.Local;
 			planeAnimator.SetBool("launchGame", true);
+		}
+
+		if (GUILayout.Button("Tutoriel"))
+		{
+			//gameType = GameType.Local;
+			//planeAnimator.SetBool("launchGame", true);
 		}
 
 		GUILayout.EndArea();

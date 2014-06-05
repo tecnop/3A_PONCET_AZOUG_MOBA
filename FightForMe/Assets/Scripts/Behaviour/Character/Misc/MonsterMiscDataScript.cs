@@ -69,16 +69,16 @@ public class MonsterMiscDataScript : CharacterMiscDataScript
 
 		this.monsterID = (uint)monsterID;
 
-		if (monster == null)
-		{ // Hmmm...
-			Debug.LogWarning("Tried to setup unknown monster " + monsterID + " on entity " + _manager.name);
-			return;
-		}
-
 		if (!_manager)
 		{ // Ew.
 			pendingSetup = (uint)monsterID;
 			hax = true;
+			return;
+		}
+
+		if (monster == null)
+		{ // Hmmm...
+			Debug.LogWarning("Tried to setup unknown monster " + monsterID + " on entity " + _manager.name);
 			return;
 		}
 

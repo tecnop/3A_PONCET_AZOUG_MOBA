@@ -17,8 +17,6 @@ public class NetworkScript : MonoBehaviour
 
 	private Dictionary<NetworkPlayer, bool> loadedList; // For servers
 
-	private bool isLoaded; // For clients
-
 	void Start()
 	{
 		if (!GameData.wentThroughMenu)
@@ -32,9 +30,12 @@ public class NetworkScript : MonoBehaviour
 			return;
 		}
 
-		isLoaded = false;
-
 		loadedList = new Dictionary<NetworkPlayer, bool>();
+
+		if (GameData.isServer && GameData.isOnline)
+		{
+			Network.isMessageQueueRunning = false;
+		}
 
 		GameData.pauseMessage = PauseMessage.LOADING;
 		// Pause until everyone's connected
@@ -94,6 +95,12 @@ public class NetworkScript : MonoBehaviour
 			}
 
 			// Everyone's ready!
+
+			if (GameData.isServer && GameData.isOnline)
+			{
+				Network.isMessageQueueRunning = true;
+			}
+
 			_networkView.RPC("Begin", RPCMode.All);
 		}
 	}
@@ -116,20 +123,6 @@ public class NetworkScript : MonoBehaviour
 		{
 			GameData.pauseMessage = PauseMessage.INCORRECT_SECURITY;
 			Network.Disconnect();
-		}
-	}
-
-	[RPC]
-	private void SetDataTablesConfig(string configString)
-	{
-		if (!GameData.secure)
-		{ // Small security measure
-			DataTables.SetConfigString(configString);
-
-			if (Network.connections.Length == GameData.expectedConnections)
-			{ // We're ready
-				PauseGame(false);
-			}
 		}
 	}
 

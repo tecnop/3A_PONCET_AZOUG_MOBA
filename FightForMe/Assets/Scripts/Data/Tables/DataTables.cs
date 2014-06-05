@@ -34,7 +34,7 @@ public static class DataTables
 	// Resources
 	static Dictionary<string, GameObject> modelTable = new Dictionary<string, GameObject>();
 
-	private static void clearTables()
+	private static void ClearTables()
 	{
 		monsterTable.Clear();
 		projectileTable.Clear();
@@ -64,19 +64,27 @@ public static class DataTables
 		}
 	}
 
-	public static void updateTables()
+	public static void FillTables()
 	{
-		clearTables();
+		ClearTables();
 
-		if (!GameData.secure)
+		if (GameData.secure)
+		{
+			ParseDefaultTables();
+		}
+		else
 		{
 			if (GameData.isServer)
-			{ // Clients will wait for the server to send it
-				fillTables();
+			{
+				ParseTablesFromFile();
 			}
+			// Clients will wait for the server to send it to them
 			return;
 		}
+	}
 
+	private static void ParseDefaultTables()
+	{
 		// NOTE: To account for dependencies, the tables should be initialized in the following order:
 		// 1 - Resources
 		// 2 - Spells
@@ -254,12 +262,7 @@ public static class DataTables
 		monsterTable.Add(12, new Monster(metadata: new Metadata(name: "Un monstre")));
 	}
 
-	public static void SendConfigStringToNewClient(NetworkPlayer client)
-	{
-
-	}
-
-	public static void fillTables()
+	private static void ParseTablesFromFile()
 	{ // Parse the tables from a local file
 		StreamReader config = File.OpenText(configPath);
 		configContents = config.ReadToEnd();
@@ -269,7 +272,7 @@ public static class DataTables
 	}
 
 	public static void SetConfigString(string configString)
-	{ // TODO: Link this to an RPC
+	{ // Parse the tables we received from an external source (most likely the server we connected to)
 		configContents = configString;
 
 		ParseConfigString();

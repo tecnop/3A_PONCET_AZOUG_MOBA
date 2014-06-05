@@ -10,7 +10,6 @@ public class LobbyScript : MonoBehaviour
 	LobbyMessage lobbyMessage;
 
 	bool ready;
-	bool started;
 
 	[SerializeField]
 	private NetworkView _networkView;
@@ -32,13 +31,14 @@ public class LobbyScript : MonoBehaviour
 		text.wordWrap = true;
 		text.normal.textColor = Color.white;
 
-		started = false;
 		ready = false;
 
 		readyList = new Dictionary<NetworkPlayer, bool>();
 
-		// Save the lobby view ID so we may refer to it from another scene, I guess
-		GameData.lobbyViewID = _networkView.viewID;
+		if (GameData.isServer)
+		{ // Fill the tables now so we can send them
+			DataTables.FillTables();
+		}
 
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{
@@ -181,7 +181,7 @@ public class LobbyScript : MonoBehaviour
 		_networkView.RPC("SetGameData", player, (int)GameData.gameMode, GameData.secure, false);
 
 		if (!GameData.secure)
-		{ // This didn't work
+		{
 			_networkView.RPC("SetDataTablesConfig", player, DataTables.GetConfigString());
 		}
 
@@ -193,13 +193,12 @@ public class LobbyScript : MonoBehaviour
 
 	void OnPlayerDisconnected(NetworkPlayer player)
 	{
+		readyList.Remove(player);
 		foreach (NetworkPlayer key in readyList.Keys)
 		{ // Lost a player, noone should be ready anymore
 			readyList[key] = false;
 		}
 		ready = false;
-
-		Debug.Log(lobbyMessage.ToString());
 
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
@@ -233,7 +232,15 @@ public class LobbyScript : MonoBehaviour
 	void OnServerInitialized()
 	{ // Make sure it resets the display if an error occured before
 		GameData.networkError = NetworkConnectionError.NoError;
-		lobbyMessage = LobbyMessage.SERVER_WAITING;
+
+		if (GameData.isClient)
+		{ // Yes, I know, it sounds dumb
+			lobbyMessage = LobbyMessage.CLIENT_WAITING;
+		}
+		else
+		{
+			lobbyMessage = LobbyMessage.SERVER_WAITING;
+		}
 	}
 
 	void OnConnectedToServer()
@@ -261,10 +268,14 @@ public class LobbyScript : MonoBehaviour
 	{
 		GameData.gameMode = (GameMode)gameMode;
 		GameData.secure = secure;
-		started = inProgress;
 		if (inProgress)
 		{
 			lobbyMessage = LobbyMessage.GAME_STARTED;
+		}
+
+		if (secure)
+		{ // Great, just load our default tables
+			DataTables.FillTables();
 		}
 	}
 
@@ -346,6 +357,7 @@ public class LobbyScript : MonoBehaviour
 			lobbyMessage = LobbyMessage.CLIENT_RECONNECT;
 			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600); // This is not the best, if another client is executed and changes the playerPrefs, someone can be rerouted to another server
 		}
+		else if (lobbyMessage != LobbyMessage.CLIENT_KICK)
 		{ // Left or the server shut down
 			lobbyMessage = LobbyMessage.CLIENT_DROP;
 		}

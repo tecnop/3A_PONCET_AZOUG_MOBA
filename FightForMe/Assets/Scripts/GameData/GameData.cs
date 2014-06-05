@@ -100,6 +100,4 @@ public static class GameData
 
 	public static NetworkConnectionError networkError; // Last connection error we got
 	public static PauseMessage pauseMessage;
-
-	public static NetworkViewID lobbyViewID;
 }
