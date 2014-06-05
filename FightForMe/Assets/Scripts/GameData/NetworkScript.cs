@@ -44,12 +44,13 @@ public class NetworkScript : MonoBehaviour
 	void OnPlayerConnected(NetworkPlayer player)
 	{ // Make sure it's someone we want, also tell him he's late
 		loadedList[player] = false;
-		_networkView.RPC("VerifyGameData", player, (int)GameData.gameMode, GameData.secure);
+		_networkView.RPC("SetGameData", player, (int)GameData.gameMode, GameData.secure, true);
 	}
 
 	void OnPlayerDisconnected(NetworkPlayer player)
 	{
 		loadedList[player] = false;
+
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			GameData.pauseMessage = PauseMessage.LOST_CLIENT;
@@ -61,7 +62,7 @@ public class NetworkScript : MonoBehaviour
 	{
 		if (GameData.isServer)
 		{ // Tell them to load
-
+			_networkView.RPC("StartGame", RPCMode.Others);
 		}
 		else
 		{
@@ -70,14 +71,22 @@ public class NetworkScript : MonoBehaviour
 	}
 
 	[RPC]
+	private void StartGame()
+	{ // Placeholder
+
+	}
+
+	[RPC]
 	void OnPlayerLoaded(NetworkPlayer player)
 	{ // Little extra utility function called after a player has connected and has fully loaded the game
+		loadedList[player] = true;
+
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			int i = 0;
 			while (i < Network.connections.Length)
 			{
-				if (!loadedList[Network.connections[i]])
+				if (!loadedList.ContainsKey(Network.connections[i]) || !loadedList[Network.connections[i]])
 				{
 					return;
 				}
@@ -85,13 +94,19 @@ public class NetworkScript : MonoBehaviour
 			}
 
 			// Everyone's ready!
-			PauseGame(false);
+			_networkView.RPC("Begin", RPCMode.All);
 		}
 	}
 
 	[RPC]
-	private void VerifyGameData(int gameMode, bool secure)
-	{
+	private void Begin()
+	{ // Meh, small utility
+		PauseGame(false);
+	}
+
+	[RPC]
+	private void SetGameData(int gameMode, bool secure, bool inProgress)
+	{ // We should never receive this but if we do then make sure someone isn't cheating his way in
 		if (GameData.gameMode != (GameMode)gameMode)
 		{ // Whoops!
 			GameData.pauseMessage = PauseMessage.INCORRECT_GAMEMODE;

@@ -222,6 +222,10 @@ public static class HUDRenderer
 			{
 				message = "Le niveau de sécurité choisi ne correspond pas à celui du serveur";
 			}
+			else if (GameData.pauseMessage == PauseMessage.LOADING)
+			{
+				message = "Les autres joueurs chargent la partie...";
+			}
 		}
 
 		GUI.Box(localRect, message, FFMStyles.centeredText_wrapped);

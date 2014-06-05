@@ -9,6 +9,7 @@ public class LobbyScript : MonoBehaviour
 
 	LobbyMessage lobbyMessage;
 
+	bool ready;
 	bool started;
 
 	[SerializeField]
@@ -32,8 +33,12 @@ public class LobbyScript : MonoBehaviour
 		text.normal.textColor = Color.white;
 
 		started = false;
+		ready = false;
 
 		readyList = new Dictionary<NetworkPlayer, bool>();
+
+		// Save the lobby view ID so we may refer to it from another scene, I guess
+		GameData.lobbyViewID = _networkView.viewID;
 
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{
@@ -57,11 +62,17 @@ public class LobbyScript : MonoBehaviour
 		int w = Screen.width;
 		int h = Screen.height;
 
-		if (lobbyMessage == LobbyMessage.GAME_DATA || lobbyMessage == LobbyMessage.READY || lobbyMessage == LobbyMessage.CLIENT_WAITING)
+		if (lobbyMessage == LobbyMessage.GAME_DATA
+			|| lobbyMessage == LobbyMessage.READY
+			|| lobbyMessage == LobbyMessage.CLIENT_WAITING
+			|| lobbyMessage == LobbyMessage.GAME_STARTED)
 		{
 			GUI.Label(new Rect(0.25f * w, 0.25f * h, 0.5f * w, 30), "Partie " + (GameData.secure ? "sécurisée" : "non sécurisée"), text);
 			GUI.Label(new Rect(0.25f * w, 0.25f * h + 30, 0.5f * w, 30), "Mode de jeu: " + (GameData.gameMode == GameMode.KillTheLord ? "Suprématie" : "Course à la Gloire"), text);
-			GUI.Label(new Rect(0.25f * w, 0.25f * h + 60, 0.5f * w, 30), "Ping: " + Network.GetAveragePing(Network.connections[0]), text);
+			if (Network.connections.Length > 0)
+			{
+				GUI.Label(new Rect(0.25f * w, 0.25f * h + 60, 0.5f * w, 30), "Ping: " + Network.GetAveragePing(Network.connections[0]), text);
+			}
 
 			if (lobbyMessage == LobbyMessage.CLIENT_WAITING)
 			{
@@ -73,10 +84,40 @@ public class LobbyScript : MonoBehaviour
 				{
 					GUI.Label(new Rect(0.25f * w, 0.25f * h + 90, 0.5f * w, 30), "En attente que les autres joueurs acceptent la partie...", text);
 				}
-				else if (GUI.Button(new Rect(0.25f * w, 0.25f * h + 90, 0.5f * w, 30), "Commencer!"))
+				else
 				{
-					lobbyMessage = LobbyMessage.READY;
-					_networkView.RPC("SetReady", RPCMode.Server, Network.player);
+					if (lobbyMessage == LobbyMessage.GAME_STARTED)
+					{ // We're late to the party
+						if (GUI.Button(new Rect(0.25f * w, 0.25f * h + 90, 0.5f * w, 30), "Se reconnecter à la partie"))
+						{
+							StartGame();
+						}
+					}
+					else
+					{
+						if (GUI.Button(new Rect(0.25f * w, 0.25f * h + 90, 0.5f * w, 30), "Commencer!"))
+						{
+							lobbyMessage = LobbyMessage.READY;
+							if (GameData.isServer)
+							{
+								ready = true;
+
+								if (EveryoneReady())
+								{
+									StartGame();
+								}
+							}
+							else
+							{
+								_networkView.RPC("SetReady", RPCMode.Server, Network.player);
+							}
+						}
+						else if (GameData.isServer && GUI.Button(new Rect(0.25f * w, 0.25f * h + 120, 0.5f * w, 30), "Exclure l'autre joueur"))
+						{
+							_networkView.RPC("DoKick", Network.connections[0]);
+							//Network.CloseConnection(Network.connections[0], true);
+						}
+					}
 				}
 			}
 		}
@@ -116,7 +157,7 @@ public class LobbyScript : MonoBehaviour
 			}
 			else
 			{
-				GUI.Label(screenRect, "???" + lobbyMessage.ToString(), text);
+				GUI.Label(screenRect, lobbyMessage.ToString()+"???", text);
 			}
 		}
 
@@ -140,7 +181,7 @@ public class LobbyScript : MonoBehaviour
 		_networkView.RPC("SetGameData", player, (int)GameData.gameMode, GameData.secure, false);
 
 		if (!GameData.secure)
-		{
+		{ // This didn't work
 			_networkView.RPC("SetDataTablesConfig", player, DataTables.GetConfigString());
 		}
 
@@ -152,7 +193,14 @@ public class LobbyScript : MonoBehaviour
 
 	void OnPlayerDisconnected(NetworkPlayer player)
 	{
-		readyList[player] = false;
+		foreach (NetworkPlayer key in readyList.Keys)
+		{ // Lost a player, noone should be ready anymore
+			readyList[key] = false;
+		}
+		ready = false;
+
+		Debug.Log(lobbyMessage.ToString());
+
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			if (GameData.isClient)
@@ -214,6 +262,10 @@ public class LobbyScript : MonoBehaviour
 		GameData.gameMode = (GameMode)gameMode;
 		GameData.secure = secure;
 		started = inProgress;
+		if (inProgress)
+		{
+			lobbyMessage = LobbyMessage.GAME_STARTED;
+		}
 	}
 
 	[RPC]
@@ -239,23 +291,35 @@ public class LobbyScript : MonoBehaviour
 	{
 		readyList[player] = true;
 
+		if (EveryoneReady())
+		{
+			StartGame();
+		}
+	}
+
+	private bool EveryoneReady()
+	{
 		if (Network.connections.Length == GameData.expectedConnections)
 		{ // Little security check
 			int i = 0;
 			while (i < Network.connections.Length)
 			{
-				if (!readyList[Network.connections[i]])
+				if (!readyList.ContainsKey(Network.connections[i]) || !readyList[Network.connections[i]])
 				{
-					return;
+					return false;
 				}
 				i++;
 			}
 
-			// Everyone's ready!
-			StartGame();
+			if (!GameData.isClient || ready)
+			{ // Everyone's ready!
+				return true;
+			}
 		}
+		return false;
 	}
 
+	[RPC]
 	private void StartGame()
 	{
 		if (GameData.gameMode == GameMode.KillTheLord)
@@ -266,6 +330,13 @@ public class LobbyScript : MonoBehaviour
 		{
 			Application.LoadLevel(_mode2Scene);
 		}
+	}
+
+	[RPC]
+	private void DoKick()
+	{
+		lobbyMessage = LobbyMessage.CLIENT_KICK;
+		Network.Disconnect();
 	}
 
 	void OnDisconnectedFromServer(NetworkDisconnection info)

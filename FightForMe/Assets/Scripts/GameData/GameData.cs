@@ -49,6 +49,7 @@ public enum LobbyMessage
 	CLIENT_DROP,		// Server has shutdown
 	SERVER_FAILURE,		// Server failed to start
 	READY,				// Waiting for other clients to confirm
+	GAME_STARTED,		// Game has already started
 	WAITING_FOR_DATA	// Waiting for the server to send us the config file
 }
 
@@ -99,4 +100,6 @@ public static class GameData
 
 	public static NetworkConnectionError networkError; // Last connection error we got
 	public static PauseMessage pauseMessage;
+
+	public static NetworkViewID lobbyViewID;
 }
