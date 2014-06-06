@@ -24,7 +24,7 @@ public class GameMasterScript : MonoBehaviour
 	private GameMode gameMode;
 
 	private List<MonsterCampScript> monsterCamps;
-	private float lastSpawnTime;
+	private float nextSpawnTime;
 
 	void Start()
 	{
@@ -54,6 +54,11 @@ public class GameMasterScript : MonoBehaviour
 			LinkMeToPlayer(false); // TEMPORARY
 		}
 
+		if (!GameData.wentThroughMenu)
+		{ // Do it now
+			DataTables.FillTables();
+		}
+
 		if (!GameData.isServer)
 		{ // We won't be needed anymore
 			//Destroy(this.gameObject);
@@ -66,7 +71,9 @@ public class GameMasterScript : MonoBehaviour
 		{
 			monsterCamps.Add(camp.GetComponent<MonsterCampScript>());
 		}
-		SpawnCamps();
+
+		// Wait 3 seconds to make sure everyone's in the game and ready
+		nextSpawnTime = 3.0f;
 	}
 
 	private void SpawnCamps()
@@ -75,15 +82,17 @@ public class GameMasterScript : MonoBehaviour
 		{
 			camp.TrySpawn();
 		}
-		lastSpawnTime = Time.time;
+		nextSpawnTime = 120.0f;
 	}
 
 	void Update()
 	{
-		if (GameData.isServer)
+		if (GameData.isServer && !GameData.gamePaused)
 		{
-			if (Time.time - lastSpawnTime > 120.0f)
-			{ // There is probably a better way to run such a simple timer...
+			nextSpawnTime -= Time.deltaTime;
+
+			if (nextSpawnTime <= 0.0f)
+			{
 				SpawnCamps();
 			}
 		}

@@ -18,7 +18,7 @@ public class InstantiateManagerScript : MonoBehaviour
 	{
 		if (GameData.isOnline)
 		{
-			return (GameObject)Network.Instantiate(prefab, pos, ang, 0);
+			return (GameObject)Network.Instantiate(prefab, pos, ang, 1);
 		}
 		else
 		{

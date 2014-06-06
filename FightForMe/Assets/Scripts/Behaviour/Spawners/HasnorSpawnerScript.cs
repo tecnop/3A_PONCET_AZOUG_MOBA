@@ -30,7 +30,7 @@ public class HasnorSpawnerScript : SpawnerScript
 		GameObject hasnor;
 		if (GameData.isOnline)
 		{
-			hasnor = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 0);
+			hasnor = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 1);
 		}
 		else
 		{

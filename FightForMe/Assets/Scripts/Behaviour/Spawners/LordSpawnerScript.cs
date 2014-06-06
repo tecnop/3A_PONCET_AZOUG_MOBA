@@ -40,7 +40,7 @@ public class LordSpawnerScript : SpawnerScript
 		GameObject lord;
 		if (GameData.isOnline)
 		{
-			lord = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 0);
+			lord = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 1);
 		}
 		else
 		{

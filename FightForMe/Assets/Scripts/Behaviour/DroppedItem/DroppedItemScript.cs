@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DroppedItemScript : MonoBehaviour
+public class DroppedItemScript : MonoBehaviour//NetworkedEntityScript
 {
 	[SerializeField] // Serialized for debugging
 	private int _itemID; // ...

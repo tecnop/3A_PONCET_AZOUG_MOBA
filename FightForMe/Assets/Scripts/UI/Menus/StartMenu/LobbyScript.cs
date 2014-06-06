@@ -40,11 +40,20 @@ public class LobbyScript : MonoBehaviour
 			DataTables.FillTables();
 		}
 
+		Network.SetLevelPrefix(0);
+
 		if (GameData.gameType == GameType.DedicatedServer || GameData.gameType == GameType.ListenServer)
 		{
 			lobbyMessage = LobbyMessage.SERVER_INITIALIZING;
 			Network.InitializeSecurity();
 			Network.InitializeServer((int)GameData.expectedConnections, 6600, !Network.HavePublicAddress());
+
+			_networkView.RPC("SetGameData", RPCMode.OthersBuffered, (int)GameData.gameMode, GameData.secure, false);
+
+			if (!GameData.secure)
+			{
+				_networkView.RPC("SetDataTablesConfig", RPCMode.OthersBuffered, DataTables.GetConfigString());
+			}
 		}
 		else if (GameData.gameType == GameType.Client)
 		{
@@ -178,12 +187,8 @@ public class LobbyScript : MonoBehaviour
 		{
 			readyList.Add(player, false);
 		}
-		_networkView.RPC("SetGameData", player, (int)GameData.gameMode, GameData.secure, false);
 
-		if (!GameData.secure)
-		{
-			_networkView.RPC("SetDataTablesConfig", player, DataTables.GetConfigString());
-		}
+		Network.SetSendingEnabled(player, 1, false);
 
 		if (Network.connections.Length == GameData.expectedConnections)
 		{

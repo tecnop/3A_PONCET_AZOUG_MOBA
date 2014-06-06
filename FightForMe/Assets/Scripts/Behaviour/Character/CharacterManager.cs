@@ -8,7 +8,7 @@ using System.Collections;
  * 
  */
 
-public class CharacterManager : MonoBehaviour
+public class CharacterManager : MonoBehaviour//NetworkedEntityScript
 {
 	[SerializeField]
 	private Transform _transform;

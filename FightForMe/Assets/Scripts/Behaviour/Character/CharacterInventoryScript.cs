@@ -103,7 +103,7 @@ public class CharacterInventoryScript : MonoBehaviour
 		GameObject droppedItem;
 		if (GameData.isOnline)
 		{
-			droppedItem = (GameObject)Network.Instantiate(_droppedItemPrefab, pos, Quaternion.identity, 0);
+			droppedItem = (GameObject)Network.Instantiate(_droppedItemPrefab, pos, Quaternion.identity, 1);
 		}
 		else
 		{

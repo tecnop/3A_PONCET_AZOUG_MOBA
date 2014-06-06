@@ -32,9 +32,11 @@ public class NetworkScript : MonoBehaviour
 
 		loadedList = new Dictionary<NetworkPlayer, bool>();
 
+		Network.SetLevelPrefix(1);
+
 		if (GameData.isServer && GameData.isOnline)
 		{
-			Network.isMessageQueueRunning = false;
+			//Network.isMessageQueueRunning = false;
 		}
 
 		GameData.pauseMessage = PauseMessage.LOADING;
@@ -51,6 +53,8 @@ public class NetworkScript : MonoBehaviour
 	void OnPlayerDisconnected(NetworkPlayer player)
 	{
 		loadedList[player] = false;
+
+		Network.SetSendingEnabled(player, 1, false);
 
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
@@ -73,7 +77,7 @@ public class NetworkScript : MonoBehaviour
 
 	[RPC]
 	private void StartGame()
-	{ // Placeholder
+	{ // Placeholder so that we may redirect this to the LobbyScript
 
 	}
 
@@ -81,6 +85,8 @@ public class NetworkScript : MonoBehaviour
 	void OnPlayerLoaded(NetworkPlayer player)
 	{ // Little extra utility function called after a player has connected and has fully loaded the game
 		loadedList[player] = true;
+
+		Network.SetSendingEnabled(player, 1, true);
 
 		if (Network.connections.Length == GameData.expectedConnections)
 		{

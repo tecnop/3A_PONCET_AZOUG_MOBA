@@ -53,7 +53,7 @@ public class MonsterSpawnerScript : SpawnerScript
 		GameObject monsterObject;
 		if (GameData.isOnline)
 		{
-			monsterObject = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 0);
+			monsterObject = (GameObject)Network.Instantiate(_monsterPrefab, _pos, _ang, 1);
 		}
 		else
 		{
