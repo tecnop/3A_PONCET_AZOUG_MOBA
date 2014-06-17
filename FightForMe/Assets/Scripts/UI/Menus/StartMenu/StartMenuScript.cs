@@ -30,7 +30,10 @@ public class StartMenuScript : MonoBehaviour
 		ipAddress = PlayerPrefs.GetString("ipAddress");
 		GameData.networkError = NetworkConnectionError.NoError;
 
-		GameData.secure = true;
+		if (!GameData.wentThroughMenu)
+		{ // Little hack, this is only the default value the first time we get here
+			GameData.secure = true;
+		}
 
 		waitingForPlayer = false;
 

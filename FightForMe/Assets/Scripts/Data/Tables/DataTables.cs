@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,8 @@ public static class DataTables
 	// Parsing params.
 	static string configPath = "../Configs/main.cfg";
 	static string currentLang = "fr";
+
+	static Exception parsingError;
 
 	static string configContents;
 
@@ -52,6 +55,9 @@ public static class DataTables
 
 		// Not clearing resource tables for now
 		//modelTable.Clear();
+
+		// Reset the error
+		parsingError = null;
 	}
 
 	public static void LoadModels(GameObject[] models)
@@ -76,7 +82,15 @@ public static class DataTables
 		{
 			if (GameData.isServer)
 			{
-				ParseTablesFromFile();
+				try
+				{
+					ParseTablesFromFile();
+				}
+				catch (Exception e)
+				{
+					configContents = null;
+					parsingError = e;
+				}
 			}
 			// Clients will wait for the server to send it to them
 			return;
@@ -264,18 +278,41 @@ public static class DataTables
 
 	private static void ParseTablesFromFile()
 	{ // Parse the tables from a local file
-		StreamReader config = File.OpenText(configPath);
-		configContents = config.ReadToEnd();
-		config.Close();
+		try
+		{
+			StreamReader config = File.OpenText(configPath);
+			configContents = config.ReadToEnd();
+			config.Close();
+		}
+		catch
+		{
+			throw new Exception("Le fichier de configuration n'a pas pu être ouvert, assurez-vous qu'il se trouve à "+configPath);
+		}
 
-		ParseConfigString();
+		try
+		{
+			ParseConfigString();
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 
 	public static void SetConfigString(string configString)
 	{ // Parse the tables we received from an external source (most likely the server we connected to)
 		configContents = configString;
 
-		ParseConfigString();
+		ClearTables();
+
+		try
+		{
+			ParseConfigString();
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 
 	public static string GetConfigString()
@@ -287,40 +324,55 @@ public static class DataTables
 	{ // Changing a few things to allow transfer of the file's contents to clients
 		FJsonParser parser = FJsonParser.Instance();
 		//parser.parseFile(configPath);
-		parser.parseString(configContents);
+		try
+		{
+			parser.parseString(configContents);
+		}
+		catch
+		{
+			throw new Exception("Erreur lors de la lecture du fichier de configuration");
+		}
 
 		if (parser.getResults().Count == 0)
 		{ // We didn't get anything, maybe the file is invalid; be safe and drop it, don't send it to clients
 			configContents = null;
-			return;
+			throw new Exception("Erreur inconnue lors de la lecture du fichier de configuration");
 		}
 
-		foreach (Clazz ns in parser.getResults())
+		try
 		{
-			if (ns.getName() == "monster")
+			foreach (Clazz ns in parser.getResults())
 			{
-				pushMonster(ns.getFields());
+				if (ns.getName() == "monster")
+				{
+					pushMonster(ns.getFields());
+				}
+				else if (ns.getName() == "effect")
+				{
+					pushEffect(ns.getFields());
+				}
+				else if (ns.getName() == "weapon")
+				{
+					pushWeapon(ns.getFields());
+				}
+				else if (ns.getName() == "armor")
+				{
+					pushArmor(ns.getFields());
+				}
+				else if (ns.getName() == "projectile")
+				{
+					pushProjectile(ns.getFields());
+				}
+				else
+				{
+					Debug.LogWarning("Nothing found for parsed class '" + ns.getName() + "'");
+				}
 			}
-			else if (ns.getName() == "effect")
-			{
-				pushEffect(ns.getFields());
-			}
-			else if (ns.getName() == "weapon")
-			{
-				pushWeapon(ns.getFields());
-			}
-			else if (ns.getName() == "armor")
-			{
-				pushArmor(ns.getFields());
-			}
-			else if (ns.getName() == "projectile")
-			{
-				pushProjectile(ns.getFields());
-			}
-			else
-			{
-				Debug.LogWarning("Nothing found for parsed class '" + ns.getName() + "'");
-			}
+		}
+		catch (Exception e)
+		{
+			throw e;
+			//throw new Exception("Incohérence dans le fichier de configuration");
 		}
 	}
 
@@ -359,7 +411,14 @@ public static class DataTables
 			buffs = stringToUintArray(fields["buffs"]);
 		}
 
-		monsterTable.Add(id, new Monster(metadata, behaviour, items, buffs));
+		try
+		{
+			monsterTable.Add(id, new Monster(metadata, behaviour, items, buffs));
+		}
+		catch (Exception e)
+		{
+			throw new Exception("Erreur lors de la lecture des données du monstre " + (metadata.GetName() ?? id.ToString()) + ":\n" + e.Message);
+		}
 	}
 
 	private static void pushWeapon(Dictionary<string, string> fields)
@@ -423,7 +482,15 @@ public static class DataTables
 		fields.TryGetValue ("effectPath", out effectPath);
 		fields.TryGetValue ("attackSoundPath", out attackSoundPath);
 		*/
-		itemTable.Add(id, new Weapon(metadata, recyclingXP, buffID, weaponTypeID, damage, attackRate, projectileID, effectPath, attackSoundPath));
+
+		try
+		{
+			itemTable.Add(id, new Weapon(metadata, recyclingXP, buffID, weaponTypeID, damage, attackRate, projectileID, effectPath, attackSoundPath));
+		}
+		catch (Exception e)
+		{
+			throw new Exception("Erreur lors de la lecture des données de l'arme " + (metadata.GetName() ?? id.ToString()) + ":\n" + e.Message);
+		}
 	}
 
 	private static void pushArmor(Dictionary<string, string> fields)
@@ -476,7 +543,14 @@ public static class DataTables
 			stats = stringToStats(fields["stats"]);
 		}
 
-		itemTable.Add(id, new Armor(metadata, recyclingXP, buffID, slot, setID, stats));
+		try
+		{
+			itemTable.Add(id, new Armor(metadata, recyclingXP, buffID, slot, setID, stats));
+		}
+		catch (Exception e)
+		{
+			throw new Exception("Erreur lors de la lecture des données de l'armure " + (metadata.GetName() ?? id.ToString()) + ":\n" + e.Message);
+		}
 	}
 
 	private static void pushProjectile(Dictionary<string, string> fields)
@@ -545,7 +619,14 @@ public static class DataTables
 			lifeTime = uint.Parse(fields["lifeTime"]);
 		}
 
-		projectileTable.Add(id, new Projectile(metadata, effectPath, impactEffectPath, damage, speed, impactAbility, hitboxSize, range, lifeTime, trajectory, collision));
+		try
+		{
+			projectileTable.Add(id, new Projectile(metadata, effectPath, impactEffectPath, damage, speed, impactAbility, hitboxSize, range, lifeTime, trajectory, collision));
+		}
+		catch (Exception e)
+		{
+			throw new Exception("Erreur lors de la lecture des données du projectile " + (metadata.GetName() ?? id.ToString()) + ":\n" + e.Message);
+		}
 	}
 
 	private static void pushEffect(Dictionary<string, string> fields)
@@ -673,8 +754,14 @@ public static class DataTables
 			miscParm = ...
 		}
 		*/
-
-		effectTable.Add(id, new Effect(isPositive, description, flatHP, pctHP, flatMP, pctMP, flatHPRegen, pctHPRegen, flatMPRegen, pctMPRegen, flatMS, pctMS, bonusDamage, bonusAtkSpd, bonusProjDamage, stats, unlockedAbility, misc, miscParm));
+		try
+		{
+			effectTable.Add(id, new Effect(isPositive, description, flatHP, pctHP, flatMP, pctMP, flatHPRegen, pctHPRegen, flatMPRegen, pctMPRegen, flatMS, pctMS, bonusDamage, bonusAtkSpd, bonusProjDamage, stats, unlockedAbility, misc, miscParm));
+		}
+		catch (Exception e)
+		{
+			throw new Exception("Erreur lors de la lecture des données de l'effet " + id + ":\n" + e.Message);
+		}
 	}
 
 	private static Metadata getMetadata(string pattern)
@@ -761,6 +848,11 @@ public static class DataTables
 
 		// Puis. , Endu. , Int.
 		return new Vector3(float.Parse(values[0]), float.Parse(values[1]), float.Parse(values[2]));
+	}
+
+	public static Exception GetError()
+	{
+		return parsingError;
 	}
 
 	public static Item GetItem(uint key)

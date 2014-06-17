@@ -125,7 +125,7 @@ public class DroppedItemScript : MonoBehaviour//NetworkedEntityScript
 	{
 		Item item = DataTables.GetItem(this.itemID); // Don't do this every frame please
 		if (item != null)
-		{
+		{ // FIXME: Getting some weird errors from the camera here apparently
 			Vector3 screenPos = GameData.activePlayer.GetCameraScript().GetCamera().WorldToScreenPoint(_transform.position + new Vector3(0, 3, 0));
 
 			float w = 150, h = 100;

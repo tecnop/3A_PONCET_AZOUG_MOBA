@@ -50,7 +50,8 @@ public enum LobbyMessage
 	SERVER_FAILURE,		// Server failed to start
 	READY,				// Waiting for other clients to confirm
 	GAME_STARTED,		// Game has already started
-	WAITING_FOR_DATA	// Waiting for the server to send us the config file
+	WAITING_FOR_DATA,	// Waiting for the server to send us the config file
+	DATA_ERROR			// The server sent us malformed data
 }
 
 public static class GameData

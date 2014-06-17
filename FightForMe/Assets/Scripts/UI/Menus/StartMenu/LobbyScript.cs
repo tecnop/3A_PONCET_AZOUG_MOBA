@@ -10,6 +10,7 @@ public class LobbyScript : MonoBehaviour
 	LobbyMessage lobbyMessage;
 
 	bool ready;
+	bool started;
 
 	[SerializeField]
 	private NetworkView _networkView;
@@ -32,12 +33,18 @@ public class LobbyScript : MonoBehaviour
 		text.normal.textColor = Color.white;
 
 		ready = false;
+		started = false;
 
 		readyList = new Dictionary<NetworkPlayer, bool>();
 
 		if (GameData.isServer)
 		{ // Fill the tables now so we can send them
 			DataTables.FillTables();
+
+			if (DataTables.GetError() != null)
+			{ // OnGUI will do the rest
+				return;
+			}
 		}
 
 		Network.SetLevelPrefix(0);
@@ -47,13 +54,6 @@ public class LobbyScript : MonoBehaviour
 			lobbyMessage = LobbyMessage.SERVER_INITIALIZING;
 			Network.InitializeSecurity();
 			Network.InitializeServer((int)GameData.expectedConnections, 6600, !Network.HavePublicAddress());
-
-			_networkView.RPC("SetGameData", RPCMode.OthersBuffered, (int)GameData.gameMode, GameData.secure, false);
-
-			if (!GameData.secure)
-			{
-				_networkView.RPC("SetDataTablesConfig", RPCMode.OthersBuffered, DataTables.GetConfigString());
-			}
 		}
 		else if (GameData.gameType == GameType.Client)
 		{
@@ -71,7 +71,15 @@ public class LobbyScript : MonoBehaviour
 		int w = Screen.width;
 		int h = Screen.height;
 
-		if (lobbyMessage == LobbyMessage.GAME_DATA
+		if (DataTables.GetError() != null)
+		{
+			GUI.Label(screenRect, DataTables.GetError().Message, text);
+		}
+		else if (lobbyMessage == LobbyMessage.DATA_ERROR)
+		{
+			GUI.Label(screenRect, "Le server a envoyé un fichier de configuration mal formé", text);
+		}
+		else if (lobbyMessage == LobbyMessage.GAME_DATA
 			|| lobbyMessage == LobbyMessage.READY
 			|| lobbyMessage == LobbyMessage.CLIENT_WAITING
 			|| lobbyMessage == LobbyMessage.GAME_STARTED)
@@ -166,7 +174,7 @@ public class LobbyScript : MonoBehaviour
 			}
 			else
 			{
-				GUI.Label(screenRect, lobbyMessage.ToString()+"???", text);
+				GUI.Label(screenRect, lobbyMessage.ToString() + "???", text);
 			}
 		}
 
@@ -188,7 +196,12 @@ public class LobbyScript : MonoBehaviour
 			readyList.Add(player, false);
 		}
 
-		Network.SetSendingEnabled(player, 1, false);
+		_networkView.RPC("SetGameData", player, (int)GameData.gameMode, GameData.secure, false);
+
+		if (!GameData.secure)
+		{
+			_networkView.RPC("SetDataTablesConfig", player, DataTables.GetConfigString());
+		}
 
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
@@ -273,7 +286,8 @@ public class LobbyScript : MonoBehaviour
 	{
 		GameData.gameMode = (GameMode)gameMode;
 		GameData.secure = secure;
-		if (inProgress)
+		started = inProgress;
+		if (inProgress && !secure)
 		{
 			lobbyMessage = LobbyMessage.GAME_STARTED;
 		}
@@ -289,9 +303,23 @@ public class LobbyScript : MonoBehaviour
 	{
 		if (!GameData.secure)
 		{ // Small security measure
-			DataTables.SetConfigString(configString);
+			try
+			{
+				DataTables.SetConfigString(configString);
+			}
+			catch (System.Exception e)
+			{ // That shouldn't have happened! If it ever does, then that means the server willingly sent us something bad, so get out right now
+				Debug.LogError(e.Message);
+				lobbyMessage = LobbyMessage.DATA_ERROR;
+				Network.Disconnect();
+				return;
+			}
 
-			if (Network.connections.Length == GameData.expectedConnections)
+			if (started)
+			{
+				lobbyMessage = LobbyMessage.GAME_STARTED;
+			}
+			else if (Network.connections.Length == GameData.expectedConnections)
 			{
 				lobbyMessage = LobbyMessage.GAME_DATA;
 			}
@@ -362,7 +390,7 @@ public class LobbyScript : MonoBehaviour
 			lobbyMessage = LobbyMessage.CLIENT_RECONNECT;
 			Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600); // This is not the best, if another client is executed and changes the playerPrefs, someone can be rerouted to another server
 		}
-		else if (lobbyMessage != LobbyMessage.CLIENT_KICK)
+		else if (lobbyMessage != LobbyMessage.CLIENT_KICK && lobbyMessage != LobbyMessage.DATA_ERROR)
 		{ // Left or the server shut down
 			lobbyMessage = LobbyMessage.CLIENT_DROP;
 		}

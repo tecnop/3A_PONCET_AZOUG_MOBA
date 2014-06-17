@@ -17,6 +17,8 @@ public class NetworkScript : MonoBehaviour
 
 	private Dictionary<NetworkPlayer, bool> loadedList; // For servers
 
+	private bool ready; // For the client
+
 	void Start()
 	{
 		if (!GameData.wentThroughMenu)
@@ -34,9 +36,36 @@ public class NetworkScript : MonoBehaviour
 
 		Network.SetLevelPrefix(1);
 
-		if (GameData.isServer && GameData.isOnline)
-		{
-			//Network.isMessageQueueRunning = false;
+		// WARNING: YOU ARE ABOUT TO WITNESS SOMETHING TERRIBLE
+
+
+
+
+
+
+
+
+
+		// YOU HAVE BEEN WARNED
+
+
+
+
+
+
+
+
+
+		if (GameData.isOnline)
+		{ // Okay, here it comes. Please read the comment before judging me :<
+			if (!GameData.isServer)
+			{ // So there. Because upon connecting the server sends us a bunch of useless data when we're not even in the right scene,
+			  // we disconnect after loading and reconnect to re-receive all the buffered RPCs.
+				ready = false;
+				Network.Disconnect();
+				Network.Connect(PlayerPrefs.GetString("ipAddress"), 6600);
+				// So, how was it? Are you still alive? Hello?
+			}
 		}
 
 		GameData.pauseMessage = PauseMessage.LOADING;
@@ -48,13 +77,18 @@ public class NetworkScript : MonoBehaviour
 	{ // Make sure it's someone we want, also tell him he's late
 		loadedList[player] = false;
 		_networkView.RPC("SetGameData", player, (int)GameData.gameMode, GameData.secure, true);
+
+		if (!GameData.secure)
+		{
+			_networkView.RPC("SetDataTablesConfig", player, DataTables.GetConfigString());
+		}
 	}
 
 	void OnPlayerDisconnected(NetworkPlayer player)
 	{
 		loadedList[player] = false;
 
-		Network.SetSendingEnabled(player, 1, false);
+		//Network.SetSendingEnabled(player, 1, false);
 
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
@@ -71,7 +105,14 @@ public class NetworkScript : MonoBehaviour
 		}
 		else
 		{
-			_networkView.RPC("OnPlayerLoaded", RPCMode.Server, Network.player);
+			if (Network.connections.Length > 0)
+			{
+				_networkView.RPC("OnPlayerLoaded", RPCMode.Server, Network.player);
+			}
+			else
+			{
+				ready = true;
+			}
 		}
 	}
 
@@ -86,8 +127,6 @@ public class NetworkScript : MonoBehaviour
 	{ // Little extra utility function called after a player has connected and has fully loaded the game
 		loadedList[player] = true;
 
-		Network.SetSendingEnabled(player, 1, true);
-
 		if (Network.connections.Length == GameData.expectedConnections)
 		{
 			int i = 0;
@@ -101,11 +140,6 @@ public class NetworkScript : MonoBehaviour
 			}
 
 			// Everyone's ready!
-
-			if (GameData.isServer && GameData.isOnline)
-			{
-				Network.isMessageQueueRunning = true;
-			}
 
 			_networkView.RPC("Begin", RPCMode.All);
 		}
@@ -129,6 +163,22 @@ public class NetworkScript : MonoBehaviour
 		{
 			GameData.pauseMessage = PauseMessage.INCORRECT_SECURITY;
 			Network.Disconnect();
+		}
+	}
+
+	[RPC]
+	private void SetDataTablesConfig(string configString)
+	{ // Placerholder, should never be received here
+
+	}
+
+	void OnConnectedToServer()
+	{ // Connected!
+		GameData.networkError = NetworkConnectionError.NoError;
+
+		if (ready)
+		{ // Go for it again
+			ValidateLoading();
 		}
 	}
 
