@@ -13,7 +13,8 @@ public enum HUDMenu
 public enum HUDState
 {
 	Default,	// Showing the HUD
-	Wiki		// Showing the wiki
+	Wiki,		// Showing the wiki
+	SkillTree	// Showing the skill tree
 }
 
 public static class HUDRenderer
@@ -40,6 +41,8 @@ public static class HUDRenderer
 		float h = Screen.height;
 
 		FFMStyles.Load();
+
+		SkillTreeScript.Initialize();
 
 		_state = HUDState.Default;
 		_activeSlot = SpellSlot.NUM_SLOTS;
@@ -84,7 +87,11 @@ public static class HUDRenderer
 		}
 
 		// NOTE: This system and layout is temporary! (maybe, I don't even know anymore)
-		if (_state == HUDState.Wiki)
+		if (_state == HUDState.SkillTree)
+		{
+			SkillTreeScript.DrawSkillTree();
+		}
+		else if (_state == HUDState.Wiki)
 		{
 			WikiManager.DrawWiki();
 		}

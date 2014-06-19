@@ -19,9 +19,9 @@ public enum GameType
 
 public enum GameMode
 {
-	Tutorial,
 	KillTheLord,
-	RaceForGlory
+	RaceForGlory,
+	Tutorial
 }
 
 public enum PauseMessage

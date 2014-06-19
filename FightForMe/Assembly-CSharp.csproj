@@ -162,6 +162,7 @@
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDSpellWindow.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDComponents\Windows\HUDWindowGrabber.cs" />
      <Compile Include="Assets\Scripts\UI\HUD\HUDRenderer.cs" />
+     <Compile Include="Assets\Scripts\UI\Menus\SkillTree\SkillTreeScript.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\StartMenu\LobbyScript.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\StartMenu\StartMenuScript.cs" />
      <Compile Include="Assets\Scripts\UI\Menus\Wiki\WikiManager.cs" />

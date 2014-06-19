@@ -10,11 +10,12 @@ public enum SkillColor
 	RG,	// Strength and agility
 	RB,	// Strength and intelligence
 	GB,	// Agility and intelligence
-	W	// Neutral (starting skill only please!)
+	W	// Neutral (starting skill only please! it doesn't make sense for anything else!)
 }
 
 public class Skill : WikiEntry
 {
+	private Vector2 treePos;		// Our position in the skill tree
 	private SkillColor color;		// Alignement of the skill between the three main stats
 	private uint effect;			// ID of the entry in the effects table unlocking this skill applies
 	// TODO: Position in the tree
@@ -29,11 +30,13 @@ public class Skill : WikiEntry
 	}
 
 	public Skill(Metadata metadata,
+		Vector2 treePos,
 		SkillColor color = SkillColor.W,
 		uint effect = 0,
 		uint[] neighbours = null)
 		: base(metadata)
 	{
+		this.treePos = treePos;
 		this.color = color;
 		this.effect = effect;
 
@@ -55,6 +58,11 @@ public class Skill : WikiEntry
 	public Effect GetEffect()
 	{
 		return DataTables.GetEffect(this.effect);
+	}
+
+	public Vector2 GetTreePos()
+	{
+		return this.treePos;
 	}
 
 	public List<Skill> GetNeighbours()

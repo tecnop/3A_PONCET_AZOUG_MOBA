@@ -122,7 +122,7 @@ public class CharacterManager : MonoBehaviour//NetworkedEntityScript
 
 	void OnGUI()
 	{
-		if (!_initialized || !_graphics.gameObject.activeSelf)
+		if (!_initialized || !_graphics.gameObject.activeSelf || HUDRenderer.GetState() != HUDState.Default)
 		{
 			return;
 		}

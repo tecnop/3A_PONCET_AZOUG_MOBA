@@ -35,6 +35,11 @@ public class StartMenuScript : MonoBehaviour
 			GameData.secure = true;
 		}
 
+		if (GameData.gameMode == GameMode.Tutorial)
+		{ // Don't wanna stay like that
+			GameData.gameMode = GameMode.KillTheLord;
+		}
+
 		waitingForPlayer = false;
 
 		boxMultiWidth = 250f;

@@ -195,25 +195,31 @@ public static class DataTables
 
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
-		skillTable.Add(1, new Skill(metadata: new Metadata(name: "Première compétence"), effect: 14, neighbours: new uint[] { 2, 3, 4, 8 }));
+		skillTable.Add(1, new Skill(metadata: new Metadata(name: "Première compétence"), treePos:new Vector2(0.0f, 0.0f), effect: 14, neighbours: new uint[] { 2, 3, 4, 8 }));
 		// ================================================
 
-		skillTable.Add(2, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
-		skillTable.Add(3, new Skill(metadata: new Metadata(name: "Bonus de puissance"), color: SkillColor.G, effect: 4, neighbours: new uint[] { 1, 6 }));
-		skillTable.Add(4, new Skill(metadata: new Metadata(name: "Bonus d'intelligence"), color: SkillColor.B, effect: 5, neighbours: new uint[] { 1, 7 }));
+		skillTable.Add(2, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), treePos: new Vector2(-87f, -50f), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
+		skillTable.Add(3, new Skill(metadata: new Metadata(name: "Bonus de puissance"), treePos: new Vector2(87f, -50f), color: SkillColor.G, effect: 4, neighbours: new uint[] { 1, 6 }));
+		skillTable.Add(4, new Skill(metadata: new Metadata(name: "Bonus d'intelligence"), treePos: new Vector2(0.0f, 100f), color: SkillColor.B, effect: 5, neighbours: new uint[] { 1, 7 }));
 
-		skillTable.Add(5, new Skill(metadata: new Metadata(name: "Super bonus d'endurance"), color: SkillColor.R, effect: 6, neighbours: new uint[] { 2, 13 }));
-		skillTable.Add(6, new Skill(metadata: new Metadata(name: "Super bonus de puissance"), color: SkillColor.G, effect: 7, neighbours: new uint[] { 3, 12 }));
-		skillTable.Add(7, new Skill(metadata: new Metadata(name: "Super bonus d'intelligence"), color: SkillColor.B, effect: 8, neighbours: new uint[] { 4, 10 }));
+		skillTable.Add(5, new Skill(metadata: new Metadata(name: "Super bonus d'endurance"), treePos: new Vector2(-174f, -100f), color: SkillColor.R, effect: 6, neighbours: new uint[] { 2, 13 }));
+		skillTable.Add(6, new Skill(metadata: new Metadata(name: "Super bonus de puissance"), treePos: new Vector2(174f, -100f), color: SkillColor.G, effect: 7, neighbours: new uint[] { 3, 12 }));
+		skillTable.Add(7, new Skill(metadata: new Metadata(name: "Super bonus d'intelligence"), treePos: new Vector2(0.0f, 200f), color: SkillColor.B, effect: 8, neighbours: new uint[] { 4, 10 }));
 
-		skillTable.Add(8, new Skill(metadata: new Metadata(name: "Bonus vitesse de Course"), color: SkillColor.W, effect: 9, neighbours: new uint[] { 1, 9 }));
-		skillTable.Add(9, new Skill(metadata: new Metadata(name: "Super bonus vit. de Course"), color: SkillColor.W, effect: 10, neighbours: new uint[] { 8 }));
+		skillTable.Add(8, new Skill(metadata: new Metadata(name: "Bonus vitesse de Course"), treePos: new Vector2(0.0f, -200f), color: SkillColor.W, effect: 9, neighbours: new uint[] { 1, 9 }));
+		skillTable.Add(9, new Skill(metadata: new Metadata(name: "Super bonus vit. de Course"), treePos: new Vector2(0.0f, -300f), color: SkillColor.W, effect: 10, neighbours: new uint[] { 8 }));
 
-		skillTable.Add(10, new Skill(metadata: new Metadata(name: "Sort: Boule de Feu"), color: SkillColor.B, effect: 13, neighbours: new uint[] { 7, 11 }));
-		skillTable.Add(11, new Skill(metadata: new Metadata(name: "Sort: Grenade"), color: SkillColor.B, effect: 15, neighbours: new uint[] { 10 }));
-		skillTable.Add(12, new Skill(metadata: new Metadata(name: "Sort: Multi-tir"), color: SkillColor.G, effect: 17, neighbours: new uint[] { 6 }));
-		skillTable.Add(13, new Skill(metadata: new Metadata(name: "Sort: Charge"), color: SkillColor.R, effect: 18, neighbours: new uint[] { 5, 14 }));
-		skillTable.Add(14, new Skill(metadata: new Metadata(name: "Sort: Régénération"), color: SkillColor.R, effect: 19, neighbours: new uint[] { 13 }));
+		skillTable.Add(10, new Skill(metadata: new Metadata(name: "Sort: Boule de Feu"), treePos: new Vector2(0.0f, 300f), color: SkillColor.B, effect: 13, neighbours: new uint[] { 7, 11 }));
+		skillTable.Add(11, new Skill(metadata: new Metadata(name: "Sort: Grenade"), treePos: new Vector2(0.0f, 400f), color: SkillColor.B, effect: 15, neighbours: new uint[] { 10 }));
+		skillTable.Add(12, new Skill(metadata: new Metadata(name: "Sort: Multi-tir"), treePos: new Vector2(261f, -150f), color: SkillColor.G, effect: 17, neighbours: new uint[] { 6 }));
+		skillTable.Add(13, new Skill(metadata: new Metadata(name: "Sort: Charge"), treePos: new Vector2(-261f, -150f), color: SkillColor.R, effect: 18, neighbours: new uint[] { 5, 14 }));
+		skillTable.Add(14, new Skill(metadata: new Metadata(name: "Sort: Régénération"), treePos: new Vector2(-348f, -200f), color: SkillColor.R, effect: 19, neighbours: new uint[] { 13 }));
+
+		/*skillTable.Add(15, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), treePos: new Vector2(0.0f, 0.0f), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
+		skillTable.Add(16, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), treePos: new Vector2(0.0f, 0.0f), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
+		skillTable.Add(17, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), treePos: new Vector2(0.0f, 0.0f), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
+		skillTable.Add(18, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), treePos: new Vector2(0.0f, 0.0f), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));
+		skillTable.Add(19, new Skill(metadata: new Metadata(name: "Bonus d'endurance"), treePos: new Vector2(0.0f, 0.0f), color: SkillColor.R, effect: 3, neighbours: new uint[2] { 1, 5 }));*/
 
 		// Projectiles
 		projectileTable.Add(1, new Projectile(metadata: new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));

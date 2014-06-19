@@ -123,6 +123,11 @@ public class DroppedItemScript : MonoBehaviour//NetworkedEntityScript
 
 	void OnGUI()
 	{
+		if (!_graphics.gameObject.activeSelf || HUDRenderer.GetState() != HUDState.Default)
+		{
+			return;
+		}
+
 		Item item = DataTables.GetItem(this.itemID); // Don't do this every frame please
 		if (item != null)
 		{ // FIXME: Getting some weird errors from the camera here apparently
