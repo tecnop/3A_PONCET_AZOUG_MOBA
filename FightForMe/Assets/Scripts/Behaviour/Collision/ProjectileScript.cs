@@ -18,6 +18,9 @@ public class ProjectileScript : MonoBehaviour
 	[SerializeField]
 	private TrailRenderer _trail;
 
+	[SerializeField]
+	private AudioSource _audio;
+
 	private Spell impactSpell;			// Spell to execute on impact
 
 	private CharacterManager owner;			// Character responsible for our actions
@@ -28,6 +31,8 @@ public class ProjectileScript : MonoBehaviour
 	private Vector3 velocity;		// If the projectile is frozen, this is its stored velocity
 	private bool hadGravity;		// If the projectile is frozen, this indicates whether it was falling or not
 	private float timeToLive;		// Time left to live (infinite if 0)
+
+	private bool disabled; // Once the spell has been executed, this switches to true
 
 	public void SetUp(CharacterManager owner, uint projectileID, uint impactSpellOverride = 0)
 	{
@@ -101,12 +106,16 @@ public class ProjectileScript : MonoBehaviour
 	public void ThrowAt(Vector3 pos)
 	{ // TODO: Make this a part of the projectile set up
 		_rigidBody.useGravity = true;
-		float flightDuration = this.timeToLive * 0.95f; // Maybe? I don't think this will be used much anyway
-		if (flightDuration == 0)
-		{ // We have a variable life time (NOTE: Some manipulation needs to be done here to account for height difference)
-			Vector3 diff = pos - _transform.position;
-			flightDuration = diff.magnitude / _rigidBody.velocity.magnitude; // I don't want to get the projectile's stats again
+
+		Vector3 diff = pos - _transform.position;
+		// NOTE: Some manipulation needs to be done here to properly account for height difference
+		float flightDuration = diff.magnitude / _rigidBody.velocity.magnitude; // I don't want to get the projectile's stats again
+
+		if (this.timeToLive > 0 && flightDuration > this.timeToLive)
+		{ // Cap it
+			flightDuration = this.timeToLive;
 		}
+		
 		_rigidBody.velocity = _rigidBody.velocity - Physics.gravity * flightDuration / 2.0f;
 	}
 
@@ -116,6 +125,11 @@ public class ProjectileScript : MonoBehaviour
 		{
 			Debug.LogError("ERROR: Projectile has not been initialized properly!");
 			Destroy(this.gameObject);
+			return;
+		}
+
+		if (disabled)
+		{
 			return;
 		}
 
@@ -131,9 +145,15 @@ public class ProjectileScript : MonoBehaviour
 		if (this.impactSpell != null)
 		{
 			this.impactSpell.Execute(owner, _transform.position, hisManager);
+
+			Utils.PlaySpellSoundOnSource(this.impactSpell, _audio);
 		}
 
-		Destroy(self);
+		disabled = true;
+		timeToLive = 3.0f;
+		_particles.Stop();
+		_trail.enabled = false;
+		_graphics.gameObject.SetActive(false);
 	}
 
 	void Update()
@@ -164,12 +184,26 @@ public class ProjectileScript : MonoBehaviour
 					timeToLive -= Time.deltaTime;
 					if (timeToLive <= 0)
 					{ // Time's up
-						_rigidBody.useGravity = true;
+						if (disabled)
+						{ // We're done
+							Destroy(this.gameObject);
+						}
+						else
+						{
+							_rigidBody.useGravity = true;
+						}
 					}
 				}
 				else
-				{ // If we're out of bounds, kill us
-
+				{ // TODO: If we're out of bounds, kill us
+					if (_rigidBody.useGravity)
+					{
+						timeToLive -= Time.deltaTime;
+						if (timeToLive <= -5.0f)
+						{ // We should have died 5 seconds ago
+							Destroy(this.gameObject);
+						}
+					}
 				}
 			}
 		}

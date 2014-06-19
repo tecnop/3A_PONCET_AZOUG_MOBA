@@ -20,6 +20,11 @@ public class HitboxScript : MonoBehaviour
 	[SerializeField]
 	private ParticleSystem _particles;
 
+	[SerializeField]
+	private AudioSource _audio;
+
+	private bool disabled; // Once the spell has been executed, this switches to true
+
 	void Start()
 	{
 		entities = new List<Collider>();
@@ -56,6 +61,11 @@ public class HitboxScript : MonoBehaviour
 
 	void OnTriggerEnter(Collider col)
 	{
+		if (disabled)
+		{
+			return;
+		}
+
 		if (entities.Contains(col))
 		{
 			return;
@@ -70,6 +80,8 @@ public class HitboxScript : MonoBehaviour
 			if (this.collisionSpell != null)
 			{
 				this.collisionSpell.Execute(this.owner, _transform.position, hisManager);
+
+				Utils.PlaySpellSoundOnSource(this.collisionSpell, _audio);
 			}
 		}
 	}
@@ -81,7 +93,16 @@ public class HitboxScript : MonoBehaviour
 			timeToLive -= Time.deltaTime;
 			if (timeToLive <= 0)
 			{ // Time's up
-				Destroy(this.gameObject);
+				if (disabled)
+				{ // For good this time
+					Destroy(this.gameObject);
+				}
+				else
+				{ // Give us some time to finish playing particle effects and such
+					disabled = true;
+					_particles.Stop();
+					timeToLive = 3.0f;
+				}
 			}
 		}
 	}

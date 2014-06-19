@@ -7,7 +7,8 @@ public class Weapon : Item
 	private float attackRate;			// Amount of attacks per second
 
 	private string effectPath;			// Particle effect to be played on the weapon
-	private string attackSoundPath;		// Sound to be played on weapon swing
+	private string attackSound;			// Sound to be played on weapon swing
+	private string hitSound;			// Sound to be played upon hitting someone
 
 	private uint weaponTypeID;			// ID of the entry in the weapon type table this weapon matches
 	private uint projectileID;			// ID of the entry in the projectile table this weapon should shoot when swung
@@ -28,7 +29,8 @@ public class Weapon : Item
 		float attackRate = 1.0f,
 		uint projectileID = 0,
 		string effectPath = null,
-		string attackSoundPath = null)
+		string attackSound = null,
+		string hitSound = null)
 		: base(metadata, recyclingXP, buffID, true)
 	{
 		this.weaponTypeID = weaponTypeID;
@@ -36,14 +38,16 @@ public class Weapon : Item
 		this.attackRate = attackRate;
 		this.projectileID = projectileID;
 		this.effectPath = effectPath;
-		this.attackSoundPath = attackSoundPath;
+		this.attackSound = attackSound;
+		this.hitSound = hitSound;
 	}
 
 	public float GetDamage() { return this.damage; }
 	public float GetAttackRate() { return this.attackRate; }
 
 	public string GetEffect() { return this.effectPath; }
-	public string GetAttackSound() { return this.attackSoundPath; }
+	public string GetAttackSound() { return this.attackSound; }
+	public string GetHitSound() { return this.hitSound; }
 
 	public WeaponType GetWeaponType() { return DataTables.GetWeaponType(this.weaponTypeID); }
 	public uint GetProjectileID() { return this.projectileID; }

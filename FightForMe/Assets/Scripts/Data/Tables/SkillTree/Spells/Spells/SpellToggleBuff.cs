@@ -5,8 +5,8 @@ public class SpellToggleBuff : SpellTarget
 {
 	private uint buffID;
 
-	public SpellToggleBuff(Metadata metadata, uint buffID, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
-		: base(metadata, costType, spellCost)
+	public SpellToggleBuff(Metadata metadata, uint buffID, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f, string castingSound = null)
+		: base(metadata, costType, spellCost, castingSound)
 	{
 		this.buffID = buffID;
 	}

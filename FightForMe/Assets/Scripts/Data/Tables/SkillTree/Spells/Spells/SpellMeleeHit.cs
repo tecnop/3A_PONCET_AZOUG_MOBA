@@ -13,6 +13,8 @@ public class SpellMeleeHit : SpellTarget
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
+		Utils.PlayWeaponSoundOnSource(inflictor.GetInventoryScript().GetWeapon(), true, target.GetAudioSource());
+
 		inflictor.GetCombatScript().Damage(target, inflictor.GetStatsScript().GetDamage() * multiplier);
 	}
 

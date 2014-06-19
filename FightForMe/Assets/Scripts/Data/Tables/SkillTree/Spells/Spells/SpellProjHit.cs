@@ -13,6 +13,9 @@ public class SpellProjHit : SpellTarget
 
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
+		// FIXME: Take the projectile's impact sound instead
+		Utils.PlayWeaponSoundOnSource(inflictor.GetInventoryScript().GetWeapon(), true, target.GetAudioSource());
+
 		inflictor.GetCombatScript().Damage(target, inflictor.GetStatsScript().GetProjDamage() * multiplier);
 	}
 

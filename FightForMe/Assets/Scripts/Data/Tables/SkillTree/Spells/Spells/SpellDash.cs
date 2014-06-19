@@ -8,8 +8,8 @@ public class SpellDash : SpellTarget
 	private bool brake;
 	private uint impactSpell;
 
-	public SpellDash(Metadata metadata, float speed, float duration, bool brake = false, uint impactSpell = 0, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
-		: base(metadata, costType, spellCost)
+	public SpellDash(Metadata metadata, float speed, float duration, bool brake = false, uint impactSpell = 0, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f, string castingSound = null)
+		: base(metadata, costType, spellCost, castingSound)
 	{
 		this.speed = speed;
 		this.duration = duration;

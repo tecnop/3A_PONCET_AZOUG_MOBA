@@ -179,15 +179,8 @@ public class CharacterCombatScript : MonoBehaviour
 		return true;
 	}
 
-	public void UseSpell(uint spellID)
+	public void UseSpell(Spell spell)
 	{
-		if (!CanUseSpell(spellID))
-		{
-			return;
-		}
-
-		Spell spell = DataTables.GetSpell(spellID);
-
 		spell.Execute(_manager, _manager.GetInputScript().GetLookPosition(), _manager);
 
 		if (spell.GetCostType() == SpellCostType.MANA || spell.GetCostType() == SpellCostType.PCTMANA)

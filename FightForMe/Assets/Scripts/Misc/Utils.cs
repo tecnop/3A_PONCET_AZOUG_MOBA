@@ -12,4 +12,47 @@ public static class Utils
 	{
 		return new Vector2(mousePos.x, Screen.height - mousePos.y);
 	}
+
+	public static void PlaySpellSoundOnSource(Spell spell, AudioSource source)
+	{
+		AudioClip sound = DataTables.GetSound(spell.GetCastingSound());
+
+		if (sound != null)
+		{
+			source.PlayOneShot(sound);
+		}
+	}
+
+	public static void PlayWeaponSoundOnSource(Weapon weapon, bool isImpact, AudioSource source)
+	{
+		AudioClip sound;
+
+		if (weapon == null)
+		{ // Ooooo
+			if (isImpact)
+			{
+				sound = DataTables.GetSound("punchhit");
+			}
+			else
+			{
+				sound = DataTables.GetSound("punchswing");
+			}
+		}
+		else
+		{
+			if (isImpact)
+			{
+				sound = DataTables.GetSound(weapon.GetHitSound());
+			}
+			else
+			{
+				sound = DataTables.GetSound(weapon.GetAttackSound());
+			}
+		}
+
+		if (sound != null)
+		{
+			source.PlayOneShot(sound);
+		}
+	}
 }

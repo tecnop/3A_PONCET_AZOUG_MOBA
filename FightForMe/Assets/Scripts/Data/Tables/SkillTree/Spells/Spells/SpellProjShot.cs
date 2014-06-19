@@ -9,8 +9,8 @@ public class SpellProjShot : SpellProj
 	private bool doThrow;
 	//private float accuracy;
 
-	public SpellProjShot(Metadata metadata, uint projID, uint amount, float accuracy = 1.0f, uint impactSpellOverride = 0, bool doThrow = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
-		: base(metadata, costType, spellCost)
+	public SpellProjShot(Metadata metadata, uint projID, uint amount, float accuracy = 1.0f, uint impactSpellOverride = 0, bool doThrow = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f, string castingSound = null)
+		: base(metadata, costType, spellCost, castingSound)
 	{
 		this.projID = projID;
 		this.amount = amount;

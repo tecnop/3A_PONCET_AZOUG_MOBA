@@ -181,5 +181,6 @@ public class CharacterManager : MonoBehaviour//NetworkedEntityScript
 	public Transform GetCharacterTransform() { return _transform; }
 	public Animator GetCharacterAnimator() { return _animator.GetAnimator(); }
 	public GraphicsLoader GetGraphicsLoader() { return _graphics; }
+	public AudioSource GetAudioSource() { return _animator.GetAudioSource(); }
 	public int GetLayer() { return this.gameObject.layer; }
 }

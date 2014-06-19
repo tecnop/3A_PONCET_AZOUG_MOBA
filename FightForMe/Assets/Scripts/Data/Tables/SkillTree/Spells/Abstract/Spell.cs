@@ -29,6 +29,7 @@ public abstract class Spell : WikiEntry
 	private SpellType spellType;
 	private SpellCostType costType;
 	private float spellCost;
+	private string castingSound;	// Name of the sound to play on cast
 
 	public override WikiCategory category
 	{
@@ -43,12 +44,13 @@ public abstract class Spell : WikiEntry
 	// - Animations
 	// - Casting speed, casting type
 
-	protected Spell(Metadata metadata, SpellType spellType, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
+	protected Spell(Metadata metadata, SpellType spellType, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f, string castingSound = null)
 		: base(metadata)
 	{
 		this.spellType = spellType;
 		this.costType = costType;
 		this.spellCost = spellCost;
+		this.castingSound = castingSound;
 	}
 
 	public abstract void Execute(CharacterManager inflictor, Vector3 position, CharacterManager target = null);
@@ -57,6 +59,7 @@ public abstract class Spell : WikiEntry
 
 	public SpellType GetSpellType() { return this.spellType; }
 	public SpellCostType GetCostType() { return this.costType; }
+	public string GetCastingSound() { return this.castingSound; }
 
 	public float GetCost(CharacterManager caster)
 	{

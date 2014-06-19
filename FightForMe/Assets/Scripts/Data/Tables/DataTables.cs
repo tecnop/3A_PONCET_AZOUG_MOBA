@@ -36,6 +36,7 @@ public static class DataTables
 
 	// Resources
 	static Dictionary<string, GameObject> modelTable = new Dictionary<string, GameObject>();
+	static Dictionary<string, AudioClip> soundTable = new Dictionary<string, AudioClip>();
 
 	private static void ClearTables()
 	{
@@ -55,6 +56,7 @@ public static class DataTables
 
 		// Not clearing resource tables for now
 		//modelTable.Clear();
+		//soundTable.Clear();
 
 		// Reset the error
 		parsingError = null;
@@ -67,6 +69,16 @@ public static class DataTables
 		foreach (GameObject obj in models)
 		{
 			modelTable.Add(obj.name, obj);
+		}
+	}
+
+	public static void LoadSounds(AudioClip[] sounds)
+	{
+		soundTable.Clear(); // Temporary
+
+		foreach (AudioClip sound in sounds)
+		{
+			soundTable.Add(sound.name, sound);
 		}
 	}
 
@@ -122,15 +134,15 @@ public static class DataTables
 		spellTable.Add(7, new SpellGrenade());
 		spellTable.Add(8, new SpellExplosion());
 		spellTable.Add(9, new SpellKnockback());*/
-		spellTable.Add(4, new SpellProjShot(new Metadata("Boule de feu"), 2, 1, costType: SpellCostType.MANA, spellCost: 50.0f));
-		spellTable.Add(5, new SpellAreaOfEffect(new Metadata("Explosion de feu"), 4.0f, 6, particles: true));
+		spellTable.Add(4, new SpellProjShot(new Metadata("Boule de feu"), 2, 1, costType: SpellCostType.MANA, spellCost: 50.0f, castingSound: "magic"));
+		spellTable.Add(5, new SpellAreaOfEffect(new Metadata("Explosion de feu"), 4.0f, 6, particles: true, castingSound: "explosion"));
 		spellTable.Add(6, new SpellImpact(new Metadata("Brûlure"), 10.0f, 3, 5.0f));
-		spellTable.Add(7, new SpellProjShot(new Metadata("Grenade"), 5, 1, doThrow: true, costType: SpellCostType.MANA, spellCost: 150.0f));
-		spellTable.Add(8, new SpellAreaOfEffect(new Metadata("Explosion"), 6.0f, 9, particles: true));
+		spellTable.Add(7, new SpellProjShot(new Metadata("Grenade"), 5, 1, doThrow: true, costType: SpellCostType.MANA, spellCost: 150.0f, castingSound: "magic"));
+		spellTable.Add(8, new SpellAreaOfEffect(new Metadata("Explosion"), 6.0f, 9, particles: true, castingSound: "explosion"));
 		spellTable.Add(9, new SpellImpact(new Metadata("Impact"), 10.0f, 0, 0.0f, 10.0f, 1.0f));
 		spellTable.Add(10, new SpellProjShot(new Metadata("Tir multiple"), 0, 5, impactSpellOverride: 3, costType: SpellCostType.MANA, spellCost: 30.0f));
-		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12, costType: SpellCostType.HEALTH, spellCost: 40.0f));
-		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f));
+		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12, costType: SpellCostType.HEALTH, spellCost: 40.0f, castingSound: "magic"));
+		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f, castingSound: "heavymelee"));
 		spellTable.Add(13, new SpellToggleBuff(new Metadata("Régénération"), 5, costType: SpellCostType.PCTHEALTH, spellCost: 0.1f));
 
 		// Effects
@@ -208,7 +220,7 @@ public static class DataTables
 		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 5));
 		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
-		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw));
+		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw, range: 15.0f));
 		projectileTable.Add(6, new Projectile(metadata: new Metadata(name: "Couteau de lancer"), damage: 7.5f, speed: 75.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 
 		// Weapon types
@@ -286,7 +298,7 @@ public static class DataTables
 		}
 		catch
 		{
-			throw new Exception("Le fichier de configuration n'a pas pu être ouvert, assurez-vous qu'il se trouve à "+configPath);
+			throw new Exception("Le fichier de configuration n'a pas pu être ouvert, assurez-vous qu'il se trouve à " + configPath);
 		}
 
 		try
@@ -480,7 +492,7 @@ public static class DataTables
 		}
 		/* Coming soon !
 		fields.TryGetValue ("effectPath", out effectPath);
-		fields.TryGetValue ("attackSoundPath", out attackSoundPath);
+		fields.TryGetValue ("attackSoundPath", out attackSound);
 		*/
 
 		try
@@ -997,6 +1009,15 @@ public static class DataTables
 		if (name != null && modelTable.ContainsKey(name))
 		{
 			return modelTable[name];
+		}
+		return null;
+	}
+
+	public static AudioClip GetSound(string name)
+	{
+		if (name != null && soundTable.ContainsKey(name))
+		{
+			return soundTable[name];
 		}
 		return null;
 	}

@@ -56,6 +56,11 @@ public class CharacterAnimatorScript : MonoBehaviour
 		return _animator;
 	}
 
+	public AudioSource GetAudioSource()
+	{
+		return _audio;
+	}
+
 	public void Pause()
 	{
 		this.paused = true;
@@ -87,17 +92,23 @@ public class CharacterAnimatorScript : MonoBehaviour
 
 	public void DoAttack()
 	{
-		_manager.GetCombatScript().UseSpell((uint)_manager.GetCharacterAnimator().GetInteger("currentSpell"));
+		uint spellID = (uint)_manager.GetCharacterAnimator().GetInteger("currentSpell");
+
+		if (!_manager.GetCombatScript().CanUseSpell(spellID))
+		{
+			return;
+		}
+
+		Spell spell = DataTables.GetSpell(spellID);
+
+		_manager.GetCombatScript().UseSpell(spell);
+
+		Utils.PlaySpellSoundOnSource(spell, _audio);
 	}
 
 	public void EndAttack()
 	{ // FIXME: This is not always executed because animations blend into each other
 		_animator.speed = 1.0f;
-	}
-
-	public void UseAbility()
-	{
-
 	}
 
 	public void afterDeath()

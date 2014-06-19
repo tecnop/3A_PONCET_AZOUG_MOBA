@@ -10,8 +10,8 @@ public class SpellImpact : SpellTarget
 	private float knockBackDuration;
 	private bool pull;
 
-	public SpellImpact(Metadata metadata, float damage, uint buffID = 0, float buffDuration = 0.0f, float knockBackSpeed = 0.0f, float knockBackDuration = 0.0f, bool pull = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
-		: base(metadata, costType, spellCost)
+	public SpellImpact(Metadata metadata, float damage, uint buffID = 0, float buffDuration = 0.0f, float knockBackSpeed = 0.0f, float knockBackDuration = 0.0f, bool pull = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f, string castingSound = null)
+		: base(metadata, costType, spellCost, castingSound)
 	{
 		this.damage = damage;
 		this.buffID = buffID;

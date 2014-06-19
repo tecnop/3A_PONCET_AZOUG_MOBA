@@ -9,8 +9,8 @@ public class SpellAreaOfEffect : SpellArea
 	private bool onCaster;
 	private bool particles;
 
-	public SpellAreaOfEffect(Metadata metadata, float radius, uint impactSpell, float duration = 0.2f, bool onCaster = false, bool particles = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
-		: base(metadata, costType, spellCost)
+	public SpellAreaOfEffect(Metadata metadata, float radius, uint impactSpell, float duration = 0.2f, bool onCaster = false, bool particles = false, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f, string castingSound = null)
+		: base(metadata, costType, spellCost, castingSound)
 	{
 		this.radius = radius;
 		this.impactSpell = impactSpell;

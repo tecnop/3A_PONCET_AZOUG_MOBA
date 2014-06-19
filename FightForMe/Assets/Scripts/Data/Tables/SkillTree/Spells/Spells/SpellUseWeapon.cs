@@ -7,7 +7,7 @@ public class SpellUseWeapon : SpellTarget
 	private uint rangedHit;
 
 	public SpellUseWeapon(uint meleeHit = 2, uint rangedHit = 3)
-		: base(new Metadata("Attaque", "Utilise l'arme équipée"))
+		: base(new Metadata("Attaque", "Utilise l'arme équipée"), castingSound:"null") // Override the sound because this spell plays one itself
 	{
 		this.meleeHit = meleeHit;
 		this.rangedHit = rangedHit;
@@ -16,6 +16,9 @@ public class SpellUseWeapon : SpellTarget
 	protected override void _Execute(CharacterManager inflictor, Vector3 position, CharacterManager target)
 	{
 		Weapon myWeapon = inflictor.GetInventoryScript().GetWeapon();
+
+		Utils.PlayWeaponSoundOnSource(myWeapon, false, inflictor.GetAudioSource());
+
 		if (myWeapon == null)
 		{ // Using our fists
 			inflictor.GetCombatScript().CreateAoE(2.0f, this.meleeHit);

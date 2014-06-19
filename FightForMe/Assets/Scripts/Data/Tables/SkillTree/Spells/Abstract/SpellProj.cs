@@ -3,8 +3,8 @@ using System.Collections;
 
 public abstract class SpellProj : Spell
 {
-	protected SpellProj(Metadata metadata, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f)
-		: base(metadata, SpellType.PROJECTILE, costType, spellCost)
+	protected SpellProj(Metadata metadata, SpellCostType costType = SpellCostType.NONE, float spellCost = 0.0f, string castingSound = null)
+		: base(metadata, SpellType.PROJECTILE, costType, spellCost, castingSound)
 	{
 
 	}
