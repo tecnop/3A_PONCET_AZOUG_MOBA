@@ -4,7 +4,7 @@ using System.Collections;
 public class HUDSpellBar : HUDContainer
 {
 	public HUDSpellBar(Rect frame, HUDContainer parent)
-		: base("HUD_spell_bar", frame, parent:parent)
+		: base("HUD_spell_bar", frame, parent: parent)
 	{
 		float w = frame.width;
 		float h = frame.height;
@@ -21,12 +21,12 @@ public class HUDSpellBar : HUDContainer
 			size = 64.0f;
 		}
 		else if (maxSize < 32.0f)
-		{ // Oh, that's bad. Let's see if we can make a second line instead of crushing those icons until they're a line of pixels.
-			size = 2.0f * maxSize;
+		{ // TODO: See if we can make a second line instead of crushing those icons until they're a line of pixels.
+			size = maxSize;
 			offset = 0.0f;
 		}
 		else
-		{
+		{ // I feel like something's missing here? Especially about the offset?
 			offset = minOffset;
 			size = maxSize;
 		}
@@ -37,7 +37,7 @@ public class HUDSpellBar : HUDContainer
 		for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
 		{
 			new HUDSpellSlot(SRect.Make(x, y, size, size), this, i);
-			x += size+offset;
+			x += size + offset;
 		}
 	}
 }

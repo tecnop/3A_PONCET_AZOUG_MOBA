@@ -20,7 +20,7 @@ public class HUDSpellSlot : HUDComponent
 	{
 		float w = frame.width;
 		float h = frame.height;
-		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "spell_slot"+(int)slot+"_local");
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "spell_slot" + (int)slot + "_local");
 
 		GUI.BeginGroup(frame);
 
@@ -62,7 +62,7 @@ public class HUDSpellSlot : HUDComponent
 		GUIStyle style = FFMStyles.centeredText;
 		style.wordWrap = true;
 
-		if (name != "")
+		if (name.Length > 0)
 		{
 			GUI.Label(localRect, name, style);
 		}

@@ -134,6 +134,11 @@ public static class HUDRenderer
 		HUDRenderer._state = state;
 	}
 
+	public static HUDState GetState()
+	{
+		return _state;
+	}
+
 	public static void OpenMenu(HUDMenu menu)
 	{ // THIS IS TEMPORARY (maybe)
 		_inventory.enabled = (menu == HUDMenu.Inventory);

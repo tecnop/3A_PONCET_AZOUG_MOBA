@@ -22,6 +22,8 @@ public class TutorialZoneScript : MonoBehaviour
 			return;
 		}
 
+		if (currentProgress != 0) currentProgress = 0;
+
 		entities = new List<Collider>();
 
 		// Replace all occurences of "\n" with actual line breaks
@@ -50,22 +52,25 @@ public class TutorialZoneScript : MonoBehaviour
 
 	void OnGUI()
 	{
-		if (entities.Count > 0 && currentProgress == this.identifier)
+		if (HUDRenderer.GetState() == HUDState.Default)
 		{
-			float w = 300.0f;
-			float h = 150.0f;
-
-			GUI.BeginGroup(new Rect(10.0f, 0.5f * Screen.height - h/2, w, h));
-
-			GUI.Box(new Rect(0.0f, 0.0f, w, h), GUIContent.none);
-			GUI.Label(new Rect(0.0f, 0.0f, w, h - 20), message, FFMStyles.centeredText_wrapped);
-
-			if (GUI.Button(new Rect(0.4f * w, h - 20, 0.2f * w, 20.0f), "OK"))
+			if (entities.Count > 0 && currentProgress == this.identifier)
 			{
-				currentProgress++;
-			}
+				float w = 300.0f;
+				float h = 150.0f;
 
-			GUI.EndGroup();
+				GUI.BeginGroup(new Rect(10.0f, 0.5f * Screen.height - h / 2, w, h));
+
+				GUI.Box(new Rect(0.0f, 0.0f, w, h), GUIContent.none);
+				GUI.Label(new Rect(0.0f, 0.0f, w, h - 20), message, FFMStyles.centeredText_wrapped);
+
+				if (GUI.Button(new Rect(0.4f * w, h - 20, 0.2f * w, 20.0f), "OK"))
+				{
+					currentProgress++;
+				}
+
+				GUI.EndGroup();
+			}
 		}
 	}
 }
