@@ -5,8 +5,8 @@ using System.Collections.Generic;
 /*
  * NetworkScript.cs
  * 
- * Handles server initialization and client connections
- * Also handles pausing
+ * Ensures clients properly join the server after they exit the lobby and handles reconnecting to games
+ * Also handles pausing the game while players are reconnecting
  * 
  */
 

@@ -19,6 +19,7 @@ public enum GameType
 
 public enum GameMode
 {
+	Tutorial,
 	KillTheLord,
 	RaceForGlory
 }
@@ -58,7 +59,7 @@ public static class GameData
 {
 	public static bool gamePaused = false;
 	public static CharacterManager activePlayer;
-	public static CharacterManager otherPlayer;	 // Temporary... hopefully :/
+	public static CharacterManager otherPlayer;	 // Was required for some horrible hack a while back, no longer used
 	public static GameType gameType;
 	public static GameMode gameMode;
 	public static bool secure; // Is the game running the default config?

@@ -122,8 +122,9 @@ public class StartMenuScript : MonoBehaviour
 
 		if (GUILayout.Button("Tutoriel"))
 		{
-			//gameType = GameType.Local;
-			//planeAnimator.SetBool("launchGame", true);
+			gameType = GameType.Local;
+			GameData.gameMode = GameMode.Tutorial;
+			planeAnimator.SetBool("launchGame", true);
 		}
 
 		GUILayout.EndArea();

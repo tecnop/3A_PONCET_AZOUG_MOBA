@@ -21,6 +21,9 @@ public class LobbyScript : MonoBehaviour
 	[SerializeField]
 	private string _mode2Scene;
 
+	[SerializeField]
+	private string _tutorialScene;
+
 	private Dictionary<NetworkPlayer, bool> readyList;
 
 	void Start()
@@ -71,7 +74,11 @@ public class LobbyScript : MonoBehaviour
 		int w = Screen.width;
 		int h = Screen.height;
 
-		if (DataTables.GetError() != null)
+		if (GameData.gameType == GameType.Local)
+		{
+			GUI.Label(screenRect, "Chargement en cours...", text);
+		}
+		else if (DataTables.GetError() != null)
 		{
 			GUI.Label(screenRect, DataTables.GetError().Message, text);
 		}
@@ -373,6 +380,10 @@ public class LobbyScript : MonoBehaviour
 		else if (GameData.gameMode == GameMode.RaceForGlory)
 		{
 			Application.LoadLevel(_mode2Scene);
+		}
+		else if (GameData.gameMode == GameMode.Tutorial)
+		{
+			Application.LoadLevel(_tutorialScene);
 		}
 	}
 

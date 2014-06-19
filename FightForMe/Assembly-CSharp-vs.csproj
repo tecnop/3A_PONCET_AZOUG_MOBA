@@ -79,13 +79,12 @@
      <Compile Include="Assets\Scripts\Behaviour\Spawners\MonsterSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\PlayerSpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Spawners\SpawnerScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Spawners\TeamEntitySpawnerScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Terrain\TileEntityScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Terrain\TrophyDepositAreaScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Terrain\TutorialZoneScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Terrain\WayPointScript.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\DamageInstance.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\Effect.cs" />
-     <Compile Include="Assets\Scripts\Data\Classes\FFMSounds.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\GameModel.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\InflictedBuff.cs" />
      <Compile Include="Assets\Scripts\Data\Classes\MapGrid.cs" />

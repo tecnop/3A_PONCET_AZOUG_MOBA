@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class InstantiateManagerScript : MonoBehaviour
-{
-	[SerializeField]
+{ // Removed until I actually take time to work on it
+	/*[SerializeField]
 	private GameObject monsterPrefab;
 
 	[SerializeField]
@@ -28,7 +28,7 @@ public class InstantiateManagerScript : MonoBehaviour
 
 	public CharacterManager SpawnMonster(uint monsterID, Vector3 pos, Quaternion ang)
 	{
-		/*// Spawn the entity
+		// Spawn the entity
 		GameObject monsterObject = SpawnEntity(monsterPrefab, pos, ang);
 
 		// Link us together
@@ -37,7 +37,7 @@ public class InstantiateManagerScript : MonoBehaviour
 		misc.SetSpawner(this);
 
 		// Set him up
-		misc.SetUpFromMonster(monsterID);*/
+		misc.SetUpFromMonster(monsterID);
 		return null;
-	}
+	}*/
 }
