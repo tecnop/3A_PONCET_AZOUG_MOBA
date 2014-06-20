@@ -9,8 +9,8 @@ public class HUDSpellBar : HUDContainer
 		float w = frame.width;
 		float h = frame.height;
 
-		float minOffset = 4.0f;	// Minimum space between two icons
-		float maxSize = w / (int)SpellSlot.NUM_SLOTS; // Minimum size of an icon
+		//float minOffset = 4.0f;	// Minimum space between two icons
+		float maxSize = w / (int)SpellSlot.NUM_SLOTS; // Maximum size of an icon
 
 		float size;
 		float offset;
@@ -22,12 +22,12 @@ public class HUDSpellBar : HUDContainer
 		}
 		else if (maxSize < 32.0f)
 		{ // TODO: See if we can make a second line instead of crushing those icons until they're a line of pixels.
-			size = maxSize;
 			offset = 0.0f;
+			size = maxSize;
 		}
 		else
-		{ // I feel like something's missing here? Especially about the offset?
-			offset = minOffset;
+		{
+			offset = 0.0f;
 			size = maxSize;
 		}
 

@@ -254,7 +254,7 @@ public static class HUDRenderer
 	{
 		if (GUI.Button(SRect.Make(0, 0, 100, 20, "exit"), "Quitter"))
 		{
-			isLeaving = true;
+			isLeaving = !isLeaving;
 		}
 
 		if (isLeaving)
