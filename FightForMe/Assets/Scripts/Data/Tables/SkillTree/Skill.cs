@@ -66,7 +66,7 @@ public class Skill : WikiEntry
 	}
 
 	public List<Skill> GetNeighbours()
-	{
+	{ // TODO: Do this once and for all
 		List<Skill> res = new List<Skill>(this.neighbours.Count);
 		foreach (uint neighbour in this.neighbours)
 		{

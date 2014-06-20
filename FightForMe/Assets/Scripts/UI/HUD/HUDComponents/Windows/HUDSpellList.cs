@@ -7,7 +7,7 @@ public class HUDSpellList : HUDComponent
 	private PlayerMiscDataScript _misc;
 
 	public HUDSpellList(Rect frame, HUDContainer parent)
-		: base("HUD_spell_list", frame, parent:parent)
+		: base("HUD_spell_list", frame, parent: parent)
 	{
 		this._stats = GameData.activePlayer.GetStatsScript();
 		this._misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
@@ -20,6 +20,8 @@ public class HUDSpellList : HUDComponent
 		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "spell_list_local");
 
 		GUI.BeginGroup(frame);
+
+		// TODO: Scroll view, run the same checks as the SpellBar
 
 		float x = 0;
 		float y = 0;

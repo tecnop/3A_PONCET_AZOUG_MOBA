@@ -8,20 +8,21 @@ public static class SkillTreeScript
 
 	private static Rect treeRect;
 
-	private static List<Skill> skills;
+	private static Dictionary<Skill, Rect> frames;
+	private static Dictionary<Skill, List<Vector2>> links;	// Links between neighbours
 
 	private static PlayerMiscDataScript _misc;
 
-	private static Vector2 offset;
-
 	public static void Initialize()
-	{ // Get the size of the tree's view rect
+	{
 		float minX = -150.0f, minY = -70.0f, maxX = 150.0f, maxY = 70.0f;
 
-		skills = DataTables.GetSkills();
+		List<Skill> skills = DataTables.GetSkills();
+		frames = new Dictionary<Skill, Rect>();
+		links = new Dictionary<Skill, List<Vector2>>();
 
 		foreach (Skill skill in skills)
-		{
+		{ // Parse the list first to get the dimensions of the tree
 			Vector2 pos = skill.GetTreePos();
 			if (pos.x - 150.0f < minX) minX = pos.x - 150.0f;
 			if (pos.x + 150.0f > maxX) maxX = pos.x + 150.0f;
@@ -30,11 +31,44 @@ public static class SkillTreeScript
 		}
 
 		treeRect = new Rect(0.0f, 0.0f, maxX - minX, maxY - minY);
-		offset = new Vector2(-minX, -minY);
+		
+		Vector2 offset = new Vector2(-minX, -minY);
+
+		foreach (Skill skill in skills)
+		{ // Now place the skills inside it and create bindings between neighbours
+			Vector2 pos = skill.GetTreePos() + offset;
+			Rect rect = new Rect(pos.x - 100.0f, pos.y - 20.0f, 200.0f, 40.0f);
+			frames.Add(skill, rect);
+
+			foreach (Skill neighbour in skill.GetNeighbours())
+			{
+				if (links.ContainsKey(neighbour))
+				{ // We've drawn his neighbours already, so that probably includes us
+					if (!neighbour.GetNeighbours().Contains(skill))
+					{ // Or does it? Let's check now
+						Debug.LogWarning("One-way relationship detected between skills " + skill.GetName() + " and " + neighbour.GetName());
+					}
+				}
+				else
+				{
+					if (!links.ContainsKey(skill))
+					{
+						links.Add(skill, new List<Vector2>());
+					}
+					links[skill].Add(neighbour.GetTreePos()+offset);
+				}
+			}
+		}
 
 		_misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
 
-		// TODO: Build the frames and relations right here
+		Vector2 firstPos = skills[0].GetTreePos() + offset;
+
+		int w = Screen.width;
+		int h = Screen.height;
+
+		Rect viewRect = SRect.Make(0.0f, 0.095f * h, 0.9f * w, 0.95f * 0.9f * h);
+		scrollPos = firstPos - new Vector2(viewRect.width / 2.0f, viewRect.height / 2.0f);
 	}
 
 	public static void DrawSkillTree()
@@ -80,10 +114,31 @@ public static class SkillTreeScript
 
 		List<Skill> availableSkills = _misc.GetAvailableSkills();
 
-		foreach (Skill skill in skills)
+		foreach (Skill skill in frames.Keys)
 		{
-			Vector2 pos = skill.GetTreePos();
-			Rect rect = new Rect(offset.x + pos.x - 100.0f, offset.y + pos.y - 20.0f, 200.0f, 40.0f);
+			Rect rect = frames[skill];
+			Vector2 pos = new Vector2(rect.x + rect.width / 2.0f, rect.y + rect.height / 2.0f);
+
+			if (links.ContainsKey(skill))
+			{
+				foreach (Vector2 linkPos in links[skill])
+				{ // Draw a line from pos to linkPos (this is very messy)
+					// Find the angle between the two positions
+					Vector2 diff = linkPos - pos;
+					Vector2 center = pos + diff / 2.0f;
+					float angle = Mathf.Atan(diff.y / diff.x) * 180.0f / Mathf.PI;
+					
+					// Build a fake line of just the right size
+					int length = Mathf.FloorToInt(diff.magnitude / 4.0f);
+					List<string> list = new List<string>(length);
+					for (int i = 0; i < length; i++) list.Add("-");
+
+					// And display it (this isn't perfect)
+					GUIUtility.RotateAroundPivot(angle, center);
+					GUI.Label(new Rect(center.x - 100.0f, center.y - 15.0f, 200.0f, 30.0f), string.Concat(list.ToArray()), FFMStyles.centeredText);
+					GUIUtility.RotateAroundPivot(-angle, center);
+				}
+			}
 
 			if (availableSkills.Contains(skill))
 			{
@@ -97,6 +152,8 @@ public static class SkillTreeScript
 				GUI.Box(rect, GUIContent.none);
 				GUI.Label(rect, skill.GetName(), FFMStyles.centeredText);
 			}
+
+			// TODO: Check for mouse hover events and display the skill's dataview
 		}
 
 		GUI.EndScrollView(true);
