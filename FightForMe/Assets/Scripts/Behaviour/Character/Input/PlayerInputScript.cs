@@ -58,6 +58,11 @@ public class PlayerInputScript : CharacterInputScript
 			return 0;
 		}
 
+		if (HUDRenderer.GetState() != HUDState.Default)
+		{ // Not the prettiest way to do it but hey
+			return 0;
+		}
+
 		for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
 		{
 			string axisName = "Ability" + ((int)(i + 1));

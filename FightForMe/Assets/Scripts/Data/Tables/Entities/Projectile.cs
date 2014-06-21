@@ -4,6 +4,8 @@ using System.Collections;
 public enum ProjectileTrajectory { Straight, Throw };
 public enum ProjectileCollisionType { None, Players, World, Everything };
 
+// TODO: Handle penetrating projectiles as well as "thrown" projectiles with a straight trajectory (those that explode when they arrive to the target location)
+
 public class Projectile : WikiEntry
 {
 	private string effectPath;					// Effect to display around the model

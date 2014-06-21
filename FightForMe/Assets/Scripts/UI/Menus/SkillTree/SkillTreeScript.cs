@@ -42,15 +42,12 @@ public static class SkillTreeScript
 
 			foreach (Skill neighbour in skill.GetNeighbours())
 			{
-				if (links.ContainsKey(neighbour))
-				{ // We've drawn his neighbours already, so that probably includes us
-					if (!neighbour.GetNeighbours().Contains(skill))
-					{ // Or does it? Let's check now
-						Debug.LogWarning("One-way relationship detected between skills " + skill.GetName() + " and " + neighbour.GetName());
-					}
+				if (!neighbour.GetNeighbours().Contains(skill))
+				{ // Run a consistency check here while we're at it
+					Debug.LogWarning("One-way relationship detected between skills " + skill.GetName() + " and " + neighbour.GetName());
 				}
-				else
-				{
+				else if (!links.ContainsKey(neighbour))
+				{ // Only parse it if we haven't parsed that one's neighbour yet (which, unless we fell in the above case, means we've been taken care of already)
 					if (!links.ContainsKey(skill))
 					{
 						links.Add(skill, new List<Vector2>());
@@ -120,7 +117,7 @@ public static class SkillTreeScript
 			Vector2 pos = new Vector2(rect.x + rect.width / 2.0f, rect.y + rect.height / 2.0f);
 
 			if (links.ContainsKey(skill))
-			{
+			{ // TODO: Change the link's colour depending on the skill's state (locked, unlocked, unlockable)
 				foreach (Vector2 linkPos in links[skill])
 				{ // Draw a line from pos to linkPos (this is very messy)
 					// Find the angle between the two positions
@@ -135,7 +132,7 @@ public static class SkillTreeScript
 
 					// And display it (this isn't perfect)
 					GUIUtility.RotateAroundPivot(angle, center);
-					GUI.Label(new Rect(center.x - 100.0f, center.y - 15.0f, 200.0f, 30.0f), string.Concat(list.ToArray()), FFMStyles.centeredText);
+					GUI.Label(new Rect(center.x - diff.magnitude/2.0f, center.y - 15.0f, diff.magnitude, 30.0f), string.Concat(list.ToArray()), FFMStyles.centeredText);
 					GUIUtility.RotateAroundPivot(-angle, center);
 				}
 			}
@@ -148,7 +145,7 @@ public static class SkillTreeScript
 				}
 			}
 			else
-			{
+			{ // TODO: Display it differently if we already have it
 				GUI.Box(rect, GUIContent.none);
 				GUI.Label(rect, skill.GetName(), FFMStyles.centeredText);
 			}
