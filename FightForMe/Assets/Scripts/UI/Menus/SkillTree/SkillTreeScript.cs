@@ -7,11 +7,15 @@ public static class SkillTreeScript
 	private static Vector2 scrollPos;
 
 	private static Rect treeRect;
+	private static Rect absRect;
 
 	private static Dictionary<Skill, Rect> frames;
 	private static Dictionary<Skill, List<Vector2>> links;	// Links between neighbours
 
 	private static PlayerMiscDataScript _misc;
+	private static PlayerInputScript _input;
+
+	private static GUIStyle boxStyle;
 
 	public static void Initialize()
 	{
@@ -58,14 +62,16 @@ public static class SkillTreeScript
 		}
 
 		_misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
+		_input = (PlayerInputScript)GameData.activePlayer.GetInputScript();
 
+		// Center the scroll view on the first skill
 		Vector2 firstPos = skills[0].GetTreePos() + offset;
 
 		int w = Screen.width;
 		int h = Screen.height;
 
-		Rect viewRect = SRect.Make(0.0f, 0.095f * h, 0.9f * w, 0.95f * 0.9f * h);
-		scrollPos = firstPos - new Vector2(viewRect.width / 2.0f, viewRect.height / 2.0f);
+		absRect = SRect.Make(0.05f * w, 0.095f * h, 0.9f * w, 0.95f * 0.9f * h);
+		scrollPos = firstPos - new Vector2(absRect.width / 2.0f, absRect.height / 2.0f);
 	}
 
 	public static void DrawSkillTree()
@@ -107,9 +113,25 @@ public static class SkillTreeScript
 
 	private static void DrawTree(float width, float height)
 	{
+		/*if (boxStyle == null)
+		{ // Attempt at painting the boxes white...
+			Texture2D test = new Texture2D(GUI.skin.box.normal.background.width, GUI.skin.box.normal.background.height, GUI.skin.box.normal.background.format, false);
+			for (int i = 0; i < test.width; i++)
+			{
+				for (int j = 0; j < test.height; j++)
+				{
+					test.SetPixel(i, j, Color.white);
+				}
+			}
+
+			boxStyle = new GUIStyle(GUI.skin.box);
+			boxStyle.normal.background = test;
+		}*/
+
 		scrollPos = GUI.BeginScrollView(SRect.Make(0.0f, 0.0f, width, height, "skilltree_tree_local"), scrollPos, treeRect);
 
 		List<Skill> availableSkills = _misc.GetAvailableSkills();
+		//List<Skill> knownSkills = _misc.GetUnlockedSkills();
 
 		foreach (Skill skill in frames.Keys)
 		{
@@ -132,7 +154,13 @@ public static class SkillTreeScript
 
 					// And display it (this isn't perfect)
 					GUIUtility.RotateAroundPivot(angle, center);
-					GUI.Label(new Rect(center.x - diff.magnitude/2.0f, center.y - 15.0f, diff.magnitude, 30.0f), string.Concat(list.ToArray()), FFMStyles.centeredText);
+					GUIStyle labelStyle = FFMStyles.centeredText;
+					/*if (knownSkills.Contains(skill))
+					{ // TODO: Or we have the other one, at the end of the link
+						labelStyle = new GUIStyle(labelStyle);
+						labelStyle.normal.textColor = Color.yellow;
+					}*/
+					GUI.Label(new Rect(center.x - diff.magnitude/2.0f, center.y - 15.0f, diff.magnitude, 30.0f), string.Concat(list.ToArray()), labelStyle);
 					GUIUtility.RotateAroundPivot(-angle, center);
 				}
 			}
@@ -146,11 +174,23 @@ public static class SkillTreeScript
 			}
 			else
 			{ // TODO: Display it differently if we already have it
-				GUI.Box(rect, GUIContent.none);
-				GUI.Label(rect, skill.GetName(), FFMStyles.centeredText);
+				/*if (GameData.activePlayer.GetStatsScript().GetKnownSpells().Contains(DataTables.GetSkillID(skill)))
+				{ // That looked awful
+					GUI.Box(rect, GUIContent.none, boxStyle);
+					GUI.Label(rect, skill.GetName(), FFMStyles.centeredText_black);
+				}
+				else*/
+				{
+					GUI.Box(rect, GUIContent.none);
+					GUI.Label(rect, skill.GetName(), FFMStyles.centeredText);
+				}
 			}
 
-			// TODO: Check for mouse hover events and display the skill's dataview
+			Rect absSkillRect = new Rect(absRect.x + rect.x - scrollPos.x, absRect.y + rect.y - scrollPos.y, rect.width, rect.height);
+			if (_input.MouseIsInRect(absRect) && _input.MouseIsInRect(absSkillRect))
+			{
+				HUDRenderer.SetDataViewObject(skill);
+			}
 		}
 
 		GUI.EndScrollView(true);

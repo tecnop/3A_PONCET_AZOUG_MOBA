@@ -9,8 +9,8 @@ using System.Collections;
  */
 
 public class NetworkedEntityScript : MonoBehaviour
-{
-	[SerializeField]
+{ // Cancelled
+	/*[SerializeField]
 	protected NetworkView _networkView;
 
 	private bool initialized;
@@ -38,7 +38,7 @@ public class NetworkedEntityScript : MonoBehaviour
 	private void RemoteInit()
 	{
 		//Initialize();
-	}
+	}*/
 
 	/*virtual void Initialize()
 	{

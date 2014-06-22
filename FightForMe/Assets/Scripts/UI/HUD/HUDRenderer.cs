@@ -89,7 +89,14 @@ public static class HUDRenderer
 		// NOTE: This system and layout is temporary! (maybe, I don't even know anymore)
 		if (_state == HUDState.SkillTree)
 		{
+			_dataView.SetObject(null);
+
 			SkillTreeScript.DrawSkillTree();
+
+			if (_dataView.enabled)
+			{ // THIS IS TERRIBLE
+				_dataView.Render();
+			}
 		}
 		else if (_state == HUDState.Wiki)
 		{
@@ -105,7 +112,7 @@ public static class HUDRenderer
 
 			DrawWikiButton();
 
-			_dataView.SetObject(null); // TEMPORARY
+			_dataView.SetObject(null); // TEMPORARY (the idea here is that every frame I reset this to null and the other components will decide if they should set it to anything)
 
 			if (hudRoot.enabled)
 			{

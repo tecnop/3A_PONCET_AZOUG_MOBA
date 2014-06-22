@@ -11,6 +11,9 @@ public static class FFMStyles
 	private static GUIStyle _centeredText;
 	public static GUIStyle centeredText { get { return _centeredText; } }
 
+	private static GUIStyle _centeredText_black;
+	public static GUIStyle centeredText_black { get { return _centeredText_black; } }
+
 	private static GUIStyle _centeredText_wrapped;
 	public static GUIStyle centeredText_wrapped { get { return _centeredText_wrapped; } }
 
@@ -84,6 +87,9 @@ public static class FFMStyles
 		_centeredText = new GUIStyle(_defaultText);
 		_centeredText.alignment = TextAnchor.MiddleCenter;
 
+		_centeredText_black = new GUIStyle(_centeredText);
+		_centeredText_black.normal.textColor = Color.black;
+
 		_centeredText_wrapped = new GUIStyle(_centeredText);
 		_centeredText_wrapped.wordWrap = true;
 
@@ -110,9 +116,9 @@ public static class FFMStyles
 		// Quality styles
 		junkTitle = new GUIStyle(_title);
 		junkTitle.normal.textColor = Color.gray;
-		
+
 		commonTitle = new GUIStyle(_title);
-		
+
 		rareTitle = new GUIStyle(_title);
 		rareTitle.normal.textColor = Color.magenta;
 
