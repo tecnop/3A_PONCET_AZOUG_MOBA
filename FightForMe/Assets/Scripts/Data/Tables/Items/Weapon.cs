@@ -77,7 +77,18 @@ public class Weapon : Item
 			GUI.EndGroup();
 		}
 
-		GUI.Label(SRect.Make(10.0f, 0.45f * height, width - 20.0f, 0.55f * height - 40.0f, "data_window_weapon_stats"), "Inflige " + this.damage + " dégâts " + this.attackRate + " fois par seconde");
+		string damageText;
+
+		if (this.damage > 0)
+		{
+			damageText = "Inflige " + this.damage + " dégâts " + this.attackRate + " fois par seconde";
+		}
+		else
+		{
+			damageText = "Aucun dégâts";
+		}
+
+		GUI.Label(SRect.Make(10.0f, 0.45f * height, width - 20.0f, 0.55f * height - 40.0f, "data_window_weapon_stats"), damageText);
 	}
 
 	public override void DrawWikiPage(float width, float height)

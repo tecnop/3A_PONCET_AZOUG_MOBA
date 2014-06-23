@@ -128,22 +128,16 @@ public static class DataTables
 		spellTable.Add(2, new SpellMeleeHit());
 		spellTable.Add(3, new SpellProjHit());
 		// ================================================
-		/*spellTable.Add(4, new SpellFireball());
-		spellTable.Add(5, new SpellFireExplosion());
-		spellTable.Add(6, new SpellBurn());
-		spellTable.Add(7, new SpellGrenade());
-		spellTable.Add(8, new SpellExplosion());
-		spellTable.Add(9, new SpellKnockback());*/
-		spellTable.Add(4, new SpellProjShot(new Metadata("Boule de feu"), 2, 1, costType: SpellCostType.MANA, spellCost: 50.0f, castingSound: "magic"));
-		spellTable.Add(5, new SpellAreaOfEffect(new Metadata("Explosion de feu"), 4.0f, 6, particles: true, castingSound: "explosion"));
-		spellTable.Add(6, new SpellImpact(new Metadata("Brûlure"), 10.0f, 3, 5.0f));
-		spellTable.Add(7, new SpellProjShot(new Metadata("Grenade"), 5, 1, doThrow: true, costType: SpellCostType.MANA, spellCost: 150.0f, castingSound: "magic"));
-		spellTable.Add(8, new SpellAreaOfEffect(new Metadata("Explosion"), 6.0f, 9, particles: true, castingSound: "explosion"));
-		spellTable.Add(9, new SpellImpact(new Metadata("Impact"), 75.0f, 0, 0.0f, 10.0f, 1.0f));
-		spellTable.Add(10, new SpellProjShot(new Metadata("Tir multiple"), 0, 5, impactSpellOverride: 3, costType: SpellCostType.MANA, spellCost: 30.0f));
-		spellTable.Add(11, new SpellDash(new Metadata("Charge"), 30.0f, 1.0f, true, impactSpell: 12, costType: SpellCostType.HEALTH, spellCost: 40.0f, castingSound: "magic"));
-		spellTable.Add(12, new SpellImpact(new Metadata("Impact de charge"), 15, 0, 0.0f, 30.0f, 2.0f, castingSound: "heavymelee"));
-		spellTable.Add(13, new SpellToggleBuff(new Metadata("Régénération"), 5, costType: SpellCostType.PCTHEALTH, spellCost: 0.1f));
+		spellTable.Add(4, new SpellProjShot(new Metadata(name: "Boule de feu", description: "Lance un projectile qui explose à l'impact, infligeant des dégâts sur la durée aux ennemis de la zone"), 2, 1, costType: SpellCostType.MANA, spellCost: 50.0f, castingSound: "magic"));
+		spellTable.Add(5, new SpellAreaOfEffect(new Metadata(name: "Explosion de feu", description: "Inflige des dégâts aux ennemis de la zone et leur inflige des dégâts supplémentaires sur la durée"), 4.0f, 6, particles: true, castingSound: "explosion"));
+		spellTable.Add(6, new SpellImpact(new Metadata(name: "Brûlure", description: "Inflige des dégâts sur la durée à la cible"), 10.0f, 3, 5.0f));
+		spellTable.Add(7, new SpellProjShot(new Metadata(name: "Grenade", description: "Lance un projectile en cloche qui explose à l'impact, infligeant des dégâts et repoussant les ennemis de la zone"), 5, 1, doThrow: true, costType: SpellCostType.MANA, spellCost: 150.0f, castingSound: "magic"));
+		spellTable.Add(8, new SpellAreaOfEffect(new Metadata(name: "Explosion", description: "Inflige des dégâts aux ennemis de la zone et les repousse"), 6.0f, 9, particles: true, castingSound: "explosion"));
+		spellTable.Add(9, new SpellImpact(new Metadata(name: "Impact", description: "Inflige des dégâts à la cible et la repousse"), 75.0f, 0, 0.0f, 10.0f, 1.0f));
+		spellTable.Add(10, new SpellProjShot(new Metadata(name: "Tir multiple", description: "Tire 5 fois le projectile de l'arme équipée"), 0, 5, impactSpellOverride: 3, costType: SpellCostType.MANA, spellCost: 30.0f));
+		spellTable.Add(11, new SpellDash(new Metadata(name: "Charge", description: "Propulse l'utilisateur vers l'avant, expulsant les ennemis sur son chemin"), 30.0f, 1.0f, true, impactSpell: 12, costType: SpellCostType.HEALTH, spellCost: 40.0f, castingSound: "magic"));
+		spellTable.Add(12, new SpellImpact(new Metadata(name: "Impact de charge", description: "Inflige des dégâts et expulse la cible"), 15, 0, 0.0f, 30.0f, 2.0f, castingSound: "heavymelee"));
+		spellTable.Add(13, new SpellToggleBuff(new Metadata(name: "Régénération", description: "Régénère un pourcentage de la vie de l'utilisateur, tout en réduisant ses dégâts"), 5, costType: SpellCostType.PCTHEALTH, spellCost: 0.1f));
 
 		// Effects
 		effectTable.Add(1, new Effect(isPositive: true, flatHP: 2000, stats: new Stats(50, 50, 50)));
@@ -179,6 +173,7 @@ public static class DataTables
 		effectTable.Add(27, new Effect(isPositive: true, misc: MiscEffect.FIRE_WEAPON));
 		effectTable.Add(28, new Effect(isPositive: true, misc: MiscEffect.CC_IMMUNITY));
 		effectTable.Add(29, new Effect(isPositive: false, pctMS: -0.25f));
+		effectTable.Add(30, new Effect(isPositive: true, pctMS: 0.25f));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -200,6 +195,7 @@ public static class DataTables
 		buffTable.Add(8, new Buff(metadata: new Metadata(name: "Hasnor"), effects: new uint[] { 23 }));
 		buffTable.Add(9, new Buff(metadata: new Metadata(name: "Feu"), effects: new uint[] { 27 }));
 		buffTable.Add(10, new Buff(metadata: new Metadata(name: "Poids lourd"), effects: new uint[] { 28, 29 }));
+		buffTable.Add(11, new Buff(metadata: new Metadata(name: "Ninja!"), effects: new uint[] { 30 }));
 
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
@@ -230,10 +226,12 @@ public static class DataTables
 		// Projectiles
 		projectileTable.Add(1, new Projectile(metadata: new Metadata(name: "Flèche du seigneur"), damage: 30.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(2, new Projectile(metadata: new Metadata(name: "Boule de feu"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 5));
-		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
+		projectileTable.Add(3, new Projectile(metadata: new Metadata(name: "Balle de sniper"), damage: 50.0f, speed: 150.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(4, new Projectile(metadata: new Metadata(name: "Flèche"), damage: 10.0f, speed: 50.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 		projectileTable.Add(5, new Projectile(metadata: new Metadata(name: "Grenade"), damage: 15.0f, speed: 10.0f, hitboxSize: new Vector3(0.5f, 0.5f, 0.5f), impactAbility: 8, trajectory: ProjectileTrajectory.Throw, range: 15.0f));
 		projectileTable.Add(6, new Projectile(metadata: new Metadata(name: "Couteau de lancer"), damage: 7.5f, speed: 75.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
+		projectileTable.Add(7, new Projectile(metadata: new Metadata(name: "Balle"), damage: 20.0f, speed: 100.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
+		projectileTable.Add(8, new Projectile(metadata: new Metadata(name: "Balle de Deagle"), damage: 40.0f, speed: 100.0f, hitboxSize: new Vector3(0.25f, 0.25f, 1.0f)));
 
 		// Weapon types
 		weaponTypeTable.Add(1, new WeaponType(metadata: new Metadata(name: "Epée courte"), isTwoHanded: false));
@@ -242,8 +240,8 @@ public static class DataTables
 		weaponTypeTable.Add(4, new WeaponType(metadata: new Metadata(name: "Arme de lancer"), isRanged: true));
 		weaponTypeTable.Add(5, new WeaponType(metadata: new Metadata(name: "Epée longue")));
 		weaponTypeTable.Add(6, new WeaponType(metadata: new Metadata(name: "Debug"), isTwoHanded: false));
-		weaponTypeTable.Add(7, new WeaponType(metadata: new Metadata(name: "Dague"), isTwoHanded: false));
-		weaponTypeTable.Add(8, new WeaponType(metadata: new Metadata(name: "Fusil"), isRanged: true));
+		weaponTypeTable.Add(7, new WeaponType(metadata: new Metadata(name: "Couteau"), isTwoHanded: false));
+		weaponTypeTable.Add(8, new WeaponType(metadata: new Metadata(name: "Arme à feu"), isRanged: true));
 
 		// Armor sets
 		armorSetTable.Add(1, new ArmorSet(metadata: new Metadata(name: "Panoplie du Seigneur"), buffID: 1));
@@ -251,14 +249,20 @@ public static class DataTables
 		armorSetTable.Add(3, new ArmorSet(metadata: new Metadata(name: "Le jeune de banlieue"), buffID: 6));
 
 		// Items
-		itemTable.Add(1, new Weapon(metadata: new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, attackRate: 1.0f, weaponTypeID: 5));
+
+		// Misc
+		itemTable.Add(1, new Weapon(metadata: new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, weaponTypeID: 5));
 		itemTable.Add(2, new Armor(metadata: new Metadata(name: "Armure du test ultime"), slot: ArmorSlot.BODY, setID: 2));
 		itemTable.Add(3, new Weapon(metadata: new Metadata(name: "La Dague"), damage: 6.66f, attackRate: 1.5f, weaponTypeID: 7));
+
+		// Lord
 		itemTable.Add(4, new Weapon(metadata: new Metadata(name: "Marteau du Seigneur"), damage: 50.0f, attackRate: 1.0f, weaponTypeID: 2));
 		itemTable.Add(5, new Weapon(metadata: new Metadata(name: "Arc du Seigneur"), attackRate: 0.5f, weaponTypeID: 3, projectileID: 1));
 		itemTable.Add(6, new Armor(metadata: new Metadata(name: "Armure du Seigneur"), slot: ArmorSlot.BODY, setID: 1));
 		itemTable.Add(7, new Armor(metadata: new Metadata(name: "Casque du Seigneur"), slot: ArmorSlot.HEAD, setID: 1));
 		itemTable.Add(8, new Armor(metadata: new Metadata(name: "Bottes du Seigneur"), slot: ArmorSlot.FEET, setID: 1));
+
+		// Misc
 		itemTable.Add(9, new Weapon(metadata: new Metadata(name: "Le fouetteur d'Yggtralala"), damage: 15.0f, attackRate: 1.0f));
 		itemTable.Add(10, new Armor(metadata: new Metadata(name: "Casque du super debug"), slot: ArmorSlot.HEAD, setID: 2));
 		itemTable.Add(11, new Armor(metadata: new Metadata(name: "Gants de l'incroyable fix"), slot: ArmorSlot.HANDS, setID: 2));
@@ -266,28 +270,44 @@ public static class DataTables
 		itemTable.Add(13, new Weapon(metadata: new Metadata(name: "Croc de la Téci"), damage: 6.0f, attackRate: 2.0f, weaponTypeID: 7));
 		itemTable.Add(14, new Weapon(metadata: new Metadata(name: "La quat'cinq"), attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
 		itemTable.Add(15, new Weapon(metadata: new Metadata(name: "Arc biodégradable"), attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
+
+		// Debug
 		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000, weaponTypeID: 6));
 
+		// Misc
 		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem", lore: "Une selle de vélo au nom intimidant"), damage: 35.0f, attackRate: 1.2f, weaponTypeID: 2));
 		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites", lore: "Ah, les fautes de frappes"), weaponTypeID: 4, damage: 25.0f, attackRate: 1.5f, projectileID: 6));
 
+		// Gang
 		itemTable.Add(19, new Armor(metadata: new Metadata(name: "Sweat et jeans troués"), slot: ArmorSlot.BODY, setID: 3, stats: new Stats(5, 10, 0)));
 		itemTable.Add(20, new Armor(metadata: new Metadata(name: "Casquette retournée", lore: "Eh vazy"), slot: ArmorSlot.HEAD, setID: 3, stats: new Stats(5, 10, 0)));
 		itemTable.Add(21, new Armor(metadata: new Metadata(name: "Les niques"), slot: ArmorSlot.FEET, setID: 3, stats: new Stats(5, 10, 0)));
 
+		// Gobelins
 		itemTable.Add(22, new Weapon(metadata: new Metadata(name: "Dague rouillée", quality: Quality.JUNK), recyclingXP: 50, weaponTypeID: 7, damage: 10.0f, attackRate: 1.1f));
 		itemTable.Add(23, new Weapon(metadata: new Metadata(name: "Epée simple", quality: Quality.COMMON), recyclingXP: 100, weaponTypeID: 1, damage: 25.0f, attackRate: 1.0f));
 		itemTable.Add(24, new Weapon(metadata: new Metadata(name: "Epée enchantée", lore: "A vue d'oeil, une épée ordinaire...", quality: Quality.RARE), recyclingXP: 150, weaponTypeID: 1, damage: 55.0f, attackRate: 1.1f));
 		itemTable.Add(25, new Weapon(metadata: new Metadata(name: "Epée flamboyante", lore: "Tout juste sortie du four", quality: Quality.EPIC), recyclingXP: 250, buffID: 9, weaponTypeID: 5, damage: 85.0f, attackRate: 1.0f));
 
-		itemTable.Add(26, new Armor(metadata: new Metadata(name: "Groomba", lore: "Il est plein de poussière... Vous êtes sûr de vouloir mettre ça sur votre tête?", quality: Quality.JUNK), slot: ArmorSlot.HEAD, stats: new Stats(5, 0, 0)));
+		// Robots
+		itemTable.Add(26, new Armor(metadata: new Metadata(name: "Roomba", lore: "Il est plein de poussière... Vous êtes sûr de vouloir mettre ça sur votre tête?", quality: Quality.JUNK), slot: ArmorSlot.HEAD, stats: new Stats(5, 0, 0)));
 		itemTable.Add(27, new Armor(metadata: new Metadata(name: "Plaque de métal", lore: "Pas très agréable, mais super résistant!", quality: Quality.COMMON), slot: ArmorSlot.BODY, stats: new Stats(15, 0, 0)));
 		itemTable.Add(28, new Armor(metadata: new Metadata(name: "Gants en fer", lore: "Beaucoup trop lourds...", quality: Quality.COMMON), slot: ArmorSlot.HANDS, stats: new Stats(10, 0, 0)));
 		itemTable.Add(29, new Armor(metadata: new Metadata(name: "Casque avec viseur", lore: "Vous avez vu Robocop?", quality: Quality.RARE), slot: ArmorSlot.HEAD, stats: new Stats(25, 10, 0)));
 		itemTable.Add(30, new Armor(metadata: new Metadata(name: "Tenue de combat en fer", lore: "Résistante et peu contraignante", quality: Quality.RARE), slot: ArmorSlot.BODY, stats: new Stats(15, 10, 0)));
 		itemTable.Add(31, new Weapon(metadata: new Metadata(name: "Fusil à lunette", lore: "Boom, headshot!", quality: Quality.RARE), recyclingXP: 200, attackRate: 0.3f, weaponTypeID: 8, projectileID: 3));
-		itemTable.Add(32, new Armor(metadata: new Metadata(name: "Bottes de plomb", lore: "Marcher n'a jamais paru aussi difficile", quality: Quality.EPIC), buffID:10,  slot: ArmorSlot.FEET, stats: new Stats(30, 0, 0)));
+		itemTable.Add(32, new Armor(metadata: new Metadata(name: "Bottes de plomb", lore: "Marcher n'a jamais paru aussi difficile", quality: Quality.EPIC), buffID: 10, slot: ArmorSlot.FEET, stats: new Stats(30, 0, 0)));
 		itemTable.Add(33, new Armor(metadata: new Metadata(name: "Armure de titane", lore: "Avec ça, vos ennemis peuvent directement passer aux canons!", quality: Quality.EPIC), slot: ArmorSlot.BODY, stats: new Stats(50, 0, 0)));
+
+		// Gang
+		itemTable.Add(35, new Weapon(metadata: new Metadata(name: "Canif", lore: "Aboule le fric!", quality: Quality.COMMON), recyclingXP: 100, damage: 15.0f, attackRate: 1.2f, weaponTypeID: 7));
+		itemTable.Add(36, new Weapon(metadata: new Metadata(name: "Balisong", lore: "Plus cool que pratique", quality: Quality.RARE), recyclingXP: 150, damage: 30.0f, attackRate: 1.2f, weaponTypeID: 7));
+
+		// Mafia
+		itemTable.Add(37, new Weapon(metadata: new Metadata(name: "Poing américain", lore: "Vient-il vraiment d'Amérique?", quality: Quality.JUNK), recyclingXP: 75, damage: 10.0f, attackRate: 1.2f, attackSound: "punchswing", hitSound: "punchhit"));
+		itemTable.Add(38, new Weapon(metadata: new Metadata(name: "Revolver", lore: "Les balles sont gratuites", quality: Quality.COMMON), recyclingXP: 100, weaponTypeID: 8, projectileID: 7, attackRate: 1.0f));
+		itemTable.Add(39, new Weapon(metadata: new Metadata(name: "Katana", lore: "Aussi dangereux pour l'utilisateur que pour la cible", quality: Quality.RARE), recyclingXP: 200, weaponTypeID: 5, damage: 35.0f, attackRate: 2.0f, buffID: 11));
+		itemTable.Add(40, new Weapon(metadata: new Metadata(name: "Desert Eagle", lore: "Sa vue suffit généralement à tuer la cible", quality: Quality.EPIC), recyclingXP: 300, weaponTypeID: 8, attackRate: 1.0f, projectileID: 8));
 
 		// Monsters
 
@@ -295,6 +315,7 @@ public static class DataTables
 		monsterTable.Add(1, new Monster(metadata: new Metadata(name: "Lord", quality: Quality.UNIQUE), behaviour: AIType.defensive, items: new uint[] { 4, 5, 6, 7, 8 }));
 		// ================================================
 
+		// Misc
 		monsterTable.Add(2, new Monster(metadata: new Metadata(name: "Zombie", modelPath: "Cylinder"), behaviour: AIType.defensive, items: new uint[] { 9 }));
 		monsterTable.Add(3, new Monster(metadata: new Metadata(name: "Ratus", scale: 0.5f), behaviour: AIType.defensive, items: new uint[] { 13 }));
 		monsterTable.Add(4, new Monster(metadata: new Metadata(name: "Archet"), behaviour: AIType.defensive, items: new uint[] { 15 }));
@@ -308,22 +329,35 @@ public static class DataTables
 		monsterTable.Add(8, new Monster(metadata: new Metadata(name: "Hasnor", scale: 2.0f, quality: Quality.UNIQUE), behaviour: AIType.aggressive, buffs: new uint[] { 8 }));
 		// ================================================
 
-		monsterTable.Add(9, new Monster(metadata: new Metadata(name: "Jean Paul"), behaviour: AIType.defensive, items: new uint[] { 17 }));
-		monsterTable.Add(10, new Monster(metadata: new Metadata(name: "Jacky"), behaviour: AIType.aggressive, items: new uint[] { 19, 20, 21 }));
+		// Gang
+		monsterTable.Add(9, new Monster(metadata: new Metadata(name: "Jean Paul", lore: "Il n'a pas vraiment envie d'être là, mais tout le monde le fait", quality: Quality.COMMON), behaviour: AIType.defensive, items: new uint[] { 17 }));
+		monsterTable.Add(10, new Monster(metadata: new Metadata(name: "Jacky", quality: Quality.COMMON), behaviour: AIType.aggressive, items: new uint[] { 19, 20, 21 }));
 
+		// Misc
 		monsterTable.Add(11, new Monster(metadata: new Metadata(name: "Le veau doux"), behaviour: AIType.aggressive, items: new uint[] { 18 }));
-
 		monsterTable.Add(12, new Monster(metadata: new Metadata(name: "Un monstre")));
 
+		// Gobelins
 		monsterTable.Add(13, new Monster(metadata: new Metadata(name: "Gobelin", description: "Faible et fragile", lore: "Petit et répugnant", scale: 0.5f, quality: Quality.JUNK), items: new uint[] { 22 }));
 		monsterTable.Add(14, new Monster(metadata: new Metadata(name: "Méchant Gobelin", description: "Un peu dangereux mais fragile", lore: "Un peu moins petit, un peu plus répugnant", scale: 0.8f, quality: Quality.COMMON), items: new uint[] { 23 }));
 		monsterTable.Add(15, new Monster(metadata: new Metadata(name: "Gros Gobelin", description: "Dangereux mais fragile", lore: "Pas très petit, très répugnant", scale: 1.1f, quality: Quality.RARE), items: new uint[] { 24 }));
 		monsterTable.Add(16, new Monster(metadata: new Metadata(name: "Super Gobelin", description: "Très dangereux mais fragile", lore: "Super pas petit, super répugnant", scale: 1.3f, quality: Quality.EPIC), items: new uint[] { 25 }));
 
-		monsterTable.Add(17, new Monster(metadata: new Metadata(name: "Robot nettoyeur", description: "Faible et fragile", lore: "Saletés, prenez garde", quality: Quality.JUNK), items: new uint[] { 26 }));
+		// Robots
+		monsterTable.Add(17, new Monster(metadata: new Metadata(name: "Robot nettoyeur", description: "Faible et fragile", lore: "Saletés, prenez garde", scale: 0.5f, quality: Quality.JUNK), items: new uint[] { 26 }));
 		monsterTable.Add(18, new Monster(metadata: new Metadata(name: "Robot destructeur", description: "Robuste", lore: "Ils ne viennent pas en paix", quality: Quality.COMMON), items: new uint[] { 27, 28 }));
 		monsterTable.Add(19, new Monster(metadata: new Metadata(name: "Robot sniper", description: "Dangereux à distance, mais un peu fragile", lore: "Tout le monde aime les snipers. Lui ne vous aime pas.", quality: Quality.RARE), items: new uint[] { 29, 30, 31 }));
-		monsterTable.Add(20, new Monster(metadata: new Metadata(name: "Robot Géant de la Mort", description: "DANGER", lore: "EXTERMINATE", quality: Quality.EPIC), items: new uint[] { 32, 33 }));
+		monsterTable.Add(20, new Monster(metadata: new Metadata(name: "Robot Géant de la Mort", description: "DANGER", lore: "EXTERMINATE", scale: 1.5f, quality: Quality.EPIC), items: new uint[] { 32, 33 }));
+
+		// Gang
+		monsterTable.Add(21, new Monster(metadata: new Metadata(name: "Le caïd", description: "C\'est pas sa faute, il a eu une enfance difficile", quality: Quality.RARE), behaviour: AIType.aggressive, items: new uint[] { 19, 20, 21, 35 }));
+		monsterTable.Add(22, new Monster(metadata: new Metadata(name: "Voyou", description: "Au fond, il fait ça pour plaire aux filles", quality: Quality.RARE), behaviour: AIType.aggressive, items: new uint[] { 19, 20, 21, 36 }));
+
+		// Mafia
+		monsterTable.Add(23, new Monster(metadata: new Metadata(name: "Brute", lore: "Tout est dans les muscles", quality: Quality.JUNK), items: new uint[] { 37 }));
+		monsterTable.Add(24, new Monster(metadata: new Metadata(name: "Homme de pied", lore: "Son patron est manchot, donc...", quality: Quality.COMMON), items: new uint[] { 38 }));
+		monsterTable.Add(25, new Monster(metadata: new Metadata(name: "Yakuza", lore: "Ohaio gozaimasu!", quality: Quality.RARE), items: new uint[] { 39 }));
+		monsterTable.Add(26, new Monster(metadata: new Metadata(name: "Le Parrain", lore: "La figure mystérieuse en haut de la pyramide", quality: Quality.EPIC), items: new uint[] { 40 }));
 	}
 
 	private static void ParseTablesFromFile()

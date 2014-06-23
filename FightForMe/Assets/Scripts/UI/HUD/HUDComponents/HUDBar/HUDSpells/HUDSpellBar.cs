@@ -10,7 +10,7 @@ public class HUDSpellBar : HUDContainer
 		float h = frame.height;
 
 		//float minOffset = 4.0f;	// Minimum space between two icons
-		float maxSize = w / (int)SpellSlot.NUM_SLOTS; // Maximum size of an icon
+		float maxSize = Mathf.Min(h - 20.0f, w / (int)SpellSlot.NUM_SLOTS); // Maximum size of an icon
 
 		float size;
 		float offset;
@@ -22,21 +22,19 @@ public class HUDSpellBar : HUDContainer
 		}
 		else if (maxSize < 32.0f)
 		{ // TODO: See if we can make a second line instead of crushing those icons until they're a line of pixels.
-			offset = 0.0f;
+			offset = (w / (int)SpellSlot.NUM_SLOTS) - maxSize;
 			size = maxSize;
 		}
 		else
-		{
-			offset = 0.0f;
+		{ // FIXME: Offset isn't perfect
+			offset = (w / (int)SpellSlot.NUM_SLOTS) - maxSize;
 			size = maxSize;
 		}
 
 		float x = 0;
-		float y = (h - size) / 2;
-
 		for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
 		{
-			new HUDSpellSlot(SRect.Make(x, y, size, size), this, i);
+			new HUDSpellSlot(SRect.Make(x, 3.0f, size, h), this, i, SRect.Make(0.0f, size, size, h-size));
 			x += size + offset;
 		}
 	}

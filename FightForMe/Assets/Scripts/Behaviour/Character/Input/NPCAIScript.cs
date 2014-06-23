@@ -122,7 +122,7 @@ public class NPCAIScript : CharacterInputScript
 			}
 		}
 
-		this.approachRange = 3.0f;
+		this.approachRange = 2.0f;
 	}
 
 	public void SpreadTargetToCamp(CharacterManager target)
@@ -285,7 +285,7 @@ public class NPCAIScript : CharacterInputScript
 			return 0;
 		}
 
-		if (target && !targetLost && goalReached && Vector3.Distance(_transform.position, target.GetCharacterTransform().position) <= approachRange * 1.1f)
+		if (target && !targetLost && Vector3.Distance(_transform.position, target.GetCharacterTransform().position) <= approachRange * 1.25f)
 		{ // Simple attack rule
 			return 1;
 		}

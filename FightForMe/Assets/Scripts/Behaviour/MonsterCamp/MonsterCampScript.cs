@@ -38,8 +38,20 @@ public class MonsterCampScript : MonoBehaviour
 	{
 		foreach (MonsterSpawnerScript spawner in _spawners)
 		{
-			spawner.Spawn();
-			stillAlive++;
+			try
+			{
+				spawner.Spawn();
+				stillAlive++;
+			}
+			catch (System.Exception e)
+			{
+				Debug.LogWarning(e.Message);
+			}
+		}
+
+		if (stillAlive == 0)
+		{ // Oh, okay. Level us up so this hopefully doesn't happen next wave
+			currentLevel++;
 		}
 	}
 

@@ -26,7 +26,7 @@ public class TileEntityScript : MonoBehaviour
 	}
 
 	void OnDrawGizmosSelected()
-	{
+	{ // FIXME: With the new system, the neighbours aren't baked yet while in editor
 		Gizmos.DrawCube(this.pos, this.size);
 		foreach (MapTile other in tile.GetNeighbours())
 		{

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class MonsterSpawnerScript : SpawnerScript
@@ -43,7 +44,14 @@ public class MonsterSpawnerScript : SpawnerScript
 
 		if (!camp || _spawnPending)
 		{ // We're not linked to a trigger, we're probably just a one-time spawner then
-			Spawn();
+			try
+			{
+				Spawn();
+			}
+			catch (Exception e)
+			{
+				Debug.LogWarning(e.Message);
+			}
 		}
 	}
 
@@ -79,27 +87,34 @@ public class MonsterSpawnerScript : SpawnerScript
 
 		if (_monsterList.Length == 0)
 		{ // We don't have any bound monsters, no reason for us to be here (checking again in case dynamic stuff happens)
-			Debug.LogWarning(this.name + " has no monster to spawn");
-			Destroy(this.gameObject);
-			return;
+			throw new Exception(this.name + " has no monster to spawn");
 		}
 
 		uint monsterID;
 
 		if (!camp)
 		{ // Just spawn our first entry
-			 monsterID = (uint)_monsterList[0];
+			monsterID = (uint)_monsterList[0];
 		}
 		else
 		{ // Check the level of the camp, and spawn our entry with that index
 			if (_monsterList.Length < camp.GetLevel() + 1)
 			{
-				monsterID = (uint)_monsterList[_monsterList.Length-1];
+				monsterID = (uint)_monsterList[_monsterList.Length - 1];
 			}
 			else
 			{
 				monsterID = (uint)_monsterList[camp.GetLevel()];
 			}
+		}
+
+		if (monsterID == 0)
+		{ // Not exactly an exception but it's too late to change how everything works
+			throw new Exception(this.name + " is skipping a spawn wave");
+		}
+		else if (DataTables.GetMonster(monsterID) == null)
+		{
+			throw new Exception(this.name + " tried to spawn unknown monster " + monsterID);
 		}
 
 		DoSpawnMonster(monsterID);

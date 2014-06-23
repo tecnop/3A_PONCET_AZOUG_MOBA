@@ -8,6 +8,14 @@ public class DamageInstance
 
 	private Spell spell;					// Spell that dealt the damage
 
+	public bool selfCast
+	{
+		get
+		{
+			return inflictor == target;
+		}
+	}
+
 	public DamageInstance(CharacterManager inflictor, CharacterManager target, Spell spell)
 	{
 		this.inflictor = inflictor;
@@ -17,7 +25,16 @@ public class DamageInstance
 
 	public override string ToString()
 	{
-		string inflictorName = (this.inflictor != null) ? this.inflictor.name : "<world>";
-		return inflictorName + " hit " + this.target.name + " using " + this.spell.GetName();
+		string inflictorName = (this.inflictor != null) ? this.inflictor.name : "Le monde";
+
+		if (inflictor == target)
+		{
+			return inflictorName + " a utilisé " + this.spell.GetName();
+		}
+		else
+		{
+			string targetName = (this.target == GameData.activePlayer) ? "vous" : this.target.name;
+			return inflictorName + " a utilisé " + this.spell.GetName() + " sur " + targetName;
+		}
 	}
 }

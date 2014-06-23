@@ -7,20 +7,22 @@ public class HUDSpellSlot : HUDComponent
 	private PlayerInputScript _input;
 
 	private SpellSlot slot;
+	private Rect labelFrame;
 
-	public HUDSpellSlot(Rect frame, HUDContainer parent, SpellSlot slot)
+	public HUDSpellSlot(Rect frame, HUDContainer parent, SpellSlot slot, Rect labelFrame)
 		: base("HUD_spell_slot" + (int)slot, frame, parent: parent)
 	{
 		this._misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
 		this._input = (PlayerInputScript)GameData.activePlayer.GetInputScript();
 		this.slot = slot;
+		this.labelFrame = labelFrame;
 	}
 
 	public override void Render()
 	{
 		float w = frame.width;
-		float h = frame.height;
-		Rect localRect = SRect.Make(0.0f, 0.0f, w, h, "spell_slot" + (int)slot + "_local");
+		//float h = frame.height;
+		Rect localRect = SRect.Make(0.0f, 0.0f, w, w, "spell_slot" + (int)slot + "_local");
 
 		GUI.BeginGroup(frame);
 
@@ -59,13 +61,34 @@ public class HUDSpellSlot : HUDComponent
 			HUDRenderer.OpenMenu(HUDMenu.SpellSlot);
 		}
 
-		GUIStyle style = FFMStyles.centeredText;
-		style.wordWrap = true;
-
 		if (name.Length > 0)
 		{
-			GUI.Label(localRect, name, style);
+			GUI.Label(localRect, name, FFMStyles.centeredText_wrapped);
 		}
+
+		string keyName;
+
+		// Display the default key for each slot... can't do better atm
+		if (slot == SpellSlot.SLOT_0)
+			keyName = "Clic G";
+		else if (slot == SpellSlot.SLOT_1)
+			keyName = "Clic D";
+		else if (slot == SpellSlot.SLOT_2)
+			keyName = "Clic M";
+		else if (slot == SpellSlot.SLOT_3)
+			keyName = "1";
+		else if (slot == SpellSlot.SLOT_4)
+			keyName = "2";
+		else if (slot == SpellSlot.SLOT_5)
+			keyName = "3";
+		else if (slot == SpellSlot.SLOT_6)
+			keyName = "4";
+		else if (slot == SpellSlot.SLOT_7)
+			keyName = "R";
+		else
+			keyName = "???";
+
+		GUI.Label(labelFrame, keyName, FFMStyles.centeredText);
 
 		GUI.EndGroup();
 	}

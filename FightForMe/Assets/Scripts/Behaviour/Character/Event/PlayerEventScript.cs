@@ -38,12 +38,8 @@ public class PlayerEventScript : CharacterEventScript
 
 		_manager.GetCharacterAnimator().SetBool("isDead", true);
 
-		// DEBUG
 		List<DamageInstance> combatLog = _manager.GetCombatScript().GetCombatLog();
-		foreach (DamageInstance log in combatLog)
-		{
-			Debug.Log(log);
-		}
+		((PlayerSpawnerScript)_manager.GetMiscDataScript().GetSpawner()).SetLog(combatLog);
 
 		if (_manager.GetStatsScript().HasSpecialEffect(MiscEffect.CARRYING_TROPHY))
 		{ // Respawn the monster

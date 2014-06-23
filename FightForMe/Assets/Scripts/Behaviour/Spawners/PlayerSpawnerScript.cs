@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerSpawnerScript : SpawnerScript
 {
@@ -13,6 +14,10 @@ public class PlayerSpawnerScript : SpawnerScript
 
 	private static Rect centerRect;
 
+	private static List<DamageInstance> log;
+
+	private static Vector2 scrollPos;
+
 	void Start()
 	{
 		_pos = this.transform.position;
@@ -24,7 +29,7 @@ public class PlayerSpawnerScript : SpawnerScript
 		int w = Screen.width;
 		int h = Screen.height;
 
-		centerRect = SRect.Make(0.4f * w, 0.4f * h, 0.2f * w, 0.2f * h);
+		centerRect = SRect.Make(0.35f * w, 0.4f * h, 0.3f * w, 0.2f * h);
 
 		//if (_spawnPending)
 		{
@@ -75,9 +80,45 @@ public class PlayerSpawnerScript : SpawnerScript
 		{
 			if (!GameData.gamePaused && HUDRenderer.GetState() == HUDState.Default)
 			{
+				string respawnTime = "Réapparition dans " + (_playerRespawnTime < 1.0f ? Mathf.Round(_playerRespawnTime * 10.0f) / 10.0f : Mathf.FloorToInt(_playerRespawnTime)) + "s";
+
 				GUI.Box(centerRect, GUIContent.none);
-				GUI.Label(centerRect, "Réapparition dans " + (_playerRespawnTime < 1.0f ? _playerRespawnTime : Mathf.FloorToInt(_playerRespawnTime)) + "s");
+				GUI.BeginGroup(centerRect);
+				if (log == null || log.Count == 0)
+				{
+					GUI.Label(centerRect, respawnTime, FFMStyles.centeredText_wrapped);
+				}
+				else
+				{
+					GUI.Label(SRect.Make(0.0f, 0.0f, centerRect.width, 20.0f), respawnTime, FFMStyles.centeredText_wrapped);
+
+					float scrollHeight = 20.0f * log.Count;
+					if (scrollHeight < centerRect.height - 20.0f) scrollHeight = centerRect.height - 20.0f;
+
+					scrollPos = GUI.BeginScrollView(SRect.Make(2.0f, 20.0f, centerRect.width, centerRect.height - 20.0f), scrollPos, SRect.Make(0.0f, 20.0f, centerRect.width - 20.0f, scrollHeight), false, true);
+					for (int i = 0; i < log.Count; i++)
+					{
+						GUI.Label(SRect.Make(0.0f, 20.0f * (i+1), centerRect.width - 20.0f, 20.0f), log[i].ToString());
+					}
+					GUI.EndScrollView(true);
+				}
+				GUI.EndGroup();
 			}
 		}
+	}
+
+	public void SetLog(List<DamageInstance> log)
+	{
+		List<DamageInstance> actualLog = new List<DamageInstance>(log.Count);
+
+		foreach (DamageInstance entry in log)
+		{
+			if (!entry.selfCast)
+			{
+				actualLog.Add(entry);
+			}
+		}
+
+		PlayerSpawnerScript.log = actualLog;
 	}
 }
