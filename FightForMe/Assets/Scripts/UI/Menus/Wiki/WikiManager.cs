@@ -25,6 +25,8 @@ public static class WikiManager
 
 	private static WikiEntry currentEntry;
 
+	private static Vector2 scrollPos;
+
 	public static void DrawWiki()
 	{
 		int w = Screen.width;
@@ -52,7 +54,7 @@ public static class WikiManager
 		{
 			Rect entriesRect = SRect.Make(0.0f, 0.2f * wikiRect.height, 0.2f * wikiRect.width, 0.9f * wikiRect.height, "wiki_entries");
 			GUI.BeginGroup(entriesRect);
-			DrawCategoryEntries(0.2f * wikiRect.width, 0.9f * wikiRect.height);
+			DrawCategoryEntries(0.2f * wikiRect.width, 0.8f * wikiRect.height);
 			GUI.EndGroup();
 
 			Rect entryRect = SRect.Make(0.2f * wikiRect.width, 0.2f * wikiRect.height, 0.8f * wikiRect.width, 0.8f * wikiRect.height, "wiki_entry");
@@ -133,6 +135,7 @@ public static class WikiManager
 	{
 		currentCategory = category;
 		currentEntry = null;
+		scrollPos = Vector2.zero;
 
 		displayedEntries = new List<WikiEntry>();
 
@@ -202,14 +205,20 @@ public static class WikiManager
 	{ // Draw all existing entries for the current category
 		if (displayedEntries != null)
 		{
+			float scrollHeight = 20.0f * displayedEntries.Count;
+			if (scrollHeight <= height) scrollHeight = height;
+			scrollPos = GUI.BeginScrollView(SRect.Make(0.0f, 0.0f, width, height), scrollPos, SRect.Make(0.0f, 0.0f, width - 20.0f, scrollHeight), false, true);
+
 			for (int i = 0; i < displayedEntries.Count; i++)
 			{
 				WikiEntry entry = displayedEntries[i];
-				if (GUI.Button(SRect.Make(0.0f, 20.0f * i, width, 20.0f, "wiki_entry" + i), entry.GetName()))
+				if (GUI.Button(SRect.Make(0.0f, 20.0f * i, width - 20.0f, 20.0f, "wiki_entry" + i), entry.GetName()))
 				{
 					currentEntry = entry;
 				}
 			}
+
+			GUI.EndScrollView(true);
 		}
 		else
 		{ // Display something maybe?

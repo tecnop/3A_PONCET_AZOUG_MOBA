@@ -176,6 +176,9 @@ public static class DataTables
 		effectTable.Add(24, new Effect(isPositive: true, stats: new Stats(10, 10, 0)));
 		effectTable.Add(25, new Effect(isPositive: true, stats: new Stats(0, 10, 10)));
 		effectTable.Add(26, new Effect(isPositive: true, stats: new Stats(10, 0, 10)));
+		effectTable.Add(27, new Effect(isPositive: true, misc: MiscEffect.FIRE_WEAPON));
+		effectTable.Add(28, new Effect(isPositive: true, misc: MiscEffect.CC_IMMUNITY));
+		effectTable.Add(29, new Effect(isPositive: false, pctMS: -0.25f));
 
 		// Buffs
 		buffTable.Add(1, new Buff(metadata: new Metadata(name: "Seigneur"), effects: new uint[] { 1 }));
@@ -195,6 +198,8 @@ public static class DataTables
 		// ================================================
 
 		buffTable.Add(8, new Buff(metadata: new Metadata(name: "Hasnor"), effects: new uint[] { 23 }));
+		buffTable.Add(9, new Buff(metadata: new Metadata(name: "Feu"), effects: new uint[] { 27 }));
+		buffTable.Add(10, new Buff(metadata: new Metadata(name: "Poids lourd"), effects: new uint[] { 28, 29 }));
 
 		// Skills
 		// ============= HARD-CODED REFERENCE =============
@@ -237,6 +242,8 @@ public static class DataTables
 		weaponTypeTable.Add(4, new WeaponType(metadata: new Metadata(name: "Arme de lancer"), isRanged: true));
 		weaponTypeTable.Add(5, new WeaponType(metadata: new Metadata(name: "Epée longue")));
 		weaponTypeTable.Add(6, new WeaponType(metadata: new Metadata(name: "Debug"), isTwoHanded: false));
+		weaponTypeTable.Add(7, new WeaponType(metadata: new Metadata(name: "Dague"), isTwoHanded: false));
+		weaponTypeTable.Add(8, new WeaponType(metadata: new Metadata(name: "Fusil"), isRanged: true));
 
 		// Armor sets
 		armorSetTable.Add(1, new ArmorSet(metadata: new Metadata(name: "Panoplie du Seigneur"), buffID: 1));
@@ -246,7 +253,7 @@ public static class DataTables
 		// Items
 		itemTable.Add(1, new Weapon(metadata: new Metadata(name: "Epee des mile phote d'ortograff"), damage: 20.0f, attackRate: 1.0f, weaponTypeID: 5));
 		itemTable.Add(2, new Armor(metadata: new Metadata(name: "Armure du test ultime"), slot: ArmorSlot.BODY, setID: 2));
-		itemTable.Add(3, new Weapon(metadata: new Metadata(name: "La Dague"), damage: 6.66f, attackRate: 1.5f, weaponTypeID: 1));
+		itemTable.Add(3, new Weapon(metadata: new Metadata(name: "La Dague"), damage: 6.66f, attackRate: 1.5f, weaponTypeID: 7));
 		itemTable.Add(4, new Weapon(metadata: new Metadata(name: "Marteau du Seigneur"), damage: 50.0f, attackRate: 1.0f, weaponTypeID: 2));
 		itemTable.Add(5, new Weapon(metadata: new Metadata(name: "Arc du Seigneur"), attackRate: 0.5f, weaponTypeID: 3, projectileID: 1));
 		itemTable.Add(6, new Armor(metadata: new Metadata(name: "Armure du Seigneur"), slot: ArmorSlot.BODY, setID: 1));
@@ -256,17 +263,31 @@ public static class DataTables
 		itemTable.Add(10, new Armor(metadata: new Metadata(name: "Casque du super debug"), slot: ArmorSlot.HEAD, setID: 2));
 		itemTable.Add(11, new Armor(metadata: new Metadata(name: "Gants de l'incroyable fix"), slot: ArmorSlot.HANDS, setID: 2));
 		itemTable.Add(12, new Armor(metadata: new Metadata(name: "Bottes de l'interminable alpha"), slot: ArmorSlot.FEET, setID: 2));
-		itemTable.Add(13, new Weapon(metadata: new Metadata(name: "Croc de la Téci"), damage: 6.0f, attackRate: 2.0f, weaponTypeID: 1));
+		itemTable.Add(13, new Weapon(metadata: new Metadata(name: "Croc de la Téci"), damage: 6.0f, attackRate: 2.0f, weaponTypeID: 7));
 		itemTable.Add(14, new Weapon(metadata: new Metadata(name: "La quat'cinq"), attackRate: 0.3f, weaponTypeID: 3, projectileID: 3));
 		itemTable.Add(15, new Weapon(metadata: new Metadata(name: "Arc biodégradable"), attackRate: 1.0f, weaponTypeID: 3, projectileID: 4));
 		itemTable.Add(16, new Weapon(metadata: new Metadata(name: "Pierre à XP"), recyclingXP: 1000, weaponTypeID: 6));
 
-		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem"), damage: 35.0f, attackRate: 1.2f, weaponTypeID: 2));
-		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites"), weaponTypeID: 4, damage: 25.0f, attackRate: 1.5f, projectileID: 6));
+		itemTable.Add(17, new Weapon(metadata: new Metadata(name: "Le Totem", lore: "Une selle de vélo au nom intimidant"), damage: 35.0f, attackRate: 1.2f, weaponTypeID: 2));
+		itemTable.Add(18, new Weapon(metadata: new Metadata(name: "Les coordanites", lore: "Ah, les fautes de frappes"), weaponTypeID: 4, damage: 25.0f, attackRate: 1.5f, projectileID: 6));
 
 		itemTable.Add(19, new Armor(metadata: new Metadata(name: "Sweat et jeans troués"), slot: ArmorSlot.BODY, setID: 3, stats: new Stats(5, 10, 0)));
-		itemTable.Add(20, new Armor(metadata: new Metadata(name: "Casquette retournée"), slot: ArmorSlot.HEAD, setID: 3, stats: new Stats(5, 10, 0)));
+		itemTable.Add(20, new Armor(metadata: new Metadata(name: "Casquette retournée", lore: "Eh vazy"), slot: ArmorSlot.HEAD, setID: 3, stats: new Stats(5, 10, 0)));
 		itemTable.Add(21, new Armor(metadata: new Metadata(name: "Les niques"), slot: ArmorSlot.FEET, setID: 3, stats: new Stats(5, 10, 0)));
+
+		itemTable.Add(22, new Weapon(metadata: new Metadata(name: "Dague rouillée", quality: Quality.JUNK), recyclingXP: 50, weaponTypeID: 7, damage: 10.0f, attackRate: 1.1f));
+		itemTable.Add(23, new Weapon(metadata: new Metadata(name: "Epée simple", quality: Quality.COMMON), recyclingXP: 100, weaponTypeID: 1, damage: 25.0f, attackRate: 1.0f));
+		itemTable.Add(24, new Weapon(metadata: new Metadata(name: "Epée enchantée", lore: "A vue d'oeil, une épée ordinaire...", quality: Quality.RARE), recyclingXP: 150, weaponTypeID: 1, damage: 55.0f, attackRate: 1.1f));
+		itemTable.Add(25, new Weapon(metadata: new Metadata(name: "Epée flamboyante", lore: "Tout juste sortie du four", quality: Quality.EPIC), recyclingXP: 250, buffID: 9, weaponTypeID: 5, damage: 85.0f, attackRate: 1.0f));
+
+		itemTable.Add(26, new Armor(metadata: new Metadata(name: "Groomba", lore: "Il est plein de poussière... Vous êtes sûr de vouloir mettre ça sur votre tête?", quality: Quality.JUNK), slot: ArmorSlot.HEAD, stats: new Stats(5, 0, 0)));
+		itemTable.Add(27, new Armor(metadata: new Metadata(name: "Plaque de métal", lore: "Pas très agréable, mais super résistant!", quality: Quality.COMMON), slot: ArmorSlot.BODY, stats: new Stats(15, 0, 0)));
+		itemTable.Add(28, new Armor(metadata: new Metadata(name: "Gants en fer", lore: "Beaucoup trop lourds...", quality: Quality.COMMON), slot: ArmorSlot.HANDS, stats: new Stats(10, 0, 0)));
+		itemTable.Add(29, new Armor(metadata: new Metadata(name: "Casque avec viseur", lore: "Vous avez vu Robocop?", quality: Quality.RARE), slot: ArmorSlot.HEAD, stats: new Stats(25, 10, 0)));
+		itemTable.Add(30, new Armor(metadata: new Metadata(name: "Tenue de combat en fer", lore: "Résistante et peu contraignante", quality: Quality.RARE), slot: ArmorSlot.BODY, stats: new Stats(15, 10, 0)));
+		itemTable.Add(31, new Weapon(metadata: new Metadata(name: "Fusil à lunette", lore: "Boom, headshot!", quality: Quality.RARE), recyclingXP: 200, attackRate: 0.3f, weaponTypeID: 8, projectileID: 3));
+		itemTable.Add(32, new Armor(metadata: new Metadata(name: "Bottes de plomb", lore: "Marcher n'a jamais paru aussi difficile", quality: Quality.EPIC), buffID:10,  slot: ArmorSlot.FEET, stats: new Stats(30, 0, 0)));
+		itemTable.Add(33, new Armor(metadata: new Metadata(name: "Armure de titane", lore: "Avec ça, vos ennemis peuvent directement passer aux canons!", quality: Quality.EPIC), slot: ArmorSlot.BODY, stats: new Stats(50, 0, 0)));
 
 		// Monsters
 
@@ -293,6 +314,16 @@ public static class DataTables
 		monsterTable.Add(11, new Monster(metadata: new Metadata(name: "Le veau doux"), behaviour: AIType.aggressive, items: new uint[] { 18 }));
 
 		monsterTable.Add(12, new Monster(metadata: new Metadata(name: "Un monstre")));
+
+		monsterTable.Add(13, new Monster(metadata: new Metadata(name: "Gobelin", description: "Faible et fragile", lore: "Petit et répugnant", scale: 0.5f, quality: Quality.JUNK), items: new uint[] { 22 }));
+		monsterTable.Add(14, new Monster(metadata: new Metadata(name: "Méchant Gobelin", description: "Un peu dangereux mais fragile", lore: "Un peu moins petit, un peu plus répugnant", scale: 0.8f, quality: Quality.COMMON), items: new uint[] { 23 }));
+		monsterTable.Add(15, new Monster(metadata: new Metadata(name: "Gros Gobelin", description: "Dangereux mais fragile", lore: "Pas très petit, très répugnant", scale: 1.1f, quality: Quality.RARE), items: new uint[] { 24 }));
+		monsterTable.Add(16, new Monster(metadata: new Metadata(name: "Super Gobelin", description: "Très dangereux mais fragile", lore: "Super pas petit, super répugnant", scale: 1.3f, quality: Quality.EPIC), items: new uint[] { 25 }));
+
+		monsterTable.Add(17, new Monster(metadata: new Metadata(name: "Robot nettoyeur", description: "Faible et fragile", lore: "Saletés, prenez garde", quality: Quality.JUNK), items: new uint[] { 26 }));
+		monsterTable.Add(18, new Monster(metadata: new Metadata(name: "Robot destructeur", description: "Robuste", lore: "Ils ne viennent pas en paix", quality: Quality.COMMON), items: new uint[] { 27, 28 }));
+		monsterTable.Add(19, new Monster(metadata: new Metadata(name: "Robot sniper", description: "Dangereux à distance, mais un peu fragile", lore: "Tout le monde aime les snipers. Lui ne vous aime pas.", quality: Quality.RARE), items: new uint[] { 29, 30, 31 }));
+		monsterTable.Add(20, new Monster(metadata: new Metadata(name: "Robot Géant de la Mort", description: "DANGER", lore: "EXTERMINATE", quality: Quality.EPIC), items: new uint[] { 32, 33 }));
 	}
 
 	private static void ParseTablesFromFile()

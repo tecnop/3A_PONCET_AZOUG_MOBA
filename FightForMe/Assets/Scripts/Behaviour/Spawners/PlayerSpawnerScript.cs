@@ -11,6 +11,8 @@ public class PlayerSpawnerScript : SpawnerScript
 	private bool _playerDied;
 	private float _playerRespawnTime;
 
+	private static Rect centerRect;
+
 	void Start()
 	{
 		_pos = this.transform.position;
@@ -18,6 +20,11 @@ public class PlayerSpawnerScript : SpawnerScript
 		_boundPlayer.GetMiscDataScript().SetSpawner(this);
 
 		_initialized = true;
+
+		int w = Screen.width;
+		int h = Screen.height;
+
+		centerRect = SRect.Make(0.4f * w, 0.4f * h, 0.2f * w, 0.2f * h);
 
 		//if (_spawnPending)
 		{
@@ -44,20 +51,32 @@ public class PlayerSpawnerScript : SpawnerScript
 	public override void OnSpawnedEntityDeath()
 	{
 		_playerDied = true;
-		_playerRespawnTime = Time.time + 5.0f;
+		_playerRespawnTime = 5.0f;
 	}
 
 	void Update()
 	{
 		if (_playerDied)
 		{
-			if (GameData.gamePaused)
+			if (!GameData.gamePaused)
 			{
-				_playerRespawnTime += Time.deltaTime;
+				_playerRespawnTime -= Time.deltaTime;
+				if (_playerRespawnTime < 0.0f)
+				{
+					Spawn();
+				}
 			}
-			else if (Time.time > _playerRespawnTime)
+		}
+	}
+
+	void OnGUI()
+	{
+		if (_playerDied)
+		{
+			if (!GameData.gamePaused && HUDRenderer.GetState() == HUDState.Default)
 			{
-				Spawn();
+				GUI.Box(centerRect, GUIContent.none);
+				GUI.Label(centerRect, "Réapparition dans " + (_playerRespawnTime < 1.0f ? _playerRespawnTime : Mathf.FloorToInt(_playerRespawnTime)) + "s");
 			}
 		}
 	}

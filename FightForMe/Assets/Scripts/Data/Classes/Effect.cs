@@ -8,7 +8,9 @@ public enum MiscEffect
 	HEAVY_WEAPONS,		// Character may use heavy weapons and armor
 	LOSS_OF_CONTROL,	// Character cannot move anymore and is made non-kinematic (also implies a movement override)
 	CARRYING_TROPHY,	// Character is carrying the trophy
-	INVULNERABLE		// Self-explanatory
+	INVULNERABLE,		// Self-explanatory
+	FIRE_WEAPON,		// Attacks ignite the target
+	CC_IMMUNITY			// Immunity to crowd control effects
 }
 
 public class Effect
@@ -102,7 +104,7 @@ public class Effect
 		if (this.pctHP != 0.0f)
 		{
 			string temp = this.pctHP < 0 ? "Réduit" : "Augmente";
-			list.Add(temp + " les points de vie de l'utilisateur de <maxhealth " + Mathf.Abs(this.pctHP)+ " />");
+			list.Add(temp + " les points de vie de l'utilisateur de <maxhealth " + Mathf.Abs(this.pctHP) + " />");
 		}
 		if (this.flatMP != 0.0f)
 		{
@@ -122,7 +124,7 @@ public class Effect
 		if (this.pctHPRegen != 0.0f)
 		{
 			string temp = this.pctHPRegen < 0 ? "Fait perdre" : "Rend";
-			list.Add(temp + " à l'utilisateur <maxhealth " + Mathf.Abs(this.pctHPRegen)+ "> par seconde");
+			list.Add(temp + " à l'utilisateur <maxhealth " + Mathf.Abs(this.pctHPRegen) + "> par seconde");
 		}
 		if (this.flatMPRegen != 0.0f)
 		{
@@ -182,8 +184,39 @@ public class Effect
 			list.Add("Débloque le sort: " + DataTables.GetSpell(this.unlockedAbility).GetName());
 		}
 		if (this.misc != MiscEffect.NONE)
-		{ // TODO
-			list.Add(this.misc.ToString());
+		{
+			string text;
+
+			if (this.misc == MiscEffect.HEAVY_WEAPONS)
+			{
+				text = "Ce personnage peut porter des armes et armures lourdes";
+			}
+			else if (this.misc == MiscEffect.LOSS_OF_CONTROL)
+			{
+				text = "Ce personnage ne peut plus se contrôler";
+			}
+			else if (this.misc == MiscEffect.CARRYING_TROPHY)
+			{
+				text = "Ce personnage transporte la relique d'Hasnor!";
+			}
+			else if (this.misc == MiscEffect.INVULNERABLE)
+			{
+				text = "Ce personnage est invincible";
+			}
+			else if (this.misc == MiscEffect.FIRE_WEAPON)
+			{
+				text = "L'arme de ce personnage enflamme les ennemis";
+			}
+			else if (this.misc == MiscEffect.CC_IMMUNITY)
+			{
+				text = "Ce personnage est immunisé aux effets de contrôle";
+			}
+			else
+			{
+				text = "Description manquante pour l'effet " + this.misc.ToString();
+			}
+
+			list.Add(text);
 		}
 
 		return string.Join("\n", list.ToArray());

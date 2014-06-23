@@ -28,7 +28,9 @@ public class HUDInventory : HUDComponent
 		List<Item> items = GameData.activePlayer.GetInventoryScript().GetItems();
 		uint i = 0;
 
-		scrollPos = GUI.BeginScrollView(SRect.Make(0.0f, 0.0f, w, 0.9f * h), scrollPos, SRect.Make(0.0f, 0.0f, w - 20.0f, 40.0f * items.Count), false, true);
+		float scrollHeight = 40.0f * items.Count;
+		if (scrollHeight <= 0.9f * h) scrollHeight = 0.9f * h;
+		scrollPos = GUI.BeginScrollView(SRect.Make(0.0f, 0.0f, w, 0.9f * h), scrollPos, SRect.Make(0.0f, 0.0f, w - 20.0f, scrollHeight), false, true);
 
 		foreach (Item item in items)
 		{

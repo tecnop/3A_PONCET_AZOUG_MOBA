@@ -40,7 +40,7 @@ public abstract class Item : WikiEntry
 
 		if (this.buffID != 0)
 		{
-			GUI.BeginGroup(SRect.Make(0.0f, height - 40.0f, width, 20.0f), "data_window_item_buff");
+			GUI.BeginGroup(SRect.Make(0.0f, height - 40.0f, width, 20.0f, "data_window_item_buff"));
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Applique l'effet");
 			WikiManager.DrawReferenceInLayout(this.GetBuff());

@@ -126,9 +126,12 @@ public class CharacterCombatScript : MonoBehaviour
 	}
 
 	public void Knockback(CharacterManager target, Vector3 dir, float speed, float duration)
-	{ // Total distance travelled = dir.normalized * speed * duration <= Take fading into account now
-		//InflictBuff(target, TODO, duration);
-		target.GetMovementScript().SetMovementOverride(dir, speed, duration, true);
+	{ // Total distance travelled = dir.normalized * speed * duration <= Not anymore, gotta take fading into account
+		if (!target.GetStatsScript().HasSpecialEffect(MiscEffect.CC_IMMUNITY))
+		{
+			target.GetMovementScript().SetMovementOverride(dir, speed, duration, true);
+		}
+		// Still sending the event to warn AI and such
 		target.GetEventScript().OnKnockback(_manager);
 	}
 

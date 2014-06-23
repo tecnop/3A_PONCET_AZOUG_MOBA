@@ -16,6 +16,11 @@ public class SpellMeleeHit : SpellTarget
 		Utils.PlayWeaponSoundOnSource(inflictor.GetInventoryScript().GetWeapon(), true, target.GetAudioSource());
 
 		inflictor.GetCombatScript().Damage(target, inflictor.GetStatsScript().GetDamage() * multiplier);
+
+		if (inflictor.GetStatsScript().HasSpecialEffect(MiscEffect.FIRE_WEAPON))
+		{ // FIXME: This shouldn't be hard coded
+			inflictor.GetCombatScript().InflictBuff(target, 3, duration: 5.0f);
+		}
 	}
 
 	public override bool CastingCondition(CharacterManager caster)
