@@ -96,7 +96,7 @@ public class Weapon : Item
 		base.DrawWikiPage(width, height);
 
 		/*if (this.weaponTypeID != 0)
-		{
+		{ // I don't remember why I removed this actually
 			GUI.BeginGroup(SRect.Make(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f, "wiki_weapon_type"));
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Type:");

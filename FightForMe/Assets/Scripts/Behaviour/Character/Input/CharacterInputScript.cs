@@ -28,7 +28,7 @@ public abstract class CharacterInputScript : MonoBehaviour
 
 	public void UpdateInput()
 	{
-		if (_manager.IsLocal())
+		if (_manager.IsLocal() || GameData.gameType == GameType.Local) // Eeeeh not very cleaaan but I need it for bots
 		{
 			Vector3 newInput = UpdateDirectionalInput();
 			Vector3 newLookPos = UpdateLookPosition();

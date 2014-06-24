@@ -17,12 +17,12 @@ public enum SpellCostType
 	PCTHEALTH
 }
 
-public enum SpellCastingType
+/*public enum SpellCastingType
 {
 	DEFAULT,
 	CONTINUOUS,
 	CHANNELED
-}
+}*/
 
 public abstract class Spell : WikiEntry
 {
@@ -73,5 +73,46 @@ public abstract class Spell : WikiEntry
 			return spellCost * caster.GetStatsScript().GetMaxHealth();
 
 		return 0.0f;
+	}
+
+	public override void DrawDataWindow(float width, float height)
+	{
+		base.DrawDataWindow(width, height);
+
+		// Resource cost
+		string costString = "Coût: ";
+
+		if (costType == SpellCostType.NONE)
+		{
+			costString += "Aucun";
+		}
+		else
+		{
+			costString += this.GetCost(GameData.activePlayer);
+
+			if (costType == SpellCostType.MANA || costType == SpellCostType.PCTMANA)
+			{
+				costString += " mana";
+				if (costType == SpellCostType.PCTMANA)
+				{
+					costString += " (" + (100 * this.spellCost) + "%)";
+				}
+			}
+			else if (costType == SpellCostType.HEALTH || costType == SpellCostType.PCTHEALTH)
+			{
+				costString += " health";
+				if (costType == SpellCostType.PCTHEALTH)
+				{
+					costString += " (" + (100 * this.spellCost) + "%)";
+				}
+			}
+		}
+
+		GUI.Label(SRect.Make(2.0f * width / 3.0f, 0.0f, width / 3.0f, height / 5.0f, "spell_resource_cost"), costString, FFMStyles.centeredText_wrapped);
+	}
+
+	public override void DrawWikiPage(float width, float height)
+	{
+		base.DrawWikiPage(width, height);
 	}
 }

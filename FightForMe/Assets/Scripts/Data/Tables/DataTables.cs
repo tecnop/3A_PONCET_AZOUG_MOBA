@@ -298,7 +298,7 @@ public static class DataTables
 		itemTable.Add(31, new Weapon(metadata: new Metadata(name: "Fusil à lunette", lore: "Boom, headshot!", quality: Quality.RARE), recyclingXP: 200, attackRate: 0.3f, weaponTypeID: 8, projectileID: 3));
 		itemTable.Add(32, new Armor(metadata: new Metadata(name: "Bottes de plomb", lore: "Marcher n'a jamais paru aussi difficile", quality: Quality.EPIC), buffID: 10, slot: ArmorSlot.FEET, stats: new Stats(30, 0, 0)));
 		itemTable.Add(33, new Armor(metadata: new Metadata(name: "Armure de titane", lore: "Avec ça, vos ennemis peuvent directement passer aux canons!", quality: Quality.EPIC), slot: ArmorSlot.BODY, stats: new Stats(50, 0, 0)));
-
+		// Where'd 34 go? D:
 		// Gang
 		itemTable.Add(35, new Weapon(metadata: new Metadata(name: "Canif", lore: "Aboule le fric!", quality: Quality.COMMON), recyclingXP: 100, damage: 15.0f, attackRate: 1.2f, weaponTypeID: 7));
 		itemTable.Add(36, new Weapon(metadata: new Metadata(name: "Balisong", lore: "Plus cool que pratique", quality: Quality.RARE), recyclingXP: 150, damage: 30.0f, attackRate: 1.2f, weaponTypeID: 7));

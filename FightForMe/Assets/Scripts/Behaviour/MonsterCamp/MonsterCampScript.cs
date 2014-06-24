@@ -4,10 +4,22 @@ using System.Collections.Generic;
 
 public class MonsterCampScript : MonoBehaviour
 {
+	public static List<MonsterCampScript> camps; // Whatever, kind of in a hurry
+
 	private List<MonsterSpawnerScript> _spawners;	// Spawners that are part of this camp (type: MonsterSpawnerScript)
 
 	private uint currentLevel;		// Current level of the camp (goes up each time all the monsters die)
 	private uint stillAlive;		// Monsters still alive
+
+	private Vector3 pos;
+
+	public bool respawning
+	{
+		get
+		{
+			return stillAlive == 0;
+		}
+	}
 
 	void Start()
 	{
@@ -24,6 +36,8 @@ public class MonsterCampScript : MonoBehaviour
 			Destroy(this.gameObject);
 			return;
 		}
+
+		pos = this.transform.position;
 
 		foreach (MonsterSpawnerScript spawner in _spawners)
 		{
@@ -81,5 +95,10 @@ public class MonsterCampScript : MonoBehaviour
 		{
 			currentLevel++;
 		}
+	}
+
+	public Vector3 GetPos()
+	{
+		return pos;
 	}
 }

@@ -19,9 +19,9 @@
 
 ( ) Gestion de la recherche de partie
 
-( ) Ajout d'entrées dans la configuration par défaut des tables de données
+(/) Ajout d'entrées dans la configuration par défaut des tables de données
 
-( ) Gestion du transfert de la configuration actuelle des tables de données en mode non-sécurisé
+(X) Gestion du transfert de la configuration actuelle des tables de données en mode non-sécurisé
 
 ( ) Résolution du problème de vitesse d'animation variable
 
@@ -41,9 +41,9 @@
 
 (X) Amélioration de l'IA des monstres pour rendre leur mouvement plus naturel et gérer la perte de vision de l'ennemi
 
-( ) Mise en place des parties contre une IA
+(/) Mise en place des parties contre une IA
 
-( ) Meilleure gestion de la reconnexion (resynchronisation de tous les scripts)
+(X) Meilleure gestion de la reconnexion (resynchronisation de tous les scripts)
 
 (?) Amélioration de la gestion du scale sur les monstres
 
@@ -53,10 +53,14 @@
 
 (X) Petit bug de vision: un ennemi de la deuxième map n'est pas correctement affecté à une tile de la map
 
-( ) Résolution des petits problèmes d'interfaces (emplacements de compétences à taille fixe, etc)
+(X) Résolution des petits problèmes d'interfaces (emplacements de compétences à taille fixe, etc)
 
 (X) Passage de la map de vision en ScriptableObject
 
-( ) Résoudre le bug lié à la synchronisation des entités avant qu'elles ne soient instantiées
+(X) Résoudre le bug lié à la synchronisation des entités avant qu'elles ne soient instantiées
 
 ( ) Résoudre le problème de destruction des entités visibles
+
+( ) Cacher les objets et projectiles dans le brouillard de guerre
+
+( ) Empêcher la caméra et les diverses entités de quitter la zone de la carte

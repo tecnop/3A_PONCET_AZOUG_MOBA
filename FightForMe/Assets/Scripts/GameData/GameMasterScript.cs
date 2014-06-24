@@ -47,7 +47,7 @@ public class GameMasterScript : MonoBehaviour
 		else if (GameData.gameType == GameType.Local)
 		{
 			LinkMeToPlayer(true);
-			// Make the other one a bot
+			// The other one will automatically become a bot
 		}
 		else
 		{ // We'll just receive it from the network
@@ -71,6 +71,8 @@ public class GameMasterScript : MonoBehaviour
 		{
 			monsterCamps.Add(camp.GetComponent<MonsterCampScript>());
 		}
+
+		MonsterCampScript.camps = monsterCamps;
 
 		// Wait 3 seconds to make sure everyone's in the game and ready
 		nextSpawnTime = 3.0f;

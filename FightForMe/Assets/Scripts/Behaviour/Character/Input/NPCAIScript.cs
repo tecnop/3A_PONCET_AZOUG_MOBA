@@ -17,7 +17,7 @@ public class NPCAIScript : CharacterInputScript
 	private bool goalReached;
 	private CharacterManager target;
 	private Vector3 startPos;
-	private Queue<Vector3> currentPath;
+	private AIPath currentPath;
 	private Vector3 finalGoalPos;
 	private bool targetLost;
 	private float searchTime;
@@ -28,7 +28,7 @@ public class NPCAIScript : CharacterInputScript
 		_transform = _manager.GetCharacterTransform();
 		_misc = (MonsterMiscDataScript)_manager.GetMiscDataScript();
 		this.startPos = _misc.GetSpawnPos();
-		this.currentPath = new Queue<Vector3>();
+		this.currentPath = new AIPath(null);
 		this.goalPosition = _transform.position;
 
 		UpdateApproachRange();
@@ -176,12 +176,15 @@ public class NPCAIScript : CharacterInputScript
 		goalReached = false;
 
 		this.finalGoalPos = pos;
-		NavMeshPath path = new NavMeshPath();
 
-		if (NavMesh.CalculatePath(_transform.position, pos, (1 << NavMesh.GetNavMeshLayerFromName("Default")), path))
+		this.currentPath = AIPath.CreatePath(_transform.position, pos);
+		if (this.currentPath.HasNextGoal())
 		{
-			this.currentPath = new Queue<Vector3>(path.corners);
-			this.goalPosition = this.currentPath.Dequeue();
+			this.goalPosition = this.currentPath.DequeueNextGoal();
+		}
+		else
+		{
+			this.goalPosition = _transform.position;
 		}
 	}
 
@@ -243,7 +246,7 @@ public class NPCAIScript : CharacterInputScript
 		Vector3 move = this.goalPosition - _transform.position;
 		move.y = 0;
 
-		if (move.magnitude < approachRange && this.HasAnEnemy() && this.currentPath.Count == 0)
+		if (move.magnitude < approachRange && this.HasAnEnemy() && !this.currentPath.HasNextGoal())
 		{ // If our current goal is our actual target, stay at some distance
 			goalReached = true;
 			return Vector3.zero;
@@ -251,9 +254,9 @@ public class NPCAIScript : CharacterInputScript
 
 		if (move.magnitude < 0.25f)
 		{
-			if (this.currentPath.Count > 0)
+			if (this.currentPath.HasNextGoal())
 			{
-				this.goalPosition = this.currentPath.Dequeue();
+				this.goalPosition = this.currentPath.DequeueNextGoal();
 			}
 			else
 			{
@@ -270,6 +273,21 @@ public class NPCAIScript : CharacterInputScript
 	{
 		if (Utils.DiffNoY(_transform.position, goalPosition).magnitude < 0.1f)
 		{ // Don't panick alright, just look forward
+			if (!HasAnEnemy() && _misc.GetSpawner() is MonsterSpawnerScript)
+			{ // Unless we have no enemy...
+				MonsterSpawnerScript spawner = (MonsterSpawnerScript)_misc.GetSpawner();
+				if (spawner)
+				{ // And a spawner...
+					MonsterCampScript camp = spawner.GetCamp();
+					if (camp)
+					{ // And a camp!
+						return camp.GetPos();
+					}
+				}
+			}
+
+			// TODO: Make the Lord face the direction of his spawner
+
 			return _transform.position + 5.0f * _transform.forward;
 		}
 		else

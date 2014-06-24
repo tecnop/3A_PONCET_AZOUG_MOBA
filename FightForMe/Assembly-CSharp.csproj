@@ -48,6 +48,8 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Behaviour\Abstract\NetworkedEntityScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Audio\AudioClipLister.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Character\AI\AIPath.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Character\AI\BotDecisionMaker.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterAnimatorScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterCombatScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\CharacterInventoryScript.cs" />
@@ -59,7 +61,6 @@
      <Compile Include="Assets\Scripts\Behaviour\Character\Event\CharacterEventScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Event\MonsterEventScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Event\PlayerEventScript.cs" />
-     <Compile Include="Assets\Scripts\Behaviour\Character\Input\BotAIScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Input\CharacterInputScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Input\NPCAIScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\Input\PlayerInputScript.cs" />

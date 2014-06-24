@@ -8,6 +8,8 @@ public class PlayerInputScript : CharacterInputScript
 	private Transform _playerTransform;
 	private Camera _camera;
 
+	private BotDecisionMaker _ai;
+
 	private bool hasLockedCamera;
 
 	public override void Initialize(CharacterManager manager)
@@ -15,7 +17,11 @@ public class PlayerInputScript : CharacterInputScript
 		//base.Initialize(manager);
 		_manager = manager;
 
-		if (_manager.IsLocal())
+		if (GameData.gameType == GameType.Local && _manager != GameData.activePlayer)
+		{ // This one's a bot
+			_ai = new BotDecisionMaker(_manager);
+		}
+		else if (_manager.IsLocal())
 		{ // Only link the camera to us if we're going to be using it
 			_cameraScript = _manager.GetCameraScript();
 			_camera = _cameraScript.GetCamera();
@@ -27,27 +33,41 @@ public class PlayerInputScript : CharacterInputScript
 
 	protected override Vector3 UpdateDirectionalInput()
 	{
-		return new Vector3(Input.GetAxis("HorzMove"), 0, Input.GetAxis("VertMove"));
+		if (_ai != null)
+		{
+			return _ai.GetDirectionalInput();
+		}
+		else
+		{
+			return new Vector3(Input.GetAxis("HorzMove"), 0, Input.GetAxis("VertMove"));
+		}
 	}
 
 	protected override Vector3 UpdateLookPosition()
 	{
-		Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-		RaycastHit rayInfo;
-		Vector3 diff;
-
-		if (Physics.Raycast(ray, out rayInfo, 100.0f, (1 << LayerMask.NameToLayer("Terrain"))))
+		if (_ai != null)
 		{
-			//diff = rayInfo.point - _playerTransform.position;
-			return rayInfo.point;
+			return _ai.GetLookPosition();
 		}
 		else
-		{ // How do we feel about doing that all the time instead of using a RayCast? Is it as accurate?
-			Vector3 cameraDiff = _camera.WorldToScreenPoint(_cameraScript.GetCameraPos()) - _camera.WorldToScreenPoint(_playerTransform.position);
+		{
+			Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+			RaycastHit rayInfo;
+			Vector3 diff;
 
-			diff = new Vector3(Input.mousePosition.x - Screen.width / 2 + cameraDiff.x, 0, Input.mousePosition.y - Screen.height / 2 + cameraDiff.y);
+			if (Physics.Raycast(ray, out rayInfo, 100.0f, (1 << LayerMask.NameToLayer("Terrain"))))
+			{
+				//diff = rayInfo.point - _playerTransform.position;
+				return rayInfo.point;
+			}
+			else
+			{ // How do we feel about doing that all the time instead of using a RayCast? Is it as accurate?
+				Vector3 cameraDiff = _camera.WorldToScreenPoint(_cameraScript.GetCameraPos()) - _camera.WorldToScreenPoint(_playerTransform.position);
 
-			return _playerTransform.position + diff;
+				diff = new Vector3(Input.mousePosition.x - Screen.width / 2 + cameraDiff.x, 0, Input.mousePosition.y - Screen.height / 2 + cameraDiff.y);
+
+				return _playerTransform.position + diff;
+			}
 		}
 	}
 
@@ -58,33 +78,47 @@ public class PlayerInputScript : CharacterInputScript
 			return 0;
 		}
 
-		if (HUDRenderer.GetState() != HUDState.Default)
-		{ // Not the prettiest way to do it but hey
-			return 0;
-		}
-
-		for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
+		if (_ai != null)
 		{
-			string axisName = "Ability" + ((int)(i + 1));
+			return _ai.GetCurrentSpell();
+		}
+		else
+		{
+			if (HUDRenderer.GetState() != HUDState.Default)
+			{ // Not the prettiest way to do it but hey
+				return 0;
+			}
 
-			if (Input.GetAxis(axisName) > 0)
+			for (SpellSlot i = SpellSlot.SLOT_0; i < SpellSlot.NUM_SLOTS; i++)
 			{
-				uint spell = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i);
-				if (_manager.GetCombatScript().CanUseSpell(spell))
+				string axisName = "Ability" + ((int)(i + 1));
+
+				if (Input.GetAxis(axisName) > 0)
 				{
-					return spell;
+					uint spell = ((PlayerMiscDataScript)_manager.GetMiscDataScript()).GetSpellForSlot(i);
+					if (_manager.GetCombatScript().CanUseSpell(spell))
+					{
+						return spell;
+					}
 				}
 			}
-		}
 
-		return 0;
+			return 0;
+		}
 	}
 
 	protected override void ReadGenericInput()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{ // Don't forget to turn that into an axis
-			this.hasLockedCamera = !this.hasLockedCamera;
+		if (_ai != null)
+		{
+			_ai.RunAI();
+		}
+		else
+		{
+			if (Input.GetKeyDown(KeyCode.Space))
+			{ // Don't forget to turn that into an axis
+				this.hasLockedCamera = !this.hasLockedCamera;
+			}
 		}
 	}
 

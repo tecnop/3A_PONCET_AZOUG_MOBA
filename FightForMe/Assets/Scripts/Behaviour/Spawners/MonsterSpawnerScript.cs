@@ -131,4 +131,9 @@ public class MonsterSpawnerScript : SpawnerScript
 			Spawn();
 		}
 	}
+
+	public MonsterCampScript GetCamp()
+	{
+		return camp;
+	}
 }

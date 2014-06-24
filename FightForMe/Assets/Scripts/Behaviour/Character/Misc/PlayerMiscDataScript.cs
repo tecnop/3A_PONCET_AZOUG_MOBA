@@ -93,7 +93,7 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 	}
 
 	[RPC]
-	public void _LearnSkill(int skillID)
+	private void _LearnSkill(int skillID)
 	{
 		unlockedSkills.Add(DataTables.GetSkill((uint)skillID));
 		_manager.GetStatsScript().UpdateStats();
