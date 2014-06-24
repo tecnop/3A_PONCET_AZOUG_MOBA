@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Behaviour\Abstract\NetworkedEntityScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Abstract\VisibleEntity.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Audio\AudioClipLister.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\AI\AIPath.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Character\AI\BotDecisionMaker.cs" />
@@ -72,6 +73,7 @@
      <Compile Include="Assets\Scripts\Behaviour\DroppedItem\DroppedItemScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Graphics\GraphicsLoader.cs" />
      <Compile Include="Assets\Scripts\Behaviour\Graphics\ModelListScript.cs" />
+     <Compile Include="Assets\Scripts\Behaviour\Graphics\VisibilityManager.cs" />
      <Compile Include="Assets\Scripts\Behaviour\MonsterCamp\MonsterCampScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerCameraScript.cs" />
      <Compile Include="Assets\Scripts\Behaviour\PlayerCamera\PlayerHUDScript.cs" />

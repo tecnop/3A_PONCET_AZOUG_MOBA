@@ -204,7 +204,7 @@ public class BotDecisionMaker
 		// If we've been attacking someone, keep doing that
 		// If we just noticed the enemy player, target him
 		// If we're strong enough to go for the objective, do that
-		// If we arrived at our destination, fight the camp
+		// If we arrived at our destination, engage nearby enemies
 		// If we aren't doing anything, target the closest camp
 
 		decisionTime = 0.5f;
@@ -218,8 +218,49 @@ public class BotDecisionMaker
 			MakeDecisions();
 		}
 
-		this.movement = Vector3.zero;
-		this.lookPos = _transform.position + 5.0f * Random.insideUnitSphere;
+		if (enemy && enemyLost)
+		{
+			if (searchTime > 0)
+			{
+				if (Time.time > searchTime)
+				{
+					Debug.Log(_manager.name + " gave up on searching for " + enemy.name);
+					enemy = null;
+					searchTime = 0;
+				}
+				else
+				{ // Look around?
+
+				}
+			}
+			else
+			{
+				searchTime = Time.time + 3.0f;
+			}
+		}
+
+		Vector3 move = Utils.DiffNoY(this.currentGoal, _transform.position);
+
+		if (move.magnitude < approachRange && this.HasAnEnemy() && !this.currentPath.HasNextGoal())
+		{ // If our current goal is our actual target, stay at some distance
+			move = Vector3.zero;
+		}
+
+		if (move.magnitude < 0.25f)
+		{
+			if (this.currentPath.HasNextGoal())
+			{
+				this.currentGoal = this.currentPath.DequeueNextGoal();
+			}
+			else
+			{
+				this.currentGoal = _transform.position;
+				move = Vector3.zero;
+			}
+		}
+
+		this.movement = move;
+		this.lookPos = _transform.position + move;
 		this.spell = 0;
 	}
 

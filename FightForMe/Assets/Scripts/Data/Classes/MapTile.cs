@@ -32,7 +32,10 @@ public class MapTile : ScriptableObject
 	private List<int> neighbourIndexes;	// Indexes of the neighbours of this tile
 
 	[SerializeField] // Mostly for debugging I guess but why not
-	private List<GameObject> objects;	// Objects currently in this tile
+	private List<VisibleEntity> objects;	// Objects currently in this tile
+
+	[SerializeField] // Also for debugging, but I think I need to leave it like this for now
+	private List<CharacterVisionScript> subscribers;	// Vision scripts who subscribed to this tile and should be notified of its changes
 
 	[SerializeField]
 	private int index; // Starts at 1
@@ -47,7 +50,8 @@ public class MapTile : ScriptableObject
 		this._position = position;
 		this._size = size;
 		this.neighbours = new List<MapTile>();
-		this.objects = new List<GameObject>();
+		this.objects = new List<VisibleEntity>();
+		this.subscribers = new List<CharacterVisionScript>();
 		this.neighbourIndexes = new List<int>();
 		//this.tileEntity = null;
 	}
@@ -95,21 +99,53 @@ public class MapTile : ScriptableObject
 		}
 	}
 
-	public bool RemoveEntity(GameObject entity)
+	public bool RemoveEntity(VisibleEntity entity)
 	{
 		if (this.objects.Contains(entity))
 		{
 			this.objects.Remove(entity);
+
+			foreach (CharacterVisionScript sub in this.subscribers)
+			{
+				sub.RemoveSeenEntity(entity);
+			}
+
 			return true;
 		}
 		return false;
 	}
 
-	public bool AddEntity(GameObject entity)
+	public bool AddEntity(VisibleEntity entity)
 	{
 		if (!this.objects.Contains(entity))
 		{
 			this.objects.Add(entity);
+
+			foreach (CharacterVisionScript sub in this.subscribers)
+			{
+				sub.AddSeenEntity(entity);
+			}
+
+			return true;
+		}
+		return false;
+	}
+
+	public bool RemoveSubscriber(CharacterVisionScript sub)
+	{
+		if (this.subscribers.Contains(sub))
+		{
+			this.subscribers.Remove(sub);
+			return true;
+		}
+		return false;
+	}
+
+	public bool AddSubscriber(CharacterVisionScript sub)
+	{
+		if (!this.subscribers.Contains(sub))
+		{
+			this.subscribers.Add(sub);
 			return true;
 		}
 		return false;
@@ -125,8 +161,13 @@ public class MapTile : ScriptableObject
 		return new List<MapTile>(this.neighbours);
 	}
 
-	public List<GameObject> ObjectsInside()
+	public List<VisibleEntity> ObjectsInside()
 	{
-		return new List<GameObject>(this.objects);
+		return new List<VisibleEntity>(this.objects);
+	}
+
+	public List<CharacterVisionScript> Subscribers()
+	{
+		return new List<CharacterVisionScript>(this.subscribers);
 	}
 }

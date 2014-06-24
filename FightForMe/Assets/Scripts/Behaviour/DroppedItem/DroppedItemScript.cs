@@ -1,16 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DroppedItemScript : MonoBehaviour//NetworkedEntityScript
+public class DroppedItemScript : VisibleEntity
 {
 	[SerializeField] // Serialized for debugging
 	private int _itemID; // ...
-
-	[SerializeField]
-	private Transform _transform;
-
-	[SerializeField]
-	private GraphicsLoader _graphics;
 
 	[SerializeField]
 	private NetworkView _networkView;

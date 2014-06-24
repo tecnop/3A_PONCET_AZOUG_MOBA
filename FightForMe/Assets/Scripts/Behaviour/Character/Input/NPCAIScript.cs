@@ -127,16 +127,15 @@ public class NPCAIScript : CharacterInputScript
 
 	public void SpreadTargetToCamp(CharacterManager target)
 	{
-		List<GameObject> ents = _manager.GetVisionScript().GetEntitiesInSight();
-		foreach (GameObject ent in ents)
+		List<VisibleEntity> ents = _manager.GetVisionScript().GetEntitiesInSight();
+		foreach (VisibleEntity ent in ents)
 		{
-			CharacterManager hisManager = ent.GetComponent<CharacterManager>();
-			if (hisManager != null && hisManager != _manager &&
-				hisManager.GetCameraScript() == null &&
-				hisManager.GetLayer() == _manager.GetLayer() &&
-				Vector3.Distance(_transform.position, hisManager.GetCharacterTransform().position) < 15.0f)
+			if (ent != _manager && ent is CharacterManager &&
+				((CharacterManager)ent).GetCameraScript() == null &&
+				((CharacterManager)ent).GetLayer() == _manager.GetLayer() &&
+				Vector3.Distance(_transform.position, ((CharacterManager)ent).GetCharacterTransform().position) < 15.0f)
 			{ // Those tests are a bit awkward
-				NPCAIScript hisAI = ((NPCAIScript)hisManager.GetInputScript());
+				NPCAIScript hisAI = ((NPCAIScript)((CharacterManager)ent).GetInputScript());
 				if (!hisAI.HasAnEnemy())
 				{ // Maybe it should spread again actually?
 					hisAI.SetTarget(target, false);
@@ -243,8 +242,7 @@ public class NPCAIScript : CharacterInputScript
 			return Vector3.zero;
 		}
 
-		Vector3 move = this.goalPosition - _transform.position;
-		move.y = 0;
+		Vector3 move = Utils.DiffNoY(this.goalPosition, _transform.position);
 
 		if (move.magnitude < approachRange && this.HasAnEnemy() && !this.currentPath.HasNextGoal())
 		{ // If our current goal is our actual target, stay at some distance

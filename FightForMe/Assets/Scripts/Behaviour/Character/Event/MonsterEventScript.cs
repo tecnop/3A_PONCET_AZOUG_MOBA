@@ -87,25 +87,25 @@ public class MonsterEventScript : CharacterEventScript
 		Destroy(this.gameObject);
 	}
 
-	public override void OnSpotEntity(GameObject entity)
+	public override void OnSpotEntity(VisibleEntity entity)
 	{
 		CharacterManager enemy = _ai.GetEnemy();
 
-		if (enemy && enemy.gameObject == entity)
+		if (enemy && enemy == entity)
 		{ // Regained sight of our target
 			_ai.GainSightOfTarget();
 		}
-		else if (_ai.IsSearchingEnemy())
+		else if (_ai.IsSearchingEnemy() && entity is CharacterManager)
 		{
-			_ai.AcknowledgeTarget(entity);
+			_ai.AcknowledgeTarget((CharacterManager)entity);
 		}
 	}
 
-	public override void OnLoseSightOfEntity(GameObject entity)
+	public override void OnLoseSightOfEntity(VisibleEntity entity)
 	{
 		CharacterManager enemy = _ai.GetEnemy();
 
-		if (enemy && enemy.gameObject == entity)
+		if (enemy && enemy == entity)
 		{ // oh noooooo
 			_ai.LoseSightOfTarget();
 		}

@@ -13,21 +13,20 @@ public class CharacterVisionScript : MonoBehaviour
 {
 	private CharacterManager _manager;
 
-	private Transform _transform;
-
 	private MapTile curTile;
 	private List<MapTile> tilesInSight;
-	private List<GameObject> entitiesInSight;
+	private List<VisibleEntity> entitiesInSight;
 	private float lastUpdate;
 
 	public void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
-		_transform = _manager.GetCharacterTransform();
-
-		this.curTile = null;
 
 		this.lastUpdate = 0.0f;
+
+		this.curTile = null;
+		this.tilesInSight = new List<MapTile>();
+		this.entitiesInSight = new List<VisibleEntity>();
 
 		//UpdateVision(true);
 	}
@@ -36,7 +35,7 @@ public class CharacterVisionScript : MonoBehaviour
 	{
 		MapTile tile = TileManager.GetTileForPos(pos);
 
-		return (tile == this.curTile || this.tilesInSight.Contains(tile));
+		return (tile == _manager.GetCurrentTile() || this.tilesInSight.Contains(tile));
 	}
 
 	public bool CanSee(Transform transform)
@@ -49,16 +48,16 @@ public class CharacterVisionScript : MonoBehaviour
 		return CanSee(character.GetCharacterTransform());
 	}
 
-	public void AddSeenEntity(GameObject entity)
+	public void AddSeenEntity(VisibleEntity entity)
 	{
-		if (!this.entitiesInSight.Contains(entity))
+		if (entity != _manager && !this.entitiesInSight.Contains(entity))
 		{
 			this.entitiesInSight.Add(entity);
 			_manager.GetEventScript().OnSpotEntity(entity);
 		}
 	}
 
-	public void RemoveSeenEntity(GameObject entity)
+	public void RemoveSeenEntity(VisibleEntity entity)
 	{
 		if (this.entitiesInSight.Contains(entity))
 		{
@@ -78,50 +77,72 @@ public class CharacterVisionScript : MonoBehaviour
 		lastUpdate = Time.time;
 
 		// Update our current tile
-		MapTile newTile = TileManager.GetTileForPos(_transform.position);
+		bool doUpdate = false;
+		try
+		{
+			doUpdate = _manager.UpdatePositionOnGrid();
+		}
+		catch
+		{
+			Debug.LogWarning(_manager.name + " moved outside of the vision grid");
+		}
 
-		if (newTile == null)
-		{ // Use that to make projectiles disappear maybe?
-			Debug.LogWarning(_manager.name + " is not on a tile! His coordinates are " + _transform.position);
+		if (!doUpdate)
+		{ // We haven't moved
 			return;
 		}
 
-		if (curTile != null)
-		{
-			if (newTile == curTile)
-			{ // We haven't moved from the previous tile
-				return;
+		MapTile newTile = _manager.GetCurrentTile();
+		List<MapTile> newTiles = newTile.GetNeighbours();
+
+		if (this.curTile)
+		{ // Remove us from the old tiles we can't see anymore
+			if (!newTiles.Contains(this.curTile))
+			{
+				this.curTile.RemoveSubscriber(this);
 			}
-			curTile.RemoveEntity(_manager.gameObject);
+			foreach (MapTile neighbour in this.tilesInSight)
+			{
+				if (neighbour != newTile && !newTiles.Contains(neighbour))
+				{
+					neighbour.RemoveSubscriber(this);
+				}
+			}
 		}
-		newTile.AddEntity(_manager.gameObject);
+
+		// Add us to the new tiles we can now see
+		List<VisibleEntity> newEntities = newTile.ObjectsInside();
+		if (!this.tilesInSight.Contains(newTile))
+		{
+			newTile.AddSubscriber(this);
+		}
+		foreach (MapTile neighbour in newTiles)
+		{
+			newEntities.AddRange(neighbour.ObjectsInside());
+			if (neighbour != this.curTile && !this.tilesInSight.Contains(neighbour))
+			{
+				neighbour.AddSubscriber(this);
+			}
+		}
 
 		this.curTile = newTile;
-		this.tilesInSight = newTile.GetNeighbours();
-
-		// TODO: Only check the new tiles? Would that be more costly?
-		List<GameObject> newEntities = this.curTile.ObjectsInside();
-
-		foreach (MapTile tile in this.tilesInSight)
-		{
-			newEntities.AddRange(tile.ObjectsInside());
-		}
+		this.tilesInSight = newTiles;
 
 		//if (!firstTime)
 		{
-			bool doCheck = (this.entitiesInSight != null && this.entitiesInSight.Count > 0);
+			bool doCheck = (this.entitiesInSight.Count > 0);
 
-			foreach (GameObject obj in newEntities)
+			foreach (VisibleEntity ent in newEntities)
 			{
-				if (obj != _manager.gameObject)
+				if (ent != _manager.gameObject)
 				{
 					bool found = false;
 
 					if (doCheck)
 					{ // Get rid of the ones we already knew about
-						foreach (GameObject obj2 in this.entitiesInSight)
+						foreach (VisibleEntity ent2 in this.entitiesInSight)
 						{
-							if (obj == obj2)
+							if (ent == ent2)
 							{
 								found = true;
 								break;
@@ -131,71 +152,51 @@ public class CharacterVisionScript : MonoBehaviour
 
 					if (!found)
 					{
-						_manager.GetEventScript().OnSpotEntity(obj);
-						//Debug.Log(_manager.name + " spotted " + obj.name);
-						CharacterManager hisManager = obj.GetComponent<CharacterManager>();
-						if (hisManager != null)
+						_manager.GetEventScript().OnSpotEntity(ent);
+						//Debug.Log(_manager.name + " spotted " + ent.name);
+
+						if (ent is CharacterManager)
 						{ // Force him to see us so he doesn't have to run a full update
-							//Debug.Log(hisManager.name + " spotted " + _manager.name + " back");
-							hisManager.GetVisionScript().AddSeenEntity(_manager.gameObject);
+							//Debug.Log(ent.name + " spotted " + _manager.name + " back");
+							((CharacterManager)ent).GetVisionScript().AddSeenEntity(_manager);
 						}
 					}
 				}
 			}
 		}
 
-		if (this.entitiesInSight != null)
+		List<VisibleEntity> lostEntities = new List<VisibleEntity>(this.entitiesInSight);
+
+		foreach (VisibleEntity ent in this.entitiesInSight)
 		{
-			List<GameObject> lostEntities = new List<GameObject>(this.entitiesInSight);
-
-			foreach (GameObject obj in this.entitiesInSight)
+			if (newEntities.Contains(ent))
 			{
-				if (newEntities.Contains(obj))
-				{
-					lostEntities.Remove(obj);
-				}
+				lostEntities.Remove(ent);
 			}
+		}
 
-			foreach (GameObject obj in lostEntities)
-			{
-				_manager.GetEventScript().OnLoseSightOfEntity(obj);
-				CharacterManager hisManager = obj.GetComponent<CharacterManager>();
-				if (hisManager != null)
-				{ // Force him to lose us so he doesn't have to run a full update
-					hisManager.GetVisionScript().RemoveSeenEntity(_manager.gameObject);
-				}
-			}
+		foreach (VisibleEntity ent in lostEntities)
+		{
+			_manager.GetEventScript().OnLoseSightOfEntity(ent);
+
+			/*if (ent is CharacterManager)
+			{ // Force him to lose us so he doesn't have to run a full update
+				((CharacterManager)ent).GetVisionScript().RemoveSeenEntity(_manager);
+			}*/
 		}
 
 		this.entitiesInSight = newEntities;
 	}
 
-	void OnDestroy()
-	{ // Kind of a hack I guess
-		if (curTile != null)
-		{
-			curTile.RemoveEntity(_manager.gameObject);
-
-			foreach (GameObject obj in entitiesInSight)
-			{
-				CharacterManager hisManager = obj.GetComponent<CharacterManager>();
-				if (hisManager != null && hisManager != _manager)
-				{ // Remove us from his targets to avoid pointer errors
-					hisManager.GetVisionScript().RemoveSeenEntity(_manager.gameObject);
-				}
-			}
-		}
-	}
-
-	public List<GameObject> GetEntitiesInSight()
+	public List<VisibleEntity> GetEntitiesInSight()
 	{
 		if (this.entitiesInSight != null)
 		{
-			return new List<GameObject>(this.entitiesInSight);
+			return new List<VisibleEntity>(this.entitiesInSight);
 		}
 		else
 		{
-			return new List<GameObject>();
+			return new List<VisibleEntity>();
 		}
 	}
 }

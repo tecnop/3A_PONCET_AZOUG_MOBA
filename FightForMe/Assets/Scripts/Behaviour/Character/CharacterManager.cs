@@ -8,11 +8,8 @@ using System.Collections;
  * 
  */
 
-public class CharacterManager : MonoBehaviour//NetworkedEntityScript
+public class CharacterManager : VisibleEntity
 {
-	[SerializeField]
-	private Transform _transform;
-
 	[SerializeField]
 	private CharacterInputScript _input;
 
@@ -45,9 +42,6 @@ public class CharacterManager : MonoBehaviour//NetworkedEntityScript
 
 	[SerializeField]
 	private CharacterPhysicsScript _physics;
-
-	[SerializeField]
-	private GraphicsLoader _graphics;
 
 	private bool isLocal = false;	// If true, the entity's input will be processed locally, otherwise it will be fetched from the network
 

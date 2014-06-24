@@ -1,14 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ProjectileScript : MonoBehaviour
+public class ProjectileScript : VisibleEntity
 {
-	[SerializeField]
-	private GraphicsLoader _graphics;
-
-	[SerializeField]
-	private Transform _transform;
-
 	[SerializeField]
 	private Rigidbody _rigidBody;
 
@@ -153,7 +147,7 @@ public class ProjectileScript : MonoBehaviour
 		timeToLive = 3.0f;
 		_particles.Stop();
 		_trail.enabled = false;
-		_graphics.gameObject.SetActive(false);
+		this.RemoveFromGrid();
 	}
 
 	void Update()
@@ -179,6 +173,14 @@ public class ProjectileScript : MonoBehaviour
 			}
 			else
 			{ // Actual update
+				if (!disabled)
+				{
+					if (TimeSinceLastUpdate() > 0.2f)
+					{ // Update our visibility
+						UpdatePositionOnGrid();
+					}
+				}
+
 				if (timeToLive > 0)
 				{
 					timeToLive -= Time.deltaTime;
