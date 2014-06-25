@@ -59,8 +59,8 @@
 
 (X) Résoudre le bug lié à la synchronisation des entités avant qu'elles ne soient instantiées
 
-( ) Résoudre le problème de destruction des entités visibles
+(X) Résoudre le problème de destruction des entités visibles
 
-( ) Cacher les objets et projectiles dans le brouillard de guerre
+(X) Cacher les objets et projectiles dans le brouillard de guerre
 
 ( ) Empêcher la caméra et les diverses entités de quitter la zone de la carte

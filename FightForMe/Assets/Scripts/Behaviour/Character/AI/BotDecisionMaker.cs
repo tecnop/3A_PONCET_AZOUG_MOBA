@@ -2,6 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 
+enum BotObjectiveType
+{
+	NONE,
+	FARM,		// Engage nearby camps
+	FIGHT,		// Engage the other player
+	WIN			// Engage the game's objective
+}
+
+enum BotSubRoutine
+{
+	IDLE,
+	MOVE,		// Focus on moving to the objective
+	FIGHT,		// Focus on engaging the target
+	COLLECT,	// Focus on approaching nearby items and deciding what to do with them
+	ESCAPE		// Focus on moving away from the target
+}
+
 public class BotDecisionMaker
 { // A good chunk of this is imported from NPCAIScript.cs, I don't really have enough time to write something clean
 	private CharacterManager _manager;
@@ -25,6 +42,8 @@ public class BotDecisionMaker
 	private uint spell;
 
 	private float decisionTime;
+	private BotObjectiveType objective;
+	private BotSubRoutine routine;
 
 	public BotDecisionMaker(CharacterManager manager)
 	{
@@ -34,12 +53,17 @@ public class BotDecisionMaker
 
 		currentPath = new AIPath(null);
 
+		decisionTime = 2.0f;
+		objective = BotObjectiveType.NONE;
+		routine = BotSubRoutine.IDLE;
+
 		BuildSkillTree();
 	}
 
 	private void BuildSkillTree()
 	{ // Decide the skills we're going to get this game
-		skillPath = new Queue<uint>(16);
+		int skillCount = DataTables.GetSkills().Count;
+		skillPath = new Queue<uint>(skillCount);
 		List<Skill> previousSkills = new List<Skill>();
 
 		Skill currentSkill = DataTables.GetSkill(1);
@@ -59,15 +83,33 @@ public class BotDecisionMaker
 			}
 
 			if (acceptableNeighbours.Count == 0)
-			{ // Welp, we're done (now that I think of it, it would probably work better to allow the AI to backtrack a bit instead of creating a single branch)
-				break;
+			{ // Start backtracking
+				int i = previousSkills.Count-1;
+				bool found = false;
+				while (i >= 0 && !found)
+				{
+					foreach (Skill neighbour in previousSkills[i].GetNeighbours())
+					{
+						if (!previousSkills.Contains(neighbour))
+						{
+							found = true;
+							acceptableNeighbours.Add(neighbour);
+						}
+					}
+					i--;
+				}
+
+				if (!found)
+				{ // We're done, nothing left in the tree (normally this won't happen, we'll have gotten out of the loop first)
+					break;
+				}
 			}
 
-			currentSkill = acceptableNeighbours[Random.Range(0, acceptableNeighbours.Count-1)];
+			currentSkill = acceptableNeighbours[Random.Range(0, acceptableNeighbours.Count)];
 			previousSkills.Add(currentSkill);
 			skillPath.Enqueue(DataTables.GetSkillID(currentSkill));
 
-		} while (skillPath.Count < 16);
+		} while (skillPath.Count < skillCount);
 	}
 
 	public bool HasAnEnemy()
@@ -201,6 +243,8 @@ public class BotDecisionMaker
 	public void MakeDecisions()
 	{ // Should be called about twice per second at most
 
+		// Check for skill points
+
 		// If we've been attacking someone, keep doing that
 		// If we just noticed the enemy player, target him
 		// If we're strong enough to go for the objective, do that
@@ -212,10 +256,13 @@ public class BotDecisionMaker
 
 	public void RunAI()
 	{
-		decisionTime -= Time.deltaTime;
-		if (decisionTime <= 0.0f)
-		{ // When I grow up, I want to be an astronaut
-			MakeDecisions();
+		if (decisionTime > 0)
+		{
+			decisionTime -= Time.deltaTime;
+			if (decisionTime <= 0.0f)
+			{ // When I grow up, I want to be an astronaut
+				MakeDecisions();
+			}
 		}
 
 		if (enemy && enemyLost)
@@ -256,6 +303,11 @@ public class BotDecisionMaker
 			{
 				this.currentGoal = _transform.position;
 				move = Vector3.zero;
+
+				if (decisionTime < 0)
+				{
+					decisionTime = 0.5f;
+				}
 			}
 		}
 
