@@ -92,7 +92,7 @@ public abstract class Spell : WikiEntry
 
 			if (costType == SpellCostType.MANA || costType == SpellCostType.PCTMANA)
 			{
-				costString += " mana";
+				costString += " PM";
 				if (costType == SpellCostType.PCTMANA)
 				{
 					costString += " (" + (100 * this.spellCost) + "%)";
@@ -100,7 +100,7 @@ public abstract class Spell : WikiEntry
 			}
 			else if (costType == SpellCostType.HEALTH || costType == SpellCostType.PCTHEALTH)
 			{
-				costString += " health";
+				costString += " PV";
 				if (costType == SpellCostType.PCTHEALTH)
 				{
 					costString += " (" + (100 * this.spellCost) + "%)";

@@ -53,7 +53,10 @@ public class MonsterEventScript : CharacterEventScript
 			spawner.OnSpawnedEntityDeath();
 		}
 
-		_inventory.DropAllItems();
+		if (GameData.isServer)
+		{
+			_inventory.DropAllItems();
+		}
 
 		if (GameData.gameMode == GameMode.RaceForGlory)
 		{
@@ -66,7 +69,10 @@ public class MonsterEventScript : CharacterEventScript
 		// No death animation for monsters yet
 		if (GameData.isOnline)
 		{
-			_networkView.RPC("KillMe", RPCMode.Server);
+			if (GameData.isServer)
+			{
+				_networkView.RPC("DoKill", RPCMode.AllBuffered);
+			}
 		}
 		else
 		{
@@ -74,17 +80,16 @@ public class MonsterEventScript : CharacterEventScript
 		}
 	}
 
-	[RPC]
+	/*[RPC]
 	private void KillMe()
 	{
 		_networkView.RPC("DoKill", RPCMode.AllBuffered);
-	}
+	}*/
 
 	[RPC]
 	private void DoKill()
 	{
-		//Network.Destroy(this.gameObject);
-		Destroy(this.gameObject);
+		Destroy(_manager.gameObject);
 	}
 
 	public override void OnSpotEntity(VisibleEntity entity)

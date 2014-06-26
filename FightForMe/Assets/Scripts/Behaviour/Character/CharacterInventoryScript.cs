@@ -119,6 +119,8 @@ public class CharacterInventoryScript : MonoBehaviour
 			UpdateSetProgress(((Armor)item).GetSetID(), false);
 		}
 
+		// FIXME: This whole part is not network-friendly...
+
 		droppedItemScript.UpdateItemID(this.items[(int)index]);
 		this.items.RemoveAt((int)index);
 
