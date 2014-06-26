@@ -271,21 +271,7 @@ public class LobbyScript : MonoBehaviour
 	void OnConnectedToServer()
 	{ // Connected!
 		GameData.networkError = NetworkConnectionError.NoError;
-		if (GameData.secure)
-		{ // Connect instantly
-			if (Network.connections.Length == GameData.expectedConnections)
-			{
-				lobbyMessage = LobbyMessage.GAME_DATA;
-			}
-			else
-			{
-				lobbyMessage = LobbyMessage.CLIENT_WAITING;
-			}
-		}
-		else
-		{ // We want to wait for the data tables
-			lobbyMessage = LobbyMessage.WAITING_FOR_DATA;
-		}
+		lobbyMessage = LobbyMessage.CLIENT_WAITING;
 	}
 
 	[RPC]
@@ -294,14 +280,23 @@ public class LobbyScript : MonoBehaviour
 		GameData.gameMode = (GameMode)gameMode;
 		GameData.secure = secure;
 		started = inProgress;
-		if (inProgress && !secure)
-		{
-			lobbyMessage = LobbyMessage.GAME_STARTED;
-		}
 
 		if (secure)
 		{ // Great, just load our default tables
+			if (inProgress)
+			{
+				lobbyMessage = LobbyMessage.GAME_STARTED;
+			}
+			else
+			{
+				lobbyMessage = LobbyMessage.GAME_DATA;
+			}
+
 			DataTables.FillTables();
+		}
+		else
+		{
+			lobbyMessage = LobbyMessage.WAITING_FOR_DATA;
 		}
 	}
 

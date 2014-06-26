@@ -16,5 +16,8 @@ En bas de l'interface se trouve une barre de sorts, qui affiche les sorts actuel
 Notez qu'un des sorts (Tir multiple) nécessite qu'un arc soit équipé
 
 Comme précédement, des armes de tests seront présentes près du point d'apparition du joueur 1, ainsi que des monstres déposant une panoplie très puissante.
+A cause de divers problèmes d'équilibrages qu'il reste à traiter, il est pour l'instant quasiment impossible de finir les niveaux actuellement proposés sans les armes de debug. Le tutoriel propose des monstres plus faciles d'accès.
 
-La partie contre une IA n'est pas encore tout à fait opérationelle, mais le système est là.
+La carte du mode suprématie n'est pas encore habillée, mais elle est techniquement fonctionelle
+
+Une partie contre l'IA est disponible, mais l'IA n'est pas particulièrement brillante, et sera souvent difficile à localiser sur la carte

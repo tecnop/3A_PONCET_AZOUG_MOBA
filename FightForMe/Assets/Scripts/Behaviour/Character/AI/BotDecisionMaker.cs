@@ -160,7 +160,7 @@ public class BotDecisionMaker
 	}
 
 	public void NoticeEntity(VisibleEntity entity)
-	{
+	{ // Check out an entity and see if we should do anything with it
 		if (entity is DroppedItemScript)
 		{
 			if (targetItem == null)
@@ -352,14 +352,7 @@ public class BotDecisionMaker
 	{ // Eeeeeeh
 		foreach (VisibleEntity entity in _manager.GetVisionScript().GetEntitiesInSight())
 		{
-			if (entity is DroppedItemScript && !targetItem)
-			{
-				NoticeEntity(entity);
-			}
-			else if (entity is CharacterManager && !enemy)
-			{
-				NoticeEntity(entity);
-			}
+			NoticeEntity(entity);
 		}
 	}
 

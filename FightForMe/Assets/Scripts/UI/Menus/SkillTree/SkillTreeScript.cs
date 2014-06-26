@@ -64,14 +64,16 @@ public static class SkillTreeScript
 		_misc = (PlayerMiscDataScript)GameData.activePlayer.GetMiscDataScript();
 		_input = (PlayerInputScript)GameData.activePlayer.GetInputScript();
 
-		// Center the scroll view on the first skill
-		Vector2 firstPos = skills[0].GetTreePos() + offset;
+		if (skills.Count > 0)
+		{ // Center the scroll view on the first skill
+			Vector2 firstPos = skills[0].GetTreePos() + offset;
 
-		int w = Screen.width;
-		int h = Screen.height;
+			int w = Screen.width;
+			int h = Screen.height;
 
-		absRect = SRect.Make(0.05f * w, 0.095f * h, 0.9f * w, 0.95f * 0.9f * h);
-		scrollPos = firstPos - new Vector2(absRect.width / 2.0f, absRect.height / 2.0f);
+			absRect = SRect.Make(0.05f * w, 0.095f * h, 0.9f * w, 0.95f * 0.9f * h);
+			scrollPos = firstPos - new Vector2(absRect.width / 2.0f, absRect.height / 2.0f);
+		}
 	}
 
 	public static void DrawSkillTree()
