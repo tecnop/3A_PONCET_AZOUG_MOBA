@@ -19,7 +19,7 @@ public class Skill : WikiEntry
 	private SkillColor color;		// Alignement of the skill between the three main stats
 	private uint effect;			// ID of the entry in the effects table unlocking this skill applies
 	// TODO: Position in the tree
-	private List<uint> neighbours;	// List of skills this skill is connected to (type: uint)
+	private List<uint> neighbours;	// List of skills this skill is connected to
 
 	public override WikiCategory category
 	{

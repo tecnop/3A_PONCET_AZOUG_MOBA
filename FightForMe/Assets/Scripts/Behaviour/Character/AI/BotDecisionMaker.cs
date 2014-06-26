@@ -157,34 +157,46 @@ public class BotDecisionMaker
 		}
 	}
 
-	public void AcknowledgeTarget(CharacterManager target)
-	{ // Notice the guy and attack him if we have nothing better to do
-		if (!HasAnEnemy() &&
-			target.tag == "Player" &&
-			target.GetLayer() != _manager.GetLayer())
+	public void NoticeEntity(VisibleEntity entity)
+	{
+		if (entity is DroppedItemScript)
 		{
-			Debug.Log(_manager.name + " acquired an enemy: " + target.name);
-			SetEnemy(target);
+			if (targetItem == null)
+			{
+				targetItem = (DroppedItemScript)entity;
+			}
 		}
-		else if (HasAnEnemy() && target == this.enemy)
-		{ // Update the known position
-			SetGoal(target.GetCharacterTransform().position);
+		else if (entity is CharacterManager)
+		{
+			if (!HasAnEnemy() &&
+				entity.gameObject.tag == "Player" &&
+				entity.gameObject.layer != _manager.GetLayer())
+			{
+				Debug.Log(_manager.name + " acquired an enemy: " + entity.gameObject.name);
+				SetEnemy((CharacterManager)entity);
+			}
+			else if (HasAnEnemy() && entity == this.enemy)
+			{ // Update the known position
+				GainSightOfTarget();
+				SetGoal(this.enemy.GetCharacterTransform().position);
+			}
 		}
+
+		decisionTime = 0.5f;
 	}
 
-	public void AcknowledgeTarget(GameObject target)
-	{ // Notice the guy and attack him if we have nothing better to do
-		if (!HasAnEnemy() &&
-			target.tag == "Player" &&
-			target.layer != _manager.GetLayer())
+	public void ForgetEntity(VisibleEntity entity)
+	{
+		if (entity == targetItem)
+		{ // I guess this is a good place to look for another one?
+			targetItem = null;
+		}
+		else if (entity == enemy)
 		{
-			Debug.Log(_manager.name + " acquired an enemy: " + target.name);
-			SetEnemy(target);
+			LoseSightOfTarget();
 		}
-		else if (HasAnEnemy() && target == this.enemy.gameObject)
-		{ // Update the known position
-			SetGoal(this.enemy.GetCharacterTransform().position);
-		}
+
+		decisionTime = 0.5f;
 	}
 
 	public void UpdateApproachRange()
@@ -241,17 +253,55 @@ public class BotDecisionMaker
 	}
 
 	public void MakeDecisions()
-	{ // Should be called about twice per second at most
+	{ // Define our next action
 
-		// Check for skill points
+		while (_misc.GetSkillPoints() > 0 && skillPath.Count > 0)
+		{ // Got skills to learn
+			uint skill = skillPath.Dequeue();
+			if (!_misc.LearnSkill(skill))
+			{ // Whoops. Queue it up again. This shouldn't happen buuuut safety
+				skillPath.Enqueue(skill);
+			}
+		}
 
-		// If we've been attacking someone, keep doing that
-		// If we just noticed the enemy player, target him
-		// If we're strong enough to go for the objective, do that
-		// If we arrived at our destination, engage nearby enemies
-		// If we aren't doing anything, target the closest camp
+		if (enemy)
+		{ // This should always be our main focus
+			if (_manager.GetStatsScript().GetHealth() < 0.25f * _manager.GetStatsScript().GetMaxHealth())
+			{ // TODO: Take enemy damage into account
+				routine = BotSubRoutine.ESCAPE;
+			}
+			else
+			{
+				routine = BotSubRoutine.FIGHT;
+			}
+		}
+		else if (targetItem)
+		{ // If we're not engaged in battle, we should interrupt every other routine for this (except maybe when returning an artifact for victory? think about that?)
+			routine = BotSubRoutine.COLLECT;
+		}
+		else
+		{ // Okay, no nearby priority, let's decide what to do now
+			routine = BotSubRoutine.MOVE;
 
-		decisionTime = 0.5f;
+			if (_misc.GetUnlockedSkills().Count > 5)
+			{ // Yes, this is completely arbitrary
+				objective = BotObjectiveType.WIN;
+
+				// Target the objective
+			}
+			/*else if (_misc.GetUnlockedSkills().Count > 1 && Random.value > 0.75f)
+			{ // I don't like putting randomness here but it will have to do for now
+				objective = BotObjectiveType.FIGHT;
+
+				// Target the other player
+			}*/
+			else
+			{
+				objective = BotObjectiveType.FARM;
+
+				// Target the closest active camp
+			}
+		}
 	}
 
 	public void RunAI()

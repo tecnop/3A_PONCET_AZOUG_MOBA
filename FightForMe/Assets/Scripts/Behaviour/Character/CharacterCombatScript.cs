@@ -21,10 +21,10 @@ public class CharacterCombatScript : MonoBehaviour
 
 	private Transform _transform;
 
-	private List<InflictedBuff> buffs;		// List of active buffs and debuffs (type: InflictedBuff)
+	private List<InflictedBuff> buffs;		// List of active buffs and debuffs
 	// TODO: Add a list of effects built from the list of buffs for quicker access? Would building it be more expensive than accessing each entry individually...?
 
-	private List<DamageInstance> combatLog;	// List of previously applied damage instances, cleared upon respawn (type: DamageInstance)
+	private List<DamageInstance> combatLog;	// List of previously applied damage instances, cleared upon respawn
 
 	public void Initialize(CharacterManager manager)
 	{

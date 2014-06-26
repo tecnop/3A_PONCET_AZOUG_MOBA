@@ -149,4 +149,25 @@ public class PlayerInputScript : CharacterInputScript
 	{
 		return this.hasLockedCamera;
 	}
+
+	// Event handling (mostly for bots, but could be used later for visual effects)
+	#region
+
+	public void NotifyEntityNoticed(VisibleEntity entity)
+	{
+		if (_ai != null)
+		{
+			_ai.NoticeEntity(entity);
+		}
+	}
+
+	public void NotifyEntityLost(VisibleEntity entity)
+	{
+		if (_ai != null)
+		{
+			_ai.ForgetEntity(entity);
+		}
+	}
+
+	#endregion
 }

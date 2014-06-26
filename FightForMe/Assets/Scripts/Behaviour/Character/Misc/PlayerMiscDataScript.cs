@@ -18,8 +18,8 @@ public enum SpellSlot
 
 public class PlayerMiscDataScript : CharacterMiscDataScript
 {
-	private List<Skill> unlockedSkills;			// Skills we have learned so far (type: Skill)
-	private List<Skill> availableSkills;			// Neighbours of unlocked skills (type: Skill)
+	private List<Skill> unlockedSkills;			// Skills we have learned so far
+	private List<Skill> availableSkills;		// Neighbours of unlocked skills
 	private uint skillPoints;					// Skill points left to spend
 	private uint experience;					// Our current progress to a new skill point
 
@@ -99,7 +99,7 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 		_manager.GetStatsScript().UpdateStats();
 	}
 
-	public void LearnSkill(uint skillID)
+	public bool LearnSkill(uint skillID)
 	{
 		if (LearnSkill(DataTables.GetSkill(skillID)))
 		{
@@ -107,7 +107,9 @@ public class PlayerMiscDataScript : CharacterMiscDataScript
 			{
 				_networkView.RPC("_LearnSkill", RPCMode.OthersBuffered, (int)skillID);
 			}
+			return true;
 		}
+		return false;
 	}
 
 	public List<Skill> GetUnlockedSkills()

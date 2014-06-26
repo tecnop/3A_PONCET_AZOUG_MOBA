@@ -6,7 +6,7 @@ public class MonsterCampScript : MonoBehaviour
 {
 	public static List<MonsterCampScript> camps; // Whatever, kind of in a hurry
 
-	private List<MonsterSpawnerScript> _spawners;	// Spawners that are part of this camp (type: MonsterSpawnerScript)
+	private List<MonsterSpawnerScript> _spawners;	// Spawners that are part of this camp
 
 	private uint currentLevel;		// Current level of the camp (goes up each time all the monsters die)
 	private uint stillAlive;		// Monsters still alive

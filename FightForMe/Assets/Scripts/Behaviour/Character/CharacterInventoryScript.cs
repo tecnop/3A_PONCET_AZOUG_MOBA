@@ -21,9 +21,9 @@ public class CharacterInventoryScript : MonoBehaviour
 
 	private Transform _transform;
 
-	private List<uint> items;					// IDs of the entries in the item table that we are currently carrying (type: uint)
+	private List<uint> items;					// IDs of the entries in the item table that we are currently carrying
 	private Dictionary<uint, uint> setProgress;	// <setID, numItems>
-	private List<ArmorSet> completedSets;		// For easier access from other scripts (type: ArmorSet)
+	private List<ArmorSet> completedSets;		// For easier access from other scripts
 
 	public void Initialize(CharacterManager manager)
 	{
