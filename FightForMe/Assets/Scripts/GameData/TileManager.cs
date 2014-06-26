@@ -1,18 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 public static class TileManager
 { // Utility class to allow easier access to the vision grid
 	private static MapGrid grid;
 
-	private static float _generationProgress;
-
-	public static float generationProgress
+	private static int _generationProgress;
+	public static int generationProgress
 	{
 		get
 		{
 			return _generationProgress;
+		}
+	}
+
+	private static bool _generating;
+	public static bool generating
+	{
+		get
+		{
+			return _generating;
 		}
 	}
 
@@ -29,8 +38,8 @@ public static class TileManager
 	{
 		if (grid != null)
 		{
-			int l = grid.RowCount();
-			int x = (index-1) / l;
+			int l = grid.RowSize(0);
+			int x = Mathf.FloorToInt((float)(index-1) / (float)l);
 			int y = (index-1) % l;
 			return grid.GetTile(x, y);
 		}
@@ -68,7 +77,7 @@ public static class TileManager
 				float z = startPos.z + spacing * (j + 0.5f);
 
 				MapTile tile = ScriptableObject.CreateInstance<MapTile>();
-				tile.SetUp(i * countX + j + 1, new Vector3(x, 0, z), new Vector2(spacing, spacing));
+				tile.SetUp(i * countZ + j + 1, new Vector3(x, 0, z), new Vector2(spacing, spacing));
 
 				curRow.Add(tile);
 			}
@@ -92,17 +101,9 @@ public static class TileManager
 		}
 	}
 
-	public static void BuildNeighbours()
+	private static void BuildNeighbours_background(object sender, DoWorkEventArgs args)
 	{
-		for (int _i = 0; _i < grid.RowCount(); _i++)
-		{
-			for (int _j = 0; _j < grid.RowSize(_i); _j++)
-			{
-				grid.GetTile(_i, _j).ClearNeighbours();
-			}
-		}
-
-		_generationProgress = 0.0f;
+		BackgroundWorker bw = (BackgroundWorker)sender;
 
 		for (int _i = 0; _i < grid.RowCount(); _i++)
 		{
@@ -122,7 +123,61 @@ public static class TileManager
 				}
 			}
 
-			_generationProgress += 1.0f / grid.RowCount();
+			bw.ReportProgress(Mathf.FloorToInt(Mathf.Sqrt(_i / grid.RowCount())));
+		}
+	}
+
+	private static void BuildNeighbours_progress(object sender, ProgressChangedEventArgs args)
+	{
+		_generationProgress = args.ProgressPercentage;
+	}
+
+	private static void BuildNeighbours_done(object sender, RunWorkerCompletedEventArgs args)
+	{
+		_generating = false;
+	}
+
+	public static void BuildNeighbours()
+	{
+		for (int _i = 0; _i < grid.RowCount(); _i++)
+		{
+			for (int _j = 0; _j < grid.RowSize(_i); _j++)
+			{
+				grid.GetTile(_i, _j).ClearNeighbours();
+			}
+		}
+
+		// Can't run raycasts from another thread :/
+		/*_generationProgress = 0;
+		_generating = true;
+
+		BackgroundWorker bw = new BackgroundWorker();
+		bw.WorkerReportsProgress = true;
+
+		bw.DoWork += new DoWorkEventHandler(BuildNeighbours_background);
+		bw.ProgressChanged += new ProgressChangedEventHandler(BuildNeighbours_progress);
+		bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BuildNeighbours_done);
+
+		bw.RunWorkerAsync();*/
+
+
+		for (int _i = 0; _i < grid.RowCount(); _i++)
+		{
+			for (int _j = 0; _j < grid.RowSize(_i); _j++)
+			{
+				MapTile curTile = grid.GetTile(_i, _j);
+				int startingJ = _j + 1;
+				for (int i = _i; i < grid.RowCount(); i++)
+				{
+					for (int j = startingJ; j < grid.RowSize(i); j++)
+					{
+						MapTile otherTile = grid.GetTile(i, j);
+
+						curTile.TryMakeNeighbourWith(otherTile);
+					}
+					startingJ = 0;
+				}
+			}
 		}
 	}
 

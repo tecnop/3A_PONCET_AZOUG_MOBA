@@ -14,6 +14,7 @@ public class MapGrid : ScriptableObject
 	[SerializeField]
 	private float tileSpacing;			// Distance between each tile
 
+	[SerializeField] // I didn't want to serialize it because I don't want it to be editable but it keeps being deleted so
 	private int _totalTiles;
 
 	public int totalTiles

@@ -15,44 +15,50 @@ public static class Utils
 
 	public static void PlaySpellSoundOnSource(Spell spell, AudioSource source)
 	{
-		AudioClip sound = DataTables.GetSound(spell.GetCastingSound());
-
-		if (sound != null)
+		if (source.enabled && source.gameObject.activeInHierarchy)
 		{
-			source.PlayOneShot(sound);
+			AudioClip sound = DataTables.GetSound(spell.GetCastingSound());
+
+			if (sound != null)
+			{
+				source.PlayOneShot(sound);
+			}
 		}
 	}
 
 	public static void PlayWeaponSoundOnSource(Weapon weapon, bool isImpact, AudioSource source)
 	{
-		AudioClip sound;
+		if (source.enabled && source.gameObject.activeInHierarchy)
+		{
+			AudioClip sound;
 
-		if (weapon == null)
-		{ // Ooooo
-			if (isImpact)
-			{
-				sound = DataTables.GetSound("punchhit");
+			if (weapon == null)
+			{ // Ooooo
+				if (isImpact)
+				{
+					sound = DataTables.GetSound("punchhit");
+				}
+				else
+				{
+					sound = DataTables.GetSound("punchswing");
+				}
 			}
 			else
 			{
-				sound = DataTables.GetSound("punchswing");
+				if (isImpact)
+				{
+					sound = DataTables.GetSound(weapon.GetHitSound());
+				}
+				else
+				{
+					sound = DataTables.GetSound(weapon.GetAttackSound());
+				}
 			}
-		}
-		else
-		{
-			if (isImpact)
-			{
-				sound = DataTables.GetSound(weapon.GetHitSound());
-			}
-			else
-			{
-				sound = DataTables.GetSound(weapon.GetAttackSound());
-			}
-		}
 
-		if (sound != null)
-		{
-			source.PlayOneShot(sound);
+			if (sound != null)
+			{
+				source.PlayOneShot(sound);
+			}
 		}
 	}
 }

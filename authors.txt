@@ -11,8 +11,9 @@ Prefabs: Thomas A.
 
 Scenes/:
 	startMenu: Thomas P., mise à jour par Thomas A.
+	Lobby: Thomas A.
 	Test/: Thomas P. et Thomas A.
-	Gamemode1/: Thomas P., détails par Thomas A.
+	Gamemode1/: Thomas A.
 	Gamemode2/: Thomas A.
 
 Scripts/:

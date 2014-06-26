@@ -62,10 +62,11 @@ public class MapTile : ScriptableObject
 	}*/
 
 	public bool CanSee(MapTile tile)
-	{ // TODO: Use capsule casts instead?
+	{ // I tried using capsule casts / sphere casts but it's not working out well... I left it running for an hour and it still wasn't finished, and I'm out of time for this
 		Vector3 diff = tile.position - this.position;
 		RaycastHit hitInfo;
-		if (Physics.Raycast(this.position + new Vector3(0, 1, 0), diff.normalized, out hitInfo, diff.magnitude, (1 << LayerMask.NameToLayer("Terrain"))))
+		//if (Physics.SphereCast(this.position + Vector3.up, 0.5f, diff.normalized, out hitInfo, diff.magnitude, (1 << LayerMask.NameToLayer("Terrain"))))
+		if (Physics.Raycast(this.position + new Vector3(0.0f, 1.0f, 0.0f), diff.normalized, out hitInfo, diff.magnitude, (1 << LayerMask.NameToLayer("Terrain"))))
 		{ // Something is blocking the line of sight
 			if (TileManager.GetTileForPos(hitInfo.point) == tile)
 			{ // The hit point is inside the tile, we're good
@@ -78,8 +79,8 @@ public class MapTile : ScriptableObject
 
 	public void TryMakeNeighbourWith(MapTile other)
 	{
-		if (this.CanSee(other) && other.CanSee(this))
-		{
+		if (this.CanSee(other) || other.CanSee(this))
+		{ // Used to be an "and" thing, but I figured this would solve quite a few problems
 			//this.neighbours.Add(other);
 			//other.neighbours.Add(this);
 			this.neighbourIndexes.Add(other.index);
@@ -166,7 +167,7 @@ public class MapTile : ScriptableObject
 		return new List<VisibleEntity>(this.objects);
 	}
 
-	public List<CharacterVisionScript> Subscribers()
+	public List<CharacterVisionScript> GetSubscribers()
 	{
 		return new List<CharacterVisionScript>(this.subscribers);
 	}

@@ -127,18 +127,23 @@ public class NPCAIScript : CharacterInputScript
 
 	public void SpreadTargetToCamp(CharacterManager target)
 	{
-		List<VisibleEntity> ents = _manager.GetVisionScript().GetEntitiesInSight();
-		foreach (VisibleEntity ent in ents)
+		SpawnerScript spawner = _misc.GetSpawner();
+		if (spawner && spawner is MonsterSpawnerScript)
 		{
-			if (ent != _manager && ent is CharacterManager &&
-				((CharacterManager)ent).GetCameraScript() == null &&
-				((CharacterManager)ent).GetLayer() == _manager.GetLayer() &&
-				Vector3.Distance(_transform.position, ((CharacterManager)ent).GetCharacterTransform().position) < 15.0f)
-			{ // Those tests are a bit awkward
-				NPCAIScript hisAI = ((NPCAIScript)((CharacterManager)ent).GetInputScript());
-				if (!hisAI.HasAnEnemy())
-				{ // Maybe it should spread again actually?
-					hisAI.SetTarget(target, false);
+			MonsterCampScript camp = ((MonsterSpawnerScript)spawner).GetCamp();
+			if (camp)
+			{
+				List<CharacterManager> monsters = camp.GetSpawnedMonsters();
+				foreach (CharacterManager monster in monsters)
+				{
+					if (monster != _manager)
+					{
+						NPCAIScript hisAI = (NPCAIScript)monster.GetInputScript();
+						if (!hisAI.HasAnEnemy())
+						{
+							hisAI.SetTarget(target, false);
+						}
+					}
 				}
 			}
 		}
@@ -271,15 +276,22 @@ public class NPCAIScript : CharacterInputScript
 	{
 		if (Utils.DiffNoY(_transform.position, goalPosition).magnitude < 0.1f)
 		{ // Don't panick alright, just look forward
-			if (!HasAnEnemy() && _misc.GetSpawner() is MonsterSpawnerScript)
+			if (!HasAnEnemy())
 			{ // Unless we have no enemy...
-				MonsterSpawnerScript spawner = (MonsterSpawnerScript)_misc.GetSpawner();
+				SpawnerScript spawner = _misc.GetSpawner();
 				if (spawner)
 				{ // And a spawner...
-					MonsterCampScript camp = spawner.GetCamp();
-					if (camp)
-					{ // And a camp!
-						return camp.GetPos();
+					if (spawner is MonsterSpawnerScript)
+					{ // If we're a monster, look at the camp (so I don't have to rotate all the friggin' spawners
+						MonsterCampScript camp = ((MonsterSpawnerScript)spawner).GetCamp();
+						if (camp)
+						{ // And a camp!
+							return camp.GetPos();
+						}
+					}
+					else
+					{
+						return spawner.GetTransform().position + spawner.GetTransform().rotation * Vector3.forward * 5.0f;
 					}
 				}
 			}

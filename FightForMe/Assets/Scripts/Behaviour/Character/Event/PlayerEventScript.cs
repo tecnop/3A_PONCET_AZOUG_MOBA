@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 public class PlayerEventScript : CharacterEventScript
 {
+	private PlayerInputScript _input;
+
 	public override void Initialize(CharacterManager manager)
 	{
 		_manager = manager;
+
+		_input = (PlayerInputScript)_manager.GetInputScript();
 	}
 
 	public override void OnPain(CharacterManager inflictor, float damage)
@@ -66,6 +70,7 @@ public class PlayerEventScript : CharacterEventScript
 		{
 			entity.SetVisible(true);
 		}
+		_input.NotifyEntityNoticed(entity);
 	}
 
 	public override void OnLoseSightOfEntity(VisibleEntity entity)
@@ -74,6 +79,7 @@ public class PlayerEventScript : CharacterEventScript
 		{
 			entity.SetVisible(false);
 		}
+		_input.NotifyEntityLost(entity);
 	}
 
 	public override void OnCollision(Collider collider)

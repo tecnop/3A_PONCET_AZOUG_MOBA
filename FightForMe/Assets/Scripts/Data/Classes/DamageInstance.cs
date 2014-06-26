@@ -25,7 +25,7 @@ public class DamageInstance
 
 	public override string ToString()
 	{
-		string inflictorName = (this.inflictor != null) ? this.inflictor.name : "Le monde";
+		string inflictorName = (this.inflictor != null) ? this.inflictor.name : "<Entité inconnue>";
 
 		if (inflictor == target)
 		{

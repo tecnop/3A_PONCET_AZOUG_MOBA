@@ -14,13 +14,13 @@ public class PlayerSpawnerScript : SpawnerScript
 
 	private static Rect centerRect;
 
-	private static List<DamageInstance> log;
+	private static List<string> log;
 
 	private static Vector2 scrollPos;
 
 	void Start()
 	{
-		_pos = this.transform.position;
+		_pos = _transform.position;
 
 		_boundPlayer.GetMiscDataScript().SetSpawner(this);
 
@@ -37,12 +37,12 @@ public class PlayerSpawnerScript : SpawnerScript
 		}
 	}
 
-	public override void Spawn()
+	public override CharacterManager Spawn()
 	{
 		if (!_initialized)
 		{
 			_spawnPending = true;
-			return;
+			return _boundPlayer;
 		}
 
 		_boundPlayer.GetCharacterTransform().position = _pos;
@@ -51,6 +51,8 @@ public class PlayerSpawnerScript : SpawnerScript
 			_boundPlayer.GetStatsScript().Revive();
 			_playerDied = false;
 		}
+
+		return _boundPlayer;
 	}
 
 	public override void OnSpawnedEntityDeath()
@@ -76,7 +78,7 @@ public class PlayerSpawnerScript : SpawnerScript
 
 	void OnGUI()
 	{
-		if (_playerDied)
+		if (_playerDied && _boundPlayer == GameData.activePlayer)
 		{
 			if (!GameData.gamePaused && HUDRenderer.GetState() == HUDState.Default)
 			{
@@ -98,7 +100,7 @@ public class PlayerSpawnerScript : SpawnerScript
 					scrollPos = GUI.BeginScrollView(SRect.Make(2.0f, 20.0f, centerRect.width, centerRect.height - 20.0f), scrollPos, SRect.Make(0.0f, 20.0f, centerRect.width - 20.0f, scrollHeight), false, true);
 					for (int i = 0; i < log.Count; i++)
 					{
-						GUI.Label(SRect.Make(0.0f, 20.0f * (i+1), centerRect.width - 20.0f, 20.0f), log[i].ToString());
+						GUI.Label(SRect.Make(0.0f, 20.0f * (i+1), centerRect.width - 20.0f, 20.0f), log[i]);
 					}
 					GUI.EndScrollView(true);
 				}
@@ -109,13 +111,13 @@ public class PlayerSpawnerScript : SpawnerScript
 
 	public void SetLog(List<DamageInstance> log)
 	{
-		List<DamageInstance> actualLog = new List<DamageInstance>(log.Count);
+		List<string> actualLog = new List<string>(log.Count);
 
 		foreach (DamageInstance entry in log)
 		{
 			if (!entry.selfCast)
 			{
-				actualLog.Add(entry);
+				actualLog.Add(entry.ToString());
 			}
 		}
 

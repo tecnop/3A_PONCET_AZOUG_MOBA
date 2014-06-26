@@ -35,10 +35,8 @@ public class MonsterSpawnerScript : SpawnerScript
 			return;
 		}
 
-		Transform transform = this.transform;
-
-		_pos = transform.position;
-		_ang = transform.rotation;
+		_pos = _transform.position;
+		_ang = _transform.rotation;
 
 		_initialized = true;
 
@@ -55,7 +53,7 @@ public class MonsterSpawnerScript : SpawnerScript
 		}
 	}
 
-	private void DoSpawnMonster(uint monsterID)
+	private CharacterManager DoSpawnMonster(uint monsterID)
 	{
 		// Spawn the entity
 		GameObject monsterObject;
@@ -75,14 +73,16 @@ public class MonsterSpawnerScript : SpawnerScript
 
 		// Set him up
 		misc.SetUpFromMonster(monsterID);
+
+		return manager;
 	}
 
-	public override void Spawn()
+	public override CharacterManager Spawn()
 	{
 		if (!_initialized)
 		{ // Let us initialize first!
 			_spawnPending = true;
-			return;
+			return null;
 		}
 
 		if (_monsterList.Length == 0)
@@ -117,14 +117,14 @@ public class MonsterSpawnerScript : SpawnerScript
 			throw new Exception(this.name + " tried to spawn unknown monster " + monsterID);
 		}
 
-		DoSpawnMonster(monsterID);
+		return DoSpawnMonster(monsterID);
 	}
 
 	public override void OnSpawnedEntityDeath()
 	{
 		if (camp)
 		{
-			camp.OnBoundMonsterDeath();
+			camp.OnBoundMonsterDeath(this);
 		}
 		else
 		{ // Kill us or respawn him? I'll go with respawn for now for debugging

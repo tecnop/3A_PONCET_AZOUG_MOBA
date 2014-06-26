@@ -3,6 +3,16 @@ using System.Collections;
 
 public class HasnorSpawnerScript : SpawnerScript
 {
+	// Rushed static variables for my AI
+	private static CharacterManager _hasnor;
+	public static CharacterManager hasnor
+	{
+		get
+		{
+			return _hasnor;
+		}
+	}
+
 	[SerializeField]
 	private GameObject _monsterPrefab;
 
@@ -13,9 +23,8 @@ public class HasnorSpawnerScript : SpawnerScript
 
 	void Start()
 	{
-		Transform transform = this.transform;
-		_pos = transform.position;
-		_ang = transform.rotation;
+		_pos = _transform.position;
+		_ang = _transform.rotation;
 
 		_initialized = true;
 
@@ -25,7 +34,7 @@ public class HasnorSpawnerScript : SpawnerScript
 		}
 	}
 
-	public override void Spawn()
+	public override CharacterManager Spawn()
 	{
 		GameObject hasnor;
 		if (GameData.isOnline)
@@ -36,10 +45,10 @@ public class HasnorSpawnerScript : SpawnerScript
 		{
 			hasnor = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
 		}
-		SetUpHasnor(hasnor);
+		return SetUpHasnor(hasnor);
 	}
 
-	private void SetUpHasnor(GameObject hasnor)
+	private CharacterManager SetUpHasnor(GameObject hasnor)
 	{
 		CharacterManager manager = hasnor.GetComponent<CharacterManager>();
 
@@ -48,11 +57,16 @@ public class HasnorSpawnerScript : SpawnerScript
 		misc.SetSpawner(this);
 
 		misc.SetUpFromMonster(8); // HARD CODED REFERENCE
+
+		_hasnor = manager;
+
+		return manager;
 	}
 
 	public override void OnSpawnedEntityDeath()
 	{
 		_ded = true;
+		_hasnor = null;
 	}
 
 	public void TryRespawn()

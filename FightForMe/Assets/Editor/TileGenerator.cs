@@ -45,6 +45,12 @@ public class TileGenerator : EditorWindow
 			return;
 		}
 
+		if (TileManager.generating)
+		{
+			EditorGUI.ProgressBar(new Rect(0.0f, 0.0f, this.position.width, this.position.height), (float)TileManager.generationProgress / 100.0f, "Génération en cours");
+			return;
+		}
+
 		GUILayout.Label("Generation", titleStyle);
 
 		TileBuilderScript temp3 = (TileBuilderScript)EditorGUILayout.ObjectField("Tile builder", this.tileBuilder, typeof(TileBuilderScript), true);
@@ -53,7 +59,7 @@ public class TileGenerator : EditorWindow
 		{
 			this.tileBuilder = temp3;
 
-			if (TileManager.GridSize() == -1 && this.tileBuilder.HasGrid())
+			if (TileManager.GridSize() <= 0 && this.tileBuilder.HasGrid())
 			{
 				this.tileBuilder.LoadGrid();
 			}

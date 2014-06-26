@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class TileEntityScript : MonoBehaviour
 { // Simple entity meant to represent vision tiles in the editor
+	[SerializeField]
 	private MapTile tile;
 
 	// This doesn't actually reflect transform data

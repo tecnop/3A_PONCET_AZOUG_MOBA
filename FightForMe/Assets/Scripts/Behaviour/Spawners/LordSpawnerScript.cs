@@ -9,6 +9,26 @@ public enum Team
 
 public class LordSpawnerScript : SpawnerScript
 {
+	// Rushed static variables for my AI
+	private static CharacterManager _team1Lord;
+	public static CharacterManager team1Lord
+	{
+		get
+		{
+			return _team1Lord;
+		}
+	}
+
+	private static CharacterManager _team2Lord;
+	public static CharacterManager team2Lord
+	{
+		get
+		{
+			return _team2Lord;
+		}
+	}
+
+
 	[SerializeField]
 	private GameObject _monsterPrefab;
 
@@ -23,9 +43,8 @@ public class LordSpawnerScript : SpawnerScript
 
 	void Start()
 	{
-		Transform transform = this.transform;
-		_pos = transform.position;
-		_ang = transform.rotation;
+		_pos = _transform.position;
+		_ang = _transform.rotation;
 
 		_initialized = true;
 
@@ -35,7 +54,7 @@ public class LordSpawnerScript : SpawnerScript
 		}
 	}
 
-	public override void Spawn()
+	public override CharacterManager Spawn()
 	{
 		GameObject lord;
 		if (GameData.isOnline)
@@ -46,10 +65,11 @@ public class LordSpawnerScript : SpawnerScript
 		{
 			lord = (GameObject)Instantiate(_monsterPrefab, _pos, _ang);
 		}
-		SetUpLord(lord);
+
+		return SetUpLord(lord);
 	}
 
-	private void SetUpLord(GameObject lord)
+	private CharacterManager SetUpLord(GameObject lord)
 	{
 		CharacterManager manager = lord.GetComponent<CharacterManager>();
 		int layer;
@@ -57,10 +77,12 @@ public class LordSpawnerScript : SpawnerScript
 		if (_team == Team.Team1)
 		{
 			layer = LayerMask.NameToLayer("Team1Entity");
+			_team1Lord = manager;
 		}
 		else
 		{
 			layer = LayerMask.NameToLayer("Team2Entity");
+			_team2Lord = manager;
 		}
 
 		manager.GetPhysicsScript().SetLayer(layer);
@@ -75,6 +97,8 @@ public class LordSpawnerScript : SpawnerScript
 		{ // You can't kill him in any other mode
 			manager.GetCombatScript().ReceiveBuff(manager, 7);
 		}
+
+		return manager;
 	}
 
 	public override void OnSpawnedEntityDeath()

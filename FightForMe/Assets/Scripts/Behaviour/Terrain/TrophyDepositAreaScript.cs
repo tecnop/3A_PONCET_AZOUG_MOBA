@@ -3,14 +3,45 @@ using System.Collections;
 
 public class TrophyDepositAreaScript : MonoBehaviour
 {
+	// Rushed static variables for my AI
+	private static TrophyDepositAreaScript _team1Area;
+	public static TrophyDepositAreaScript team1Area
+	{
+		get
+		{
+			return _team1Area;
+		}
+	}
+
+	private static TrophyDepositAreaScript _team2Area;
+	public static TrophyDepositAreaScript team2Area
+	{
+		get
+		{
+			return _team2Area;
+		}
+	}
+
 	[SerializeField]
 	private NetworkView _networkView;
+
+	[SerializeField]
+	private Transform _transform;
 
 	void Start()
 	{
 		if (GameData.gameMode != GameMode.RaceForGlory)
 		{
 			Destroy(this.gameObject);
+		}
+
+		if (this.gameObject.layer == LayerMask.NameToLayer("Team1Objective"))
+		{
+			_team1Area = this;
+		}
+		else if (this.gameObject.layer == LayerMask.NameToLayer("Team2Objective"))
+		{
+			_team2Area = this;
 		}
 	}
 
@@ -46,5 +77,10 @@ public class TrophyDepositAreaScript : MonoBehaviour
 		}
 
 		GameData.gamePaused = true;
+	}
+
+	public Transform GetTransform()
+	{
+		return _transform;
 	}
 }

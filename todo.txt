@@ -64,3 +64,5 @@
 (X) Cacher les objets et projectiles dans le brouillard de guerre
 
 ( ) Empêcher la caméra et les diverses entités de quitter la zone de la carte
+
+( ) Résoudre les divers bugs de vision
