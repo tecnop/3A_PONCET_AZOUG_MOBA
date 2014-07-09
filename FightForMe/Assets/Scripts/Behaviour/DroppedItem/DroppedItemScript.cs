@@ -34,7 +34,7 @@ public class DroppedItemScript : VisibleEntity
 		{ // No conflict found, he simply took our item, we have no reason to be here anymore
 			if (GameData.isOnline)
 			{
-				_networkView.RPC("DoKill", RPCMode.AllBuffered);
+				_networkView.RPC("KillMe", RPCMode.AllBuffered);
 			}
 			else
 			{
@@ -89,7 +89,7 @@ public class DroppedItemScript : VisibleEntity
 
 		if (GameData.isOnline)
 		{
-			_networkView.RPC("KillMe", RPCMode.Server);
+			_networkView.RPC("KillMe", RPCMode.AllBuffered);
 		}
 		else
 		{
@@ -97,16 +97,9 @@ public class DroppedItemScript : VisibleEntity
 		}
 	}
 
-	/*[RPC]
+	[RPC]
 	private void KillMe()
 	{
-		_networkView.RPC("DoKill", RPCMode.AllBuffered);
-	}*/
-
-	[RPC]
-	private void DoKill()
-	{
-		//Network.Destroy(this.gameObject);
 		Destroy(this.gameObject);
 	}
 

@@ -95,10 +95,30 @@ public class LordSpawnerScript : SpawnerScript
 
 		if (GameData.gameMode != GameMode.KillTheLord)
 		{ // You can't kill him in any other mode
-			manager.GetCombatScript().ReceiveBuff(manager, 7);
+			if (GameData.isOnline)
+			{
+				_networkView.RPC("MakeInvulnerable", RPCMode.AllBuffered);
+			}
+			else
+			{
+				MakeInvulnerable();
+			}
 		}
 
 		return manager;
+	}
+
+	[RPC]
+	private void MakeInvulnerable()
+	{
+		if (_team == Team.Team1)
+		{
+			_team1Lord.GetCombatScript().ReceiveBuff(_team1Lord, 7);
+		}
+		else
+		{
+			_team2Lord.GetCombatScript().ReceiveBuff(_team2Lord, 7);
+		}
 	}
 
 	public override void OnSpawnedEntityDeath()

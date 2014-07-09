@@ -71,7 +71,7 @@ public class MonsterEventScript : CharacterEventScript
 		{
 			if (GameData.isServer)
 			{
-				_networkView.RPC("DoKill", RPCMode.AllBuffered);
+				_networkView.RPC("KillMe", RPCMode.AllBuffered);
 			}
 		}
 		else
@@ -80,14 +80,8 @@ public class MonsterEventScript : CharacterEventScript
 		}
 	}
 
-	/*[RPC]
-	private void KillMe()
-	{
-		_networkView.RPC("DoKill", RPCMode.AllBuffered);
-	}*/
-
 	[RPC]
-	private void DoKill()
+	private void KillMe()
 	{
 		Destroy(_manager.gameObject);
 	}

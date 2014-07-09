@@ -57,6 +57,7 @@ public class CharacterMovementScript : MonoBehaviour
 		else if (_manager.GetStatsScript().HasSpecialEffect(MiscEffect.LOSS_OF_CONTROL))
 		{
 			actualDir = Vector3.zero;
+			actualSpeed = 0.0f;
 		}
 
 		#region wip
